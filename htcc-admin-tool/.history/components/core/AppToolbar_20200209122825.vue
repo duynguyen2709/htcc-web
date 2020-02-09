@@ -50,7 +50,7 @@
           <v-icon color="tertiary">mdi-account</v-icon>
         </nuxt-link>-->
 
-        <v-dialog width="530">
+        <v-dialog v-model="dialog" width="530">
           <template v-slot:activator="{ on }">
             <!-- <v-btn color="red lighten-2" dark v-on="on">Click Me</v-btn> -->
             <v-icon color="tertiary" v-on="on">mdi-account</v-icon>

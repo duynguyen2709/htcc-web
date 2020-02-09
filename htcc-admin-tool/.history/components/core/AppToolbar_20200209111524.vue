@@ -50,10 +50,10 @@
           <v-icon color="tertiary">mdi-account</v-icon>
         </nuxt-link>-->
 
-        <v-dialog width="530">
+        <v-dialog v-model="dialog" width="500">
           <template v-slot:activator="{ on }">
             <!-- <v-btn color="red lighten-2" dark v-on="on">Click Me</v-btn> -->
-            <v-icon color="tertiary" v-on="on">mdi-account</v-icon>
+            <v-icon color="tertiary"  v-on="on">mdi-account</v-icon>
           </template>
 
           <!-- <v-card>
@@ -67,32 +67,41 @@
               <v-spacer></v-spacer>
               <v-btn color="primary" text @click="dialog = false">I accept</v-btn>
             </v-card-actions>
-          </v-card>-->
+          </v-card> -->
 
-          
-            <material-card class="v-card-profile pt-2">
-              <v-avatar slot="offset" class="mx-auto d-block" size="130">
-                <img
-                  src="https://demos.creative-tim.com/vue-material-dashboard/img/marc.aba54d65.jpg"
-                />
-              </v-avatar>
-              <v-card-text class="text-xs-center">
-                <h6 class="category text-gray font-weight-thin mb-3">{{ user.function }}</h6>
-                <h4 class="card-title font-weight-light">{{ fullname }}</h4>
-                <p class="card-description font-weight-light">{{ user.description }}</p>
-                <blockquote class="blockquote">{{ user.citation }}</blockquote>
-                <v-card flat>
-                  <v-btn color="success" round class="font-weight-light">Edit profile</v-btn>
-                  <v-btn color="success" round class="font-weight-light">Change password</v-btn>
-                </v-card>
-              </v-card-text>
-            </material-card>
-          
-        </v-dialog>
+          <v-flex
+        xs12
+        md4
+      >
+        <material-card class="v-card-profile">
+          <v-avatar
+            slot="offset"
+            class="mx-auto d-block"
+            size="130"
+          >
+            <img
+              src="https://demos.creative-tim.com/vue-material-dashboard/img/marc.aba54d65.jpg"
+            >
+          </v-avatar>
+          <v-card-text class="text-xs-center">
+            <h6 class="category text-gray font-weight-thin mb-3">{{ user.function }}</h6>
+            <h4 class="card-title font-weight-light">{{ fullname }}</h4>
+            <p class="card-description font-weight-light">{{ user.description }}</p>
+            <blockquote class="blockquote">{{ user.citation }}</blockquote>
+            <v-btn
+              color="success"
+              round
+              class="font-weight-light"
+            >Follow</v-btn>
+          </v-card-text>
+        </material-card>
       </v-flex>
-      <nuxt-link v-ripple class="toolbar-items" to="/" title="Logout" @click.native="logout">
-        <v-icon color="tertiary">mdi-logout</v-icon>
-      </nuxt-link>
+        </v-dialog>
+
+        <nuxt-link v-ripple class="toolbar-items" to="/" title="Logout" @click.native="logout">
+          <v-icon color="tertiary">mdi-logout</v-icon>
+        </nuxt-link>
+      </v-flex>
     </v-toolbar-items>
   </v-toolbar>
 </template>

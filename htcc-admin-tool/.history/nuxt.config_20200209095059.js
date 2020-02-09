@@ -58,10 +58,6 @@ export default {
     // See https://github.com/nuxt-community/axios-module#options
   },
 
-  server: {
-    port: 4000
-  },
-
   /*
   ** Build configuration
   */

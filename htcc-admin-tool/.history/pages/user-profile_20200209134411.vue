@@ -107,7 +107,6 @@
                   <v-btn
                     class="mx-0 font-weight-light"
                     color="success"
-                    @click="updateProfile"
                   >
                     Update Profile
                   </v-btn>
@@ -150,7 +149,6 @@
 
 <script>
   import { mapGetters } from 'vuex'
-  import { mapActions } from 'vuex'
   import materialCard from '~/components/material/AppCard'
 
   export default {
@@ -163,15 +161,6 @@
         user: 'user/getUser',
         fullname: 'user/getFullname',
       })
-    },
-    methods:{
-      ...mapActions({
-        setUser: 'user/setUser',
-      }),
-      updateProfile: function(){
-        this.setUser(this.InlineUser)
-
-      },
     },
     data() {
       return {

@@ -50,13 +50,13 @@
           <v-icon color="tertiary">mdi-account</v-icon>
         </nuxt-link>-->
 
-        <v-dialog width="530">
+        <v-dialog v-model="dialog" width="500">
           <template v-slot:activator="{ on }">
             <!-- <v-btn color="red lighten-2" dark v-on="on">Click Me</v-btn> -->
-            <v-icon color="tertiary" v-on="on">mdi-account</v-icon>
+            <v-icon color="tertiary"  v-on="on">mdi-account</v-icon>
           </template>
 
-          <!-- <v-card>
+          <v-card>
             <v-card-title class="headline grey lighten-2" primary-title>Privacy Policy</v-card-title>
 
             <v-card-text>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</v-card-text>
@@ -67,44 +67,21 @@
               <v-spacer></v-spacer>
               <v-btn color="primary" text @click="dialog = false">I accept</v-btn>
             </v-card-actions>
-          </v-card>-->
-
-          
-            <material-card class="v-card-profile pt-2">
-              <v-avatar slot="offset" class="mx-auto d-block" size="130">
-                <img
-                  src="https://demos.creative-tim.com/vue-material-dashboard/img/marc.aba54d65.jpg"
-                />
-              </v-avatar>
-              <v-card-text class="text-xs-center">
-                <h6 class="category text-gray font-weight-thin mb-3">{{ user.function }}</h6>
-                <h4 class="card-title font-weight-light">{{ fullname }}</h4>
-                <p class="card-description font-weight-light">{{ user.description }}</p>
-                <blockquote class="blockquote">{{ user.citation }}</blockquote>
-                <v-card flat>
-                  <v-btn color="success" round class="font-weight-light">Edit profile</v-btn>
-                  <v-btn color="success" round class="font-weight-light">Change password</v-btn>
-                </v-card>
-              </v-card-text>
-            </material-card>
-          
+          </v-card>
         </v-dialog>
+
+        <nuxt-link v-ripple class="toolbar-items" to="/" title="Logout" @click.native="logout">
+          <v-icon color="tertiary">mdi-logout</v-icon>
+        </nuxt-link>
       </v-flex>
-      <nuxt-link v-ripple class="toolbar-items" to="/" title="Logout" @click.native="logout">
-        <v-icon color="tertiary">mdi-logout</v-icon>
-      </nuxt-link>
     </v-toolbar-items>
   </v-toolbar>
 </template>
 
 <script>
   import { mapActions, mapGetters } from 'vuex'
-  import materialCard from '~/components/material/AppCard'
 
   export default {
-    components: {
-      materialCard
-    },
     data: () => ({
       notifications: [
         'Mike, John responded to your email',
@@ -124,8 +101,6 @@
     },
     computed: {
       ...mapGetters({
-        user: 'user/getUser',
-        fullname: 'user/getFullname',
         drawer: 'app/getDrawer'
       })
     },

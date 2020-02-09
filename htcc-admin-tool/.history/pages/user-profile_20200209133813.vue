@@ -58,7 +58,6 @@
                   md6
                 >
                   <v-text-field
-                    v-model="InlineUser.lastname"
                     label="Last Name"
                     class="purple-input"/>
                 </v-flex>
@@ -94,7 +93,6 @@
                 </v-flex>
                 <v-flex xs12>
                   <v-textarea
-                    v-model="InlineUser.description"
                     class="purple-input"
                     label="About Me"
                     value="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
@@ -107,7 +105,6 @@
                   <v-btn
                     class="mx-0 font-weight-light"
                     color="success"
-                    @click="updateProfile"
                   >
                     Update Profile
                   </v-btn>
@@ -150,7 +147,6 @@
 
 <script>
   import { mapGetters } from 'vuex'
-  import { mapActions } from 'vuex'
   import materialCard from '~/components/material/AppCard'
 
   export default {
@@ -164,22 +160,13 @@
         fullname: 'user/getFullname',
       })
     },
-    methods:{
-      ...mapActions({
-        setUser: 'user/setUser',
-      }),
-      updateProfile: function(){
-        this.setUser(this.InlineUser)
-
-      },
-    },
     data() {
       return {
         InlineUser: ''
       }
     },
     created: function(){
-      this.InlineUser = Object.assign({}, this.user)
+      this.InlineUser = this.user
     }
   }
 </script>

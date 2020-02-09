@@ -165,12 +165,12 @@
       })
     },
     methods:{
-      ...mapActions({
-        setUser: 'user/setUser',
-      }),
+      ...mapActions(
+        'setUser'
+      ),
       updateProfile: function(){
         this.setUser(this.InlineUser)
-
+        
       },
     },
     data() {

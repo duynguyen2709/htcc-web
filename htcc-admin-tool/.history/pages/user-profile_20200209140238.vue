@@ -165,12 +165,8 @@
       })
     },
     methods:{
-      ...mapActions({
-        setUser: 'user/setUser',
-      }),
       updateProfile: function(){
-        this.setUser(this.InlineUser)
-
+        this.$store.commit('SET_USER', this.InlineUser)
       },
     },
     data() {

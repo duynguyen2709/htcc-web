@@ -50,7 +50,7 @@
           <v-icon color="tertiary">mdi-account</v-icon>
         </nuxt-link>-->
 
-        <v-dialog width="530">
+        <v-dialog v-model="dialog"  class="justify-center">
           <template v-slot:activator="{ on }">
             <!-- <v-btn color="red lighten-2" dark v-on="on">Click Me</v-btn> -->
             <v-icon color="tertiary" v-on="on">mdi-account</v-icon>
@@ -69,8 +69,8 @@
             </v-card-actions>
           </v-card>-->
 
-          
-            <material-card class="v-card-profile pt-2">
+          <v-flex md4>
+            <material-card class="v-card-profile" style="padding-bottom: -100px;">
               <v-avatar slot="offset" class="mx-auto d-block" size="130">
                 <img
                   src="https://demos.creative-tim.com/vue-material-dashboard/img/marc.aba54d65.jpg"
@@ -81,18 +81,16 @@
                 <h4 class="card-title font-weight-light">{{ fullname }}</h4>
                 <p class="card-description font-weight-light">{{ user.description }}</p>
                 <blockquote class="blockquote">{{ user.citation }}</blockquote>
-                <v-card flat>
-                  <v-btn color="success" round class="font-weight-light">Edit profile</v-btn>
-                  <v-btn color="success" round class="font-weight-light">Change password</v-btn>
-                </v-card>
+                <v-btn color="success" round class="font-weight-light">Follow</v-btn>
               </v-card-text>
             </material-card>
-          
+          </v-flex>
         </v-dialog>
+
+        <nuxt-link v-ripple class="toolbar-items" to="/" title="Logout" @click.native="logout">
+          <v-icon color="tertiary">mdi-logout</v-icon>
+        </nuxt-link>
       </v-flex>
-      <nuxt-link v-ripple class="toolbar-items" to="/" title="Logout" @click.native="logout">
-        <v-icon color="tertiary">mdi-logout</v-icon>
-      </nuxt-link>
     </v-toolbar-items>
   </v-toolbar>
 </template>

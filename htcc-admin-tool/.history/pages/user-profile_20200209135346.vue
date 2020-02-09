@@ -164,13 +164,9 @@
         fullname: 'user/getFullname',
       })
     },
-    methods:{
-      ...mapActions({
-        setUser: 'user/setUser',
-      }),
+    method:{
       updateProfile: function(){
-        this.setUser(this.InlineUser)
-
+        this.$store.commit('SET_USER', this.InlineUser)
       },
     },
     data() {

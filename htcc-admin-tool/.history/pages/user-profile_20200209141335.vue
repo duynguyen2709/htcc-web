@@ -166,7 +166,7 @@
     },
     methods:{
       ...mapActions({
-        setUser: 'user/setUser',
+        setUser: 'setUser',
       }),
       updateProfile: function(){
         this.setUser(this.InlineUser)

@@ -50,7 +50,7 @@
           <v-icon color="tertiary">mdi-account</v-icon>
         </nuxt-link>-->
 
-        <v-dialog width="530">
+        <v-dialog v-model="dialog" width="530">
           <template v-slot:activator="{ on }">
             <!-- <v-btn color="red lighten-2" dark v-on="on">Click Me</v-btn> -->
             <v-icon color="tertiary" v-on="on">mdi-account</v-icon>
@@ -69,7 +69,7 @@
             </v-card-actions>
           </v-card>-->
 
-          
+          <v-flex>
             <material-card class="v-card-profile pt-2">
               <v-avatar slot="offset" class="mx-auto d-block" size="130">
                 <img
@@ -87,7 +87,7 @@
                 </v-card>
               </v-card-text>
             </material-card>
-          
+          </v-flex>
         </v-dialog>
       </v-flex>
       <nuxt-link v-ripple class="toolbar-items" to="/" title="Logout" @click.native="logout">
