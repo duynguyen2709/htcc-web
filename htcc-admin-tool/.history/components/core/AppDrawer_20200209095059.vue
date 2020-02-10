@@ -81,11 +81,6 @@
             text: 'Dashboard'
           },
           {
-            to: '/admins',
-            icon: 'mdi-account',
-            text: 'Admins'
-          },
-          {
             to: '/user-profile',
             icon: 'mdi-account',
             text: 'User Profile'

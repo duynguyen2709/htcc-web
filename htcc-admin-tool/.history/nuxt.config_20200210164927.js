@@ -60,18 +60,18 @@ export default {
       local: {
         endpoints: {
           login: {
-            url: 'user/login',
+            url: '/auth/login',
             method: 'post',
-            propertyName: 'token'
+            propertyName: false
           },
-          user: {
-            url: 'user/me',
-            method: 'get',
-            propertyName: 'user'
+          logout: { 
+            url: '/auth/logout', 
+            method: 'post' 
           },
-          logout: {
-            url: 'user/logout',
-            method: 'post',
+          user: { 
+            url: '/auth/profile', 
+            method: 'get', 
+            propertyName: false 
           }
         },
         tokenRequired: false,

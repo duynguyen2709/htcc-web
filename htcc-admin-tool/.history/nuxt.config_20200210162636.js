@@ -53,38 +53,10 @@ export default {
     '@nuxtjs/auth'
   ],
   /*
-  **Authentication
-  */
-  auth: {
-    strategies: {
-      local: {
-        endpoints: {
-          login: {
-            url: 'user/login',
-            method: 'post',
-            propertyName: 'token'
-          },
-          user: {
-            url: 'user/me',
-            method: 'get',
-            propertyName: 'user'
-          },
-          logout: {
-            url: 'user/logout',
-            method: 'post',
-          }
-        },
-        tokenRequired: false,
-        tokenType: false
-      }
-    }
-  },
-  /*
   ** Axios module configuration
   */
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
-    baseURL: 'http://localhost:8000',
   },
 
   server: {
