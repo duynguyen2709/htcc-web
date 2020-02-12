@@ -1,8 +1,6 @@
 <template>
-  <v-container fill-height fluid grid-list-xl>
-    <v-layout justify-center wrap>
-      <v-flex xs12 md8>
-        <material-card color="green" title="Edit Profile" text="Complete your profile">
+<v-flex xs12 >
+        <material-card color="green" title="Add new admin">
           <v-form>
             <v-container py-0>
               <v-layout wrap>
@@ -17,14 +15,14 @@
                 </v-flex>
                 <v-flex xs12 md6>
                   <v-text-field
-                    v-model="InlineUser.firstname"
+                    v-model="firstname"
                     label="First Name"
                     class="purple-input"
                   />
                 </v-flex>
                 <v-flex xs12 md6>
                   <v-text-field
-                    v-model="InlineUser.lastname"
+                    v-model="lastname"
                     label="Last Name"
                     class="purple-input"
                   />
@@ -43,7 +41,6 @@
                 </v-flex>
                 <v-flex xs12>
                   <v-textarea
-                    v-model="InlineUser.description"
                     class="purple-input"
                     label="About Me"
                     value="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
@@ -53,35 +50,16 @@
                   <v-btn
                     class="mx-0 font-weight-light"
                     color="success"
-                    @click="updateProfile"
-                  >Update Profile</v-btn>
+                  >Add</v-btn>
                 </v-flex>
               </v-layout>
             </v-container>
           </v-form>
         </material-card>
       </v-flex>
-      <v-flex xs12 md4>
-        <material-card class="v-card-profile">
-          <v-avatar slot="offset" class="mx-auto d-block" size="130">
-            <img src="https://demos.creative-tim.com/vue-material-dashboard/img/marc.aba54d65.jpg" />
-          </v-avatar>
-          <v-card-text class="text-xs-center">
-            <h6 class="category text-gray font-weight-thin mb-3">{{ user.function }}</h6>
-            <h4 class="card-title font-weight-light">{{ fullname }}</h4>
-            <p class="card-description font-weight-light">{{ user.description }}</p>
-            <blockquote class="blockquote">{{ user.citation }}</blockquote>
-            <v-btn color="success" round class="font-weight-light">Change password</v-btn>
-          </v-card-text>
-        </material-card>
-      </v-flex>
-    </v-layout>
-  </v-container>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import { mapActions } from "vuex";
 import materialCard from "~/components/material/AppCard";
 
 export default {
@@ -89,27 +67,84 @@ export default {
   components: {
     materialCard
   },
-  computed: {
-    ...mapGetters({
-      user: "user/getUser",
-      fullname: "user/getFullname"
-    })
-  },
-  methods: {
-    ...mapActions({
-      setUser: "user/setUser"
-    }),
-    updateProfile: function() {
-      this.setUser(this.InlineUser);
-    }
-  },
-  data() {
-    return {
-      InlineUser: ""
-    };
-  },
-  created: function() {
-    this.InlineUser = Object.assign({}, this.user);
+  data: () => ({
+   firstname: '',
+   lastname: '',
+   role: '',
+   currentUser: '',
+   headers: [
+      {
+        sortable: false,
+        text: "Name",
+        value: "name"
+      },
+      {
+        sortable: false,
+        text: "Country",
+        value: "country"
+      },
+      {
+        sortable: false,
+        text: "City",
+        value: "city"
+      },
+      {
+        sortable: false,
+        text: "Salary",
+        value: "salary",
+        align: "right"
+      }
+    ],
+    items: [
+      {
+        name: "Dakota Rice",
+        country: "Niger",
+        city: "Oud-Tunrhout",
+        salary: "$35,738",
+        id: 0
+      },
+      {
+        name: "Minerva Hooper",
+        country: "Curaçao",
+        city: "Sinaai-Waas",
+        salary: "$23,738",
+        id: 1
+      },
+      {
+        name: "Sage Rodriguez",
+        country: "Netherlands",
+        city: "Overland Park",
+        salary: "$56,142",
+        id: 2
+      },
+      {
+        name: "Philip Chanley",
+        country: "Korea, South",
+        city: "Gloucester",
+        salary: "$38,735",
+        id: 3
+      },
+      {
+        name: "Doris Greene",
+        country: "Malawi",
+        city: "Feldkirchen in Kārnten",
+        salary: "$63,542",
+        id: 4
+      },
+      {
+        name: "Mason Porter",
+        country: "Chile",
+        city: "Gloucester",
+        salary: "$78,615",
+        id: 5
+      }
+    ]
+  }),
+  created: function(){
+      let i;
+      for(i = 0; i < this.items.length; i++){
+          if(items[i].id == this.$route.param){}
+      }
   }
 };
 </script>

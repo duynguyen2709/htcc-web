@@ -5,7 +5,7 @@
     </v-fade-transition>
   </v-app>
 </template>
-
+<nuxt />
 <script>
   export default {
     data() {

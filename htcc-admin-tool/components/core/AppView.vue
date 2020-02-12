@@ -5,7 +5,7 @@
         <nuxt />
       </v-fade-transition>
     </div>
-    <core-footer v-if="$route.name !== 'Maps'" />
+    <!-- <core-footer v-if="$route.name !== 'Maps'" /> -->
   </v-content>
 </template>
 

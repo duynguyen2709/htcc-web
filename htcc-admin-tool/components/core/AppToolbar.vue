@@ -69,25 +69,23 @@
             </v-card-actions>
           </v-card>-->
 
-          
-            <material-card class="v-card-profile pt-2">
-              <v-avatar slot="offset" class="mx-auto d-block" size="130">
-                <img
-                  src="https://demos.creative-tim.com/vue-material-dashboard/img/marc.aba54d65.jpg"
-                />
-              </v-avatar>
-              <v-card-text class="text-xs-center">
-                <h6 class="category text-gray font-weight-thin mb-3">{{ user.function }}</h6>
-                <h4 class="card-title font-weight-light">{{ fullname }}</h4>
-                <p class="card-description font-weight-light">{{ user.description }}</p>
-                <blockquote class="blockquote">{{ user.citation }}</blockquote>
-                <v-card flat>
-                  <v-btn color="success" round class="font-weight-light">Edit profile</v-btn>
-                  <v-btn color="success" round class="font-weight-light">Change password</v-btn>
-                </v-card>
-              </v-card-text>
-            </material-card>
-          
+          <material-card class="v-card-profile pt-2">
+            <v-avatar slot="offset" class="mx-auto d-block" size="130">
+              <img
+                src="https://demos.creative-tim.com/vue-material-dashboard/img/marc.aba54d65.jpg"
+              />
+            </v-avatar>
+            <v-card-text class="text-xs-center">
+              <h6 class="category text-gray font-weight-thin mb-3">{{ user.function }}</h6>
+              <h4 class="card-title font-weight-light">{{ fullname }}</h4>
+              <p class="card-description font-weight-light">{{ user.description }}</p>
+              <blockquote class="blockquote">{{ user.citation }}</blockquote>
+              <v-card flat>
+                <v-btn color="success" round class="font-weight-light">Edit profile</v-btn>
+                <v-btn color="success" round class="font-weight-light">Change password</v-btn>
+              </v-card>
+            </v-card-text>
+          </material-card>
         </v-dialog>
       </v-flex>
       <nuxt-link v-ripple class="toolbar-items" to="/" title="Logout" @click.native="logout">
@@ -98,75 +96,75 @@
 </template>
 
 <script>
-  import { mapActions, mapGetters } from 'vuex'
-  import materialCard from '~/components/material/AppCard'
+import { mapActions, mapGetters } from "vuex";
+import materialCard from "~/components/material/AppCard";
 
-  export default {
-    components: {
-      materialCard
-    },
-    data: () => ({
-      notifications: [
-        'Mike, John responded to your email',
-        'You have 5 new tasks',
-        'You\'re now a friend with Andrew',
-        'Another Notification',
-        'Another One'
-      ],
-      title: 'Dashboard',
-      responsive: true,
-      responsiveInput: true
-    }),
-    watch: {
-      '$route' (val) {
-        this.title = val.name
-      }
-    },
-    computed: {
-      ...mapGetters({
-        user: 'user/getUser',
-        fullname: 'user/getFullname',
-        drawer: 'app/getDrawer'
-      })
-    },
-    methods: {
-      ...mapActions({
-        setUsername: 'user/setUsername',
-        setDrawer: 'app/setDrawer'
-      }),
-
-      onClickBtn () {
-        this.setDrawer(!this.drawer)
-      },
-      onClick () {
-        // Do something
-      },
-      onResponsiveInverted () {
-        if (window.innerWidth < 991) {
-          this.responsive = true
-          this.responsiveInput = false
-        } else {
-          this.responsive = false
-          this.responsiveInput = true
-        }
-      },
-      async logout() {
-        await this.setUsername(null);
-        this.$router.push({ path: '/' });
-      }
-    },
-    mounted () {
-      this.onResponsiveInverted()
-      window.addEventListener('resize', this.onResponsiveInverted)
-    },
-    beforeDestroy () {
-      window.removeEventListener('resize', this.onResponsiveInverted)
+export default {
+  components: {
+    materialCard
+  },
+  data: () => ({
+    notifications: [
+      "Mike, John responded to your email",
+      "You have 5 new tasks",
+      "You're now a friend with Andrew",
+      "Another Notification",
+      "Another One"
+    ],
+    title: "Dashboard",
+    responsive: true,
+    responsiveInput: true
+  }),
+  watch: {
+    $route(val) {
+      this.title = val.name;
     }
+  },
+  computed: {
+    ...mapGetters({
+      user: "user/getUser",
+      fullname: "user/getFullname",
+      drawer: "app/getDrawer"
+    })
+  },
+  methods: {
+    ...mapActions({
+      setUsername: "user/setUsername",
+      setDrawer: "app/setDrawer"
+    }),
+
+    onClickBtn() {
+      this.setDrawer(!this.drawer);
+    },
+    onClick() {
+      // Do something
+    },
+    onResponsiveInverted() {
+      if (window.innerWidth < 991) {
+        this.responsive = true;
+        this.responsiveInput = false;
+      } else {
+        this.responsive = false;
+        this.responsiveInput = true;
+      }
+    },
+    async logout() {
+      await this.setUsername(null);
+      this.$router.push({ path: "/" });
+    }
+  },
+  mounted() {
+    this.onResponsiveInverted();
+    window.addEventListener("resize", this.onResponsiveInverted);
+  },
+  beforeDestroy() {
+    window.removeEventListener("resize", this.onResponsiveInverted);
   }
+};
 </script>
 
 <style>
-  #core-toolbar a {
-    text-decoration: none;
-  }
+#core-toolbar a {
+  text-decoration: none;
+}
 </style>

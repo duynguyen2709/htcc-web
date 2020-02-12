@@ -86,7 +86,7 @@ export default {
     // See https://github.com/nuxt-community/axios-module#options
     baseURL: 'http://localhost:8000',
   },
-
+  
   server: {
     port: 4000
   },
