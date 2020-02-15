@@ -1,0 +1,80 @@
+@import 'component/custom/functions';
+@import 'component/bootstrap/functions';
+
+@import 'component/custom/variables';
+@import 'component/bootstrap/variables';
+
+@import 'component/custom/mixins';
+@import 'component/bootstrap/mixins';
+
+// Bootstrap components
+
+@import 'component/bootstrap/root';
+@import 'component/bootstrap/reboot';
+@import 'component/bootstrap/type';
+@import 'component/bootstrap/images';
+@import 'component/bootstrap/code';
+@import 'component/bootstrap/grid';
+@import 'component/bootstrap/tables';
+@import 'component/bootstrap/forms';
+@import 'component/bootstrap/buttons';
+@import 'component/bootstrap/transitions';
+@import 'component/bootstrap/dropdown';
+@import 'component/bootstrap/button-group';
+@import 'component/bootstrap/input-group';
+@import 'component/bootstrap/custom-forms';
+@import 'component/bootstrap/nav';
+@import 'component/bootstrap/navbar';
+@import 'component/bootstrap/card';
+@import 'component/bootstrap/breadcrumb';
+@import 'component/bootstrap/pagination';
+@import 'component/bootstrap/badge';
+@import 'component/bootstrap/jumbotron';
+@import 'component/bootstrap/alert';
+@import 'component/bootstrap/progress';
+@import 'component/bootstrap/media';
+@import 'component/bootstrap/list-group';
+@import 'component/bootstrap/close';
+@import 'component/bootstrap/modal';
+@import 'component/bootstrap/tooltip';
+@import 'component/bootstrap/popover';
+@import 'component/bootstrap/carousel';
+@import 'component/bootstrap/utilities';
+@import 'component/bootstrap/print';
+
+// Custom components
+
+@import 'component/custom/alerts.scss';
+@import 'component/custom/badges.scss';
+@import 'component/custom/buttons.scss';
+@import 'component/custom/dropdown.scss';
+@import 'component/custom/footer.scss';
+@import 'component/custom/forms.scss';
+@import 'component/custom/images.scss';
+@import 'component/custom/modal.scss';
+@import 'component/custom/navbar.scss';
+@import 'component/custom/type.scss';
+@import 'component/custom/tables';
+@import 'component/custom/checkboxes-radio';
+@import 'component/custom/fixed-plugin';
+@import 'component/custom/sidebar-and-main-panel.scss';
+@import 'component/custom/misc.scss';
+@import 'component/custom/input-group.scss';
+
+// Vendor / Plugins
+
+@import 'component/custom/vendor/plugin-perfect-scrollbar.scss';
+@import 'component/custom/vendor/plugin-react-notification-alert.scss';
+
+// light mode
+
+@import 'component/custom/white-content.scss';
+
+// Cards
+
+@import 'component/custom/card';
+@import 'component/custom/cards/card-chart';
+@import 'component/custom/cards/card-map';
+@import 'component/custom/cards/card-user';
+@import 'component/custom/cards/card-task';
+@import 'component/custom/cards/card-plain';
