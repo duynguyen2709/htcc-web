@@ -3,8 +3,10 @@ export default {
     state.username = username;
   },
   SET_USER(state, NewUser){
-    console.log("in mutations");
     state.firstname = NewUser.firstname;
     state.lastname = NewUser.lastname;
+  },
+  SET_PASSWORD(state, NewPassword){
+    state.password = NewPassword;
   }
 }

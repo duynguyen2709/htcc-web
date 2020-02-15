@@ -4,5 +4,8 @@ export default {
   },
   async setUser({commit}, user){
     commit('SET_USER', user);
+  },
+  async setPassword({commit}, password){
+    commit('SET_PASSWORD', password);
   }
 }

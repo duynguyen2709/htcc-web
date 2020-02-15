@@ -15,14 +15,14 @@
                 </v-flex>
                 <v-flex xs12 md6>
                   <v-text-field
-                    v-model="firstname"
+                    v-model="currentUser.name"
                     label="First Name"
                     class="purple-input"
                   />
                 </v-flex>
                 <v-flex xs12 md6>
                   <v-text-field
-                    v-model="lastname"
+                    v-model="currentUser.country"
                     label="Last Name"
                     class="purple-input"
                   />
@@ -140,10 +140,13 @@ export default {
       }
     ]
   }),
-  created: function(){
+  created: async function(){
       let i;
       for(i = 0; i < this.items.length; i++){
-          if(items[i].id == this.$route.param){}
+          if(this.items[i].id == this.$route.params.id){
+            this.currentUser = this.items[i];
+            break;
+          }
       }
   }
 };

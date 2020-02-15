@@ -114,8 +114,8 @@ export default {
     ]
   }),
   methods:{
-    clickItem: function(e){
-      this.$router.push({ path: '/admins/' + e });
+    clickItem: function(id){
+      this.$router.push({ path: '/admins/edit/' + id });
     }
   }
 };

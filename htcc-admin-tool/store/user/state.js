@@ -1,5 +1,6 @@
 export default () => ({
-  username: null,
+  username: 'admin',
+  password: 'admin',
   email: null,
   firstname: 'John',
   lastname: 'Doe',
