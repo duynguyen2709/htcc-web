@@ -13,16 +13,32 @@ import {
   Col
 } from 'reactstrap';
 import * as _ from 'lodash';
+import { store } from 'react-notifications-component';
+import { createNotify } from '../utils/notifier';
 
 class UserProfile extends React.Component {
+  checkValid = () => {
+    return true;
+  };
+
   handOnClick = e => {
     const { id } = e.target;
     const { handleShowProfile } = this.props;
 
     if (_.isEqual(id, 'cancel')) {
       handleShowProfile();
+    } else {
+      if (this.checkValid()) {
+        store.addNotification(createNotify('success', 'Cập nhật thành công !'));
+        handleShowProfile();
+      } else {
+        store.addNotification(
+          createNotify('warning', 'Thông tin chưa hợp lệ !')
+        );
+      }
     }
   };
+
   render() {
     return (
       <div className="content">

@@ -84,6 +84,12 @@ class AdminNavbar extends React.Component {
     });
   };
 
+  handleSaveProfile = () => {
+    this.setState({
+      modalProfile: !this.state.modalProfile
+    });
+  };
+
   // this function is to open the Search modal
   toggleModalSearch = () => {
     this.setState({
