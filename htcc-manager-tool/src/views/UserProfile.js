@@ -5,7 +5,7 @@ import FormUserInfo from '../components/Form/FormUserInfo';
 
 class UserProfile extends React.Component {
   render() {
-    const { handleShowProfile } = this.props;
+    const { toggle } = this.props;
     return (
       <div className="content">
         <Row>
@@ -15,7 +15,7 @@ class UserProfile extends React.Component {
                 <h5 className="title">Thông tin cá nhân</h5>
               </CardHeader>
               <CardBody>
-                <FormUserInfo handleShowProfile={handleShowProfile} />
+                <FormUserInfo toggle={toggle} />
               </CardBody>
             </Card>
           </Col>

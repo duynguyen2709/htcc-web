@@ -68,14 +68,14 @@ class FormUserInfo extends React.Component {
 
   handleOnClick = e => {
     const { id } = e.target;
-    const { handleShowProfile } = this.props;
+    const { toggle } = this.props;
 
     if (_.isEqual(id, 'cancel')) {
-      handleShowProfile();
+      toggle('modalProfile');
     } else {
       if (this.checkValidDataInput()) {
         store.addNotification(createNotify('success', 'Cập nhật thành công !'));
-        handleShowProfile();
+        toggle('modalProfile');
       } else {
         store.addNotification(
           createNotify('warning', 'Thông tin chưa hợp lệ !')

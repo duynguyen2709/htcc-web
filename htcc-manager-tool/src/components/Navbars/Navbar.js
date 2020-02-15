@@ -26,7 +26,8 @@ class AdminNavbar extends React.Component {
       modalSearch: false,
       color: 'navbar-transparent',
       openSidebarOnlyIcon: false,
-      modalProfile: false
+      modalProfile: false,
+      modalPassword: false
     };
   }
 
@@ -78,22 +79,9 @@ class AdminNavbar extends React.Component {
     );
   };
 
-  handleShowProfile = () => {
+  toggle = id => {
     this.setState({
-      modalProfile: !this.state.modalProfile
-    });
-  };
-
-  handleSaveProfile = () => {
-    this.setState({
-      modalProfile: !this.state.modalProfile
-    });
-  };
-
-  // this function is to open the Search modal
-  toggleModalSearch = () => {
-    this.setState({
-      modalSearch: !this.state.modalSearch
+      [id]: !this.state[id]
     });
   };
 
@@ -165,7 +153,7 @@ class AdminNavbar extends React.Component {
                     data-target="#searchModal"
                     data-toggle="modal"
                     id="search-button"
-                    onClick={this.toggleModalSearch}
+                    onClick={() => this.toggle('modalSearch')}
                   >
                     <i className="tim-icons icon-zoom-split" />
                     <span className="d-lg-none d-md-block">Tìm kiếm</span>
@@ -210,7 +198,7 @@ class AdminNavbar extends React.Component {
                   <DropdownMenu className="dropdown-navbar" right tag="ul">
                     <NavLink tag="li">
                       <DropdownItem
-                        onClick={this.handleShowProfile}
+                        onClick={() => this.toggle('modalProfile')}
                         className="nav-item"
                       >
                         Tài khoản của bạn
@@ -230,7 +218,7 @@ class AdminNavbar extends React.Component {
         <Modal
           modalClassName="modal-search"
           isOpen={this.state.modalSearch}
-          toggle={this.toggleModalSearch}
+          toggle={() => this.toggle('modalSearch')}
         >
           <div className="modal-header">
             <Input
@@ -243,14 +231,18 @@ class AdminNavbar extends React.Component {
               className="close"
               data-dismiss="modal"
               type="button"
-              onClick={this.toggleModalSearch}
+              onClick={() => this.toggle('modalSearch')}
             >
               <i className="tim-icons icon-simple-remove" />
             </button>
           </div>
         </Modal>
-        <Modal modalClassName="modal-profile" isOpen={this.state.modalProfile}>
-          <UserProfile handleShowProfile={this.handleShowProfile} />
+        <Modal
+          toggle={() => this.toggle('modalProfile')}
+          modalClassName="modal-profile"
+          isOpen={this.state.modalProfile}
+        >
+          <UserProfile toggle={this.toggle} />
         </Modal>
       </>
     );
