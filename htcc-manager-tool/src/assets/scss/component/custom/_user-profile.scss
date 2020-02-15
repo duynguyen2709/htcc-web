@@ -1,0 +1,14 @@
+.modal-profile {
+  background-color: rgba(2, 2, 3, 0.68);
+  transition: all 0.25s linear;
+  .modal-dialog {
+    position: relative;
+    top: -150px;
+    margin: 0 auto;
+    max-width: 70vw;
+  }
+  .modal-content {
+    background-color: transparent;
+    box-shadow: none;
+  }
+}

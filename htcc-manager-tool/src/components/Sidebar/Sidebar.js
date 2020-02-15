@@ -46,7 +46,7 @@ class Sidebar extends React.Component {
       </a>
     );
     const logoText = (
-      <div className="simple-text logo-normal">HTTC - Manager</div>
+      <div className="simple-text logo-normal">HTCC - Manager</div>
     );
 
     return (
