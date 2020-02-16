@@ -16,6 +16,7 @@ import {
   Container,
   Modal
 } from 'reactstrap';
+import UserProfile from '../../views/UserProfile';
 
 class AdminNavbar extends React.Component {
   constructor(props) {
@@ -24,7 +25,8 @@ class AdminNavbar extends React.Component {
       collapseOpen: false,
       modalSearch: false,
       color: 'navbar-transparent',
-      openSidebarOnlyIcon: false
+      openSidebarOnlyIcon: false,
+      modalProfile: false
     };
   }
 
@@ -76,12 +78,12 @@ class AdminNavbar extends React.Component {
     );
   };
 
-  // this function is to open the Search modal
-  toggleModalSearch = () => {
+  toggle = id => {
     this.setState({
-      modalSearch: !this.state.modalSearch
+      [id]: !this.state[id]
     });
   };
+
   render() {
     const { openSidebarOnlyIcon } = this.state;
 
@@ -150,10 +152,10 @@ class AdminNavbar extends React.Component {
                     data-target="#searchModal"
                     data-toggle="modal"
                     id="search-button"
-                    onClick={this.toggleModalSearch}
+                    onClick={() => this.toggle('modalSearch')}
                   >
                     <i className="tim-icons icon-zoom-split" />
-                    <span className="d-lg-none d-md-block">Search</span>
+                    <span className="d-lg-none d-md-block">Tìm kiếm</span>
                   </Button>
                 </InputGroup>
                 <UncontrolledDropdown nav>
@@ -194,14 +196,16 @@ class AdminNavbar extends React.Component {
                   </DropdownToggle>
                   <DropdownMenu className="dropdown-navbar" right tag="ul">
                     <NavLink tag="li">
-                      <DropdownItem className="nav-item">Profile</DropdownItem>
-                    </NavLink>
-                    <NavLink tag="li">
-                      <DropdownItem className="nav-item">Settings</DropdownItem>
+                      <DropdownItem
+                        onClick={() => this.toggle('modalProfile')}
+                        className="nav-item"
+                      >
+                        Tài khoản của bạn
+                      </DropdownItem>
                     </NavLink>
                     <DropdownItem divider tag="li" />
                     <NavLink tag="li">
-                      <DropdownItem className="nav-item">Log out</DropdownItem>
+                      <DropdownItem className="nav-item">Thoát</DropdownItem>
                     </NavLink>
                   </DropdownMenu>
                 </UncontrolledDropdown>
@@ -213,20 +217,31 @@ class AdminNavbar extends React.Component {
         <Modal
           modalClassName="modal-search"
           isOpen={this.state.modalSearch}
-          toggle={this.toggleModalSearch}
+          toggle={() => this.toggle('modalSearch')}
         >
           <div className="modal-header">
-            <Input id="inlineFormInputGroup" placeholder="SEARCH" type="text" />
+            <Input
+              id="inlineFormInputGroup"
+              placeholder="Tìm kiếm"
+              type="text"
+            />
             <button
               aria-label="Close"
               className="close"
               data-dismiss="modal"
               type="button"
-              onClick={this.toggleModalSearch}
+              onClick={() => this.toggle('modalSearch')}
             >
               <i className="tim-icons icon-simple-remove" />
             </button>
           </div>
+        </Modal>
+        <Modal
+          toggle={() => this.toggle('modalProfile')}
+          modalClassName="modal-profile"
+          isOpen={this.state.modalProfile}
+        >
+          <UserProfile toggle={this.toggle} />
         </Modal>
       </>
     );
