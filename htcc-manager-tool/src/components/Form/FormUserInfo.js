@@ -94,9 +94,10 @@ class FormUserInfo extends React.Component {
               <label>Công ty</label>
               <Input
                 defaultValue="Creative Code Inc."
-                disabled
+                readOnly
                 placeholder="Company"
                 type="text"
+                className="bor-gray"
               />
             </FormGroup>
           </Col>
@@ -105,9 +106,10 @@ class FormUserInfo extends React.Component {
               <label>Tên đăng nhập</label>
               <Input
                 defaultValue="michael23"
-                disabled
+                readOnly
                 placeholder="Username"
                 type="text"
+                className="bor-gray"
               />
             </FormGroup>
           </Col>
@@ -123,6 +125,8 @@ class FormUserInfo extends React.Component {
                 name="email"
                 value={value.email}
                 invalid={!checkValidEmail(value.email)}
+                readOnly
+                className="bor-gray"
               />
               <FormFeedback invalid={'true'}>
                 {messageInvalid.email}
@@ -139,6 +143,8 @@ class FormUserInfo extends React.Component {
                 name="name"
                 value={value.name}
                 invalid={_.isEmpty(value.name)}
+                readOnly
+                className="bor-gray"
               />
               <FormFeedback invalid={'true'}>
                 {messageInvalid.name}
@@ -157,6 +163,8 @@ class FormUserInfo extends React.Component {
                 value={value.address}
                 onChange={this.handleOnChange}
                 invalid={_.isEmpty(value.address)}
+                readOnly
+                className="bor-gray"
               />
               <FormFeedback invalid={'true'}>
                 {messageInvalid.address}
@@ -175,6 +183,8 @@ class FormUserInfo extends React.Component {
                 name="phone"
                 value={value.phone}
                 invalid={!checkValidPhoneNumber(value.phone)}
+                readOnly
+                className="bor-gray"
               />
               <FormFeedback invalid={'true'}>
                 {messageInvalid.phone}
@@ -183,15 +193,6 @@ class FormUserInfo extends React.Component {
           </Col>
         </Row>
         <CardFooter>
-          <Button
-            id="save"
-            onClick={this.handleOnClick}
-            className="btn-fill"
-            color="primary"
-            type="button"
-          >
-            Lưu
-          </Button>
           <Button
             onClick={this.handleOnClick}
             id="cancel"

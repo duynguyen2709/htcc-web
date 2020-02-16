@@ -26,8 +26,7 @@ class AdminNavbar extends React.Component {
       modalSearch: false,
       color: 'navbar-transparent',
       openSidebarOnlyIcon: false,
-      modalProfile: false,
-      modalPassword: false
+      modalProfile: false
     };
   }
 

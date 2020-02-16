@@ -12,7 +12,7 @@ class UserProfile extends React.Component {
           <Col md="8">
             <Card>
               <CardHeader>
-                <h5 className="title">Thông tin cá nhân</h5>
+                <h5 className="title text-dark">Thông tin cá nhân</h5>
               </CardHeader>
               <CardBody>
                 <FormUserInfo toggle={toggle} />
@@ -34,9 +34,9 @@ class UserProfile extends React.Component {
                       className="avatar"
                       src={require('../assets/img/avatar.png')}
                     />
-                    <h5 className="title">Mike Andrew</h5>
+                    <h5 className="title text-dark">Mike Andrew</h5>
                   </a>
-                  <p className="description">Ceo/Co-Founder</p>
+                  <p className="description text-dark">Ceo/Co-Founder</p>
                 </div>
               </CardBody>
             </Card>

@@ -7,7 +7,7 @@ export const NOTIFY_TEMPLATE = {
   animationIn: ['animated', 'fadeIn'],
   animationOut: ['animated', 'fadeOut'],
   dismiss: {
-    duration: 500,
+    duration: 1000,
     onScreen: false
   }
 };
