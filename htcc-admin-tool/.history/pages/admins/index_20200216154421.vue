@@ -2,13 +2,13 @@
   <v-container fill-height fluid grid-list-xl>
     <v-layout justify-center wrap>
       <v-flex md12>
-        
-        <v-btn color="green" to="/admins/add">Add new admin</v-btn>
-        <material-card title="abc">
-          <template slot="actions">
-            <v-btn color="green" @click="TriggerNoti">Test notification</v-btn>
+        <material-card >
+          <template slot="title">
+            <div>abc</div>
           </template>
         </material-card>
+        <v-btn color="green" to="/admins/add">Add new admin</v-btn>
+        <v-btn color="green" @click="TriggerNoti">Test notification</v-btn>
 
         <!-- <material-card color="green" flat full-width title="Admins" text="List of sub-admins"> -->
         <material-card flat>

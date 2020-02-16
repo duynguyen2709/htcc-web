@@ -4,8 +4,6 @@
 
     <core-toolbar />
 
-    <notification />
-
     <core-drawer />
 
     <core-view />
@@ -17,15 +15,13 @@
   import coreToolbar from '~/components/core/AppToolbar';
   import coreDrawer from '~/components/core/AppDrawer';
   import coreView from '~/components/core/AppView';
-  import notification from '~/components/notifications/notifyTopCenter'
 
   export default {
     components: {
       coreFilter,
       coreToolbar,
       coreDrawer,
-      coreView,
-      notification
+      coreView
     }
   }
 </script>

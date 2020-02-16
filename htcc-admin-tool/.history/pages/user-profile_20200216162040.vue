@@ -75,8 +75,8 @@
           :lastname="user.lastname"
           :phone="user.phone"
           :email="user.email"
-          @OnClickEdit="updateProfile($event)"
-          ></edit-form>
+          :OnClickEdit="updateProfile"
+          />
       </v-flex>
       <v-flex xs12 md4>
         <material-card class="v-card-profile">
@@ -229,9 +229,8 @@ export default {
       setUser: "user/setUser",
       setPassword: "user/setPassword"
     }),
-    updateProfile: function(user) {
-      this.setUser(user);
-      //console.log("edit profile")
+    updateProfile: function() {
+      this.setUser(this.InlineUser);
     },
     changePassword() {
       console.log("New p: " + this.OldPassword);

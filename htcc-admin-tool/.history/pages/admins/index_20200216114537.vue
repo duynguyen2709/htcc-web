@@ -2,13 +2,8 @@
   <v-container fill-height fluid grid-list-xl>
     <v-layout justify-center wrap>
       <v-flex md12>
-        
+
         <v-btn color="green" to="/admins/add">Add new admin</v-btn>
-        <material-card title="abc">
-          <template slot="actions">
-            <v-btn color="green" @click="TriggerNoti">Test notification</v-btn>
-          </template>
-        </material-card>
 
         <!-- <material-card color="green" flat full-width title="Admins" text="List of sub-admins"> -->
         <material-card flat>
@@ -41,7 +36,6 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
 import materialCard from "~/components/material/AppCard";
 
 export default {
@@ -120,16 +114,8 @@ export default {
     ]
   }),
   methods:{
-    ...mapActions({
-        setInfo: 'notification/setInfo'
-      }),
     clickItem: function(id){
       this.$router.push({ path: '/admins/edit/' + id });
-    },
-    TriggerNoti(){
-      this.setInfo({color: 'warning',
-                mess: 'test noti',
-                status: true})
     }
   }
 };

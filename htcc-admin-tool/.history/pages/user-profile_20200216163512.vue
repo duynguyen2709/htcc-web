@@ -75,7 +75,7 @@
           :lastname="user.lastname"
           :phone="user.phone"
           :email="user.email"
-          @OnClickEdit="updateProfile($event)"
+          @OnClickEdit="updateProfile"
           ></edit-form>
       </v-flex>
       <v-flex xs12 md4>
@@ -229,9 +229,9 @@ export default {
       setUser: "user/setUser",
       setPassword: "user/setPassword"
     }),
-    updateProfile: function(user) {
-      this.setUser(user);
-      //console.log("edit profile")
+    updateProfile: function() {
+      //this.setUser(this.InlineUser);
+      console.log("edit profile")
     },
     changePassword() {
       console.log("New p: " + this.OldPassword);

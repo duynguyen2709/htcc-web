@@ -2,13 +2,9 @@
   <v-container fill-height fluid grid-list-xl>
     <v-layout justify-center wrap>
       <v-flex md12>
-        
+
         <v-btn color="green" to="/admins/add">Add new admin</v-btn>
-        <material-card title="abc">
-          <template slot="actions">
-            <v-btn color="green" @click="TriggerNoti">Test notification</v-btn>
-          </template>
-        </material-card>
+        <v-btn color="green" @click="TriggerNoti">Test notification</v-btn>
 
         <!-- <material-card color="green" flat full-width title="Admins" text="List of sub-admins"> -->
         <material-card flat>
@@ -127,7 +123,7 @@ export default {
       this.$router.push({ path: '/admins/edit/' + id });
     },
     TriggerNoti(){
-      this.setInfo({color: 'warning',
+      setInfo({color: 'warning',
                 mess: 'test noti',
                 status: true})
     }
