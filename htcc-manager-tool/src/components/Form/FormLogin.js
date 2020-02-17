@@ -1,6 +1,8 @@
 import React from 'react';
 import { Button, FormGroup, Input, Row, Col } from 'reactstrap';
 import * as _ from 'lodash';
+import { connect } from 'react-redux';
+import { login } from '../../reducers/auth.reducer';
 
 class FormLogin extends React.Component {
   constructor(props) {
@@ -21,8 +23,9 @@ class FormLogin extends React.Component {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const number = _.random(1, 3);
+
     this.setState({
       loginImg: `login-bg-${number}.png`
     });
@@ -46,15 +49,16 @@ class FormLogin extends React.Component {
 
   handleSubmit = () => {
     const { userCode, companyCode, password } = this.state.value;
-
-    const user = {
-      userCode,
-      companyCode,
-      password
-    };
-
     this.props.checkLogin();
-    console.log('user', user);
+
+    this.props
+      .login(companyCode, userCode, password)
+      .then(res => {
+        this.props.checkLogin();
+      })
+      .catch(err => {
+        alert(err);
+      });
   };
 
   render() {
@@ -131,4 +135,11 @@ class FormLogin extends React.Component {
   }
 }
 
-export default FormLogin;
+const mapStateToProps = state => ({});
+
+const mapDispatchToProps = dispatch => ({
+  login: (companyCode, userCode, password) =>
+    dispatch(login(companyCode, userCode, password))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(FormLogin);

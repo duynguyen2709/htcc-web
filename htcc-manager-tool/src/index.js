@@ -5,11 +5,13 @@ import './assets/css/nucleo-icons.css';
 import ReactNotification from 'react-notifications-component';
 import App from './App';
 import 'react-notifications-component/dist/theme.css';
+import { Provider } from 'react-redux';
+import store from './store';
 
 ReactDOM.render(
-  <div>
+  <Provider store={store}>
     <ReactNotification />
     <App />
-  </div>,
+  </Provider>,
   document.getElementById('root')
 );
