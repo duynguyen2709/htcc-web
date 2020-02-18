@@ -17,7 +17,7 @@ import {
   Modal
 } from 'reactstrap';
 import UserProfile from '../../views/UserProfile';
-
+import { removeUserFromLocalStorage } from '../../utils/user';
 class AdminNavbar extends React.Component {
   constructor(props) {
     super(props);
@@ -76,6 +76,10 @@ class AdminNavbar extends React.Component {
         this.props.switchSideBar(this.state.openSidebarOnlyIcon);
       }
     );
+  };
+
+  logout = () => {
+    removeUserFromLocalStorage();
   };
 
   toggle = id => {
@@ -205,7 +209,9 @@ class AdminNavbar extends React.Component {
                     </NavLink>
                     <DropdownItem divider tag="li" />
                     <NavLink tag="li">
-                      <DropdownItem className="nav-item">Thoát</DropdownItem>
+                      <DropdownItem onClick={this.logout} className="nav-item">
+                        Thoát
+                      </DropdownItem>
                     </NavLink>
                   </DropdownMenu>
                 </UncontrolledDropdown>

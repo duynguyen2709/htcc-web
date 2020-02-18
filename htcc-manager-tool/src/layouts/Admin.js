@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import PerfectScrollbar from 'perfect-scrollbar';
 import * as _ from 'lodash';
 import Navbar from '../components/Navbars/Navbar';
@@ -7,6 +7,7 @@ import Footer from '../components/Footer/Footer';
 import Sidebar from '../components/Sidebar/Sidebar';
 import routes from '../routes';
 import logo from '../assets/img/logo.png';
+import AuthRequiredRoute from '../components/AuthRequiredRoute';
 
 var ps;
 
@@ -125,7 +126,12 @@ class Admin extends React.Component {
               sidebarOpened={this.state.sidebarOpened}
               switchSideBar={this.switchSideBar}
             />
-            <Switch>{this.getRoutes(routes)}</Switch>
+            <Switch>
+              <AuthRequiredRoute>
+                {this.getRoutes(routes)}
+                <Redirect from="/" to="/dashboard" />
+              </AuthRequiredRoute>
+            </Switch>
             <Footer fluid />
           </div>
         </div>
