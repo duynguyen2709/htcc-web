@@ -227,10 +227,12 @@ export default {
   methods: {
     ...mapActions({
       setUser: "user/setUser",
-      setPassword: "user/setPassword"
+      setPassword: "user/setPassword",
+      setInfo: "notification/setInfo"
     }),
     updateProfile: function(user) {
       this.setUser(user);
+      this.TriggerNoti("Cập nhập thông tin thành công");
       //console.log("edit profile")
     },
     changePassword() {
@@ -255,13 +257,21 @@ export default {
       })
 
       if(flag)
-        this.setPassword(this.NewPassword);
+        {
+          this.setPassword(this.NewPassword);
+          this.TriggerNoti("Cập nhập mật khẩu thành công");
+        }
     },
     resetForm () {
       Object.keys(this.form).forEach(f => {
         this.$refs[f].reset()
       })
-    }
+    },
+    TriggerNoti(mess){
+      this.setInfo({color: 'success',
+                mess: mess,
+                status: true})
+      }
   },
   created: function() {
     this.InlineUser = Object.assign({}, this.user);
