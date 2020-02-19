@@ -39,7 +39,7 @@ class Login extends React.Component {
     const { isLoadingData } = this.state;
 
     if (this.isLogged()) {
-      return <Redirect to="/dashboard" />;
+      return <Redirect to="/thong-ke" />;
     }
 
     return (

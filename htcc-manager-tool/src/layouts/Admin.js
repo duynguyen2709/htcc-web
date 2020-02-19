@@ -129,7 +129,7 @@ class Admin extends React.Component {
             <Switch>
               <AuthRequiredRoute>
                 {this.getRoutes(routes)}
-                <Redirect from="/" to="/dashboard" />
+                <Redirect from="/" to="/thong-ke" />{' '}
               </AuthRequiredRoute>
             </Switch>
             <Footer fluid />
