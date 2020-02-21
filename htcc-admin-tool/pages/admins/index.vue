@@ -2,14 +2,7 @@
   <v-container fill-height fluid grid-list-xl>
     <v-layout justify-center wrap>
       <v-flex md12>
-        
         <v-btn color="green" to="/admins/add">Add new admin</v-btn>
-        <material-card title="abc">
-          <template slot="actions">
-            <v-btn color="green" @click="TriggerNoti">Test notification</v-btn>
-          </template>
-        </material-card>
-
         <!-- <material-card color="green" flat full-width title="Admins" text="List of sub-admins"> -->
         <material-card flat>
           <v-card-title>
@@ -25,12 +18,26 @@
             <template slot="headerCell" slot-scope="{ header }">
               <span class="subheading font-weight-light text--darken-3" v-text="header.text" />
             </template>
-            <template slot="items" slot-scope="{ item }" >
-              <tr @click="clickItem(item.id)">
-              <td>{{ item.name }}</td>
-              <td>{{ item.country }}</td>
-              <td>{{ item.city }}</td>
-              <td class="text-xs-right">{{ item.salary }}</td>
+            <template slot="items" slot-scope="{ item }">
+              <tr>
+                <td>{{ item.name }}</td>
+                <td>{{ item.country }}</td>
+                <td>{{ item.city }}</td>
+                <td class="text-xs-right">{{ item.salary }}</td>
+                <v-dialog >
+                  <template v-slot:activator="{ on }">
+                    <v-btn color="success" v-on="on">Chỉnh sửa</v-btn>
+                  </template>
+                  <edit-form
+                    title="Edit profile sub-admin"
+                    :firstname="item.name"
+                    :lastname="item.name"
+                    :phone="item.country"
+                    :email="item.city"
+                    @OnClickEdit="updateProfile($event)"
+                  ></edit-form>
+                </v-dialog>
+                <v-btn color="error" @click="btnLock=!btnLock">{{btnLock ? 'Khóa' : 'Mở khóa'}}</v-btn>
               </tr>
             </template>
           </v-data-table>
@@ -41,15 +48,19 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapGetters } from "vuex";
 import materialCard from "~/components/material/AppCard";
+import editForm from "~/components/material/AppFormEdit";
 
 export default {
   layout: "dashboard",
   components: {
-    materialCard
+    materialCard,
+    
+    editForm
   },
   data: () => ({
+    btnLock: true,
     search: "",
     headers: [
       {
@@ -119,17 +130,18 @@ export default {
       }
     ]
   }),
-  methods:{
+  methods: {
     ...mapActions({
-        setInfo: 'notification/setInfo'
-      }),
-    clickItem: function(id){
-      this.$router.push({ path: '/admins/edit/' + id });
+      setInfo: "notification/setInfo"
+    }),
+    clickItem: function(id) {
+      this.$router.push({ path: "/admins/edit/" + id });
     },
-    TriggerNoti(){
-      this.setInfo({color: 'warning',
-                mess: 'test noti',
-                status: true})
+    TriggerNoti() {
+      this.setInfo({ color: "success", mess: "Cập nhập thành công", status: true });
+    },
+    updateProfile(e){
+       this.TriggerNoti()
     }
   }
 };

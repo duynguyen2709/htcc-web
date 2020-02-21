@@ -129,8 +129,8 @@
                       label="Xác nhận mật khẩu mới"
                       :rules="[rules.required, rules.NewPasswordConfirm]"
                       :append-icon="ShowPasswordConfirm ? 'mdi-eye' : 'mdi-eye-off'"
-                  @click:append="ShowPasswordConfirm = !ShowPasswordConfirm"
-                  :type="ShowPasswordConfirm ? 'text' : 'password'"
+                      @click:append="ShowPasswordConfirm = !ShowPasswordConfirm"
+                      :type="ShowPasswordConfirm ? 'text' : 'password'"
                     ></v-text-field>
                   </v-form>
                 </v-card-text>

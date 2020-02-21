@@ -69,7 +69,7 @@ export default {
             method: 'get',
             propertyName: 'user'
           },
-          logout: {
+          logout: { 
             url: 'user/logout',
             method: 'post',
           }
