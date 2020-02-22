@@ -1,8 +1,143 @@
 import React from 'react';
+import TableCompoment from '../components/Table';
+import { columnsEmployee } from '../constant/table';
 
 class Employee extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: []
+    };
+  }
+
+  componentDidMount() {
+    const data = [
+      {
+        code: '1',
+        name: 'Baran',
+        birthday: '2/2/2020',
+        address: 'abc abc abcabac',
+        status: 1,
+        phoneNumber: '0987654321',
+        department: 'ABCDEFGH'
+      },
+      {
+        code: '2',
+        name: 'Baran',
+        birthday: '2/2/2020',
+        address: 'abc abc abcabac',
+        status: 1,
+        phoneNumber: '0987654321',
+        department: 'ABCDEFGH'
+      },
+      {
+        code: '3',
+        name: 'Baran',
+        birthday: '2/2/2020',
+        address: 'abc abc abcabac',
+        status: 0,
+        phoneNumber: '0987654321',
+        department: 'ABCDEFGH'
+      },
+      {
+        code: '4',
+        name: 'Baran',
+        birthday: '2/2/2020',
+        address: 'abc abc abcabac',
+        status: 1,
+        phoneNumber: '0987654321',
+        department: 'ABCDEFGH'
+      },
+      {
+        code: '5',
+        name: 'Baran',
+        birthday: '2/2/2020',
+        address: 'abc abc abcabac',
+        status: 0,
+        phoneNumber: '0987654321',
+        department: 'ABCDEFGH'
+      },
+      {
+        code: '6',
+        name: 'Baran',
+        birthday: '2/2/2020',
+        address: 'abc abc abcabac',
+        status: 1,
+        phoneNumber: '0987654321',
+        department: 'ABCDEFGH'
+      },
+      {
+        code: '1',
+        name: 'Baran',
+        birthday: '2/2/2020',
+        address: 'abc abc abcabac',
+        status: 1,
+        phoneNumber: '0987654321',
+        department: 'ABCDEFGH'
+      },
+      {
+        code: '2',
+        name: 'Baran',
+        birthday: '2/2/2020',
+        address: 'abc abc abcabac',
+        status: 1,
+        phoneNumber: '0987654321',
+        department: 'ABCDEFGH'
+      },
+      {
+        code: '3',
+        name: 'Baran',
+        birthday: '2/2/2020',
+        address: 'abc abc abcabac',
+        status: 0,
+        phoneNumber: '0987654321',
+        department: 'ABCDEFGH'
+      },
+      {
+        code: '4',
+        name: 'Baran',
+        birthday: '2/2/2020',
+        address: 'abc abc abcabac',
+        status: 1,
+        phoneNumber: '0987654321',
+        department: 'ABCDEFGH'
+      },
+      {
+        code: '5',
+        name: 'Baran',
+        birthday: '2/2/2020',
+        address: 'abc abc abcabac',
+        status: 0,
+        phoneNumber: '0987654321',
+        department: 'ABCDEFGH'
+      },
+      {
+        code: '6',
+        name: 'Baran',
+        birthday: '2/2/2020',
+        address: 'abc abc abcabac',
+        status: 1,
+        phoneNumber: '0987654321',
+        department: 'ABCDEFGH'
+      }
+    ];
+    this.setState({
+      data
+    });
+  }
+
   render() {
-    return <div className="content"></div>;
+    const { data } = this.state;
+    return (
+      <div className="content">
+        <TableCompoment
+          key={data}
+          title={'Danh sách nhân viên'}
+          data={data}
+          columns={columnsEmployee}
+        />
+      </div>
+    );
   }
 }
 
