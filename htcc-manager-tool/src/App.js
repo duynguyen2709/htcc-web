@@ -1,13 +1,13 @@
 import React from 'react';
-import { createBrowserHistory } from 'history';
-import { Router, Route, Switch } from 'react-router-dom';
+import { createHashHistory } from 'history';
+import { Router, Route, Switch, Redirect } from 'react-router-dom';
 import AdminLayout from './layouts/Admin';
 import Login from './views/Login';
 
 import './assets/scss/index.scss';
 import './assets/css/nucleo-icons.css';
 
-const hist = createBrowserHistory();
+const hist = createHashHistory();
 
 const App = () => {
   return (
