@@ -37,7 +37,7 @@
                           @OnClickEdit="updateProfile($event, item.id)"
                         ></edit-form>
                   </v-dialog> -->
-                  <v-btn color="success" @click="clickItem(item)">Xem thông tin</v-btn>
+                  <v-btn color="success" @click="clickItem">Xem thông tin</v-btn>
                 </td>
                 
               </tr>

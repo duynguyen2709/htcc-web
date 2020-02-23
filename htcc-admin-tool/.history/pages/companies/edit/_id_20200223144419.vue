@@ -17,7 +17,7 @@
           <div>
           <v-data-table 
             :headers="headers" 
-            :items="ChoosenItems.slice(0, 7)" 
+            :items="items.slice(0, 7)" 
             :search="search" 
             hide-default-footer
             :page.sync="page"

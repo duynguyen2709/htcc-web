@@ -17,7 +17,7 @@
           <div>
           <v-data-table 
             :headers="headers" 
-            :items="ChoosenItems.slice(0, 7)" 
+            :items="items.slice(0, 7)" 
             :search="search" 
             hide-default-footer
             :page.sync="page"
@@ -123,7 +123,7 @@ export default {
         city: "Sinaai-Waas",
         salary: "$23,738",
         id: 1,
-        idCom: 1,
+        idCom: 0,
         status: false,
         dialog: false
       },
@@ -133,7 +133,7 @@ export default {
         city: "Overland Park",
         salary: "$56,142",
         id: 2,
-        idCom: 1,
+        idCom: 0,
         status: true,
         dialog: false
       },
@@ -143,7 +143,7 @@ export default {
         city: "Gloucester",
         salary: "$38,735",
         id: 3,
-        idCom: 2,
+        idCom: 0,
         status: true,
         dialog: false
       },
@@ -153,7 +153,7 @@ export default {
         city: "Feldkirchen in Kārnten",
         salary: "$63,542",
         id: 4,
-        idCom: 2,
+        idCom: 0,
         status: true,
         dialog: false
       },
@@ -163,7 +163,7 @@ export default {
         city: "Gloucester",
         salary: "$78,615",
         id: 5,
-        idCom: 3,
+        idCom: 0,
         status: true,
         dialog: false
       }
@@ -186,14 +186,8 @@ export default {
        this.TriggerNoti()
     }
   },
-  created:  async function(){
-      let i;
-      for(i = 0; i < this.items.length; i++){
-          if(this.items[i].idCom == this.$route.params.id){
-            this.ChoosenItems.push(this.items[i]);
-            break;
-          }
-      }
+  created:{
+
   }
 };
 </script>
