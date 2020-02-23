@@ -5,12 +5,11 @@ const INITIAL_STATE = {
   isLogining: false,
   user: undefined,
   token: undefined,
-  error: true
+  error: false
 };
 
 const applyLogout = (state, action) => ({
-  ...state,
-  isAuthenticated: false
+  ...INITIAL_STATE
 });
 
 const applyClearResult = (state, action) => ({
