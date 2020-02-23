@@ -14,7 +14,6 @@
               hide-details
             ></v-text-field>
           </v-card-title>
-          <div>
           <v-data-table 
             :headers="headers" 
             :items="items.slice(0, 7)" 
@@ -57,8 +56,6 @@
               </tr>
             </template>
           </v-data-table>
-           <v-pagination v-model="page" :length="pageCount"></v-pagination>
-          </div>
         </material-card>
       </v-flex>
     </v-layout>

@@ -14,15 +14,7 @@
               hide-details
             ></v-text-field>
           </v-card-title>
-          <div>
-          <v-data-table 
-            :headers="headers" 
-            :items="items.slice(0, 7)" 
-            :search="search" 
-            hide-default-footer
-            :page.sync="page"
-            items-per-page="5"
-            @page-count="pageCount = $event">
+          <v-data-table :headers="headers" :items="items.slice(0, 7)" :search="search">
             <template slot="headerCell" slot-scope="{ header }">
               <span class="subheading font-weight-light text--darken-3" v-text="header.text" />
             </template>
@@ -34,19 +26,25 @@
                 <td class="text-xs-right">{{ item.salary }}</td>
                 <td class="text-xs-right">
                   <!-- <v-btn color="success" @click="dialog=true">Chỉnh sửa</v-btn> -->
-                  <v-dialog v-model="item.dialog" width="700">
+                  <v-layout align-center justify-center>
+                      <v-flex xs12 sm8 md4>
+                  <v-dialog >
                     <template v-slot:activator="{ on }">
                       <v-btn color="success" v-on="on">Chỉnh sửa</v-btn>
                     </template>
+                    
                         <edit-form
                           title="Edit profile sub-admin"
                           :firstname="item.name"
                           :lastname="item.name"
                           :phone="item.country"
                           :email="item.city"
-                          @OnClickEdit="updateProfile($event, item.id)"
+                          @OnClickEdit="updateProfile($event)"
                         ></edit-form>
+                      
                   </v-dialog>
+                  </v-flex>
+                    </v-layout>
                 </td>
                 <td>
                   <v-btn
@@ -57,8 +55,6 @@
               </tr>
             </template>
           </v-data-table>
-           <v-pagination v-model="page" :length="pageCount"></v-pagination>
-          </div>
         </material-card>
       </v-flex>
     </v-layout>
@@ -78,8 +74,6 @@ export default {
     editForm
   },
   data: () => ({
-    page: 1,
-    pageCount: 0,
     dialog: false,
     btnLock: true,
     search: "",
@@ -113,8 +107,7 @@ export default {
         city: "Oud-Tunrhout",
         salary: "$35,738",
         id: 0,
-        status: true,
-        dialog: false
+        status: true
       },
       {
         name: "Minerva Hooper",
@@ -122,8 +115,7 @@ export default {
         city: "Sinaai-Waas",
         salary: "$23,738",
         id: 1,
-        status: false,
-        dialog: false
+        status: false
       },
       {
         name: "Sage Rodriguez",
@@ -131,8 +123,7 @@ export default {
         city: "Overland Park",
         salary: "$56,142",
         id: 2,
-        status: true,
-        dialog: false
+        status: true
       },
       {
         name: "Philip Chanley",
@@ -140,8 +131,7 @@ export default {
         city: "Gloucester",
         salary: "$38,735",
         id: 3,
-        status: true,
-        dialog: false
+        status: true
       },
       {
         name: "Doris Greene",
@@ -149,8 +139,7 @@ export default {
         city: "Feldkirchen in Kārnten",
         salary: "$63,542",
         id: 4,
-        status: true,
-        dialog: false
+        status: true
       },
       {
         name: "Mason Porter",
@@ -158,8 +147,7 @@ export default {
         city: "Gloucester",
         salary: "$78,615",
         id: 5,
-        status: true,
-        dialog: false
+        status: true
       }
     ]
   }),
@@ -173,9 +161,7 @@ export default {
     TriggerNoti() {
       this.setInfo({ color: "success", mess: "Cập nhập thành công", status: true });
     },
-    updateProfile(e, id){
-      let ChoosenItem = this.items.find(item => item.id===id)
-      ChoosenItem.dialog=false
+    updateProfile(e){
        this.TriggerNoti()
     }
   }

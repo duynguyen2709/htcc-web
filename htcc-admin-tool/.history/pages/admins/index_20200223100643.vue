@@ -14,15 +14,7 @@
               hide-details
             ></v-text-field>
           </v-card-title>
-          <div>
-          <v-data-table 
-            :headers="headers" 
-            :items="items.slice(0, 7)" 
-            :search="search" 
-            hide-default-footer
-            :page.sync="page"
-            items-per-page="5"
-            @page-count="pageCount = $event">
+          <v-data-table :headers="headers" :items="items.slice(0, 7)" :search="search">
             <template slot="headerCell" slot-scope="{ header }">
               <span class="subheading font-weight-light text--darken-3" v-text="header.text" />
             </template>
@@ -32,33 +24,23 @@
                 <td>{{ item.country }}</td>
                 <td>{{ item.city }}</td>
                 <td class="text-xs-right">{{ item.salary }}</td>
-                <td class="text-xs-right">
-                  <!-- <v-btn color="success" @click="dialog=true">Chỉnh sửa</v-btn> -->
-                  <v-dialog v-model="item.dialog" width="700">
-                    <template v-slot:activator="{ on }">
-                      <v-btn color="success" v-on="on">Chỉnh sửa</v-btn>
-                    </template>
-                        <edit-form
-                          title="Edit profile sub-admin"
-                          :firstname="item.name"
-                          :lastname="item.name"
-                          :phone="item.country"
-                          :email="item.city"
-                          @OnClickEdit="updateProfile($event, item.id)"
-                        ></edit-form>
-                  </v-dialog>
-                </td>
-                <td>
-                  <v-btn
-                    color="error"
-                    @click="item.status=!item.status"
-                  >{{item.status ? 'Khóa' : 'Mở khóa'}}</v-btn>
-                </td>
+                <v-dialog >
+                  <template v-slot:activator="{ on }">
+                    <v-btn color="success" v-on="on">Chỉnh sửa</v-btn>
+                  </template>
+                  <edit-form
+                    title="Edit profile sub-admin"
+                    :firstname="item.name"
+                    :lastname="item.name"
+                    :phone="item.country"
+                    :email="item.city"
+                    @OnClickEdit="updateProfile($event)"
+                  ></edit-form>
+                </v-dialog>
+                <v-btn color="error" @click="item.status=!item.status">{{item.status ? 'Khóa' : 'Mở khóa'}}</v-btn>
               </tr>
             </template>
           </v-data-table>
-           <v-pagination v-model="page" :length="pageCount"></v-pagination>
-          </div>
         </material-card>
       </v-flex>
     </v-layout>
@@ -78,9 +60,6 @@ export default {
     editForm
   },
   data: () => ({
-    page: 1,
-    pageCount: 0,
-    dialog: false,
     btnLock: true,
     search: "",
     headers: [
@@ -112,54 +91,42 @@ export default {
         country: "Niger",
         city: "Oud-Tunrhout",
         salary: "$35,738",
-        id: 0,
-        status: true,
-        dialog: false
+        id: 0
       },
       {
         name: "Minerva Hooper",
         country: "Curaçao",
         city: "Sinaai-Waas",
         salary: "$23,738",
-        id: 1,
-        status: false,
-        dialog: false
+        id: 1
       },
       {
         name: "Sage Rodriguez",
         country: "Netherlands",
         city: "Overland Park",
         salary: "$56,142",
-        id: 2,
-        status: true,
-        dialog: false
+        id: 2
       },
       {
         name: "Philip Chanley",
         country: "Korea, South",
         city: "Gloucester",
         salary: "$38,735",
-        id: 3,
-        status: true,
-        dialog: false
+        id: 3
       },
       {
         name: "Doris Greene",
         country: "Malawi",
         city: "Feldkirchen in Kārnten",
         salary: "$63,542",
-        id: 4,
-        status: true,
-        dialog: false
+        id: 4
       },
       {
         name: "Mason Porter",
         country: "Chile",
         city: "Gloucester",
         salary: "$78,615",
-        id: 5,
-        status: true,
-        dialog: false
+        id: 5
       }
     ]
   }),
@@ -173,9 +140,7 @@ export default {
     TriggerNoti() {
       this.setInfo({ color: "success", mess: "Cập nhập thành công", status: true });
     },
-    updateProfile(e, id){
-      let ChoosenItem = this.items.find(item => item.id===id)
-      ChoosenItem.dialog=false
+    updateProfile(e){
        this.TriggerNoti()
     }
   }

@@ -80,8 +80,19 @@ export default {
       },
       {
         sortable: false,
-        text: "ID",
-        value: "id"
+        text: "Country",
+        value: "country"
+      },
+      {
+        sortable: false,
+        text: "City",
+        value: "city"
+      },
+      {
+        sortable: false,
+        text: "Salary",
+        value: "salary",
+        align: "right"
       }
     ],
     items: [

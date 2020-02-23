@@ -80,39 +80,64 @@ export default {
       },
       {
         sortable: false,
-        text: "ID",
-        value: "id"
+        text: "Country",
+        value: "country"
+      },
+      {
+        sortable: false,
+        text: "City",
+        value: "city"
+      },
+      {
+        sortable: false,
+        text: "Salary",
+        value: "salary",
+        align: "right"
       }
     ],
     items: [
       {
-        name: "Com 0",
-        id: 0
-      },
-     {
-        name: "Com 1",
-        id: 0
-      },
-      {
-        name: "Com 2",
+        name: "Dakota Rice",
+        country: "Niger",
+        city: "Oud-Tunrhout",
+        salary: "$35,738",
         id: 0
       },
       {
-        name: "Com 3",
-        id: 0
+        name: "Minerva Hooper",
+        country: "Curaçao",
+        city: "Sinaai-Waas",
+        salary: "$23,738",
+        id: 1
       },
       {
-        name: "Com 4",
-        id: 0
+        name: "Sage Rodriguez",
+        country: "Netherlands",
+        city: "Overland Park",
+        salary: "$56,142",
+        id: 2
       },
       {
-        name: "Com 5",
-        id: 0
+        name: "Philip Chanley",
+        country: "Korea, South",
+        city: "Gloucester",
+        salary: "$38,735",
+        id: 3
       },
       {
-        name: "Com 6",
-        id: 0
+        name: "Doris Greene",
+        country: "Malawi",
+        city: "Feldkirchen in Kārnten",
+        salary: "$63,542",
+        id: 4
       },
+      {
+        name: "Mason Porter",
+        country: "Chile",
+        city: "Gloucester",
+        salary: "$78,615",
+        id: 5
+      }
     ]
   }),
   created: async function(){

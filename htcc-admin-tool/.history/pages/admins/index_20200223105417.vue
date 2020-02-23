@@ -14,15 +14,7 @@
               hide-details
             ></v-text-field>
           </v-card-title>
-          <div>
-          <v-data-table 
-            :headers="headers" 
-            :items="items.slice(0, 7)" 
-            :search="search" 
-            hide-default-footer
-            :page.sync="page"
-            items-per-page="5"
-            @page-count="pageCount = $event">
+          <v-data-table :headers="headers" :items="items.slice(0, 7)" :search="search">
             <template slot="headerCell" slot-scope="{ header }">
               <span class="subheading font-weight-light text--darken-3" v-text="header.text" />
             </template>
@@ -44,7 +36,7 @@
                           :lastname="item.name"
                           :phone="item.country"
                           :email="item.city"
-                          @OnClickEdit="updateProfile($event, item.id)"
+                          @OnClickEdit="updateProfile($event)"
                         ></edit-form>
                   </v-dialog>
                 </td>
@@ -57,8 +49,6 @@
               </tr>
             </template>
           </v-data-table>
-           <v-pagination v-model="page" :length="pageCount"></v-pagination>
-          </div>
         </material-card>
       </v-flex>
     </v-layout>
@@ -78,8 +68,6 @@ export default {
     editForm
   },
   data: () => ({
-    page: 1,
-    pageCount: 0,
     dialog: false,
     btnLock: true,
     search: "",
@@ -173,9 +161,8 @@ export default {
     TriggerNoti() {
       this.setInfo({ color: "success", mess: "Cập nhập thành công", status: true });
     },
-    updateProfile(e, id){
-      let ChoosenItem = this.items.find(item => item.id===id)
-      ChoosenItem.dialog=false
+    updateProfile(e){
+      e.dialog = false
        this.TriggerNoti()
     }
   }

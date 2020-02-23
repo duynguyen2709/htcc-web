@@ -2,7 +2,7 @@
   <v-container fill-height fluid grid-list-xl>
     <v-layout justify-center wrap>
       <v-flex md12>
-        <v-btn color="green" to="/admins/add">Add new admin</v-btn>
+        <v-btn color="green" to="/admins/add">Add new company</v-btn>
         <!-- <material-card color="green" flat full-width title="Admins" text="List of sub-admins"> -->
         <material-card flat>
           <v-card-title>
@@ -14,24 +14,14 @@
               hide-details
             ></v-text-field>
           </v-card-title>
-          <div>
-          <v-data-table 
-            :headers="headers" 
-            :items="items.slice(0, 7)" 
-            :search="search" 
-            hide-default-footer
-            :page.sync="page"
-            items-per-page="5"
-            @page-count="pageCount = $event">
+          <v-data-table :headers="headers" :items="items.slice(0, 7)" :search="search">
             <template slot="headerCell" slot-scope="{ header }">
               <span class="subheading font-weight-light text--darken-3" v-text="header.text" />
             </template>
             <template slot="items" slot-scope="{ item }">
               <tr>
                 <td>{{ item.name }}</td>
-                <td>{{ item.country }}</td>
-                <td>{{ item.city }}</td>
-                <td class="text-xs-right">{{ item.salary }}</td>
+                <td>{{ item.id }}</td>
                 <td class="text-xs-right">
                   <!-- <v-btn color="success" @click="dialog=true">Chỉnh sửa</v-btn> -->
                   <v-dialog v-model="item.dialog" width="700">
@@ -48,17 +38,10 @@
                         ></edit-form>
                   </v-dialog>
                 </td>
-                <td>
-                  <v-btn
-                    color="error"
-                    @click="item.status=!item.status"
-                  >{{item.status ? 'Khóa' : 'Mở khóa'}}</v-btn>
-                </td>
+                
               </tr>
             </template>
           </v-data-table>
-           <v-pagination v-model="page" :length="pageCount"></v-pagination>
-          </div>
         </material-card>
       </v-flex>
     </v-layout>
@@ -78,8 +61,6 @@ export default {
     editForm
   },
   data: () => ({
-    page: 1,
-    pageCount: 0,
     dialog: false,
     btnLock: true,
     search: "",
@@ -91,75 +72,42 @@ export default {
       },
       {
         sortable: false,
-        text: "Country",
-        value: "country"
-      },
-      {
-        sortable: false,
-        text: "City",
-        value: "city"
-      },
-      {
-        sortable: false,
-        text: "Salary",
-        value: "salary",
-        align: "right"
+        text: "ID",
+        value: "id"
       }
     ],
     items: [
       {
-        name: "Dakota Rice",
-        country: "Niger",
-        city: "Oud-Tunrhout",
-        salary: "$35,738",
-        id: 0,
-        status: true,
-        dialog: false
+        name: "Com 0",
+        id: 0
       },
       {
-        name: "Minerva Hooper",
-        country: "Curaçao",
-        city: "Sinaai-Waas",
-        salary: "$23,738",
-        id: 1,
-        status: false,
-        dialog: false
+        name: "Com 1",
+        id: 1
       },
       {
-        name: "Sage Rodriguez",
-        country: "Netherlands",
-        city: "Overland Park",
-        salary: "$56,142",
-        id: 2,
-        status: true,
-        dialog: false
+        name: "Com 2",
+        id: 2
       },
       {
-        name: "Philip Chanley",
-        country: "Korea, South",
-        city: "Gloucester",
-        salary: "$38,735",
-        id: 3,
-        status: true,
-        dialog: false
+        name: "Com 3",
+        id: 3
       },
       {
-        name: "Doris Greene",
-        country: "Malawi",
-        city: "Feldkirchen in Kārnten",
-        salary: "$63,542",
-        id: 4,
-        status: true,
-        dialog: false
+        name: "Com 4",
+        id: 4
       },
       {
-        name: "Mason Porter",
-        country: "Chile",
-        city: "Gloucester",
-        salary: "$78,615",
-        id: 5,
-        status: true,
-        dialog: false
+        name: "Com 5",
+        id: 5
+      },
+      {
+        name: "Com 6",
+        id: 6
+      },
+      {
+        name: "Com 7",
+        id: 7
       }
     ]
   }),
@@ -168,7 +116,7 @@ export default {
       setInfo: "notification/setInfo"
     }),
     clickItem: function(id) {
-      this.$router.push({ path: "/admins/edit/" + id });
+      this.$router.push({ path: "/companies/edit/" + id });
     },
     TriggerNoti() {
       this.setInfo({ color: "success", mess: "Cập nhập thành công", status: true });

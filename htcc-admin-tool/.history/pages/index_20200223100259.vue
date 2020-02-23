@@ -50,9 +50,9 @@
                     </v-card-text>
                     <v-card-actions>
                       <v-layout justify-center align-center>
-                        <!-- <v-btn icon @click="resetForm">
+                        <v-btn icon @click="resetForm">
                           <v-icon>mdi-refresh</v-icon>
-                        </v-btn> -->
+                        </v-btn>
                         <v-btn color="success" @click="changePassword" v-on="on">Đổi mật khẩu</v-btn>
                       </v-layout>
                     </v-card-actions>
