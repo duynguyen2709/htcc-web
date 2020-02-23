@@ -133,6 +133,9 @@ export default {
         email: function(newVal, oldVal){
             this.InsideValue = newVal
             }
-  }
+    },
+    methods:{
+      
+    }
 }
 </script>
