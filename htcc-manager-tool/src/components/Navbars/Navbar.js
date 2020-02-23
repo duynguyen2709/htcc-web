@@ -16,8 +16,11 @@ import {
   Container,
   Modal
 } from 'reactstrap';
+import { logout } from '../../reducers/auth.reducer';
+import { connect } from 'react-redux';
 import UserProfile from '../../views/UserProfile';
-import { removeUserFromLocalStorage } from '../../utils/user';
+import { getTokenFromLocalStorage } from '../../utils/user';
+
 class AdminNavbar extends React.Component {
   constructor(props) {
     super(props);
@@ -79,7 +82,7 @@ class AdminNavbar extends React.Component {
   };
 
   logout = () => {
-    removeUserFromLocalStorage();
+    this.props.logout(getTokenFromLocalStorage());
   };
 
   toggle = id => {
@@ -254,4 +257,12 @@ class AdminNavbar extends React.Component {
   }
 }
 
-export default AdminNavbar;
+const mapStateToProps = state => ({
+  user: state.authReducer.user
+});
+
+const mapDispatchToProps = dispatch => ({
+  logout: token => dispatch(logout(token))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(AdminNavbar);

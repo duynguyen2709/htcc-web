@@ -1,19 +1,7 @@
-import { USER, TOKEN } from '../constant/localStorageKey';
-
-export const getUserFromLocalStorage = () => {
-  return JSON.parse(localStorage.getItem(USER));
-};
-
-export const setUserToLocalStorage = user => {
-  localStorage.setItem(USER, JSON.stringify(user));
-};
-
-export const removeUserFromLocalStorage = user => {
-  localStorage.removeItem(USER);
-};
+import { TOKEN } from '../constant/localStorageKey';
 
 export const getTokenFromLocalStorage = () => {
-  return JSON.parse(localStorage.getItem(TOKEN));
+  return localStorage.getItem(TOKEN);
 };
 
 export const setTokenToLocalStorage = token => {
