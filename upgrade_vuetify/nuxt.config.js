@@ -30,18 +30,20 @@ export default {
   ** Plugins to load before mounting the App
   */
   plugins: [
+    '~/plugins/index'
   ],
   /*
   ** Nuxt.js dev-modules
   */
   buildModules: [
-    '@nuxtjs/vuetify',
+    //'@nuxtjs/vuetify',
   ],
   /*
   ** Nuxt.js modules
   */
   modules: [
   ],
+  link: [ {rel: 'icon', type: 'image/x-icon', href: '/favicon.ico'}, {rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons'} ],
   /*
   ** vuetify module configuration
   ** https://github.com/nuxt-community/vuetify-module
@@ -49,8 +51,17 @@ export default {
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
     theme: {
-      dark: true,
       themes: {
+        light: {
+          primary: '#4caf50',
+          secondary: '#4caf50',
+          tertiary: '#495057',
+          accent: '#82B1FF',
+          error: '#f55a4e',
+          info: '#00d3ee',
+          success: '#5cb860',
+          warning: '#ffa21a'
+        },
         dark: {
           primary: colors.blue.darken2,
           accent: colors.grey.darken3,
