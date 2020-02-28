@@ -9,7 +9,7 @@
           <v-card-title>
             <v-text-field
               v-model="search"
-              append-icon="place"
+              append-icon="search"
               label="Search"
               single-line
               hide-details
@@ -22,7 +22,7 @@
             :search="search" 
             hide-default-footer
             :page.sync="page"
-            items-per-page= 5
+            :items-per-page= itemsPerPage
             @page-count="pageCount = $event">
             <template slot="headerCell" slot-scope="{ header }">
               <span class="subheading font-weight-light text--darken-3" v-text="header.text" />
@@ -36,6 +36,7 @@
                 <td class="text-xs-right">
                   <!-- <v-btn color="success" @click="dialog=true">Chỉnh sửa</v-btn> -->
                   <v-dialog v-model="item.dialog" width="700">
+                    
                     <template v-slot:activator="{ on }">
                       <v-btn color="success" v-on="on">Chỉnh sửa</v-btn>
                     </template>
@@ -76,18 +77,17 @@
 import { mapActions, mapGetters } from "vuex";
 import materialCard from "~/components/material/AppCard";
 import editForm from "~/components/material/AppFormEdit";
-// import Vuetable from 'vuetable-2'
 
 export default {
   layout: "dashboard",
   components: {
     materialCard,
-    Vuetable,
     editForm
   },
   data: () => ({
     page: 1,
     pageCount: 0,
+    itemsPerPage: 5,
     dialog: false,
     btnLock: true,
     search: "",
