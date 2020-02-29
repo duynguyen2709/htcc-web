@@ -132,7 +132,6 @@ class Admin extends React.Component {
                 <Redirect from="/" to="/thong-ke" />{' '}
               </AuthRequiredRoute>
             </Switch>
-            <Footer fluid />
           </div>
         </div>
       </>

@@ -170,6 +170,31 @@ h6 {
 }
 
 .Component-paginationSelectRoot-207,
-.Component-paginationSelectRoot-4 {
+.Component-paginationSelectRoot-4,
+.Component-paginationSelectRoot-246 {
   display: none !important;
+}
+
+.Component-horizontalScrollContainer-392,
+.Component-horizontalScrollContainer-353 {
+  height: calc(100vh - 210px);
+}
+
+.table-wrapper {
+  background-color: #fff;
+  padding-top: 16px;
+  border-radius: 5px/5px;
+  .title-table {
+    color: #000;
+    font-weight: 500;
+    line-height: 1.6;
+    padding-left: 20px;
+    font-size: 20px;
+  }
+
+  .header-table {
+  }
+  a {
+    color: #000 !important;
+  }
 }

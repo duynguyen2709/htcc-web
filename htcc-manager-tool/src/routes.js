@@ -1,5 +1,6 @@
 import Dashboard from './views/Dashboard';
 import Employee from './views/Employee';
+import Attendance from './views/Attendance';
 
 var routes = [
   {
@@ -14,6 +15,13 @@ var routes = [
     name: 'Nhân viên',
     icon: 'tim-icons icon-single-02',
     component: Employee,
+    layout: '/'
+  },
+  {
+    path: '/diem-danh',
+    name: 'Điểm Danh',
+    icon: 'tim-icons icon-calendar-60',
+    component: Attendance,
     layout: '/'
   }
 ];
