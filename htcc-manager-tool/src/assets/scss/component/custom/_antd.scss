@@ -32,3 +32,14 @@
 .ant-pagination-item-link {
   border: none !important;
 }
+
+.ant-input-affix-wrapper {
+  &:focus,
+  &:hover {
+    border-color: $primary !important;
+  }
+}
+
+.ant-input-affix-wrapper-focused {
+  border-color: $primary !important;
+}

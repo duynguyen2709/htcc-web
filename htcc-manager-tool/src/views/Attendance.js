@@ -3,6 +3,10 @@ import TableAttendance from '../components/Table/Attendance';
 import { genColTableAttendance } from '../utils/dataTable';
 import moment from 'moment';
 import CalendarTool from '../components/Tool/CalendarTool';
+import { Input } from 'antd';
+import * as _ from 'lodash';
+
+const { Search } = Input;
 
 class Attendance extends React.Component {
   constructor(props) {
@@ -12,6 +16,8 @@ class Attendance extends React.Component {
       columns: [],
       month: moment().month() + 1
     };
+
+    this.data = [];
   }
 
   componentDidMount() {
@@ -145,11 +151,21 @@ class Attendance extends React.Component {
       }
     ];
 
+    this.data = _.cloneDeep(data);
+
     this.setState({
       data,
       columns
     });
   }
+
+  onSearch = e => {
+    let { data } = this.state;
+    data = _.filter(this.data, ele => ele.code.includes(e.target.value));
+    this.setState({
+      data
+    });
+  };
 
   updateData = month => {
     //update data
@@ -165,9 +181,13 @@ class Attendance extends React.Component {
       <div className="content">
         <div className="table-wrapper">
           <div className="header-table clearfix">
-            <h6 className="title-table float-left">
-              DANH SÁCH NHÂN VIÊN ĐIỂM DANH
-            </h6>
+            <div className="float-left">
+              <Search
+                placeholder="Tìm mã nhân viên"
+                style={{ width: 200 }}
+                onChange={this.onSearch}
+              />
+            </div>
             <div className="tool-calendar float-right">
               <CalendarTool update={this.updateData} />
             </div>
