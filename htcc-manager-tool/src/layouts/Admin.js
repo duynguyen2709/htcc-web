@@ -52,6 +52,15 @@ class Admin extends React.Component {
       document.scrollingElement.scrollTop = 0;
       this.refs.mainPanel.scrollTop = 0;
     }
+
+    const sidebarClasses = document.getElementById('sidebar').classList;
+    if (sidebarClasses.value.includes('sidebar-minimized')) {
+      const listContents = document.getElementsByClassName('content');
+
+      _.forEach(listContents, item => {
+        item.classList.add('content-expand');
+      });
+    }
   }
 
   // this function opens and closes the sidebar on small devices
