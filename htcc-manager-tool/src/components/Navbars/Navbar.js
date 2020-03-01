@@ -153,18 +153,6 @@ class AdminNavbar extends React.Component {
             </button>
             <Collapse navbar isOpen={this.state.collapseOpen}>
               <Nav className="ml-auto" navbar>
-                <InputGroup className="search-bar">
-                  <Button
-                    color="link"
-                    data-target="#searchModal"
-                    data-toggle="modal"
-                    id="search-button"
-                    onClick={() => this.toggle('modalSearch')}
-                  >
-                    <i className="tim-icons icon-zoom-split" />
-                    <span className="d-lg-none d-md-block">Tìm kiếm</span>
-                  </Button>
-                </InputGroup>
                 <UncontrolledDropdown nav>
                   <DropdownToggle
                     caret
