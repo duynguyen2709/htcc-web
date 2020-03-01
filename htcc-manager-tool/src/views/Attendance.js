@@ -89,7 +89,7 @@ class Attendance extends React.Component {
             checkin: moment(new Date(0, 0, 0, 8, 12, 29, 0)).format('HH:mm'),
             checkout: moment(new Date(0, 0, 0, 18, 12, 29, 0)).format('HH:mm')
           },
-          18: {
+          19: {
             checkin: moment(new Date(0, 0, 0, 8, 20, 29, 0)).format('HH:mm'),
             checkout: moment(new Date(0, 0, 0, 18, 12, 29, 0)).format('HH:mm')
           }
