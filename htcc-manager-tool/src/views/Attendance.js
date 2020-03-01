@@ -2,6 +2,7 @@ import React from 'react';
 import TableAttendance from '../components/Table/Attendance';
 import { genColTableAttendance } from '../utils/dataTable';
 import moment from 'moment';
+import CalendarTool from '../components/Tool/CalendarTool';
 
 class Attendance extends React.Component {
   constructor(props) {
@@ -9,7 +10,7 @@ class Attendance extends React.Component {
     this.state = {
       data: [],
       columns: [],
-      month: 1
+      month: moment().month() + 1
     };
   }
 
@@ -17,6 +18,7 @@ class Attendance extends React.Component {
     const columns = genColTableAttendance(30);
     const data = [
       {
+        key: 1,
         code: 'antt',
         attendance: {
           1: {
@@ -34,6 +36,7 @@ class Attendance extends React.Component {
         }
       },
       {
+        key: 2,
         code: 'hieunt',
         attendance: {
           4: {
@@ -51,6 +54,7 @@ class Attendance extends React.Component {
         }
       },
       {
+        key: 3,
         code: 'antt22',
         attendance: {
           1: {
@@ -68,6 +72,7 @@ class Attendance extends React.Component {
         }
       },
       {
+        key: 4,
         code: 'hieunt22',
         attendance: {
           4: {
@@ -85,6 +90,7 @@ class Attendance extends React.Component {
         }
       },
       {
+        key: 5,
         code: 'antt12',
         attendance: {
           7: {
@@ -102,6 +108,7 @@ class Attendance extends React.Component {
         }
       },
       {
+        key: 6,
         code: 'hieunt',
         attendance: {
           1: {
@@ -119,6 +126,7 @@ class Attendance extends React.Component {
         }
       },
       {
+        key: 7,
         code: 'hieunt1',
         attendance: {
           1: {
@@ -143,15 +151,30 @@ class Attendance extends React.Component {
     });
   }
 
+  updateData = month => {
+    //update data
+
+    this.setState({
+      month
+    });
+  };
+
   render() {
-    const { data, columns, month } = this.state;
+    const { data, columns } = this.state;
     return (
       <div className="content">
         <div className="table-wrapper">
           <div className="header-table clearfix">
-            <h6 className="title-table float-left">{`DANH SÁCH NHÂN VIÊN ĐIỂM DANH THÁNG ${month}`}</h6>
+            <h6 className="title-table float-left">
+              DANH SÁCH NHÂN VIÊN ĐIỂM DANH
+            </h6>
+            <div className="tool-calendar float-right">
+              <CalendarTool update={this.updateData} />
+            </div>
           </div>
-          <TableAttendance data={data} columns={columns} />
+          <div className="table-attendance">
+            <TableAttendance data={data} columns={columns} />
+          </div>
         </div>
       </div>
     );

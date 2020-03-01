@@ -662,6 +662,9 @@
 }
 
 @media screen and (max-width: 991px) {
+  .minimize-sidebar {
+    display: none;
+  }
   .sidebar {
     position: fixed;
     display: block;
