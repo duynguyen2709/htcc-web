@@ -7,13 +7,14 @@
           <v-card-title>
             <v-text-field
               v-model="search"
-              append-icon="place"
+              append-icon="search"
               label="Search"
               single-line
               hide-details
             ></v-text-field>
           </v-card-title>
           <div>
+<<<<<<< HEAD
             <v-data-table
               :headers="headers"
               :items="ChoosenItems.slice(0, 7)"
@@ -44,6 +45,32 @@
                           <!-- <v-btn color="success" v-on="on">Chỉnh sửa</v-btn> -->
                           <v-icon color="tertiary" v-on="on">edit</v-icon>
                         </template>
+=======
+          <v-data-table 
+            :headers="headers" 
+            :items="items.slice(0, 7)" 
+            :search="search" 
+            hide-default-footer
+            :page.sync="page"
+            :items-per-page= itemsPerPage
+            @page-count="pageCount = $event">
+            <template slot="headerCell" slot-scope="{ header }">
+              <span class="subheading font-weight-light text--darken-3" v-text="header.text" />
+            </template>
+            <template slot="items" slot-scope="{ item }">
+              <tr>
+                <td>{{ item.name }}</td>
+                <td>{{ item.country }}</td>
+                <td>{{ item.city }}</td>
+                <td class="text-xs-right">{{ item.salary }}</td>
+                <td class="text-xs-right">
+                  <!-- <v-btn color="success" @click="dialog=true">Chỉnh sửa</v-btn> -->
+                  <v-dialog v-model="item.dialog" width="700">
+                    
+                    <template v-slot:activator="{ on }">
+                      <v-btn color="success" v-on="on">Chỉnh sửa</v-btn>
+                    </template>
+>>>>>>> 31cb291fa0002f487eea4b80c231a3e35157f3cf
                         <edit-form
                           title="Edit profile sub-admin"
                           :firstname="item.name"
@@ -80,7 +107,6 @@
 import { mapActions, mapGetters } from "vuex";
 import materialCard from "~/components/material/AppCard";
 import editForm from "~/components/material/AppFormEdit";
-// import Vuetable from 'vuetable-2'
 
 export default {
   layout: "dashboard",
