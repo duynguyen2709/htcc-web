@@ -92,12 +92,13 @@
             <v-dialog width="530">
               <template v-slot:activator="{ on }">
                 <!-- <v-btn color="red lighten-2" dark v-on="on">Click Me</v-btn> -->
-                <v-btn color="success" round class="font-weight-light" v-on="on" @click="resetForm">Change password</v-btn>
+                <!-- <v-btn color="success" rounded class="font-weight-light" v-on="on" @click="resetForm">Change password</v-btn> -->
+                <v-btn color="success" rounded class="font-weight-light" v-on="on">Change password</v-btn>
               </template>
 
               <material-card color="success" elevation="12" title="Đổi mật khẩu">
                 <v-card-text>
-                  <v-form>
+                  <v-form ref="form">
                     <v-text-field
                       ref="OldPassword"
                       v-model="OldPassword"
@@ -135,13 +136,24 @@
                   </v-form>
                 </v-card-text>
                 <v-card-actions>
-                  <v-layout justify-center align-center>
-                    <v-btn
+                   
+
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on }">
+                      <v-icon color="tertiary" v-on="on" @click="resetForm" >mdi-refresh</v-icon>
+                    </template>
+                    <span class="white--text">Đặt lại form</span>
+                  </v-tooltip>
+
+                  <!-- <v-btn
                     icon
                     @click="resetForm"
+                    class="black--text"
                   >
                     <v-icon>mdi-refresh</v-icon>
-                  </v-btn>
+                  </v-btn> -->
+                  <v-layout justify-center align-center>
+                   
                     <v-btn color="success" @click="changePassword">Đổi mật khẩu</v-btn>
                   </v-layout>
                 </v-card-actions>
@@ -185,28 +197,31 @@ export default {
       //------------
 
       rules: {
-        required: value => !!value || "Không được để trống",
-        counter: value => value.length <= 20 || "Max 20 characters",
-        email: value => {
+        required: [value => !!value || "Không được để trống"],
+        counter: [value => value.length <= 20 || "Max 20 characters"],
+        email: [value => {
           const pattern = /^[a-z][a-z0-9_\.]{5,32}@[a-z0-9]{2,}(\.[a-z0-9]{2,4}){1,2}$/;
           return pattern.test(value) || "Email không hợp lệ.";
-        },
-        phone: value => {
+        }],
+        phone: [value => {
           const pattern = /(09|01[2|6|8|9])+([0-9]{8})\b/g;
           return pattern.test(value) || "Số điện thoại không hợp lệ.";
-        },
-        password: value => {
+        }],
+        password: [value => {
           const pattern = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{7,}$/;
           return (
             pattern.test(value) ||
             "Mật khẩu chưa hợp lệ, phải dài ít nhất 7  kí tự và chứa ít nhất 1 chữ số và kí tự đặc biệt !@#$%^&*"
           );
+        }],
+        CurrentPassword: value => {
+          return (value == this.user.password) || "Mật khẩu hiện tại không trùng khớp"
         },
-        // CurrentPassword: value => {
-        //   return (OldPassword === user.password) || "Mật khẩu hiện tại không trùng khớp"
-        // }
-        CurrentPassword: true,
-        NewPasswordConfirm: true
+        NewPasswordConfirm: value => {
+          return (value == this.NewPassword) || "Mật khẩu mới không trùng khớp"
+        }
+        //CurrentPassword: [true],
+        //NewPasswordConfirm: [true]
       }
     };
   },
@@ -241,20 +256,28 @@ export default {
       
       let flag = true;
 
-      if (this.OldPassword !== this.user.password) {
-        this.rules.CurrentPassword = "Mật khẩu hiện tại không trùng khớp";
-        flag = false;
-      }
-      if (this.NewPassword !== this.NewPasswordConfirm) {
-        this.rules.NewPasswordConfirm = "Mật khẩu mới không trùng khớp";
-        flag = false;
-      } 
+      // if (this.OldPassword !== this.user.password) {
+      //   this.rules.CurrentPassword = "Mật khẩu hiện tại không trùng khớp";
+      //   flag = false;
+      // }
+      // if (this.NewPassword !== this.NewPasswordConfirm) {
+      //   this.rules.NewPasswordConfirm = "Mật khẩu mới không trùng khớp";
+      //   flag = false;
+      // } 
       
-      Object.keys(this.form).forEach(f => {
-        if (!this.form[f])
-          console.log("error form: " + f);
-        this.$refs[f].validate(true)
-      })
+      // Object.keys(this.form).forEach(f => {
+      //   console.log(f);
+      //   if (!this.form[f])
+      //     console.log("error form: " + f);
+      //   this.$refs[f].validate(true)
+      // })
+
+      if (this.$refs.form.validate()) {
+        console.log("ref form validate");
+        this.snackbar = true;
+      }
+      else
+        flag = false
 
       if(flag)
         {
@@ -263,9 +286,13 @@ export default {
         }
     },
     resetForm () {
-      Object.keys(this.form).forEach(f => {
-        this.$refs[f].reset()
-      })
+      
+      // Object.keys(this.form).forEach(f => {
+      //   console.log(f);
+      //   this.$refs[f].reset()
+      // })
+
+      this.$refs.form.reset()
     },
     TriggerNoti(mess){
       this.setInfo({color: 'success',

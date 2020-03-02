@@ -15,35 +15,37 @@
               hide-details
             ></v-text-field>
           </v-card-title>
-          <v-data-table :headers="headers" :items="items.slice(0, 7)" :search="search">
-            <template slot="headerCell" slot-scope="{ header }">
-              <span class="subheading font-weight-light text--darken-3" v-text="header.text" />
+          <v-data-table 
+            :headers="headers" 
+            :items="items.slice(0, 7)" 
+            :search="search" 
+            hide-default-footer
+            :page.sync="page"
+            :items-per-page= "itemsPerPage"
+            @page-count="pageCount = $event">
+            <template v-slot:header="{ props: { headers } }">
+              <thead>
+              <span class="subheading font-weight-light text--darken-3" v-text="headers.text" />
+              </thead>
             </template>
-            <template slot="items" slot-scope="{ item }">
-              <tr>
+            <template v-slot:body="{ items }">
+              <tbody>  
+              <tr v-for="item in items" :key="item.id">
                 <td>{{ item.name }}</td>
                 <td>{{ item.id }}</td>
                 <td class="text-xs-right">
-                  <!-- <v-btn color="success" @click="dialog=true">Chỉnh sửa</v-btn> -->
-                  <!-- <v-dialog v-model="item.dialog" width="700">
+                   <v-tooltip right>
                     <template v-slot:activator="{ on }">
-                      <v-btn color="success" v-on="on">Xem thông tin</v-btn>
+                      <v-icon color="tertiary" v-on="on" @click="clickItem(item)" >view_list</v-icon>
                     </template>
-                        <edit-form
-                          title="Edit profile sub-admin"
-                          :firstname="item.name"
-                          :lastname="item.name"
-                          :phone="item.country"
-                          :email="item.city"
-                          @OnClickEdit="updateProfile($event, item.id)"
-                        ></edit-form>
-                  </v-dialog> -->
-                  <v-btn color="success" @click="clickItem(item)">Xem thông tin</v-btn>
+                    <span class="white--text">Xem danh sách người quản lí</span>
+                  </v-tooltip>
                 </td>
-                
               </tr>
+              </tbody>
             </template>
           </v-data-table>
+          <v-pagination v-model="page" :length="pageCount"></v-pagination>
         </material-card>
       </v-flex>
     </v-layout>
@@ -63,6 +65,9 @@ export default {
     editForm
   },
   data: () => ({
+    page: 1,
+    pageCount: 0,
+    itemsPerPage: 5,
     dialog: false,
     btnLock: true,
     search: "",
@@ -130,7 +135,7 @@ export default {
     },
     clickItem: function(e) {
       this.$router.push({
-        path: '/companies/edit/' + e.id
+        path: '/admins/' + e.id
       })
     },
   }

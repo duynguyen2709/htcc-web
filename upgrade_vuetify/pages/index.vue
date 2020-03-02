@@ -17,6 +17,7 @@
                   name="username"
                   label="Login"
                   placeholder
+                  v-on:keyup.enter="authenticate" 
                 ></v-text-field>
                 <v-text-field
                   v-model="password"
@@ -27,6 +28,7 @@
                   :append-icon="ShowPassword ? 'mdi-eye' : 'mdi-eye-off'"
                   @click:append="ShowPassword = !ShowPassword"
                   :type="ShowPassword ? 'text' : 'password'"
+                  v-on:keyup.enter="authenticate" 
                 ></v-text-field>
               
             </v-card-text>
@@ -35,7 +37,8 @@
                 <v-dialog width="530">
                   <template v-slot:activator="{ on }">
                     <!-- <v-btn color="red lighten-2" dark v-on="on">Click Me</v-btn> -->
-                    <v-btn text small v-on="on" class="red--text" flat>Quên mật khẩu</v-btn>
+                    <!-- <v-btn text small v-on="on" class="red--text" flat>Quên mật khẩu</v-btn> -->
+                    <v-btn text small v-on="on" class="red--text" >Quên mật khẩu</v-btn>
                   </template>
 
                   <material-card color="success" elevation="12" title="Đổi mật khẩu">
@@ -47,6 +50,7 @@
                           prepend-icon="mail"
                           label="Email để nhận thông báo"
                           :rules="[rules.required, rules.email]"
+                          
                         ></v-text-field>
                       </v-form>
                     </v-card-text>
@@ -93,11 +97,11 @@ export default {
       ShowPassword: false,
       EmailConfirm: "",
       rules: {
-        required: value => !!value || "Không được để trống",
-        email: value => {
+        required: [value => !!value || "Không được để trống"],
+        email: [value => {
           const pattern = /^[a-z][a-z0-9_\.]{5,32}@[a-z0-9]{2,}(\.[a-z0-9]{2,4}){1,2}$/;
           return pattern.test(value) || "Email không hợp lệ.";
-        }
+        }]
       }
     };
   },
@@ -161,6 +165,13 @@ export default {
           $this.is_loading = false;
         });
     }
+  },
+  watch: {
+    // username: function(newVal, oldVal){
+    //   if(newVal == ){
+
+    //   }
+    // }
   }
 };
 </script>
