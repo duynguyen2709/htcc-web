@@ -14,38 +14,6 @@
             ></v-text-field>
           </v-card-title>
           <div>
-<<<<<<< HEAD
-            <v-data-table
-              :headers="headers"
-              :items="ChoosenItems.slice(0, 7)"
-              :search="search"
-              hide-default-footer
-              :page.sync="page"
-              :items-per-page="itemsPerPage"
-              @page-count="pageCount = $event"
-            >
-              <!-- <template slot="headers" slot-scope="{ header }"> -->
-              <template v-slot:header="{ props: { headers } }">
-                <thead>
-                  <span class="subheading font-weight-light text--darken-3" v-text="headers.text" />
-                </thead>
-              </template>
-              <!-- <template slot="items" slot-scope="{ item }"> -->
-              <template v-slot:body="{ items }">
-                <tbody>
-                  <tr v-for="item in items" :key="item.id">
-                    <td>{{ item.name }}</td>
-                    <td>{{ item.country }}</td>
-                    <td>{{ item.city }}</td>
-                    <td class="text-xs-right">{{ item.salary }}</td>
-                    <td class="text-xs-right">
-                      <!-- <v-btn color="success" @click="dialog=true">Chỉnh sửa</v-btn> -->
-                      <v-dialog v-model="item.dialog" width="700">
-                        <template v-slot:activator="{ on }">
-                          <!-- <v-btn color="success" v-on="on">Chỉnh sửa</v-btn> -->
-                          <v-icon color="tertiary" v-on="on">edit</v-icon>
-                        </template>
-=======
           <v-data-table 
             :headers="headers" 
             :items="items.slice(0, 7)" 
@@ -70,7 +38,6 @@
                     <template v-slot:activator="{ on }">
                       <v-btn color="success" v-on="on">Chỉnh sửa</v-btn>
                     </template>
->>>>>>> 31cb291fa0002f487eea4b80c231a3e35157f3cf
                         <edit-form
                           title="Edit profile sub-admin"
                           :firstname="item.name"
