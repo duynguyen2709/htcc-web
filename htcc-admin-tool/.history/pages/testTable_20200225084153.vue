@@ -4,7 +4,7 @@
       <h2>
         <strong>&lt;Vuetable-2&gt;</strong> with Bootstrap 3
       </h2>
-      <vuetable
+      <!-- <vuetable
         ref="vuetable"
         api-url="https://vuetable.ratiw.net/api/users"
         :fields="fields"
@@ -31,7 +31,7 @@
         ref="pagination"
         :css="css.pagination"
         @vuetable-pagination:change-page="onChangePage"
-      ></vuetable-pagination>
+      ></vuetable-pagination> -->
     </div>
   </div>
 </template>

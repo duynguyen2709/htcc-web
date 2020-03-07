@@ -60,11 +60,11 @@
            <v-pagination v-model="page" :length="pageCount"></v-pagination>
           </div>
 
-          <vuetable ref="vuetable"
+          <!-- <vuetable ref="vuetable"
     :fields="['Name', 'Country', 'City', 'Salary']"
     :api-mode="false"
     :data="items"
-  ></vuetable>
+  ></vuetable> -->
         </material-card>
       </v-flex>
     </v-layout>
@@ -75,13 +75,13 @@
 import { mapActions, mapGetters } from "vuex";
 import materialCard from "~/components/material/AppCard";
 import editForm from "~/components/material/AppFormEdit";
-import Vuetable from 'vuetable-2'
+//import Vuetable from 'vuetable-2'
 
 export default {
   layout: "dashboard",
   components: {
     materialCard,
-    Vuetable,
+   // Vuetable,
     editForm
   },
   data: () => ({

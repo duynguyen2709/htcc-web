@@ -18,7 +18,6 @@
     "cross-env": "^5.2.0",
     "nuxt": "^2.8.0",
     "vue-chartist": "^2.2.0",
-    "vuetable-2": "^2.0.0-beta.4",
     "vuetify": "^1.5.14",
     "vuetify-loader": "^1.2.2"
   },

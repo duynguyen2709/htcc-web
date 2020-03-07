@@ -78,6 +78,8 @@
           @OnClickEdit="updateProfile($event)"
           ></edit-form>
       </v-flex>
+
+      <!-- Card profile -->
       <v-flex xs12 md4>
         <material-card class="v-card-profile">
           <v-avatar slot="offset" class="mx-auto d-block" size="130">
@@ -89,6 +91,8 @@
             <p class="card-description font-weight-light">{{ user.description }}</p>
             <blockquote class="blockquote">{{ user.citation }}</blockquote>
             <!-- <v-btn color="success" round class="font-weight-light">Change password</v-btn> -->
+
+            <!-- Card edit -->
             <v-dialog width="530">
               <template v-slot:activator="{ on }">
                 <!-- <v-btn color="red lighten-2" dark v-on="on">Click Me</v-btn> -->
@@ -96,7 +100,8 @@
                 <v-btn color="success" rounded class="font-weight-light" v-on="on">Change password</v-btn>
               </template>
 
-              <material-card color="success" elevation="12" title="Đổi mật khẩu">
+              <!-- <material-card color="success" elevation="12" title="Đổi mật khẩu"> -->
+                <v-card>
                 <v-card-text>
                   <v-form ref="form">
                     <v-text-field
@@ -111,6 +116,7 @@
                       :type="ShowPasswordOld ? 'text' : 'password'"
                       @click="()=>{rules.CurrentPassword=true}"
                     ></v-text-field>
+                    
                     <v-text-field
                       ref="NewPassword"
                       v-model="NewPassword"
@@ -122,7 +128,8 @@
                       @click:append="ShowPasswordNew = !ShowPasswordNew"
                       :type="ShowPasswordNew ? 'text' : 'password'"
                     ></v-text-field>
-                    <v-text-field
+                    
+                     <v-text-field
                       ref="NewPasswordConfirm"
                       v-model="NewPasswordConfirm"
                       prepend-icon="lock"
@@ -132,8 +139,10 @@
                       :append-icon="ShowPasswordConfirm ? 'mdi-eye' : 'mdi-eye-off'"
                       @click:append="ShowPasswordConfirm = !ShowPasswordConfirm"
                       :type="ShowPasswordConfirm ? 'text' : 'password'"
-                    ></v-text-field>
+                    ></v-text-field> 
+                    
                   </v-form>
+                  
                 </v-card-text>
                 <v-card-actions>
                    
@@ -157,7 +166,8 @@
                     <v-btn color="success" @click="changePassword">Đổi mật khẩu</v-btn>
                   </v-layout>
                 </v-card-actions>
-              </material-card>
+              <!-- </material-card> -->
+              </v-card>
             </v-dialog>
           </v-card-text>
         </material-card>
@@ -197,23 +207,23 @@ export default {
       //------------
 
       rules: {
-        required: [value => !!value || "Không được để trống"],
-        counter: [value => value.length <= 20 || "Max 20 characters"],
-        email: [value => {
+        required: value => !!value || "Không được để trống",
+        counter: value => value.length <= 20 || "Max 20 characters",
+        email: value => {
           const pattern = /^[a-z][a-z0-9_\.]{5,32}@[a-z0-9]{2,}(\.[a-z0-9]{2,4}){1,2}$/;
           return pattern.test(value) || "Email không hợp lệ.";
-        }],
-        phone: [value => {
+        },
+        phone: value => {
           const pattern = /(09|01[2|6|8|9])+([0-9]{8})\b/g;
           return pattern.test(value) || "Số điện thoại không hợp lệ.";
-        }],
-        password: [value => {
+        },
+        password: value => {
           const pattern = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{7,}$/;
           return (
             pattern.test(value) ||
             "Mật khẩu chưa hợp lệ, phải dài ít nhất 7  kí tự và chứa ít nhất 1 chữ số và kí tự đặc biệt !@#$%^&*"
           );
-        }],
+        },
         CurrentPassword: value => {
           return (value == this.user.password) || "Mật khẩu hiện tại không trùng khớp"
         },
@@ -276,8 +286,10 @@ export default {
         console.log("ref form validate");
         this.snackbar = true;
       }
-      else
+      else{
+        console.log("ref form validate false");
         flag = false
+      }
 
       if(flag)
         {

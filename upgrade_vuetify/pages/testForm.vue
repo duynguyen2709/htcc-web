@@ -4,8 +4,10 @@
         <v-dialog>
             <template v-slot:activator="{ on }">
                 <!-- <v-btn color="red lighten-2" dark v-on="on">Click Me</v-btn> -->
-                <v-btn color="success" rounded class="font-weight-light" v-on="on" @click="reset">Change password</v-btn>
+                <v-btn color="success" rounded class="font-weight-light" v-on="on" >Change password</v-btn>
               </template>
+              <v-card>
+                <v-card-text>
       <v-form ref="form" v-model="valid" lazy-validation>
         <v-text-field v-model="name" :counter="10" :rules="nameRules" label="Name" required></v-text-field>
 
@@ -26,12 +28,16 @@
           required
         ></v-checkbox>
 
-        <v-btn :disabled="!valid" color="success" class="mr-4" @click="validate">Validate</v-btn>
+       </v-form>
+                </v-card-text>
+                <v-card-actions>
+                   <v-btn :disabled="!valid" color="success" class="mr-4" @click="validate">Validate</v-btn>
 
         <v-btn color="error" class="mr-4" @click="reset">Reset Form</v-btn>
 
         <v-btn color="warning" @click="resetValidation">Reset Validation</v-btn>
-      </v-form>
+                </v-card-actions>
+              </v-card>
       </v-dialog>
     </v-app>
   </div>

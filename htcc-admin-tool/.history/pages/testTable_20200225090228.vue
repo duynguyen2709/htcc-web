@@ -4,7 +4,7 @@
       <h2>
         <strong>&lt;Vuetable-2&gt;</strong> with Bootstrap 3
       </h2>
-      <vuetable
+      <!-- <vuetable
         ref="vuetable"
         api-url="https://vuetable.ratiw.net/api/users"
         :fields="fields"
@@ -31,7 +31,7 @@
         ref="pagination"
         :css="css.pagination"
         @vuetable-pagination:change-page="onChangePage"
-      ></vuetable-pagination>
+      ></vuetable-pagination> -->
     </div>
   </div>
 </template>
@@ -55,11 +55,11 @@ th.sortable {
 
 <script>
 
-import Vuetable from 'vuetable-2'
+//import Vuetable from 'vuetable-2'
 export default {
 components: {
-   VuetablePagination: Vuetable.VuetablePagination,
-   Vuetable
+  // VuetablePagination: Vuetable.VuetablePagination,
+  // Vuetable
   },
   data:() => {
       return {
@@ -120,7 +120,7 @@ components: {
       this.$refs.pagination.setPaginationData(paginationData)
     },
     onChangePage (page) {
-      this.$refs.vuetable.changePage(page)
+      //this.$refs.vuetable.changePage(page)
     },
     editRow(rowData){
       alert("You clicked edit on"+ JSON.stringify(rowData))

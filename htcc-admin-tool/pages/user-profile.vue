@@ -84,6 +84,7 @@
             <img src="https://demos.creative-tim.com/vue-material-dashboard/img/marc.aba54d65.jpg" />
           </v-avatar>
           <v-card-text class="text-xs-center">
+           <!-- <v-card-text>  -->
             <h6 class="category text-gray font-weight-thin mb-3">{{ user.function }}</h6>
             <h4 class="card-title font-weight-light">{{ fullname }}</h4>
             <p class="card-description font-weight-light">{{ user.description }}</p>
