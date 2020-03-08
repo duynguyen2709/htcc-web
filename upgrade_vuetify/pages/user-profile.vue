@@ -176,6 +176,12 @@
   </v-container>
 </template>
 
+<style>
+  .text-xs-center{
+      text-align: center!important;
+  }
+</style>
+
 <script>
 import { mapGetters } from "vuex";
 import { mapActions } from "vuex";

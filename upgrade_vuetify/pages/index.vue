@@ -6,8 +6,8 @@
           <v-alert type="error" v-model="isFalse">{{message}}</v-alert>
 
           <material-card color="success" elevation="12" title="Connexion">
-             <!-- <v-form @submit="authenticate"> -->
-               <v-form>
+             <v-form @submit.prevent="logIn"> 
+               <!-- <v-form> -->
             <v-card-text>
              
                 <v-text-field
@@ -17,7 +17,6 @@
                   name="username"
                   label="Login"
                   placeholder
-                  v-on:keyup.enter="authenticate" 
                 ></v-text-field>
                 <v-text-field
                   v-model="password"
@@ -28,7 +27,6 @@
                   :append-icon="ShowPassword ? 'mdi-eye' : 'mdi-eye-off'"
                   @click:append="ShowPassword = !ShowPassword"
                   :type="ShowPassword ? 'text' : 'password'"
-                  v-on:keyup.enter="authenticate" 
                 ></v-text-field>
               
             </v-card-text>
@@ -67,7 +65,7 @@
                 </v-dialog>
               </v-layout>
               <v-layout justify-center align-center>
-                <v-btn color="success" @click.prevent="authenticate">Đăng nhập</v-btn>
+                <v-btn type="submit" color="success" :loading="isLoading">Đăng nhập</v-btn>
                 <!-- <v-btn color="success" type="submit" >Đăng nhập</v-btn> -->
               </v-layout>
               
@@ -90,8 +88,8 @@ export default {
   },
   data() {
     return {
-      isFalse: null,
-      message: "",
+      isFalse: false,
+      message: "123",
       username: "",
       password: "",
       ShowPassword: false,
@@ -102,7 +100,8 @@ export default {
           const pattern = /^[a-z][a-z0-9_\.]{5,32}@[a-z0-9]{2,}(\.[a-z0-9]{2,4}){1,2}$/;
           return pattern.test(value) || "Email không hợp lệ.";
         }]
-      }
+      },
+      isLoading: false
     };
   },
   computed: {
@@ -136,34 +135,50 @@ export default {
         this.isFalse = true;
       }
     },
-    logIn() {
+    async logIn() {
       let $this = this;
-      //this.is_loading = true;
+      this.is_loading = true;
 
-      this.$axios
-        .post("user/login", {
-          username: this.username,
-          password: this.password
+      const credentials = {
+        "clientId": 3,
+        "password": this.password,
+        "username": this.username
+      }
+      try {
+        await this.$auth.loginWith('local', {
+          data: credentials
         })
-        .then(function(response) {
-          if (response.data.result === false) {
-            $this.errorMessage = response.data.error.msg;
-            console.log("Error 1: ");
-            console.log(response.data.error);
-          } else {
-            console.log("Logged User:");
-            console.log($this.$auth.user);
-            $this.$auth.setUserToken(response.data.token);
-          }
+      } catch (e) {
+        console.log("fail at login!!!")
+        console.log(e)
+        this.message=e.Error
+      }
 
-          $this.is_loading = false;
-        })
-        .catch(function(response) {
-          //handle error
-          console.log("Error 2: ");
-          console.log(response);
-          $this.is_loading = false;
-        });
+
+    //   this.$axios
+    //     .post("user/login", {
+    //       username: this.username,
+    //       password: this.password
+    //     })
+    //     .then(function(response) {
+    //       if (response.data.result === false) {
+    //         $this.errorMessage = response.data.error.msg;
+    //         console.log("Error 1: ");
+    //         console.log(response.data.error);
+    //       } else {
+    //         console.log("Logged User:");
+    //         console.log($this.$auth.user);
+    //         $this.$auth.setUserToken(response.data.token);
+    //       }
+
+    //       $this.is_loading = false;
+    //     })
+    //     .catch(function(response) {
+    //       //handle error
+    //       console.log("Error 2: ");
+    //       console.log(response);
+    //       $this.is_loading = false;
+    //     });
     }
   },
   watch: {

@@ -60,7 +60,7 @@ export default {
       local: {
         endpoints: {
           login: {
-            url: 'user/login',
+            url: '/api/gateway/public/login',
             method: 'post',
             propertyName: 'token'
           },
@@ -84,7 +84,7 @@ export default {
   */
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
-    baseURL: 'http://localhost:8000',
+    baseURL: 'https://1612145.online/',
   },
   
   server: {

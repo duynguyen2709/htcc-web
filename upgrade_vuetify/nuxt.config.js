@@ -39,13 +39,21 @@ export default {
   ** Nuxt.js dev-modules
   */
   buildModules: [
-    '@nuxtjs/vuetify',
+   // '@nuxtjs/vuetify',
+   // Simple usage
+   '@nuxtjs/vuetify',
+
+   // With options
+   ['@nuxtjs/vuetify', { treeShake: true }]
   ],
   /*
   ** Nuxt.js modules
   */
-  modules: [
-  ],
+ modules: [
+  // Doc: https://axios.nuxtjs.org/usage
+  '@nuxtjs/axios',
+  '@nuxtjs/auth'
+],
   /*
   ** vuetify module configuration
   ** https://github.com/nuxt-community/vuetify-module
@@ -75,6 +83,45 @@ export default {
         }
       }
     }
+  },
+
+  axios: {
+    baseURL: 'https://1612145.online/',
+  },
+
+  auth: {
+    strategies: {
+      local: {
+        endpoints: {
+          login: {
+            url: '/api/gateway/public/login',
+            method: 'post',
+            propertyName: 'token'
+          },
+          user: {
+            url: '/api/gateway/private/test',
+            method: 'get',
+            propertyName: 'user'
+          },
+          logout: { 
+            url: '/api/gateway/private/logout/3',
+            method: 'post',
+          }
+        },
+        tokenRequired: true,
+        tokenName: 'x-access-token',
+        tokenType: '',
+      }
+    },
+    redirect: {
+      login: '/',
+      logout: '/',
+      callback: '/',
+      home: '/admins'
+    }
+  },
+  router: {
+    middleware: ['auth']
   },
   /*
   ** Build configuration
