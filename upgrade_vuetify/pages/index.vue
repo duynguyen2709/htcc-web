@@ -90,8 +90,8 @@ export default {
     return {
       isFalse: false,
       message: "123",
-      username: "",
-      password: "",
+      username: "admin",
+      password: "123",
       ShowPassword: false,
       EmailConfirm: "",
       rules: {

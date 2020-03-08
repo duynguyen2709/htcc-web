@@ -86,7 +86,8 @@ export default {
   },
 
   axios: {
-    baseURL: 'https://1612145.online/',
+    //baseURL: 'https://1612145.online/',
+    baseURL: 'http://167.179.80.90:8761/'
   },
 
   auth: {
