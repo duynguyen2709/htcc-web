@@ -94,30 +94,30 @@ export default {
     strategies: {
       local: {
         endpoints: {
-          login: {
-            url: '/api/gateway/public/login',
-            method: 'post',
-            propertyName: 'token'
-          },
-          user: {
-            url: '/api/gateway/private/test',
-            method: 'get',
-            propertyName: 'user'
-          },
+          // login: {
+          //   url: '/api/gateway/public/login',
+          //   method: 'post',
+          //   propertyName: 'token'
+          // },
+          // user: {
+          //   url: '/api/gateway/private/test',
+          //   method: 'get',
+          //   propertyName: 'user'
+          // },
+          login: false,
+          user: false,
           logout: { 
             url: '/api/gateway/private/logout/3',
             method: 'post',
           }
         },
-        tokenRequired: true,
-        tokenName: 'x-access-token',
-        tokenType: '',
+        tokenRequired: true
       }
     },
     redirect: {
-      login: '/',
-      logout: '/',
-      callback: '/',
+      login: '/login',
+      logout: '/login',
+      callback: '/login',
       home: '/admins'
     }
   },

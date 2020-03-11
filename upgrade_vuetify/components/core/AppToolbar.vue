@@ -78,7 +78,7 @@
             </v-avatar>
             <v-card-text class="text-xs-center">
               <h6 class="category text-gray font-weight-thin mb-3">{{ user.function }}</h6>
-              <h4 class="card-title font-weight-light">{{ fullname }}</h4>
+              <h4 class="card-title font-weight-light">{{ $auth.user.username }}</h4>
               <p class="card-description font-weight-light">{{ user.description }}</p>
               <blockquote class="blockquote">{{ user.citation }}</blockquote>
               <v-card text>
