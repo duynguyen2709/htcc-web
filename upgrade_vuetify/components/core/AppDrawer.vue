@@ -75,11 +75,11 @@
       return {
         logo: '/vuetifylogo.png',
         links: [
-          {
-            to: '/dashboard',
-            icon: 'mdi-view-dashboard',
-            text: 'Dashboard'
-          },
+          // {
+          //   to: '/dashboard',
+          //   icon: 'mdi-view-dashboard',
+          //   text: 'Dashboard'
+          // },
           {
             to: '/admins',
             icon: 'mdi-account',

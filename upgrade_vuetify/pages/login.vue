@@ -174,11 +174,11 @@ export default {
             $this.$auth.setUserToken(response.data.data.token);
 
             $this.$auth.setUser({
-  "avatar": "string",
-  "email": "string",
-  "fullName": "string",
-  "phoneNumber": "string",
-  "username": "admin"
+  avatar: "string",
+  email: "string",
+  fullName: "string",
+  phoneNumber: "string",
+  username: "admin"
 })
             console.log( $this.$auth.loggedIn)
           }

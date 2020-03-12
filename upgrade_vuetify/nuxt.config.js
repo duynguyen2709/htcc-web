@@ -27,7 +27,8 @@ export default {
   ** Global CSS
   */
   css: [
-    '~/assets/variables.scss'
+    '~/assets/variables.scss',
+    //'~/assets/vuetify.min.css'
   ],
   /*
   ** Plugins to load before mounting the App
@@ -44,7 +45,7 @@ export default {
    '@nuxtjs/vuetify',
 
    // With options
-   ['@nuxtjs/vuetify', { treeShake: true }]
+   ['@nuxtjs/vuetify', { treeShake: false }]
   ],
   /*
   ** Nuxt.js modules
@@ -59,7 +60,7 @@ export default {
   ** https://github.com/nuxt-community/vuetify-module
   */
   vuetify: {
-    customVariables: ['~/assets/variables.scss'],
+    customVariables: ['~/assets/variables.scss', /*'~/assets/vuetify.min.css'*/],
     theme: {
       themes: {
         light: {
@@ -86,8 +87,8 @@ export default {
   },
 
   axios: {
-    //baseURL: 'https://1612145.online/',
-    baseURL: 'http://167.179.80.90:8761/'
+    baseURL: 'https://1612145.online/',
+    //baseURL: 'http://167.179.80.90:8761/'
   },
 
   auth: {
@@ -104,8 +105,6 @@ export default {
           //   method: 'get',
           //   propertyName: 'user'
           // },
-          login: false,
-          user: false,
           logout: { 
             url: '/api/gateway/private/logout/3',
             method: 'post',

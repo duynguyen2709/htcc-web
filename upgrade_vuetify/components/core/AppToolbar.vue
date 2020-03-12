@@ -51,11 +51,10 @@
           <v-icon color="tertiary">mdi-account</v-icon>
         </nuxt-link>-->
 
-        <v-dialog width="530">
-          <template v-slot:activator="{ on }">
-            <!-- <v-btn color="red lighten-2" dark v-on="on">Click Me</v-btn> -->
-            <v-icon color="tertiary" v-on="on">mdi-account</v-icon>
-          </template>
+       <v-icon color="tertiary" @click="dialog = true">mdi-account</v-icon>
+      
+        <v-dialog width="530" v-model="dialog">
+          
 
           <!-- <v-card>
             <v-card-title class="headline grey lighten-2" primary-title>Privacy Policy</v-card-title>
@@ -82,14 +81,14 @@
               <p class="card-description font-weight-light">{{ user.description }}</p>
               <blockquote class="blockquote">{{ user.citation }}</blockquote>
               <v-card text>
-                <v-btn color="success" round class="font-weight-light">Edit profile</v-btn>
-                <v-btn color="success" round class="font-weight-light">Change password</v-btn>
+                <v-btn color="success" rounded class="font-weight-light">Edit profile</v-btn>
+                <v-btn color="success" rounded class="font-weight-light">Change password</v-btn>
               </v-card>
             </v-card-text>
           </material-card>
         </v-dialog>
       </v-flex>
-      <nuxt-link v-ripple class="toolbar-items" to="/" title="Logout" @click.native="logout">
+      <nuxt-link v-ripple class="toolbar-items" to="/" title="Logout" @click.native="$auth.logout()">
         <v-icon color="tertiary">mdi-logout</v-icon>
       </nuxt-link>
     </v-toolbar-items>
@@ -114,7 +113,8 @@ export default {
     ],
     title: "Dashboard",
     responsive: true,
-    responsiveInput: true
+    responsiveInput: true,
+    dialog: false
   }),
   watch: {
     $route(val) {
