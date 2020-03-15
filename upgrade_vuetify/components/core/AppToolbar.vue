@@ -1,8 +1,8 @@
 <template>
   <!-- <v-toolbar id="core-toolbar" flat prominent style="background: #eee;"> -->
-  <v-toolbar id="core-toolbar" text prominent style="background: #eee;">
-    <div class="v-toolbar-title">
-      <v-toolbar-title class="tertiary--text font-weight-light">
+  <v-toolbar id="core-toolbar" class="d-toolbar " text prominent style="background: #eee;">
+    <div class="v-toolbar-title ">
+      <v-toolbar-title class="tertiary--text font-weight-bold ">
         <v-btn v-if="responsive" class="default v-btn--simple" dark icon @click.stop="onClickBtn">
           <v-icon>mdi-view-list</v-icon>
         </v-btn>
@@ -11,9 +11,9 @@
     </div>
 
     <v-spacer />
-    <v-toolbar-items>
-      <v-flex align-center layout py-2>
-        <v-text-field
+    <v-toolbar-items class="d-toolbar ">
+      <v-flex align-center layout py-2 >
+        <v-text-fieldtoolbar-items
           v-if="responsiveInput"
           class="mr-4 mt-2 purple-input"
           label="Search..."
@@ -51,8 +51,9 @@
           <v-icon color="tertiary">mdi-account</v-icon>
         </nuxt-link>-->
 
-       <v-icon color="tertiary" @click="dialog = true">mdi-account</v-icon>
-      
+       <!-- <v-icon color="tertiary" @click="dialog = true">mdi-account</v-icon> -->
+       
+      <v-icon color="tertiary" @click="onClickUserProfile">mdi-account</v-icon>
         <v-dialog width="530" v-model="dialog">
           
 
@@ -152,6 +153,9 @@ export default {
     async logout() {
       await this.setUsername(null);
       this.$router.push({ path: "/" });
+    },
+    onClickUserProfile(){
+      this.$router.push({ path:"/user-profile"});
     }
   },
   mounted() {
@@ -167,5 +171,11 @@ export default {
 <style>
 #core-toolbar a {
   text-decoration: none;
+}
+.d-toolbar {
+  height: 64px !important;
+}
+.d-title-toolbar{
+  
 }
 </style>

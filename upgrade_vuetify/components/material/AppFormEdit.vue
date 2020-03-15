@@ -3,7 +3,7 @@
     <v-form>
       <v-container py-0>
         <v-layout wrap>
-          <v-flex xs12 md4>
+          <!-- <v-flex xs12 md4>
             <v-text-field label="Company (disabled)" disabled />
           </v-flex>
           <v-flex xs12 md4>
@@ -16,13 +16,29 @@
               :rules="[rules.required, rules.email]"
               v-model="InlineEmail"
             />
-          </v-flex>
-          <v-flex xs12 md6>
+          </v-flex> -->
+          <!-- <v-flex xs12 md6>
             <v-text-field v-model="InlineFirstname" label="First Name" class="purple-input" />
           </v-flex>
           <v-flex xs12 md6>
             <v-text-field v-model="InlineLastname" label="Last Name" class="purple-input" />
-          </v-flex>
+          </v-flex> -->
+          <v-flex xs12 md12>
+            <v-text-field
+              label="Email"
+              class="purple-input"
+              :rules="[rules.required, rules.email]"
+              v-model="InlineEmail"
+            />
+             </v-flex>
+           <v-flex xs12 md12>
+            <v-text-field
+              label="Tên đầy đủ"
+              class="purple-input"
+              :rules="[rules.required]"
+              v-model="InlineName"
+            />
+             </v-flex>
           <v-flex xs12 md12>
             <v-text-field
               label="Phone"
@@ -31,7 +47,7 @@
               v-model="InlinePhone"
             />
           </v-flex>
-          <v-flex xs12 md4>
+          <!-- <v-flex xs12 md4>
             <v-text-field label="City" class="purple-input" />
           </v-flex>
           <v-flex xs12 md4>
@@ -39,19 +55,23 @@
           </v-flex>
           <v-flex xs12 md4>
             <v-text-field class="purple-input" label="Postal Code" type="number" />
-          </v-flex>
-          <v-flex xs12>
+          </v-flex> -->
+          <!-- <v-flex xs12>
             <v-textarea
               class="purple-input"
               label="About Me"
               value="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
             />
-          </v-flex>
+          </v-flex> -->
           <v-flex xs12 text-xs-right>
-            <v-btn
+            <!-- <v-btn
               class="mx-0 font-weight-light"
               color="success"
               @click="$emit('OnClickEdit', {firstname: InlineFirstname, lastname: InlineLastname})"
+            >Update Profile</v-btn> -->
+            <v-btn
+              class="mx-0 font-weight-light"
+              color="success"
             >Update Profile</v-btn>
           </v-flex>
         </v-layout>
@@ -67,14 +87,18 @@ export default {
         materialCard
     },
     props: {
-        firstname: {
-            type: String,
+        // firstname: {
+        //     type: String,
+        //     required: true
+        //     },
+        // lastname: {
+        //     type: String,
+        //     required: true
+        //     },
+        name: {
+          type: String,
             required: true
-            },
-        lastname: {
-            type: String,
-            required: true
-            },
+        },
         phone: {
             type: String,
             required: true
@@ -94,8 +118,9 @@ export default {
     },
     data(){
         return{
-            InlineFirstname: this.firstname,
-            InlineLastname: this.lastname,
+            // InlineFirstname: this.firstname,
+            // InlineLastname: this.lastname,
+            InlineName: this.name,
             InlinePhone: this.phone,
             InlineEmail: this.email,
 
@@ -121,10 +146,13 @@ export default {
         }
     },
     watch: {
-        firstname: function(newVal, oldVal){
-            this.InsideValue = newVal
-            },
-        lastname: function(newVal, oldVal){
+        // firstname: function(newVal, oldVal){
+        //     this.InsideValue = newVal
+        //     },
+        // lastname: function(newVal, oldVal){
+        //     this.InsideValue = newVal
+        //     },
+        name: function(newVal, oldVal){
             this.InsideValue = newVal
             },
         phone: function(newVal, oldVal){

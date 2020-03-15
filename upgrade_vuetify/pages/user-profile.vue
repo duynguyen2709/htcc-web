@@ -71,9 +71,8 @@
         <edit-form 
           title="Edit profile" 
           text="Complete your profile" 
-          :firstname="user.firstname"
-          :lastname="user.lastname"
-          :phone="user.phone"
+          :name="user.fullName"
+          :phone="user.phoneNumber"
           :email="user.email"
           @OnClickEdit="updateProfile($event)"
           ></edit-form>
@@ -83,13 +82,13 @@
       <v-flex xs12 md4>
         <material-card class="v-card-profile">
           <v-avatar slot="offset" class="mx-auto d-block" size="130">
-            <img src="https://demos.creative-tim.com/vue-material-dashboard/img/marc.aba54d65.jpg" />
+            <img src= "https://i.imgur.com/OoMeq4c.jpeg" />
           </v-avatar>
           <v-card-text class="text-xs-center">
-            <h6 class="category text-gray font-weight-thin mb-3">{{ user.function }}</h6>
-            <h4 class="card-title font-weight-light">{{ fullname }}</h4>
-            <p class="card-description font-weight-light">{{ user.description }}</p>
-            <blockquote class="blockquote">{{ user.citation }}</blockquote>
+            <h6 class="category text-gray font-weight-bold title mb-3">{{ user.fullName }}</h6>
+            <h4 class="card-title font-weight-light">{{ user.email }}</h4>
+            <p class="card-description font-weight-light">{{ user.phoneNumber }}</p>
+            <!-- <blockquote class="blockquote">{{}}</blockquote> -->
             <!-- <v-btn color="success" round class="font-weight-light">Change password</v-btn> -->
 
             <!-- Card edit -->
@@ -139,13 +138,10 @@
                       :append-icon="ShowPasswordConfirm ? 'mdi-eye' : 'mdi-eye-off'"
                       @click:append="ShowPasswordConfirm = !ShowPasswordConfirm"
                       :type="ShowPasswordConfirm ? 'text' : 'password'"
-                    ></v-text-field> 
-                    
+                    ></v-text-field>
                   </v-form>
-                  
                 </v-card-text>
                 <v-card-actions>
-                   
 
                   <v-tooltip bottom>
                     <template v-slot:activator="{ on }">
@@ -196,6 +192,9 @@ export default {
   },
   data() {
     return {
+      //user
+      user: this.$auth.user,
+
       //use for hidden password
       //-----------
       ShowPasswordOld: false,
@@ -242,10 +241,10 @@ export default {
     };
   },
   computed: {
-    ...mapGetters({
-      user: "user/getUser",
-      fullname: "user/getFullname"
-    }),
+    // ...mapGetters({
+    //   user: "user/getUser",
+    //   fullname: "user/getFullname"
+    // }),
 
     form () {
       return {
