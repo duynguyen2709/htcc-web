@@ -29,7 +29,7 @@ class Login extends React.Component {
     return false;
   };
 
-  checkLogin = () => {
+  toggleLoader = () => {
     this.setState({
       isLoadingData: !this.state.isLoadingData
     });
@@ -46,7 +46,7 @@ class Login extends React.Component {
       <div className="bg-dark">
         {isLoadingData && <Loader />}
         <div className="login-wrapper">
-          <FormLogin checkLogin={this.checkLogin} />
+          <FormLogin toggleLoader={this.toggleLoader} />
         </div>
       </div>
     );

@@ -35,10 +35,6 @@ class AdminNavbar extends React.Component {
     window.addEventListener('resize', this.updateColor);
   }
 
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.updateColor);
-  }
-
   // function that adds color white/transparent to the navbar on resize (this is for the collapse)
   updateColor = () => {
     if (window.innerWidth < 993 && this.state.collapseOpen) {
@@ -80,7 +76,7 @@ class AdminNavbar extends React.Component {
   };
 
   logout = () => {
-    this.props.logout(getTokenFromLocalStorage());
+    this.props.logout();
   };
 
   toggle = id => {
@@ -248,7 +244,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  logout: token => dispatch(logout(token))
+  logout: () => dispatch(logout())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdminNavbar);

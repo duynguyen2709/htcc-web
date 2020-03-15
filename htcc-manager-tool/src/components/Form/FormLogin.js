@@ -51,15 +51,16 @@ class FormLogin extends React.Component {
 
   handleSubmit = () => {
     const { username, companyId, password } = this.state.value;
-    this.props.checkLogin();
+    this.props.toggleLoader();
 
     this.props
       .login(companyId, username, password)
       .then(res => {
-        this.props.checkLogin();
+        this.props.toggleLoader();
       })
       .catch(err => {
         store.addNotification(createNotify('danger', err.payload.message));
+        this.props.toggleLoader();
       });
   };
 
