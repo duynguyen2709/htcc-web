@@ -3,19 +3,21 @@ import { Button, FormGroup, Input, Row, Col } from 'reactstrap';
 import * as _ from 'lodash';
 import { connect } from 'react-redux';
 import { login } from '../../reducers/auth.reducer';
+import { store } from 'react-notifications-component';
+import { createNotify } from '../../utils/notifier';
 
 class FormLogin extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       value: {
-        userCode: '',
-        companyCode: '',
+        username: '',
+        companyId: '',
         password: ''
       },
       invalid: {
-        userCode: false,
-        companyCode: false,
+        username: false,
+        companyId: false,
         password: false
       },
       loginImg: 'login-bg-1.png',
@@ -48,16 +50,16 @@ class FormLogin extends React.Component {
   };
 
   handleSubmit = () => {
-    const { userCode, companyCode, password } = this.state.value;
+    const { username, companyId, password } = this.state.value;
     this.props.checkLogin();
 
     this.props
-      .login(companyCode, userCode, password)
+      .login(companyId, username, password)
       .then(res => {
         this.props.checkLogin();
       })
       .catch(err => {
-        alert(err);
+        store.addNotification(createNotify('danger', err.payload.message));
       });
   };
 
@@ -78,9 +80,9 @@ class FormLogin extends React.Component {
                   placeholder="Nhập mã công ty"
                   type="text"
                   onChange={this.handleOnChange}
-                  name="companyCode"
-                  value={value.companyCode}
-                  invalid={invalid.companyCode}
+                  name="companyId"
+                  value={value.companyId}
+                  invalid={invalid.companyId}
                   className="bor-gray text-dark"
                 />
               </FormGroup>
@@ -92,9 +94,9 @@ class FormLogin extends React.Component {
                   placeholder="Nhập mã nhân viên"
                   type="text"
                   onChange={this.handleOnChange}
-                  name="userCode"
-                  value={value.userCode}
-                  invalid={invalid.userCode}
+                  name="username"
+                  value={value.username}
+                  invalid={invalid.username}
                   className="bor-gray text-dark"
                 />
               </FormGroup>
@@ -138,8 +140,8 @@ class FormLogin extends React.Component {
 const mapStateToProps = state => ({});
 
 const mapDispatchToProps = dispatch => ({
-  login: (companyCode, userCode, password) =>
-    dispatch(login(companyCode, userCode, password))
+  login: (companyId, username, password) =>
+    dispatch(login(companyId, username, password))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(FormLogin);

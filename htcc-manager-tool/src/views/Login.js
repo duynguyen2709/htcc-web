@@ -43,7 +43,7 @@ class Login extends React.Component {
     }
 
     return (
-      <div>
+      <div className="bg-dark">
         {isLoadingData && <Loader />}
         <div className="login-wrapper">
           <FormLogin checkLogin={this.checkLogin} />
