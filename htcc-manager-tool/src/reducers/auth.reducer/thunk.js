@@ -2,10 +2,10 @@ import { authApi } from '../../api';
 import { doLogin, doLoginFail, doLoginSuccess, doLogout } from './action';
 import { TOKEN } from '../../constant/localStorageKey';
 
-export const login = (companyCode, userCode, password) => dispatch =>
+export const login = (companyId, userId, password) => dispatch =>
   new Promise(async (resolve, reject) => {
-    dispatch(doLogin(companyCode, userCode, password));
-    const res = await authApi.login(companyCode, userCode, password);
+    dispatch(doLogin(companyId, userId, password));
+    const res = await authApi.login(companyId, userId, password);
     if (res.returnCode === 1) {
       localStorage.setItem(TOKEN, res.data.token);
       resolve(dispatch(doLoginSuccess(res.data.user)));

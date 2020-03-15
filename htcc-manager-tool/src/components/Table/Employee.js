@@ -1,12 +1,12 @@
 import React from 'react';
 import MaterialTable from 'material-table';
 import moment from 'moment';
-import { localization, options, icons } from '../../constant/table';
+import { localization, options, icons } from '../../constant/tableEmployee';
 import { checkValidInputDataRow } from '../../utils/dataTable';
 import { store } from 'react-notifications-component';
 import { createNotify } from '../../utils/notifier';
 
-const TableCompoment = props => {
+const TableEmployee = props => {
   const [state, setState] = React.useState({
     data: props.data
   });
@@ -71,4 +71,4 @@ const TableCompoment = props => {
   );
 };
 
-export default TableCompoment;
+export default TableEmployee;

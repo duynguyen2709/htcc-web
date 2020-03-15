@@ -1,6 +1,6 @@
 import React from 'react';
-import TableCompoment from '../components/Table';
-import { columnsEmployee } from '../constant/table';
+import TableEmployee from '../components/Table/Employee';
+import { columnsEmployee } from '../constant/tableEmployee';
 
 class Employee extends React.Component {
   constructor(props) {
@@ -130,7 +130,7 @@ class Employee extends React.Component {
     const { data } = this.state;
     return (
       <div className="content">
-        <TableCompoment
+        <TableEmployee
           key={data}
           title={'Danh sách nhân viên'}
           data={data}

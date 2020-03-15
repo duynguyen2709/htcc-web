@@ -3,7 +3,6 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import PerfectScrollbar from 'perfect-scrollbar';
 import * as _ from 'lodash';
 import Navbar from '../components/Navbars/Navbar';
-import Footer from '../components/Footer/Footer';
 import Sidebar from '../components/Sidebar/Sidebar';
 import routes from '../routes';
 import logo from '../assets/img/logo.png';
@@ -51,6 +50,15 @@ class Admin extends React.Component {
       document.documentElement.scrollTop = 0;
       document.scrollingElement.scrollTop = 0;
       this.refs.mainPanel.scrollTop = 0;
+    }
+
+    const sidebarClasses = document.getElementById('sidebar').classList;
+    if (sidebarClasses.value.includes('sidebar-minimized')) {
+      const listContents = document.getElementsByClassName('content');
+
+      _.forEach(listContents, item => {
+        item.classList.add('content-expand');
+      });
     }
   }
 
@@ -132,7 +140,6 @@ class Admin extends React.Component {
                 <Redirect from="/" to="/thong-ke" />{' '}
               </AuthRequiredRoute>
             </Switch>
-            <Footer fluid />
           </div>
         </div>
       </>
