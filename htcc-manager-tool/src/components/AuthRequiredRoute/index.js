@@ -9,10 +9,8 @@ const AuthRequiredRoute = props => {
   if (!user) {
     const token = localStorage.getItem(TOKEN);
     const user = JSON.parse(localStorage.getItem(USER));
-
-    if (token) {
+    if (token && user) {
       fetchUser(user.companyId, user.username, token);
-      return <div>Loadings</div>;
     } else {
       return <Redirect to="/login" />;
     }

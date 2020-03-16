@@ -1,11 +1,26 @@
 import React from 'react';
 import { Card, CardHeader, CardBody, CardText, Row, Col } from 'reactstrap';
-
+import { connect } from 'react-redux';
 import FormUserInfo from '../components/Form/FormUserInfo';
+import * as _ from 'lodash';
 
 class UserProfile extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      user: null
+    };
+  }
+
+  componentDidMount() {
+    const { user } = this.props;
+    this.setState({
+      user
+    });
+  }
+
   render() {
-    const { toggle } = this.props;
+    const { toggle, user } = this.props;
     return (
       <div className="content">
         <Row>
@@ -15,7 +30,7 @@ class UserProfile extends React.Component {
                 <h5 className="title text-dark">Thông tin cá nhân</h5>
               </CardHeader>
               <CardBody>
-                <FormUserInfo toggle={toggle} />
+                <FormUserInfo toggle={toggle} user={user} />
               </CardBody>
             </Card>
           </Col>
@@ -32,11 +47,13 @@ class UserProfile extends React.Component {
                     <img
                       alt="..."
                       className="avatar"
-                      src={require('../assets/img/avatar.png')}
+                      src={user ? user.avatar : ''}
                     />
-                    <h5 className="title text-dark">Mike Andrew</h5>
+                    <h5 className="title text-dark">
+                      {user ? user.fullName : ''}
+                    </h5>
                   </a>
-                  <p className="description text-dark">Ceo/Co-Founder</p>
+                  <p className="description text-dark">{user.employeeId}</p>
                 </div>
               </CardBody>
             </Card>
@@ -47,4 +64,10 @@ class UserProfile extends React.Component {
   }
 }
 
-export default UserProfile;
+const mapStateToProps = state => ({
+  user: state.authReducer.user
+});
+
+const mapDispatchToProps = dispatch => ({});
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserProfile);
