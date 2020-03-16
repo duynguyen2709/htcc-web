@@ -2,7 +2,6 @@ import React from 'react';
 import { Card, CardHeader, CardBody, CardText, Row, Col } from 'reactstrap';
 import { connect } from 'react-redux';
 import FormUserInfo from '../components/Form/FormUserInfo';
-import * as _ from 'lodash';
 
 class UserProfile extends React.Component {
   constructor(props) {

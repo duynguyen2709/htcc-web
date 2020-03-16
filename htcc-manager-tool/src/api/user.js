@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { API_URL_GATEWAY, CLIENTID } from '../constant/url';
-import { USER, TOKEN } from '../constant/localStorageKey';
+import { API_URL_GATEWAY } from '../constant/url';
+import { TOKEN } from '../constant/localStorageKey';
 
 const getAllUsers = () => {
   const token = localStorage.getItem(TOKEN);

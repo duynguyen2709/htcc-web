@@ -8,10 +8,6 @@ import {
   Row,
   Col
 } from 'reactstrap';
-import * as _ from 'lodash';
-import { store } from 'react-notifications-component';
-import { createNotify } from '../../utils/notifier';
-import { checkValidEmail, checkValidPhoneNumber } from '../../utils/validate';
 
 class FormUserInfo extends React.Component {
   constructor(props) {
