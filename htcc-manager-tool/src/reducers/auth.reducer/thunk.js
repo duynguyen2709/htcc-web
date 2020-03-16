@@ -19,9 +19,9 @@ export const login = (companyId, username, password) => dispatch =>
     }
   });
 
-export const fetchUser = token => dispatch =>
+export const fetchUser = (companyId, username, token) => dispatch =>
   new Promise(async (resolve, reject) => {
-    const res = await authApi.fetchUser(token);
+    const res = await authApi.fetchUser(companyId, username, token);
 
     if (res.returnCode === 1) {
       resolve(dispatch(doLoginSuccess(res.data.user)));

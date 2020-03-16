@@ -52,12 +52,10 @@ const logout = () => {
   });
 };
 
-const fetchUser = token => {
-  const user = JSON.parse(localStorage.getItem(USER));
-
+const fetchUser = (companyId, username, token) => {
   return new Promise((resolve, reject) => {
     axios
-      .get(`${API_URL}/users/${user.companyId}/${user.username}`, {
+      .get(`${API_URL}/users/${companyId}/${username}`, {
         headers: {
           Authorization: `Bearer ${token}`
         },
