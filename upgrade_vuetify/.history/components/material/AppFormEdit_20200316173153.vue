@@ -24,7 +24,7 @@
             <v-text-field v-model="InlineLastname" label="Last Name" class="purple-input" />
           </v-flex>-->
 
-          <v-avatar v-if="thisUser.avatar" slot="offset" class="mx-auto d-block" size="130">
+          <v-avatar slot="offset" class="mx-auto d-block" size="130">
             <img :src="thisUser.avatar" />
           </v-avatar>
 

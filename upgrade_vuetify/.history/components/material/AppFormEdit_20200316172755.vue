@@ -23,11 +23,6 @@
           <v-flex xs12 md6>
             <v-text-field v-model="InlineLastname" label="Last Name" class="purple-input" />
           </v-flex>-->
-
-          <v-avatar v-if="thisUser.avatar" slot="offset" class="mx-auto d-block" size="130">
-            <img :src="thisUser.avatar" />
-          </v-avatar>
-
           <v-flex v-if="thisUser.username" xs12 md12>
             <v-text-field
               label="Username"

@@ -23,11 +23,6 @@
           <v-flex xs12 md6>
             <v-text-field v-model="InlineLastname" label="Last Name" class="purple-input" />
           </v-flex>-->
-
-          <v-avatar v-if="thisUser.avatar" slot="offset" class="mx-auto d-block" size="130">
-            <img :src="thisUser.avatar" />
-          </v-avatar>
-
           <v-flex v-if="thisUser.username" xs12 md12>
             <v-text-field
               label="Username"
@@ -67,14 +62,6 @@
               :rules="[rules.required, rules.phone]"
               v-model="InlinePhone"
             />
-          </v-flex>
-          <v-flex v-if="thisUser.role" xs12 md6>
-          </v-flex>
-          <v-flex v-if="thisUser.status" xs12 md6>
-            <v-icon
-                color="tertiary"
-                @click="thisUser.status=!thisUser.status"
-              >{{thisUser.status ? 'lock' : 'lock_open'}}</v-icon>
           </v-flex>
           <!-- <v-flex xs12 md4>
             <v-text-field label="City" class="purple-input" />

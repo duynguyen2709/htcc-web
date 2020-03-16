@@ -2,7 +2,7 @@
   <v-container fill-height fluid grid-list-xl>
     <v-layout justify-center wrap>
       <v-flex md12>
-        <v-btn color="green white--text" to="/admins/add">Thêm một admin</v-btn>
+        <v-btn color="green white--text" to="/admins/add">Add new admin</v-btn>
         <material-card text>
           <v-card-title>
             <v-text-field
@@ -16,7 +16,7 @@
           <div>
             <v-data-table
               :headers="headers"
-              :items="items"
+              :items="ChoosenItems.slice(0, 7)"
               :search="search"
               hide-default-footer
               :page.sync="page"
@@ -33,11 +33,10 @@
               <template v-slot:body="{ items }">
                 <tbody>
                   <tr v-for="item in items" :key="item.id">
-                    <td><v-avatar><img :src="item.avatar" /></v-avatar></td>
-                    <td>{{ item.fullName }}</td>
-                    <td>{{ item.email }}</td>
-                    <td>{{ item.phoneNumber }}</td>
-                    <td class="text-xs-right">{{ item.role }}</td>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.country }}</td>
+                    <td>{{ item.city }}</td>
+                    <td class="text-xs-right">{{ item.salary }}</td>
                     <td class="text-xs-right">
                       <!-- <v-btn color="success" @click="dialog=true">Chỉnh sửa</v-btn> -->
                       <v-dialog v-model="item.dialog" width="700">
@@ -46,10 +45,11 @@
                           <v-icon color="tertiary" v-on="on">edit</v-icon>
                         </template>
                         <edit-form
-                          title="Chỉnh sửa thông tin admin"
-                          :fullName="item.fullName"
-                          :phoneNumber="item.phoneNumber"
-                          :email="item.email"
+                          title="Edit profile sub-admin"
+                          :firstname="item.name"
+                          :lastname="item.name"
+                          :phone="item.country"
+                          :email="item.city"
                           @OnClickEdit="updateProfile($event, item.id)"
                         ></edit-form>
                       </v-dialog>
@@ -92,86 +92,83 @@ export default {
     search: "",
     headers: [
       {
-        text: "Ảnh đại diện"
+        sortable: false,
+        text: "Name",
+        value: "name"
       },
       {
         sortable: false,
-        text: "Tên đầy đủ",
-        value: "fullName"
+        text: "Country",
+        value: "country"
       },
       {
         sortable: false,
-        text: "Email",
-        value: "email"
+        text: "City",
+        value: "city"
       },
       {
         sortable: false,
-        text: "Số điện thoại",
-        value: "phoneNumber"
-      },
-      {
-        sortable: false,
-        text: "Vai trò",
-        value: "role",
+        text: "Salary",
+        value: "salary",
+        align: "right"
       }
     ],
-    // items: [
-    //   {
-    //     name: "Dakota Rice",
-    //     country: "Niger",
-    //     city: "Oud-Tunrhout",
-    //     salary: "$35,738",
-    //     id: 0,
-    //     status: true,
-    //     dialog: false
-    //   },
-    //   {
-    //     name: "Minerva Hooper",
-    //     country: "Curaçao",
-    //     city: "Sinaai-Waas",
-    //     salary: "$23,738",
-    //     id: 1,
-    //     status: false,
-    //     dialog: false
-    //   },
-    //   {
-    //     name: "Sage Rodriguez",
-    //     country: "Netherlands",
-    //     city: "Overland Park",
-    //     salary: "$56,142",
-    //     id: 2,
-    //     status: true,
-    //     dialog: false
-    //   },
-    //   {
-    //     name: "Philip Chanley",
-    //     country: "Korea, South",
-    //     city: "Gloucester",
-    //     salary: "$38,735",
-    //     id: 3,
-    //     status: true,
-    //     dialog: false
-    //   },
-    //   {
-    //     name: "Doris Greene",
-    //     country: "Malawi",
-    //     city: "Feldkirchen in Kārnten",
-    //     salary: "$63,542",
-    //     id: 4,
-    //     status: true,
-    //     dialog: false
-    //   },
-    //   {
-    //     name: "Mason Porter",
-    //     country: "Chile",
-    //     city: "Gloucester",
-    //     salary: "$78,615",
-    //     id: 5,
-    //     status: true,
-    //     dialog: false
-    //   }
-    // ],
-    items: [],
+    items: [
+      {
+        name: "Dakota Rice",
+        country: "Niger",
+        city: "Oud-Tunrhout",
+        salary: "$35,738",
+        id: 0,
+        status: true,
+        dialog: false
+      },
+      {
+        name: "Minerva Hooper",
+        country: "Curaçao",
+        city: "Sinaai-Waas",
+        salary: "$23,738",
+        id: 1,
+        status: false,
+        dialog: false
+      },
+      {
+        name: "Sage Rodriguez",
+        country: "Netherlands",
+        city: "Overland Park",
+        salary: "$56,142",
+        id: 2,
+        status: true,
+        dialog: false
+      },
+      {
+        name: "Philip Chanley",
+        country: "Korea, South",
+        city: "Gloucester",
+        salary: "$38,735",
+        id: 3,
+        status: true,
+        dialog: false
+      },
+      {
+        name: "Doris Greene",
+        country: "Malawi",
+        city: "Feldkirchen in Kārnten",
+        salary: "$63,542",
+        id: 4,
+        status: true,
+        dialog: false
+      },
+      {
+        name: "Mason Porter",
+        country: "Chile",
+        city: "Gloucester",
+        salary: "$78,615",
+        id: 5,
+        status: true,
+        dialog: false
+      }
+    ],
     ChoosenItems:[]
   }),
   methods: {
@@ -192,42 +189,21 @@ export default {
       let ChoosenItem = this.items.find(item => item.id === id);
       ChoosenItem.dialog = false;
       this.TriggerNoti();
-    },
-   async getListAdmins(){
-     let $this=this
-      await $this.$axios.get("/api/admin/users")
-        .then(function(response) {
-          if(response.data.returnCode == 1){
-         // console.log("this admins: " +  JSON.stringify(response.data.data))
-          $this.items = response.data.data;
-           console.log("this admins: " +  JSON.stringify($this.items))
-         
-          }
-          else{
-            console.log("this error message: " +  response.data.returnMessage)
-          }
-        })
-        .catch(function(error) {
-          console.log("Error get list admin:");
-          console.log(error);
-        });
     }
   },
   created: async function() {
-    // if (this.$route.params.id) {
-    //   let i;
-    //   for (i = 0; i < this.items.length; i++) {
-    //     if (this.items[i].idCom == this.$route.params.id) {
-    //       this.ChoosenItems.push(this.items[i]);
-    //       break;
-    //     }
-    //   }
-    // }
-    // else{
-    //   this.ChoosenItems = this.items
-    // }
-
-    this.getListAdmins()
+    if (this.$route.params.id) {
+      let i;
+      for (i = 0; i < this.items.length; i++) {
+        if (this.items[i].idCom == this.$route.params.id) {
+          this.ChoosenItems.push(this.items[i]);
+          break;
+        }
+      }
+    }
+    else{
+      this.ChoosenItems = this.items
+    }
   }
 };
 </script>

@@ -2,7 +2,7 @@
   <v-container fill-height fluid grid-list-xl>
     <v-layout justify-center wrap>
       <v-flex md12>
-        <v-btn color="green white--text" to="/admins/add">Thêm một admin</v-btn>
+        <v-btn color="green white--text" to="/admins/add">Add new admin</v-btn>
         <material-card text>
           <v-card-title>
             <v-text-field
@@ -16,7 +16,7 @@
           <div>
             <v-data-table
               :headers="headers"
-              :items="items"
+              :items="admins"
               :search="search"
               hide-default-footer
               :page.sync="page"
@@ -30,35 +30,34 @@
                 </thead>
               </template>
               <!-- <template slot="items" slot-scope="{ item }"> -->
-              <template v-slot:body="{ items }">
+              <template v-slot:body="{ admins }">
                 <tbody>
-                  <tr v-for="item in items" :key="item.id">
-                    <td><v-avatar><img :src="item.avatar" /></v-avatar></td>
-                    <td>{{ item.fullName }}</td>
-                    <td>{{ item.email }}</td>
-                    <td>{{ item.phoneNumber }}</td>
-                    <td class="text-xs-right">{{ item.role }}</td>
+                  <tr v-for="admin in admins" :key="admin.username">
+                    <td>{{ admin.fullName }}</td>
+                    <td>{{ admin.email }}</td>
+                    <td>{{ admin.phoneNumber }}</td>
+                    <td class="text-xs-right">{{ admin.role }}</td>
                     <td class="text-xs-right">
                       <!-- <v-btn color="success" @click="dialog=true">Chỉnh sửa</v-btn> -->
-                      <v-dialog v-model="item.dialog" width="700">
+                      <v-dialog v-model="admin.dialog" width="700">
                         <template v-slot:activator="{ on }">
                           <!-- <v-btn color="success" v-on="on">Chỉnh sửa</v-btn> -->
                           <v-icon color="tertiary" v-on="on">edit</v-icon>
                         </template>
                         <edit-form
-                          title="Chỉnh sửa thông tin admin"
-                          :fullName="item.fullName"
-                          :phoneNumber="item.phoneNumber"
-                          :email="item.email"
-                          @OnClickEdit="updateProfile($event, item.id)"
+                          title="Edit profile sub-admin"
+                          :name="admin.name"
+                          :phone="admin.phoneNumber"
+                          :email="admin.email"
+                          @OnClickEdit="updateProfile($event, admin.username)"
                         ></edit-form>
                       </v-dialog>
                     </td>
                     <td>
                       <v-icon
                         color="tertiary"
-                        @click="item.status=!item.status"
-                      >{{item.status ? 'lock' : 'lock_open'}}</v-icon>
+                        @click="admin.status=!admin.status"
+                      >{{admin.status == 1 ? 'lock' : 'lock_open'}}</v-icon>
                     </td>
                   </tr>
                 </tbody>
@@ -92,28 +91,37 @@ export default {
     search: "",
     headers: [
       {
-        text: "Ảnh đại diện"
-      },
-      {
         sortable: false,
         text: "Tên đầy đủ",
         value: "fullName"
       },
       {
         sortable: false,
-        text: "Email",
+        text: "email",
         value: "email"
       },
       {
         sortable: false,
         text: "Số điện thoại",
-        value: "phoneNumber"
+        value: "phoneNumber",
       },
       {
         sortable: false,
         text: "Vai trò",
         value: "role",
       }
+    ],
+    //admins:[],
+    admins: [
+        {
+            username: "admin1",
+            fullName: "Nguyễn Quốc Đạt",
+            email: "admin@gmail.com",
+            phoneNumber: "0912345678",
+            avatar: "https://i.pinimg.com/originals/0d/36/e7/0d36e7a476b06333d9fe9960572b66b9.jpg",
+            role: 1,
+            status: 1
+        }
     ],
     // items: [
     //   {
@@ -171,7 +179,6 @@ export default {
     //     dialog: false
     //   }
     // ],
-    items: [],
     ChoosenItems:[]
   }),
   methods: {
@@ -199,8 +206,8 @@ export default {
         .then(function(response) {
           if(response.data.returnCode == 1){
          // console.log("this admins: " +  JSON.stringify(response.data.data))
-          $this.items = response.data.data;
-           console.log("this admins: " +  JSON.stringify($this.items))
+          $this.admins = response.data.data;
+           console.log("this admins: " +  JSON.stringify($this.admins))
          
           }
           else{
@@ -227,7 +234,7 @@ export default {
     //   this.ChoosenItems = this.items
     // }
 
-    this.getListAdmins()
+  //this.getListAdmins()
   }
 };
 </script>

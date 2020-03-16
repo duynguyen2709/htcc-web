@@ -47,8 +47,8 @@
                         </template>
                         <edit-form
                           title="Chỉnh sửa thông tin admin"
-                          :fullName="item.fullName"
-                          :phoneNumber="item.phoneNumber"
+                          :name="item.fullName"
+                          :phone="item.phoneNumber"
                           :email="item.email"
                           @OnClickEdit="updateProfile($event, item.id)"
                         ></edit-form>
@@ -171,7 +171,17 @@ export default {
     //     dialog: false
     //   }
     // ],
-    items: [],
+    items: [
+        {
+            "username": "admin1",
+            "fullName": "Nguyễn Quốc Đạt",
+            "email": "admin@gmail.com",
+            "phoneNumber": "0912345678",
+            "avatar": "https://i.pinimg.com/originals/0d/36/e7/0d36e7a476b06333d9fe9960572b66b9.jpg",
+            "role": 12222222,
+            "status": 1
+        }
+    ],
     ChoosenItems:[]
   }),
   methods: {

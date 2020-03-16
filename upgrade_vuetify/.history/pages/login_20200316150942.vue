@@ -169,17 +169,15 @@ export default {
             $this.$auth.setUserToken(response.data.data.token);
 
             let ThisUser = response.data.data.user
-            // $this.$auth.setUser({
-            //       avatar: ThisUser.avatar,
-            //       email: ThisUser.email,
-            //       fullName: ThisUser.fullName,
-            //       phoneNumber: ThisUser.phoneNumber,
-            //       username: ThisUser.username,
-            //       role: ThisUser.role,
-            //       status: ThisUser.status
-            //     });
-
-            $this.$auth.setUser(response.data.data.user)
+            $this.$auth.setUser({
+                  avatar: ThisUser.avatar,
+                  email: ThisUser.email,
+                  fullName: ThisUser.fullName,
+                  phoneNumber: ThisUser.phoneNumber,
+                  username: ThisUser.username,
+                  role: ThisUser.role,
+                  status: ThisUser.status
+                });
 
             // this.$axios
             //   .get("/api/admin/v2/api-docs/user/" + $this.username)

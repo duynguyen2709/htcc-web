@@ -47,8 +47,8 @@
                         </template>
                         <edit-form
                           title="Chỉnh sửa thông tin admin"
-                          :fullName="item.fullName"
-                          :phoneNumber="item.phoneNumber"
+                          :name="item.fullName"
+                          :phone="item.phoneNumber"
                           :email="item.email"
                           @OnClickEdit="updateProfile($event, item.id)"
                         ></edit-form>

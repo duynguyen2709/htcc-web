@@ -23,25 +23,20 @@
           <v-flex xs12 md6>
             <v-text-field v-model="InlineLastname" label="Last Name" class="purple-input" />
           </v-flex>-->
-
-          <v-avatar v-if="thisUser.avatar" slot="offset" class="mx-auto d-block" size="130">
-            <img :src="thisUser.avatar" />
-          </v-avatar>
-
-          <v-flex v-if="thisUser.username" xs12 md12>
+          <v-flex v-if="InlineUsername" xs12 md12>
             <v-text-field
               label="Username"
               class="purple-input"
               :rules="[rules.required]"
-              v-model="thisUser.username"
+              v-model="InlineUsername"
             />
           </v-flex>
-          <v-flex v-if="thisUser.password" xs12 md12>
+          <v-flex v-if="InlinePassword" xs12 md12>
             <v-text-field
               label="Password"
               class="purple-input"
               :rules="[rules.required, password]"
-              v-model="thisUser.password"
+              v-model="InlinePassword"
             />
           </v-flex>
           <v-flex xs12 md12>
@@ -67,14 +62,6 @@
               :rules="[rules.required, rules.phone]"
               v-model="InlinePhone"
             />
-          </v-flex>
-          <v-flex v-if="thisUser.role" xs12 md6>
-          </v-flex>
-          <v-flex v-if="thisUser.status" xs12 md6>
-            <v-icon
-                color="tertiary"
-                @click="thisUser.status=!thisUser.status"
-              >{{thisUser.status ? 'lock' : 'lock_open'}}</v-icon>
           </v-flex>
           <!-- <v-flex xs12 md4>
             <v-text-field label="City" class="purple-input" />
@@ -121,11 +108,11 @@ export default {
         //     type: String,
         //     required: true
         //     },
-        fullName: {
+        name: {
           type: String,
             required: true
         },
-        phoneNumber: {
+        phone: {
             type: String,
             required: true
             },
@@ -167,14 +154,14 @@ export default {
             // InlineFirstname: this.firstname,
             // InlineLastname: this.lastname,
             thisUser:{
-              fullName: this.fullName,
-              InlinePhone: this.phoneNumber,
-              email: this.email,
-              username: this.username || null,
-              password: this.password || null,
-              role: this.role || null,
-              status: this.status || null,
-              avatar: "https://i.pinimg.com/originals/0d/36/e7/0d36e7a476b06333d9fe9960572b66b9.jpg"
+              InlineName: this.name,
+              InlinePhone: this.phone,
+              InlineEmail: this.email,
+              InlineUsername: this.username,
+              InlinePassword: this.password,
+              InlineRole: this.role,
+              InlineStatus: this.status,
+              InlineAvatar: this.avatar,
             },
 
             rules: {
@@ -205,15 +192,15 @@ export default {
         // lastname: function(newVal, oldVal){
         //     this.InsideValue = newVal
         //     },
-        // name: function(newVal, oldVal){
-        //     this.InsideValue = newVal
-        //     },
-        // phone: function(newVal, oldVal){
-        //     this.InsideValue = newVal
-        //     },
-        // email: function(newVal, oldVal){
-        //     this.InsideValue = newVal
-        //     }
+        name: function(newVal, oldVal){
+            this.InsideValue = newVal
+            },
+        phone: function(newVal, oldVal){
+            this.InsideValue = newVal
+            },
+        email: function(newVal, oldVal){
+            this.InsideValue = newVal
+            }
     },
     methods:{
       

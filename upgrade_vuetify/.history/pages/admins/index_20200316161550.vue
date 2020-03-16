@@ -16,7 +16,7 @@
           <div>
             <v-data-table
               :headers="headers"
-              :items="items"
+              :items="ChoosenItems.slice(0, 7)"
               :search="search"
               hide-default-footer
               :page.sync="page"
@@ -47,8 +47,8 @@
                         </template>
                         <edit-form
                           title="Chỉnh sửa thông tin admin"
-                          :fullName="item.fullName"
-                          :phoneNumber="item.phoneNumber"
+                          :name="item.fullName"
+                          :phone="item.phoneNumber"
                           :email="item.email"
                           @OnClickEdit="updateProfile($event, item.id)"
                         ></edit-form>
@@ -171,7 +171,17 @@ export default {
     //     dialog: false
     //   }
     // ],
-    items: [],
+    items: [
+        {
+            "username": "admin1",
+            "fullName": "Nguyễn Quốc Đạt",
+            "email": "admin@gmail.com",
+            "phoneNumber": "0912345678",
+            "avatar": "https://i.pinimg.com/originals/0d/36/e7/0d36e7a476b06333d9fe9960572b66b9.jpg",
+            "role": 1,
+            "status": 1
+        }
+    ],
     ChoosenItems:[]
   }),
   methods: {
@@ -192,42 +202,21 @@ export default {
       let ChoosenItem = this.items.find(item => item.id === id);
       ChoosenItem.dialog = false;
       this.TriggerNoti();
-    },
-   async getListAdmins(){
-     let $this=this
-      await $this.$axios.get("/api/admin/users")
-        .then(function(response) {
-          if(response.data.returnCode == 1){
-         // console.log("this admins: " +  JSON.stringify(response.data.data))
-          $this.items = response.data.data;
-           console.log("this admins: " +  JSON.stringify($this.items))
-         
-          }
-          else{
-            console.log("this error message: " +  response.data.returnMessage)
-          }
-        })
-        .catch(function(error) {
-          console.log("Error get list admin:");
-          console.log(error);
-        });
     }
   },
   created: async function() {
-    // if (this.$route.params.id) {
-    //   let i;
-    //   for (i = 0; i < this.items.length; i++) {
-    //     if (this.items[i].idCom == this.$route.params.id) {
-    //       this.ChoosenItems.push(this.items[i]);
-    //       break;
-    //     }
-    //   }
-    // }
-    // else{
-    //   this.ChoosenItems = this.items
-    // }
-
-    this.getListAdmins()
+    if (this.$route.params.id) {
+      let i;
+      for (i = 0; i < this.items.length; i++) {
+        if (this.items[i].idCom == this.$route.params.id) {
+          this.ChoosenItems.push(this.items[i]);
+          break;
+        }
+      }
+    }
+    else{
+      this.ChoosenItems = this.items
+    }
   }
 };
 </script>

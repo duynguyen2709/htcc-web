@@ -47,8 +47,8 @@
                         </template>
                         <edit-form
                           title="Chỉnh sửa thông tin admin"
-                          :fullName="item.fullName"
-                          :phoneNumber="item.phoneNumber"
+                          :name="item.fullName"
+                          :phone="item.phoneNumber"
                           :email="item.email"
                           @OnClickEdit="updateProfile($event, item.id)"
                         ></edit-form>
@@ -171,7 +171,17 @@ export default {
     //     dialog: false
     //   }
     // ],
-    items: [],
+    items: [
+        {
+            "username": "admin1",
+            "fullName": "Nguyễn Quốc Đạt",
+            "email": "admin@gmail.com",
+            "phoneNumber": "0912345678",
+            "avatar": "https://i.pinimg.com/originals/0d/36/e7/0d36e7a476b06333d9fe9960572b66b9.jpg",
+            "role": 1,
+            "status": 1
+        }
+    ],
     ChoosenItems:[]
   }),
   methods: {
@@ -200,7 +210,7 @@ export default {
           if(response.data.returnCode == 1){
          // console.log("this admins: " +  JSON.stringify(response.data.data))
           $this.items = response.data.data;
-           console.log("this admins: " +  JSON.stringify($this.items))
+           //console.log("this admins: " +  JSON.stringify($this.admins))
          
           }
           else{
@@ -214,20 +224,18 @@ export default {
     }
   },
   created: async function() {
-    // if (this.$route.params.id) {
-    //   let i;
-    //   for (i = 0; i < this.items.length; i++) {
-    //     if (this.items[i].idCom == this.$route.params.id) {
-    //       this.ChoosenItems.push(this.items[i]);
-    //       break;
-    //     }
-    //   }
-    // }
-    // else{
-    //   this.ChoosenItems = this.items
-    // }
-
-    this.getListAdmins()
+    if (this.$route.params.id) {
+      let i;
+      for (i = 0; i < this.items.length; i++) {
+        if (this.items[i].idCom == this.$route.params.id) {
+          this.ChoosenItems.push(this.items[i]);
+          break;
+        }
+      }
+    }
+    else{
+      this.ChoosenItems = this.items
+    }
   }
 };
 </script>
