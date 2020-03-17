@@ -75,6 +75,8 @@
           :fullName="user.fullName"
           :phoneNumber="user.phoneNumber"
           :email="user.email"
+          :loading="is_loading_update"
+          btn="Cập nhập thông tin"
           @OnClickEdit="updateProfile($event)"
         ></edit-form>
       </v-flex>
@@ -157,7 +159,7 @@
                     <v-icon>mdi-refresh</v-icon>
                     </v-btn>-->
                     <v-layout justify-center align-center>
-                      <v-btn color="success" @click="changePassword">Đổi mật khẩu</v-btn>
+                      <v-btn :loading="is_loading_password" color="success" @click="changePassword">Đổi mật khẩu</v-btn>
                     </v-layout>
                   </v-card-actions>
                 </v-form>
@@ -237,7 +239,11 @@ export default {
         }
         //CurrentPassword: [true],
         //NewPasswordConfirm: [true]
-      }
+      },
+
+
+      is_loading_update: false,
+      is_loading_password: false
     };
   },
   computed: {
@@ -260,15 +266,15 @@ export default {
       setPassword: "user/setPassword",
       setInfo: "notification/setInfo"
     }),
-    updateProfile: function(e) {
-
+    updateProfile: async function(e) {
+this.is_loading_update = true;
       //this.setUser(user);
       
       //console.log("edit profile")
 
       let url = "/api/admin/users/" + this.user.username
       console.log("url: " + url);
-      this.$axios
+      await this.$axios
         .put(url, {
           avatar: this.user.avatar,
           email: e.user.email,
@@ -291,6 +297,8 @@ export default {
           console.log(res);
           //$this.goBack();
           }
+
+         
         })
         .catch(function(error) {
           //handle error
@@ -298,13 +306,13 @@ export default {
           console.log("Error:");
           console.log(error);
         });
-
+ this.is_loading_update = false;
       //e.preventDefault();
     },
-    changePassword() {
+    async changePassword() {
       console.log("New p: " + this.OldPassword);
       console.log("Cur p: " + this.user.password);
-      
+      this.is_loading_password = true;
       let flag = true;
 
       // if (this.OldPassword !== this.user.password) {
@@ -331,7 +339,7 @@ export default {
         this.snackbar = true;
 
         let url = "/api/gateway/private/changepassword/3"
-        this.$axios
+        await this.$axios
         .put(url, {
           "clientId": 3,
           "companyId": "",
@@ -340,12 +348,12 @@ export default {
           "username": "admin"
         })
         .then(res => {
-          if(res.data.returnCode == 0){
-            this.TriggerNoti(res.data.returnMessage);
+          if(res.data.returnCode != 1){
+            this.TriggerNotiError(res.data.returnMessage);
           }
           else{
           //this.is_loading = false;
-          this.TriggerNoti("Cập nhập thông tin thành công");
+          this.TriggerNoti(res.data.returnMessage);
           console.log("Response");
           console.log(res);
           //$this.goBack();
@@ -362,7 +370,7 @@ export default {
         console.log("ref form validate false");
         flag = false
       }
-
+this.is_loading_password = false;
       // if(flag)
       //   {
       //     this.setPassword(this.NewPassword);
@@ -380,6 +388,11 @@ export default {
     },
     TriggerNoti(mess){
       this.setInfo({color: 'success',
+                mess: mess,
+                status: true})
+      },
+    TriggerNotiError(mess){
+      this.setInfo({color: 'error',
                 mess: mess,
                 status: true})
       }

@@ -50,7 +50,7 @@
                           :fullName="item.fullName"
                           :phoneNumber="item.phoneNumber"
                           :email="item.email"
-                          @OnClickEdit="updateProfile($event, item.id)"
+                          @OnClickEdit="updateProfile($event, item)"
                         ></edit-form>
                       </v-dialog>
                     </td>
@@ -115,6 +115,7 @@ export default {
         value: "role",
       }
     ],
+
     // items: [
     //   {
     //     name: "Dakota Rice",
@@ -188,10 +189,42 @@ export default {
         status: true
       });
     },
-    updateProfile(e, id) {
-      let ChoosenItem = this.items.find(item => item.id === id);
-      ChoosenItem.dialog = false;
-      this.TriggerNoti();
+    updateProfile(e, user) {
+      // let ChoosenItem = this.items.find(item => item.id === id);
+      // ChoosenItem.dialog = false;
+
+      let url = "/api/admin/users/" + user.username
+      console.log("url: " + url);
+      this.$axios
+        .put(url, {
+          avatar: user.avatar,
+          email: e.user.email,
+          fullName: e.user.fullName,
+          password: user.password,
+          phoneNumber: e.user.phoneNumber,
+          role: user.role,
+          status: e.user.status,
+          username: this.user.username,
+        })
+        .then(res => {
+          if(res.data.returnCode == 0){
+            this.TriggerNoti(res.data.returnMessage);
+          }
+          else{
+          //this.is_loading = false;
+          this.TriggerNoti("Cập nhập thông tin thành công");
+          window.location.reload(true);
+          console.log("Response");
+          console.log(res);
+          //$this.goBack();
+          }
+        })
+        .catch(function(error) {
+          //handle error
+          //this.is_loading = false;
+          console.log("Error:");
+          console.log(error);
+        });
     },
    async getListAdmins(){
      let $this=this

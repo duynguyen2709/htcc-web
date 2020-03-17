@@ -98,7 +98,7 @@
               color="success"
               @click="$emit('OnClickEdit', {firstname: InlineFirstname, lastname: InlineLastname})"
             >Update Profile</v-btn>-->
-            <v-btn class="mx-0 font-weight-light" color="success" @click.prevent="$emit('OnClickEdit', {user: thisUser})">Update Profile</v-btn>
+            <v-btn :loading="is_loading_local" class="mx-0 font-weight-light" color="success" @click.prevent="$emit('OnClickEdit', {user: thisUser})">{{btn || OK}}</v-btn>
           </v-flex>
         </v-layout>
       </v-container>
@@ -160,6 +160,14 @@ export default {
         avatar:{
           type: String,
           required: false
+        },
+        btn: {
+          type: String,
+          required: false
+        },
+        loading: {
+          type: Boolean,
+          required: false
         }
     },
     data(){
@@ -177,6 +185,8 @@ export default {
               //avatar: "https://i.pinimg.com/originals/0d/36/e7/0d36e7a476b06333d9fe9960572b66b9.jpg"
               avatar: this.avatar || null
             },
+
+            is_loading_local: this.loading,
 
             rules: {
                 required: value => !!value || "Không được để trống",
