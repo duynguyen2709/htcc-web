@@ -1,6 +1,6 @@
 import React from 'react';
 import * as _ from 'lodash';
-import { columnsEmployee } from '../constant/tableEmployee';
+import { columnsEmployee } from '../constant/tableEmployee2';
 import { checkValidPhoneNumber } from '../utils/validate';
 import { store } from 'react-notifications-component';
 import { createNotify } from './notifier';
