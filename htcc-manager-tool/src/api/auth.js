@@ -34,7 +34,7 @@ const logout = () => {
   return new Promise((resolve, reject) => {
     axios
       .post(
-        `${API_URL_GATEWAY}/api/gateway/private/logout/`,
+        `${API_URL_GATEWAY}/api/gateway/private/logout`,
         {},
         {
           headers: {
