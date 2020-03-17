@@ -168,7 +168,8 @@ export default {
 
             $this.$auth.setUserToken(response.data.data.token);
 
-            let ThisUser = response.data.data.user
+            // let ThisUser = response.data.data.user
+            // ThisUser.password = $this.password
             // $this.$auth.setUser({
             //       avatar: ThisUser.avatar,
             //       email: ThisUser.email,

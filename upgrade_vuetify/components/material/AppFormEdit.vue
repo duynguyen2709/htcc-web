@@ -49,7 +49,7 @@
               label="Email"
               class="purple-input"
               :rules="[rules.required, rules.email]"
-              v-model="InlineEmail"
+              v-model="thisUser.email"
             />
           </v-flex>
           <v-flex xs12 md12>
@@ -57,7 +57,7 @@
               label="Tên đầy đủ"
               class="purple-input"
               :rules="[rules.required]"
-              v-model="InlineName"
+              v-model="thisUser.fullName"
             />
           </v-flex>
           <v-flex xs12 md12>
@@ -65,7 +65,7 @@
               label="Phone"
               class="purple-input"
               :rules="[rules.required, rules.phone]"
-              v-model="InlinePhone"
+              v-model="thisUser.phoneNumber"
             />
           </v-flex>
           <v-flex v-if="thisUser.role" xs12 md6>
@@ -98,7 +98,7 @@
               color="success"
               @click="$emit('OnClickEdit', {firstname: InlineFirstname, lastname: InlineLastname})"
             >Update Profile</v-btn>-->
-            <v-btn class="mx-0 font-weight-light" color="success">Update Profile</v-btn>
+            <v-btn class="mx-0 font-weight-light" color="success" @click.prevent="$emit('OnClickEdit', {user: thisUser})">Update Profile</v-btn>
           </v-flex>
         </v-layout>
       </v-container>
@@ -168,13 +168,14 @@ export default {
             // InlineLastname: this.lastname,
             thisUser:{
               fullName: this.fullName,
-              InlinePhone: this.phoneNumber,
+              phoneNumber: this.phoneNumber,
               email: this.email,
               username: this.username || null,
               password: this.password || null,
               role: this.role || null,
               status: this.status || null,
-              avatar: "https://i.pinimg.com/originals/0d/36/e7/0d36e7a476b06333d9fe9960572b66b9.jpg"
+              //avatar: "https://i.pinimg.com/originals/0d/36/e7/0d36e7a476b06333d9fe9960572b66b9.jpg"
+              avatar: this.avatar || null
             },
 
             rules: {

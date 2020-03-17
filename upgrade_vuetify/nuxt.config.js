@@ -95,16 +95,17 @@ export default {
     strategies: {
       local: {
         endpoints: {
-          // login: {
-          //   url: '/api/gateway/public/login',
-          //   method: 'post',
-          //   propertyName: 'token'
-          // },
-          // user: {
-          //   url: '/api/gateway/private/test',
-          //   method: 'get',
-          //   propertyName: 'user'
-          // },
+          login: {
+            url: '/api/gateway/public/login',
+            method: 'post',
+            propertyName: 'data.token'
+          },
+          user: {
+            url: '/api/admin/me',
+            method: 'get',
+            propertyName: 'data'
+          },
+          //user: true,
           logout: { 
             url: '/api/gateway/private/logout/3',
             method: 'post',
@@ -116,7 +117,7 @@ export default {
     redirect: {
       login: '/login',
       logout: '/login',
-      callback: '/login',
+      callback: '/admins',
       home: '/admins'
     }
   },
