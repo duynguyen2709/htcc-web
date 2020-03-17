@@ -1,6 +1,6 @@
 import React from 'react';
 import * as _ from 'lodash';
-import { columnsEmployee } from '../constant/tableEmployee2';
+import { columns } from '../constant/tableEmployee';
 import { checkValidPhoneNumber } from '../utils/validate';
 import { store } from 'react-notifications-component';
 import { createNotify } from './notifier';
@@ -18,7 +18,7 @@ export const checkValidInputDataRow = row => {
   }
   row = { ...row, code: '1' };
 
-  _.forEach(getFieldTable(columnsEmployee), column => {
+  _.forEach(getFieldTable(columns), column => {
     if (column === 'phoneNumber') {
       if (!checkValidPhoneNumber(row[column])) {
         store.addNotification(

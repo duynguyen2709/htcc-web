@@ -34,8 +34,8 @@ const logout = () => {
   return new Promise((resolve, reject) => {
     axios
       .post(
-        `${API_URL_GATEWAY}/api/gateway/private/logout/${CLIENTID}?companyId=${user.companyId}&username=${user.username}`,
-        data,
+        `${API_URL_GATEWAY}/api/gateway/private/logout/`,
+        {},
         {
           headers: {
             Authorization: `Bearer ${token}`
