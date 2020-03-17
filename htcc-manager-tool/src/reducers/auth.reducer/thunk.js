@@ -19,12 +19,12 @@ export const login = (companyId, username, password) => dispatch =>
     }
   });
 
-export const fetchUser = token => dispatch =>
+export const fetchUser = (companyId, username, token) => dispatch =>
   new Promise(async (resolve, reject) => {
-    const res = await authApi.fetchUser(token);
-
+    const res = await authApi.fetchUser(companyId, username, token);
+    console.log('res', res);
     if (res.returnCode === 1) {
-      resolve(dispatch(doLoginSuccess(res.data.user)));
+      resolve(dispatch(doLoginSuccess(res.data)));
     } else {
       reject(dispatch(doLoginFail(res.returnMessage)));
     }

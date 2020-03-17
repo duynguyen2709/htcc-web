@@ -17,7 +17,6 @@ import {
 import { logout } from '../../reducers/auth.reducer';
 import { connect } from 'react-redux';
 import UserProfile from '../../views/UserProfile';
-import { getTokenFromLocalStorage } from '../../utils/user';
 
 class AdminNavbar extends React.Component {
   constructor(props) {

@@ -5,7 +5,7 @@ import * as _ from 'lodash';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchUser } from '../reducers/auth.reducer';
-import { TOKEN } from '../constant/localStorageKey';
+import { TOKEN, USER } from '../constant/localStorageKey';
 
 class Login extends React.Component {
   constructor(props) {
@@ -17,12 +17,14 @@ class Login extends React.Component {
 
   isLogged = () => {
     const token = localStorage.getItem(TOKEN);
+    const user = JSON.parse(localStorage.getItem(USER));
+
     if (!_.isEmpty(this.props.user)) {
       return true;
     }
 
-    if (token) {
-      fetchUser(token);
+    if (token && user) {
+      fetchUser(user.companyId, user.username, token);
       return true;
     }
 
@@ -58,7 +60,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchUser: token => dispatch(fetchUser(token))
+  fetchUser: (companyId, username, token) =>
+    dispatch(fetchUser(companyId, username, token))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
