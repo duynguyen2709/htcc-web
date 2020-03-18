@@ -1,4 +1,4 @@
-<template>
+<template class="d-toolbar ">
   <!-- <v-toolbar id="core-toolbar" flat prominent style="background: #eee;"> -->
   <v-toolbar id="core-toolbar" class="d-toolbar " text prominent style="background: #eee;">
     <div class="v-toolbar-title ">

@@ -27,7 +27,7 @@ export default {
   ** Global CSS
   */
   css: [
-    '~/assets/variables.scss',
+    '~/assets/index.scss',
     //'~/assets/vuetify.min.css'
   ],
   /*
@@ -117,7 +117,7 @@ export default {
     redirect: {
       login: '/login',
       logout: '/login',
-      callback: '/admins',
+      callback: '/login',
       home: '/admins'
     }
   },

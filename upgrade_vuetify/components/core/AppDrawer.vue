@@ -19,7 +19,7 @@
         column
       >
         <v-list dense>
-          <v-list-item avatar to="/">
+          <v-list-item avatar to="/admins">
           <v-list-item-avatar
             color="white"
           >

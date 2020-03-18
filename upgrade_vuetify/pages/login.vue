@@ -180,7 +180,7 @@ export default {
             //       status: ThisUser.status
             //     });
 
-            $this.$auth.setUser(response.data.data.user)
+           // $this.$auth.setUser(response.data.data.user)
 
             // this.$axios
             //   .get("/api/admin/v2/api-docs/user/" + $this.username)

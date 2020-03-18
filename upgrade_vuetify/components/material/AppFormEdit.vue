@@ -28,7 +28,7 @@
             <img :src="thisUser.avatar" />
           </v-avatar>
 
-          <v-flex v-if="thisUser.username" xs12 md12>
+          <v-flex v-if="thisUsername" xs12 md12>
             <v-text-field
               label="Username"
               class="purple-input"
@@ -36,7 +36,7 @@
               v-model="thisUser.username"
             />
           </v-flex>
-          <v-flex v-if="thisUser.password" xs12 md12>
+          <v-flex v-if="thisPassword" xs12 md12>
             <v-text-field
               label="Password"
               class="purple-input"
@@ -142,12 +142,14 @@ export default {
             required: false
             },
         username:{
-            type: String,
-            required: false
+            type: Boolean,
+            required: false,
+            default: false
         },
         password:{
-            type: String,
-            required: false
+            type: Boolean,
+            required: false,
+            default: false
         },
         role:{
             type: Number,
@@ -174,12 +176,15 @@ export default {
         return{
             // InlineFirstname: this.firstname,
             // InlineLastname: this.lastname,
+            thisUsername: this.username,
+            thisPassword: this.password,
+
             thisUser:{
               fullName: this.fullName,
               phoneNumber: this.phoneNumber,
               email: this.email,
-              username: this.username || null,
-              password: this.password || null,
+              username: "",
+              password: "", 
               role: this.role || null,
               status: this.status || null,
               //avatar: "https://i.pinimg.com/originals/0d/36/e7/0d36e7a476b06333d9fe9960572b66b9.jpg"

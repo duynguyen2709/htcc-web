@@ -50,6 +50,7 @@
                           :fullName="item.fullName"
                           :phoneNumber="item.phoneNumber"
                           :email="item.email"
+                          btn="Cập nhập"
                           @OnClickEdit="updateProfile($event, item)"
                         ></edit-form>
                       </v-dialog>
@@ -193,6 +194,10 @@ export default {
       // let ChoosenItem = this.items.find(item => item.id === id);
       // ChoosenItem.dialog = false;
 
+      user.email = e.user.email
+      user.fullName = e.user.fullName
+      user.phoneNumber = e.user.phoneNumber
+
       let url = "/api/admin/users/" + user.username
       console.log("url: " + url);
       this.$axios
@@ -204,7 +209,7 @@ export default {
           phoneNumber: e.user.phoneNumber,
           role: user.role,
           status: e.user.status,
-          username: this.user.username,
+          username: user.username,
         })
         .then(res => {
           if(res.data.returnCode == 0){
@@ -213,7 +218,7 @@ export default {
           else{
           //this.is_loading = false;
           this.TriggerNoti("Cập nhập thông tin thành công");
-          window.location.reload(true);
+          //window.location.reload(true);
           console.log("Response");
           console.log(res);
           //$this.goBack();
