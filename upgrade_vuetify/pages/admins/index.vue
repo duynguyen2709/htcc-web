@@ -33,14 +33,18 @@
               <template v-slot:body="{ items }">
                 <tbody>
                   <tr v-for="item in items" :key="item.id">
-                    <td><v-avatar><img :src="item.avatar" /></v-avatar></td>
+                    <td>
+                      <v-avatar>
+                        <img :src="item.avatar" />
+                      </v-avatar>
+                    </td>
                     <td>{{ item.fullName }}</td>
                     <td>{{ item.email }}</td>
                     <td>{{ item.phoneNumber }}</td>
                     <td class="text-xs-right">{{ item.role }}</td>
                     <td class="text-xs-right">
                       <!-- <v-btn color="success" @click="dialog=true">Chỉnh sửa</v-btn> -->
-                      <v-dialog v-model="item.dialog" width="700">
+                      <v-dialog v-model="Firstdialog" width="700">
                         <template v-slot:activator="{ on }">
                           <!-- <v-btn color="success" v-on="on">Chỉnh sửa</v-btn> -->
                           <v-icon color="tertiary" v-on="on">edit</v-icon>
@@ -58,12 +62,34 @@
                     <td>
                       <v-icon
                         color="tertiary"
-                        @click="item.status=!item.status"
+                        @click.stop="ShowStatusDialog(item)"
                       >{{item.status ? 'lock' : 'lock_open'}}</v-icon>
+
+                      
                     </td>
+
+                    
                   </tr>
                 </tbody>
+                <v-dialog v-model="SecondDialog" max-width="290">
+                        <v-card>
+                          <v-card-title class="headline">Use Google's location service?</v-card-title>
+
+                          <v-card-text>Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.</v-card-text>
+
+                          <v-card-actions>
+                            <v-spacer></v-spacer>
+
+                            <v-btn color="green darken-1" text @click="SecondDialog = false">Disagree</v-btn>
+
+                            <v-btn color="green darken-1" text @click="SecondDialog = false">Agree</v-btn>
+                          </v-card-actions>
+                        </v-card>
+                      </v-dialog>
+
               </template>
+
+            
             </v-data-table>
             <v-pagination v-model="page" :length="pageCount"></v-pagination>
           </div>
@@ -85,10 +111,12 @@ export default {
     editForm
   },
   data: () => ({
+    ChoosenItem: null,
+    StatusDialog: false,
     page: 1,
     pageCount: 0,
     itemsPerPage: 5,
-    dialog: false,
+    Firstdialog: false,
     btnLock: true,
     search: "",
     headers: [
@@ -113,7 +141,7 @@ export default {
       {
         sortable: false,
         text: "Vai trò",
-        value: "role",
+        value: "role"
       }
     ],
 
@@ -174,7 +202,7 @@ export default {
     //   }
     // ],
     items: [],
-    ChoosenItems:[]
+    ChoosenItems: []
   }),
   methods: {
     ...mapActions({
@@ -183,22 +211,21 @@ export default {
     clickItem: function(id) {
       this.$router.push({ path: "/admins/edit/" + id });
     },
-    TriggerNoti() {
-      this.setInfo({
-        color: "success",
-        mess: "Cập nhập thành công",
-        status: true
-      });
+    TriggerNoti(mess) {
+      this.setInfo({ color: "success", mess: mess, status: true });
+    },
+    TriggerNotiError(mess) {
+      this.setInfo({ color: "error", mess: mess, status: true });
     },
     updateProfile(e, user) {
       // let ChoosenItem = this.items.find(item => item.id === id);
       // ChoosenItem.dialog = false;
 
-      user.email = e.user.email
-      user.fullName = e.user.fullName
-      user.phoneNumber = e.user.phoneNumber
+      user.email = e.user.email;
+      user.fullName = e.user.fullName;
+      user.phoneNumber = e.user.phoneNumber;
 
-      let url = "/api/admin/users/" + user.username
+      let url = "/api/admin/users/" + user.username;
       console.log("url: " + url);
       this.$axios
         .put(url, {
@@ -209,19 +236,18 @@ export default {
           phoneNumber: e.user.phoneNumber,
           role: user.role,
           status: e.user.status,
-          username: user.username,
+          username: user.username
         })
         .then(res => {
-          if(res.data.returnCode == 0){
-            this.TriggerNoti(res.data.returnMessage);
-          }
-          else{
-          //this.is_loading = false;
-          this.TriggerNoti("Cập nhập thông tin thành công");
-          //window.location.reload(true);
-          console.log("Response");
-          console.log(res);
-          //$this.goBack();
+          if (res.data.returnCode != 1) {
+            this.TriggerNotiError(res.data.returnMessage);
+          } else {
+            //this.is_loading = false;
+            this.TriggerNoti("Cập nhập thông tin thành công");
+            //window.location.reload(true);
+            console.log("Response");
+            console.log(res);
+            //$this.goBack();
           }
         })
         .catch(function(error) {
@@ -231,24 +257,27 @@ export default {
           console.log(error);
         });
     },
-   async getListAdmins(){
-     let $this=this
-      await $this.$axios.get("/api/admin/users")
+    async getListAdmins() {
+      let $this = this;
+      await $this.$axios
+        .get("/api/admin/users")
         .then(function(response) {
-          if(response.data.returnCode == 1){
-         // console.log("this admins: " +  JSON.stringify(response.data.data))
-          $this.items = response.data.data;
-           console.log("this admins: " +  JSON.stringify($this.items))
-         
-          }
-          else{
-            console.log("this error message: " +  response.data.returnMessage)
+          if (response.data.returnCode == 1) {
+            // console.log("this admins: " +  JSON.stringify(response.data.data))
+            $this.items = response.data.data;
+            console.log("this admins: " + JSON.stringify($this.items));
+          } else {
+            console.log("this error message: " + response.data.returnMessage);
           }
         })
         .catch(function(error) {
           console.log("Error get list admin:");
           console.log(error);
         });
+    },
+    ShowStatusDialog(item){
+      this.ChoosenItem = item;
+      this.StatusDialog = true;
     }
   },
   created: async function() {
@@ -265,7 +294,7 @@ export default {
     //   this.ChoosenItems = this.items
     // }
 
-    this.getListAdmins()
+    this.getListAdmins();
   }
 };
 </script>

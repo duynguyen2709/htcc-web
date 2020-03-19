@@ -40,7 +40,7 @@
             <v-text-field
               label="Password"
               class="purple-input"
-              :rules="[rules.required, password]"
+              :rules="[rules.required, rules.password]"
               v-model="thisUser.password"
             />
           </v-flex>
@@ -201,7 +201,7 @@ export default {
                     return pattern.test(value) || "Email không hợp lệ.";
                     },
                 phone: value => {
-                    const pattern = /(09|01[2|6|8|9])+([0-9]{8})\b/g;
+                    const pattern = /(09|01[2|6|8|9]|03)+([0-9]{8,})\b/g;
                     return pattern.test(value) || "Số điện thoại không hợp lệ.";
                     },
                 password: value => {
