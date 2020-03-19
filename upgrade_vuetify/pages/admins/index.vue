@@ -63,26 +63,28 @@
                       <v-icon
                         color="tertiary"
                         @click.stop="ShowStatusDialog(item)"
-                      >{{item.status ? 'lock' : 'lock_open'}}</v-icon>
-
-                      
+                      >{{item.status == 0 ? 'lock' : 'lock_open'}}</v-icon>
                     </td>
-
+                    <td>
+                      <v-icon
+                        color="tertiary"
+                      >mdi-account-remove</v-icon>
+                    </td>
                     
                   </tr>
                 </tbody>
-                <v-dialog v-model="SecondDialog" max-width="290">
+                <v-dialog v-model="StatusDialog" max-width="290">
                         <v-card>
-                          <v-card-title class="headline">Use Google's location service?</v-card-title>
+                          <v-card-title class="green white--text">Thay đổi trạng thái</v-card-title>
 
-                          <v-card-text>Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.</v-card-text>
+                          <v-card-text class="mt-2">Bạn có chắc muốn thay đổi trạng thái của quản trị viên này?</v-card-text>
 
                           <v-card-actions>
                             <v-spacer></v-spacer>
 
-                            <v-btn color="green darken-1" text @click="SecondDialog = false">Disagree</v-btn>
+                            <v-btn color="green darken-1" text @click="setStatus()">Đồng ý</v-btn>
 
-                            <v-btn color="green darken-1" text @click="SecondDialog = false">Agree</v-btn>
+                            <v-btn color="red darken-1" text @click="StatusDialog = false">Hủy</v-btn>
                           </v-card-actions>
                         </v-card>
                       </v-dialog>
@@ -278,6 +280,37 @@ export default {
     ShowStatusDialog(item){
       this.ChoosenItem = item;
       this.StatusDialog = true;
+    },
+    async setStatus(){
+      let status = this.ChoosenItem.status == 0 ? 1 : 0;
+
+
+      await this.$axios
+        .put('/api/admin/users/' + this.ChoosenItem.username + '/status/' + status)
+        .then(res => {
+          if (res.data.returnCode != 1) {
+            this.TriggerNotiError(res.data.returnMessage);
+          } else {
+            //this.is_loading = false;
+            this.TriggerNoti(res.data.returnMessage);
+            //window.location.reload(true);
+            console.log("Response");
+            console.log(res);
+
+            this.ChoosenItem.status = status;
+            //$this.goBack();
+          }
+        })
+        .catch(function(error) {
+          //handle error
+          //this.is_loading = false;
+          console.log("Error set status:");
+          console.log(error);
+        });
+      
+
+
+      this.StatusDialog = false;
     }
   },
   created: async function() {
