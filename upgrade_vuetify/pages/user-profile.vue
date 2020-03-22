@@ -95,7 +95,7 @@
             <!-- <v-btn color="success" round class="font-weight-light">Change password</v-btn> -->
 
             <!-- Card edit -->
-            <v-dialog width="530">
+            <v-dialog width="530" v-model="dialog">
               <template v-slot:activator="{ on }">
                 <!-- <v-btn color="red lighten-2" dark v-on="on">Click Me</v-btn> -->
                 <!-- <v-btn color="success" rounded class="font-weight-light" v-on="on" @click="resetForm">Change password</v-btn> -->
@@ -144,12 +144,12 @@
                     ></v-text-field>
                   </v-card-text>
                   <v-card-actions>
-                    <v-tooltip bottom>
+                    <!-- <v-tooltip bottom>
                       <template v-slot:activator="{ on }">
                         <v-icon color="tertiary" v-on="on" @click="resetForm">mdi-refresh</v-icon>
                       </template>
                       <span class="white--text">Đặt lại form</span>
-                    </v-tooltip>
+                    </v-tooltip> -->
 
                     <!-- <v-btn
                     icon
@@ -211,6 +211,8 @@ export default {
       NewPassword: "",
       NewPasswordConfirm: "",
       //------------
+
+      dialog: false,
 
       rules: {
         required: value => !!value || "Không được để trống",
@@ -358,6 +360,8 @@ this.is_loading_update = true;
           console.log(res);
           //$this.goBack();
           }
+
+          this.dialog = false;
         })
         .catch(function(error) {
           //handle error

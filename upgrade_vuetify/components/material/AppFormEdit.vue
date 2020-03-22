@@ -42,6 +42,20 @@
               class="purple-input"
               :rules="[rules.required, rules.password]"
               v-model="thisUser.password"
+              :append-icon="ShowPassword ? 'mdi-eye' : 'mdi-eye-off'"
+                  @click:append="ShowPassword = !ShowPassword"
+                  :type="ShowPassword ? 'text' : 'password'"
+            />
+          </v-flex>
+            <v-flex v-if="thisPassword" xs12 md12>
+            <v-text-field
+              label="Confirm password"
+              class="purple-input"
+              :rules="[rules.required, rules.PasswordConfirm]"
+              v-model="PasswordConfirm"
+              :append-icon="ShowPasswordConfirm ? 'mdi-eye' : 'mdi-eye-off'"
+                  @click:append="ShowPasswordConfirm = !ShowPasswordConfirm"
+                  :type="ShowPasswordConfirm ? 'text' : 'password'"
             />
           </v-flex>
           <v-flex xs12 md12>
@@ -190,7 +204,9 @@ export default {
               //avatar: "https://i.pinimg.com/originals/0d/36/e7/0d36e7a476b06333d9fe9960572b66b9.jpg"
               avatar: this.avatar || null
             },
-
+            ShowPassword: false,
+            ShowPasswordConfirm: false,
+            PasswordConfirm: "",
             is_loading_local: this.loading,
 
             rules: {
@@ -210,7 +226,10 @@ export default {
                         pattern.test(value) ||
                         "Mật khẩu chưa hợp lệ, phải dài ít nhất 7  kí tự và chứa ít nhất 1 chữ số và kí tự đặc biệt !@#$%^&*"
                         );
-                    }
+                    },
+                PasswordConfirm: value => {
+                    return (value == this.thisUser.password) || "Mật khẩu mới không trùng khớp"
+                }
             }
         }
     },
