@@ -22,7 +22,7 @@ export const columns = [
     title: 'Email',
     dataIndex: 'email',
     editable: true,
-    width: '200px'
+    width: '350px'
   },
   {
     title: 'CMND',

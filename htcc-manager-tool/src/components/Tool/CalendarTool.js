@@ -23,6 +23,7 @@ class CalendarTool extends React.Component {
   render() {
     return (
       <DatePicker
+        className="form-control bor-radius"
         onChange={this.onChange}
         value={this.state.value}
         picker="month"

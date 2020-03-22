@@ -8,13 +8,8 @@ import {
   CheckCircleOutlined,
   CloseCircleOutlined
 } from '@ant-design/icons';
-
-const mapData = data => {
-  return _.map(data, item => ({
-    key: item.employeeId.toString(),
-    ...item
-  }));
-};
+import { store } from 'react-notifications-component';
+import { createNotify } from '../../utils/notifier';
 
 const EditableCell = ({
   editing,
@@ -51,14 +46,19 @@ const EditableCell = ({
   );
 };
 
-const EditableTable = ({ columnsInput = [], dataInput = [] }) => {
+const EditableTable = ({
+  columnsInput = [],
+  dataInput = [],
+  editURL,
+  valideInput
+}) => {
   const [form] = Form.useForm();
   const [data, setData] = useState([]);
   const [editingKey, setEditingKey] = useState('');
 
   useEffect(() => {
     if (!_.isEmpty(dataInput)) {
-      setData(mapData(dataInput));
+      setData(dataInput);
     }
   }, [dataInput]);
 
@@ -76,21 +76,28 @@ const EditableTable = ({ columnsInput = [], dataInput = [] }) => {
   const save = async key => {
     try {
       const row = await form.validateFields();
+      console.log('row', row);
+
+      if (!valideInput(row)) {
+        return;
+      }
+
+      //call api update
+
       const newData = [...data];
       const index = newData.findIndex(item => key === item.key);
 
       if (index > -1) {
         const item = newData[index];
         newData.splice(index, 1, { ...item, ...row });
-        setData(newData);
-        setEditingKey('');
       } else {
         newData.push(row);
-        setData(newData);
-        setEditingKey('');
       }
+
+      setData(newData);
+      setEditingKey('');
     } catch (errInfo) {
-      console.log('Validate Failed:', errInfo);
+      store.addNotification(createNotify('danger', errInfo));
     }
   };
 

@@ -183,8 +183,9 @@ class Attendance extends React.Component {
           <div className="header-table clearfix">
             <div className="float-left">
               <Search
+                className="form-control bor-radius"
                 placeholder="Tìm mã nhân viên"
-                style={{ width: 200 }}
+                style={{ width: 300 }}
                 onChange={this.onSearch}
               />
             </div>
