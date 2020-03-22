@@ -4,8 +4,10 @@ import { columns } from '../constant/tableEmployee';
 import { userApi } from '../api';
 import { store } from 'react-notifications-component';
 import { createNotify } from '../utils/notifier';
-import { Input } from 'antd';
-
+import { Input, Tooltip } from 'antd';
+import { PlusSquareOutlined } from '@ant-design/icons';
+import AsyncModal from '../components/Modal/AsyncModal';
+import FormAddNewEmployee from '../components/Form/FormAddNewEmployee';
 const { Search } = Input;
 const data = [
   {
@@ -193,7 +195,8 @@ class Employee extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: []
+      data: [],
+      showAddNew: false
     };
   }
 
@@ -214,8 +217,15 @@ class Employee extends React.Component {
       });
   }
 
+  toggle = () => {
+    this.setState({
+      showAddNew: !this.state.showAddNew
+    });
+  };
+
   render() {
     // const { data } = this.state;
+    const { showAddNew } = this.state;
     return (
       <div className="content">
         <div className="table-wrapper">
@@ -227,10 +237,22 @@ class Employee extends React.Component {
                 onChange={this.onSearch}
               />
             </div>
+            <div className="float-right btn-new">
+              <Tooltip placement="left" title={'Thêm nhân viên'}>
+                <PlusSquareOutlined onClick={this.toggle} />
+              </Tooltip>
+            </div>
           </div>
           <div className="table-attendance">
             <TableEmployee columnsInput={columns} dataInput={data} />
           </div>
+        </div>
+        <div>
+          <AsyncModal
+            CompomentContent={FormAddNewEmployee}
+            visible={showAddNew}
+            toggle={this.toggle}
+          />
         </div>
       </div>
     );

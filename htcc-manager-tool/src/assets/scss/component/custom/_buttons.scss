@@ -278,3 +278,25 @@ button {
     top: 4px;
   }
 }
+
+.btn-confirm-edit {
+  margin-right: 20px;
+  color: $info;
+}
+
+.btn-cancel-edit {
+  color: #e57373 !important;
+}
+
+.btn-new {
+  .anticon {
+    color: $primary;
+    svg {
+      font-size: 35px;
+    }
+    &:hover {
+      color: $primary-states;
+      cursor: pointer;
+    }
+  }
+}

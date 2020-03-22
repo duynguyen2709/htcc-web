@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Input, InputNumber, Popconfirm, Form } from 'antd';
+import { Table, Input, InputNumber, Tooltip, Form } from 'antd';
 import * as _ from 'lodash';
-import { EditOutlined, UnlockOutlined, LockOutlined } from '@ant-design/icons';
+import {
+  EditOutlined,
+  UnlockOutlined,
+  LockOutlined,
+  CheckCircleOutlined,
+  CloseCircleOutlined
+} from '@ant-design/icons';
 
 const mapData = data => {
   return _.map(data, item => ({
@@ -98,52 +104,56 @@ const EditableTable = ({ columnsInput = [], dataInput = [] }) => {
       render: (_, record) => {
         const editable = isEditing(record);
         return editable ? (
-          <span>
+          <span className="clearfix">
             <a
               href="javascript:;"
               onClick={() => save(record.key)}
-              style={{
-                marginRight: 8
-              }}
+              className="btn-confirm-edit float-left"
             >
-              Lưu
+              <CheckCircleOutlined />
             </a>
-            <Popconfirm title="Bạn muốn huỷ?" onConfirm={cancel}>
-              <a>Huỷ</a>
-            </Popconfirm>
+            <a className="btn-cancel-edit float-right" onClick={cancel}>
+              <CloseCircleOutlined />
+            </a>
           </span>
         ) : (
-          <React.Fragment className="clearfix">
-            <EditOutlined
-              style={{
-                color: '#52c41a',
-                fontSize: '23px',
-                float: 'left'
-              }}
-              disabled={editingKey !== ''}
-              onClick={() => edit(record)}
-            />
+          <React.Fragment>
+            <Tooltip placement="top" title={'Chỉnh sửa'}>
+              <EditOutlined
+                style={{
+                  color: '#52c41a',
+                  fontSize: '23px',
+                  float: 'left'
+                }}
+                disabled={editingKey !== ''}
+                onClick={() => edit(record)}
+              />
+            </Tooltip>
             {'   '}
             {record && record.key !== 'VNG-004' ? (
-              <UnlockOutlined
-                style={{
-                  color: '#262626',
-                  fontSize: '23px',
-                  float: 'right'
-                }}
-                disabled={editingKey !== ''}
-                onClick={() => {}}
-              />
+              <Tooltip placement="top" title={'Khoá'}>
+                <UnlockOutlined
+                  style={{
+                    color: '#262626',
+                    fontSize: '23px',
+                    float: 'right'
+                  }}
+                  disabled={editingKey !== ''}
+                  onClick={() => {}}
+                />
+              </Tooltip>
             ) : (
-              <LockOutlined
-                style={{
-                  color: '#ff4d4f',
-                  fontSize: '23px',
-                  float: 'right'
-                }}
-                disabled={editingKey !== ''}
-                onClick={() => {}}
-              />
+              <Tooltip placement="top" title={'Mở khoá'}>
+                <LockOutlined
+                  style={{
+                    color: '#ff4d4f',
+                    fontSize: '23px',
+                    float: 'right'
+                  }}
+                  disabled={editingKey !== ''}
+                  onClick={() => {}}
+                />
+              </Tooltip>
             )}
           </React.Fragment>
         );
@@ -183,7 +193,7 @@ const EditableTable = ({ columnsInput = [], dataInput = [] }) => {
           onChange: cancel,
           pageSize: 7
         }}
-        scroll={{ x: 1000 }}
+        scroll={{ x: 900 }}
       />
     </Form>
   );
