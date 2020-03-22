@@ -1,0 +1,27 @@
+@import '~antd/dist/antd.css';
+
+.ant-tabs-nav .ant-tabs-tab-active {
+  color: #388e3c;
+}
+
+.ant-tabs-nav .ant-tabs-tab-active:hover,
+.ant-tabs-nav .ant-tabs-tab:hover {
+  color: #388e3c;
+}
+.ant-tabs-ink-bar {
+  background-color: #388e3c;
+}
+
+.anticon svg {
+  margin-bottom: 10px;
+  font-size: 23px;
+}
+
+.ant-tabs-content {
+  height: calc(100vh - 180px);
+}
+
+.ant-tabs .ant-tabs-top-content > .ant-tabs-tabpane,
+.ant-tabs-tabpane-active {
+  overflow: scroll;
+}

@@ -186,7 +186,7 @@ class FormUserInfo extends React.Component {
             </FormGroup>
           </Col>
         </Row>
-        <CardFooter>
+        {/* <CardFooter>
           <Button
             onClick={this.handleOnClick}
             id="cancel"
@@ -196,7 +196,7 @@ class FormUserInfo extends React.Component {
           >
             Thoát
           </Button>
-        </CardFooter>
+        </CardFooter> */}
       </Form>
     );
   }

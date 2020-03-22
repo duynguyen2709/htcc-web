@@ -110,7 +110,7 @@ class Admin extends React.Component {
   render() {
     return (
       <>
-        <div className="wrapper">
+        <div className="app wrapper">
           <Sidebar
             {...this.props}
             routes={routes}

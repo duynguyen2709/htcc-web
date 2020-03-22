@@ -210,8 +210,7 @@ class Employee extends React.Component {
         }
       })
       .catch(err => {
-        console.log('err', err);
-        // store.addNotification(createNotify('danger', err));
+        store.addNotification(createNotify('danger', err));
       });
   }
 
@@ -228,9 +227,6 @@ class Employee extends React.Component {
                 onChange={this.onSearch}
               />
             </div>
-            {/* <div className="tool-calendar float-right">
-              <CalendarTool update={this.updateData} />
-            </div> */}
           </div>
           <div className="table-attendance">
             <TableEmployee columnsInput={columns} dataInput={data} />
