@@ -6,6 +6,7 @@ import {
   EnvironmentOutlined
 } from '@ant-design/icons';
 import Info from '../components/Company/Info';
+import Map from '../components/Company/Map';
 
 const { TabPane } = Tabs;
 
@@ -49,7 +50,7 @@ class CompanyInfo extends Component {
               }
               key="map"
             >
-              Vị trí
+              <Map />
             </TabPane>
           </Tabs>
         </div>
