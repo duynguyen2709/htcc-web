@@ -66,32 +66,47 @@
                       >{{item.status == 0 ? 'lock' : 'lock_open'}}</v-icon>
                     </td>
                     <td>
-                      <v-icon
-                        color="tertiary"
-                      >mdi-account-remove</v-icon>
+                      <v-icon color="tertiary" @click.stop="ShowDeleteDialog(item)">mdi-account-remove</v-icon>
                     </td>
-                    
                   </tr>
                 </tbody>
                 <v-dialog v-model="StatusDialog" max-width="290">
-                        <v-card>
-                          <v-card-title class="green white--text">Thay đổi trạng thái</v-card-title>
+                  <v-card>
+                    <v-card-title class="green white--text">Thay đổi trạng thái</v-card-title>
 
-                          <v-card-text class="mt-2">Bạn có chắc muốn thay đổi trạng thái của quản trị viên này?</v-card-text>
+                    <v-card-text
+                      class="mt-2"
+                    >Bạn có chắc muốn thay đổi trạng thái của quản trị viên này?</v-card-text>
 
-                          <v-card-actions>
-                            <v-spacer></v-spacer>
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
 
-                            <v-btn color="green darken-1" text @click="setStatus()">Đồng ý</v-btn>
+                      <v-btn color="green darken-1" text @click="setStatus()">Đồng ý</v-btn>
 
-                            <v-btn color="red darken-1" text @click="StatusDialog = false">Hủy</v-btn>
-                          </v-card-actions>
-                        </v-card>
-                      </v-dialog>
+                      <v-btn color="red darken-1" text @click="StatusDialog = false">Hủy</v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
+
+               <v-dialog v-model="DeleteDialog" max-width="290">
+                  <v-card>
+                    <v-card-title class="green white--text">Xóa quản trị viên</v-card-title>
+
+                    <v-card-text
+                      class="mt-2"
+                    >Bạn có chắc muốn xóa quản trị viên này?</v-card-text>
+
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+
+                      <v-btn color="green darken-1" text @click="deleteAdmin()">Đồng ý</v-btn>
+
+                      <v-btn color="red darken-1" text @click="DeleteDialog = false">Hủy</v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
 
               </template>
-
-            
             </v-data-table>
             <v-pagination v-model="page" :length="pageCount"></v-pagination>
           </div>
@@ -115,6 +130,7 @@ export default {
   data: () => ({
     ChoosenItem: null,
     StatusDialog: false,
+    DeleteDialog: false,
     page: 1,
     pageCount: 0,
     itemsPerPage: 5,
@@ -147,62 +163,6 @@ export default {
       }
     ],
 
-    // items: [
-    //   {
-    //     name: "Dakota Rice",
-    //     country: "Niger",
-    //     city: "Oud-Tunrhout",
-    //     salary: "$35,738",
-    //     id: 0,
-    //     status: true,
-    //     dialog: false
-    //   },
-    //   {
-    //     name: "Minerva Hooper",
-    //     country: "Curaçao",
-    //     city: "Sinaai-Waas",
-    //     salary: "$23,738",
-    //     id: 1,
-    //     status: false,
-    //     dialog: false
-    //   },
-    //   {
-    //     name: "Sage Rodriguez",
-    //     country: "Netherlands",
-    //     city: "Overland Park",
-    //     salary: "$56,142",
-    //     id: 2,
-    //     status: true,
-    //     dialog: false
-    //   },
-    //   {
-    //     name: "Philip Chanley",
-    //     country: "Korea, South",
-    //     city: "Gloucester",
-    //     salary: "$38,735",
-    //     id: 3,
-    //     status: true,
-    //     dialog: false
-    //   },
-    //   {
-    //     name: "Doris Greene",
-    //     country: "Malawi",
-    //     city: "Feldkirchen in Kārnten",
-    //     salary: "$63,542",
-    //     id: 4,
-    //     status: true,
-    //     dialog: false
-    //   },
-    //   {
-    //     name: "Mason Porter",
-    //     country: "Chile",
-    //     city: "Gloucester",
-    //     salary: "$78,615",
-    //     id: 5,
-    //     status: true,
-    //     dialog: false
-    //   }
-    // ],
     items: [],
     ChoosenItems: []
   }),
@@ -277,16 +237,21 @@ export default {
           console.log(error);
         });
     },
-    ShowStatusDialog(item){
+    ShowStatusDialog(item) {
       this.ChoosenItem = item;
       this.StatusDialog = true;
     },
-    async setStatus(){
+    ShowDeleteDialog(item) {
+      this.ChoosenItem = item;
+      this.DeleteDialog = true;
+    },
+    async setStatus() {
       let status = this.ChoosenItem.status == 0 ? 1 : 0;
 
-
       await this.$axios
-        .put('/api/admin/users/' + this.ChoosenItem.username + '/status/' + status)
+        .put(
+          "/api/admin/users/" + this.ChoosenItem.username + "/status/" + status
+        )
         .then(res => {
           if (res.data.returnCode != 1) {
             this.TriggerNotiError(res.data.returnMessage);
@@ -307,10 +272,36 @@ export default {
           console.log("Error set status:");
           console.log(error);
         });
-      
-
 
       this.StatusDialog = false;
+    },
+    deleteAdmin(){
+      this.$axios
+        .delete(
+          "/api/admin/users/" + this.ChoosenItem.username
+        )
+        .then(res => {
+          if (res.data.returnCode != 1) {
+            this.TriggerNotiError(res.data.returnMessage);
+          } else {
+            //this.is_loading = false;
+            this.TriggerNoti(res.data.returnMessage);
+            //window.location.reload(true);
+            console.log("Response");
+            console.log(res);
+
+            var index =  this.items.indexOf(this.ChoosenItem);
+            if (index !== -1)  this.items.splice(index, 1);
+
+            this.DeleteDialog = false;
+          }
+        })
+        .catch(function(error) {
+          //handle error
+          //this.is_loading = false;
+          console.log("Error set status:");
+          console.log(error);
+        });
     }
   },
   created: async function() {

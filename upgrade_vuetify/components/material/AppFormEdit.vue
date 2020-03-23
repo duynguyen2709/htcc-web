@@ -1,6 +1,6 @@
 <template>
   <material-card color="green" :title="title" :text="text">
-    <v-form>
+    <v-form ref="form">
       <v-container py-0>
         <v-layout wrap>
           <!-- <v-flex xs12 md4>

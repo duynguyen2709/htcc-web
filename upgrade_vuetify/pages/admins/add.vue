@@ -73,7 +73,7 @@ export default {
           //window.location.reload(true);
           console.log("Response");
           console.log(res);
-          //$this.goBack();
+          this.$router.push({ path: "/admins/"});
           }
         })
         .catch(function(error) {
