@@ -5,7 +5,11 @@ import { TOKEN, USER } from '../../constant/localStorageKey';
 import { fetchUser } from '../../reducers/auth.reducer';
 
 const AuthRequiredRoute = props => {
-  const { user, children, fetchUser } = props;
+  const { user, children, fetchUser, error } = props;
+  if (error) {
+    return <Redirect to="/login" />;
+  }
+
   if (!user) {
     const token = localStorage.getItem(TOKEN);
     const user = JSON.parse(localStorage.getItem(USER));
@@ -20,7 +24,8 @@ const AuthRequiredRoute = props => {
 };
 
 const mapStateToProps = state => ({
-  user: state.authReducer.user
+  user: state.authReducer.user,
+  error: state.authReducer.error
 });
 
 const mapDispatchToProps = dispatch => ({

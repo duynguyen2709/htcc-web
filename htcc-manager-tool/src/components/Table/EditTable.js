@@ -10,6 +10,7 @@ import {
 } from '@ant-design/icons';
 import { store } from 'react-notifications-component';
 import { createNotify } from '../../utils/notifier';
+import { SubmitLoader } from '../Loader';
 
 const EditableCell = ({
   editing,
@@ -201,6 +202,7 @@ const EditableTable = ({
           pageSize: 7
         }}
         scroll={{ x: 900 }}
+        loading={_.isEmpty(data)}
       />
     </Form>
   );

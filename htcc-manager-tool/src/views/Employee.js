@@ -35,7 +35,8 @@ class Employee extends React.Component {
         }
       })
       .catch(err => {
-        store.addNotification(createNotify('danger', err));
+        console.log('err', err);
+        // store.addNotification(createNotify('danger',  err));
       });
   }
 

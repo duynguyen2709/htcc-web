@@ -21,14 +21,16 @@ const applyLogin = (state, action) => ({
   ...state,
   isLogining: true,
   user: undefined,
-  token: undefined
+  token: undefined,
+  error: false
 });
 
 const applyLoginSuccess = (state, action) => ({
   ...state,
   isLogining: false,
   isAuthenticated: true,
-  user: action.payload.user
+  user: action.payload.user,
+  error: false
 });
 
 const applyLoginFail = (state, action) => ({
