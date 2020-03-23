@@ -193,7 +193,7 @@ class Attendance extends React.Component {
               <CalendarTool update={this.updateData} />
             </div>
           </div>
-          <div className="table-attendance">
+          <div className="table-edit">
             <TableAttendance data={data} columns={columns} />
           </div>
         </div>

@@ -35,8 +35,7 @@ class Employee extends React.Component {
         }
       })
       .catch(err => {
-        console.log('err', err);
-        // store.addNotification(createNotify('danger',  err));
+        store.addNotification(createNotify('danger', JSON.stringify(err)));
       });
   }
 
@@ -79,7 +78,7 @@ class Employee extends React.Component {
               </Tooltip>
             </div>
           </div>
-          <div className="table-attendance">
+          <div className="table-edit">
             <EditTable
               columnsInput={columns}
               dataInput={this.mapData(data)}

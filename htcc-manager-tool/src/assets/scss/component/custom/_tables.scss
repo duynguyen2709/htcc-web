@@ -207,10 +207,16 @@ h6 {
   }
 }
 
-.table-attendance {
+.table-edit {
   margin-top: 10px;
   .ant-table-content {
     height: calc(100vh - 225px);
+  }
+}
+
+#branch {
+  .ant-table-content {
+    height: calc(100vh - 300px);
   }
 }
 

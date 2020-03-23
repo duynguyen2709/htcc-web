@@ -7,6 +7,7 @@ import {
 } from '@ant-design/icons';
 import Info from '../components/Company/Info';
 import Map from '../components/Company/Map';
+import Branch from '../components/Company/Branch';
 
 const { TabPane } = Tabs;
 
@@ -18,7 +19,7 @@ class CompanyInfo extends Component {
     return (
       <div className="content">
         <div className="table-wrapper">
-          <Tabs defaultActiveKey="info">
+          <Tabs defaultActiveKey="branch">
             <TabPane
               tab={
                 <span>
@@ -28,7 +29,7 @@ class CompanyInfo extends Component {
               }
               key="branch"
             >
-              Chi Nhánh
+              <Branch />
             </TabPane>
             <TabPane
               tab={

@@ -10,7 +10,6 @@ import {
 } from '@ant-design/icons';
 import { store } from 'react-notifications-component';
 import { createNotify } from '../../utils/notifier';
-import { SubmitLoader } from '../Loader';
 
 const EditableCell = ({
   editing,
@@ -51,7 +50,8 @@ const EditableTable = ({
   columnsInput = [],
   dataInput = [],
   editURL,
-  valideInput
+  valideInput,
+  pageSize = 7
 }) => {
   const [form] = Form.useForm();
   const [data, setData] = useState([]);
@@ -199,7 +199,7 @@ const EditableTable = ({
         rowClassName="editable-row"
         pagination={{
           onChange: cancel,
-          pageSize: 7
+          pageSize: pageSize
         }}
         scroll={{ x: 900 }}
         loading={_.isEmpty(data)}
