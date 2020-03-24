@@ -59,14 +59,24 @@
                         ></edit-form>
                       </v-dialog>
                     </td>
+                    <td style="width: 140px;">
+                      <v-row style="justify-content: space-around">
+                        <p
+                          class="font-weight-black"
+                          v-bind:class="{'green--text': item.status, 'red--text': !item.status}"
+                          style="margin-bottom: 0px !important"
+                        >{{item.status != 0 ? 'Hoạt động' : 'Khóa'}}</p>
+                        <v-icon
+                          color="tertiary"
+                          @click.stop="ShowStatusDialog(item)"
+                        >{{item.status == 0 ? 'lock' : 'lock_open'}}</v-icon>
+                      </v-row>
+                    </td>
                     <td>
                       <v-icon
                         color="tertiary"
-                        @click.stop="ShowStatusDialog(item)"
-                      >{{item.status == 0 ? 'lock' : 'lock_open'}}</v-icon>
-                    </td>
-                    <td>
-                      <v-icon color="tertiary" @click.stop="ShowDeleteDialog(item)">mdi-account-remove</v-icon>
+                        @click.stop="ShowDeleteDialog(item)"
+                      >mdi-account-remove</v-icon>
                     </td>
                   </tr>
                 </tbody>
@@ -79,33 +89,36 @@
                     >Bạn có chắc muốn thay đổi trạng thái của quản trị viên này?</v-card-text>
 
                     <v-card-actions>
-                      <v-spacer></v-spacer>
-
-                      <v-btn color="green darken-1" text @click="setStatus()">Đồng ý</v-btn>
+                      <v-btn
+                        color="green darken-1"
+                        text
+                        @click="setStatus()"
+                        :loading="loadingBtnStatus"
+                      >Đồng ý</v-btn>
 
                       <v-btn color="red darken-1" text @click="StatusDialog = false">Hủy</v-btn>
                     </v-card-actions>
                   </v-card>
                 </v-dialog>
 
-               <v-dialog v-model="DeleteDialog" max-width="290">
+                <v-dialog v-model="DeleteDialog" max-width="290">
                   <v-card>
                     <v-card-title class="green white--text">Xóa quản trị viên</v-card-title>
 
-                    <v-card-text
-                      class="mt-2"
-                    >Bạn có chắc muốn xóa quản trị viên này?</v-card-text>
+                    <v-card-text class="mt-2">Bạn có chắc muốn xóa quản trị viên này?</v-card-text>
 
                     <v-card-actions>
-                      <v-spacer></v-spacer>
-
-                      <v-btn color="green darken-1" text @click="deleteAdmin()">Đồng ý</v-btn>
+                      <v-btn
+                        color="green darken-1"
+                        text
+                        @click="deleteAdmin()"
+                        :loading="loadingBtnDelete"
+                      >Đồng ý</v-btn>
 
                       <v-btn color="red darken-1" text @click="DeleteDialog = false">Hủy</v-btn>
                     </v-card-actions>
                   </v-card>
                 </v-dialog>
-
               </template>
             </v-data-table>
             <v-pagination v-model="page" :length="pageCount"></v-pagination>
@@ -129,8 +142,17 @@ export default {
   },
   data: () => ({
     ChoosenItem: null,
+
+    /*status dialog*/
     StatusDialog: false,
+    loadingBtnStatus: false,
+    /*------------*/
+
+    /*delete dialog*/
     DeleteDialog: false,
+    loadingBtnDelete: false,
+    /*------------*/
+
     page: 1,
     pageCount: 0,
     itemsPerPage: 5,
@@ -247,7 +269,7 @@ export default {
     },
     async setStatus() {
       let status = this.ChoosenItem.status == 0 ? 1 : 0;
-
+      this.loadingBtnStatus = true;
       await this.$axios
         .put(
           "/api/admin/users/" + this.ChoosenItem.username + "/status/" + status
@@ -263,6 +285,7 @@ export default {
             console.log(res);
 
             this.ChoosenItem.status = status;
+            this.loadingBtnStatus = false;
             //$this.goBack();
           }
         })
@@ -275,11 +298,10 @@ export default {
 
       this.StatusDialog = false;
     },
-    deleteAdmin(){
+    deleteAdmin() {
+      this.loadingBtnDelete = true;
       this.$axios
-        .delete(
-          "/api/admin/users/" + this.ChoosenItem.username
-        )
+        .delete("/api/admin/users/" + this.ChoosenItem.username)
         .then(res => {
           if (res.data.returnCode != 1) {
             this.TriggerNotiError(res.data.returnMessage);
@@ -290,10 +312,12 @@ export default {
             console.log("Response");
             console.log(res);
 
-            var index =  this.items.indexOf(this.ChoosenItem);
-            if (index !== -1)  this.items.splice(index, 1);
+            var index = this.items.indexOf(this.ChoosenItem);
+            if (index !== -1) this.items.splice(index, 1);
 
+            this.loadingBtnDelete = false;
             this.DeleteDialog = false;
+            
           }
         })
         .catch(function(error) {
