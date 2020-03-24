@@ -13,7 +13,7 @@ import * as _ from 'lodash';
 import { store } from 'react-notifications-component';
 import { createNotify } from '../../utils/notifier';
 import { checkValidEmail, checkValidPhoneNumber } from '../../utils/validate';
-import { CheckCircleOutlined } from '@ant-design/icons';
+import { CheckCircleOutlined, EditOutlined } from '@ant-design/icons';
 
 class CompayInfo extends React.Component {
   constructor(props) {
@@ -30,7 +30,8 @@ class CompayInfo extends React.Component {
         email: 'Email không hợp lệ',
         address: 'Địa chỉ không được rỗng',
         phone: 'Số điện thoại không hợp lệ'
-      }
+      },
+      readOnly: true
     };
   }
 
@@ -72,13 +73,58 @@ class CompayInfo extends React.Component {
   handleSubmit = e => {
     if (this.checkValidDataInput()) {
       store.addNotification(createNotify('default', 'Cập nhật thành công !'));
+      this.setState({
+        readOnly: true
+      });
     } else {
       store.addNotification(createNotify('warning', 'Thông tin chưa hợp lệ !'));
     }
   };
 
+  handleOnEdit = () => {
+    this.setState({
+      readOnly: false
+    });
+  };
+
+  renderButton = () => {
+    const { readOnly } = this.state;
+
+    if (readOnly) {
+      return (
+        <Button
+          id="save"
+          onClick={this.handleOnEdit}
+          className="btn-custom"
+          color="primary"
+          type="button"
+        >
+          <EditOutlined style={{ display: 'inline', margin: '5px 10px 0 0' }} />{' '}
+          {'  '}
+          <span className="btn-save-text"> Edit</span>
+        </Button>
+      );
+    }
+
+    return (
+      <Button
+        id="save"
+        onClick={this.handleSubmit}
+        className="btn-custom"
+        color="primary"
+        type="button"
+      >
+        <CheckCircleOutlined
+          style={{ display: 'inline', margin: '5px 10px 0 0' }}
+        />{' '}
+        {'  '}
+        <span className="btn-save-text"> LƯU</span>
+      </Button>
+    );
+  };
+
   render() {
-    const { value, messageInvalid } = this.state;
+    const { value, messageInvalid, readOnly } = this.state;
     return (
       <Form className="form-company-info">
         <Row>
@@ -91,6 +137,8 @@ class CompayInfo extends React.Component {
                 placeholder="Nhập tên công ty"
                 type="text"
                 className="bor-gray text-dark"
+                readOnly={readOnly}
+                name="companyName"
               />
             </FormGroup>
           </Col>
@@ -104,6 +152,7 @@ class CompayInfo extends React.Component {
                 className="bor-gray text-dark"
                 name="website"
                 value={value.website}
+                readOnly={readOnly}
               />
             </FormGroup>
           </Col>
@@ -120,6 +169,7 @@ class CompayInfo extends React.Component {
                 name="email"
                 value={value.email}
                 invalid={!checkValidEmail(value.email)}
+                readOnly={readOnly}
               />
               <FormFeedback invalid={'true'}>
                 {messageInvalid.email}
@@ -139,6 +189,7 @@ class CompayInfo extends React.Component {
                 value={value.address}
                 onChange={this.handleOnChange}
                 invalid={_.isEmpty(value.address)}
+                readOnly={readOnly}
               />
               <FormFeedback invalid={'true'}>
                 {messageInvalid.address}
@@ -158,6 +209,7 @@ class CompayInfo extends React.Component {
                 name="phone"
                 value={value.phone}
                 invalid={!checkValidPhoneNumber(value.phone)}
+                readOnly={readOnly}
               />
               <FormFeedback invalid={'true'}>
                 {messageInvalid.phone}
@@ -166,19 +218,7 @@ class CompayInfo extends React.Component {
           </Col>
         </Row>
         <CardFooter className="text-right info">
-          <Button
-            id="save"
-            onClick={this.handleSubmit}
-            className="btn-custom"
-            color="primary"
-            type="button"
-          >
-            <CheckCircleOutlined
-              style={{ display: 'inline', margin: '5px 10px 0 0' }}
-            />{' '}
-            {'  '}
-            <span className="btn-save-text"> LƯU</span>
-          </Button>
+          {this.renderButton()}
         </CardFooter>
       </Form>
     );

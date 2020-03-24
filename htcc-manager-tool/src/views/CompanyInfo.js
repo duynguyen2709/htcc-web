@@ -19,7 +19,7 @@ class CompanyInfo extends Component {
     return (
       <div className="content">
         <div className="table-wrapper">
-          <Tabs defaultActiveKey="branch">
+          <Tabs defaultActiveKey="info">
             <TabPane
               tab={
                 <span>
