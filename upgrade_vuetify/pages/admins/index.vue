@@ -2,7 +2,7 @@
   <v-container fill-height fluid grid-list-xl>
     <v-layout justify-center wrap>
       <v-flex md12>
-        <v-btn color="green white--text" to="/admins/add">Thêm một admin</v-btn>
+        <v-btn color="green white--text" to="/admins/add">Thêm admin</v-btn>
         <material-card text>
           <v-card-title>
             <v-text-field
@@ -38,6 +38,7 @@
                         <img :src="item.avatar" />
                       </v-avatar>
                     </td>
+                    <td>{{ item.username }}</td>
                     <td>{{ item.fullName }}</td>
                     <td>{{ item.email }}</td>
                     <td>{{ item.phoneNumber }}</td>
@@ -51,15 +52,16 @@
                         </template>
                         <edit-form
                           title="Chỉnh sửa thông tin admin"
+                          :usernameNotEdit="item.username"
                           :fullName="item.fullName"
                           :phoneNumber="item.phoneNumber"
                           :email="item.email"
-                          btn="Cập nhập"
+                          btn="Cập nhật"
                           @OnClickEdit="updateProfile($event, item)"
                         ></edit-form>
                       </v-dialog>
                     </td>
-                    <td style="width: 140px;">
+                    <td style="width: 100px;">
                       <v-row style="justify-content: space-around">
                         <p
                           class="font-weight-black"
@@ -165,6 +167,11 @@ export default {
       },
       {
         sortable: false,
+        text: "Tên đăng nhập",
+        value: "username"
+      },
+      {
+        sortable: false,
         text: "Tên đầy đủ",
         value: "fullName"
       },
@@ -227,7 +234,7 @@ export default {
             this.TriggerNotiError(res.data.returnMessage);
           } else {
             //this.is_loading = false;
-            this.TriggerNoti("Cập nhập thông tin thành công");
+            this.TriggerNoti("Cập nhật thông tin thành công");
             //window.location.reload(true);
             console.log("Response");
             console.log(res);

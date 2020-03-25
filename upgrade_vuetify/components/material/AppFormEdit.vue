@@ -36,6 +36,14 @@
               v-model="thisUser.username"
             />
           </v-flex>
+          <v-flex v-if="thisUsernameNotEdit" xs12 md12>
+            <v-text-field
+              label="Username"
+              class="purple-input"
+              readonly
+              v-model="thisUsernameNotEdit"
+            />
+          </v-flex>
           <v-flex v-if="thisPassword" xs12 md12>
             <v-text-field
               label="Password"
@@ -191,6 +199,10 @@ export default {
     loading: {
       type: Boolean,
       required: false
+    },
+    usernameNotEdit: {
+      type: String,
+      required: false
     }
   },
   data() {
@@ -199,6 +211,9 @@ export default {
       // InlineLastname: this.lastname,
       thisUsername: this.username,
       thisPassword: this.password,
+
+      thisUsernameNotEdit: this.usernameNotEdit,
+      readonly: false,
 
       thisUser: {
         fullName: this.fullName,
@@ -222,7 +237,7 @@ export default {
         required: value => !!value || "Không được để trống",
         //counter: value => value.length <= 20 || "Max 20 characters",
         email: value => {
-          const pattern = /^[a-z][a-z0-9_\.]{5,32}@[a-z0-9]{2,}(\.[a-z0-9]{2,4}){1,2}$/;
+          const pattern = /^[a-z0-9][a-z0-9_\.]{0,32}@[a-z0-9]{2,}(\.[a-z0-9]{2,4}){1,2}$/;
           return pattern.test(value) || "Email không hợp lệ.";
         },
         phone: value => {
