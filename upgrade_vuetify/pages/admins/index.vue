@@ -32,7 +32,7 @@
               <!-- <template slot="items" slot-scope="{ item }"> -->
               <template v-slot:body="{ items }">
                 <tbody>
-                  <tr v-for="item in items" :key="item.id">
+                  <tr v-for="item in items" :key="item.username">
                     <td>
                       <v-avatar>
                         <img :src="item.avatar" />
@@ -45,21 +45,12 @@
                     <td class="text-xs-right">{{ item.role }}</td>
                     <td class="text-xs-right">
                       <!-- <v-btn color="success" @click="dialog=true">Chỉnh sửa</v-btn> -->
-                      <v-dialog v-model="Firstdialog" width="700">
-                        <template v-slot:activator="{ on }">
+                      
+                        <!-- <template v-slot:activator="{ on }"> -->
                           <!-- <v-btn color="success" v-on="on">Chỉnh sửa</v-btn> -->
-                          <v-icon color="tertiary" v-on="on">edit</v-icon>
-                        </template>
-                        <edit-form
-                          title="Chỉnh sửa thông tin admin"
-                          :usernameNotEdit="item.username"
-                          :fullName="item.fullName"
-                          :phoneNumber="item.phoneNumber"
-                          :email="item.email"
-                          btn="Cập nhật"
-                          @OnClickEdit="updateProfile($event, item)"
-                        ></edit-form>
-                      </v-dialog>
+                          <v-icon color="tertiary" @click.stop="clickEditForm(item)">edit</v-icon>
+                        <!-- </template> -->
+                       
                     </td>
                     <td style="width: 100px;">
                       <v-row style="justify-content: space-around">
@@ -82,6 +73,22 @@
                     </td>
                   </tr>
                 </tbody>
+
+                <v-dialog v-model="editInfoForm" width="700">
+                  
+                        <edit-form
+                        v-if= "ChoosenItem"
+                          title="Chỉnh sửa thông tin admin"
+                          :usernameNotEdit="ChoosenItem.username"
+                          :fullName="ChoosenItem.fullName"
+                          :phoneNumber="ChoosenItem.phoneNumber"
+                          :email="ChoosenItem.email"
+                          :loading="editFormLoading"
+                          btn="Cập nhật"
+                          @OnClickEdit="updateProfile($event, ChoosenItem)"
+                        ></edit-form>
+                      </v-dialog>
+
                 <v-dialog v-model="StatusDialog" max-width="290">
                   <v-card>
                     <v-card-title class="green white--text">Thay đổi trạng thái</v-card-title>
@@ -155,6 +162,9 @@ export default {
     loadingBtnDelete: false,
     /*------------*/
 
+    editInfoForm: false,
+    editFormLoading: false,
+
     page: 1,
     pageCount: 0,
     itemsPerPage: 5,
@@ -208,10 +218,17 @@ export default {
     TriggerNotiError(mess) {
       this.setInfo({ color: "error", mess: mess, status: true });
     },
+    clickEditForm(item){
+      console.log("this username: " + item.username)
+      this.ChoosenItem = item;
+      console.log("this username choosenitem: " + item.username)
+      this.editInfoForm = true;
+    },
     updateProfile(e, user) {
       // let ChoosenItem = this.items.find(item => item.id === id);
       // ChoosenItem.dialog = false;
-
+      console.log("editloading: " + this.editFormLoading)
+      this.editFormLoading = true;
       user.email = e.user.email;
       user.fullName = e.user.fullName;
       user.phoneNumber = e.user.phoneNumber;
@@ -240,6 +257,9 @@ export default {
             console.log(res);
             //$this.goBack();
           }
+
+          this.editFormLoading = false;
+          this.editInfoForm = false;
         })
         .catch(function(error) {
           //handle error
@@ -350,6 +370,12 @@ export default {
     // }
 
     this.getListAdmins();
+  },
+  watch: {
+    editInfoForm: function(val){
+      if(!val)
+        this.editFormLoading = false;
+    }
   }
 };
 </script>

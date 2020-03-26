@@ -125,7 +125,7 @@
             >Update Profile</v-btn>-->
             <v-btn
               :disabled="!isValid"
-              :loading="is_loading_local"
+              :loading="loading"
               class="mx-0 font-weight-light"
               color="success"
               @click.prevent="$emit('OnClickEdit', {user: thisUser})"
@@ -267,6 +267,20 @@ export default {
     }
   },
   watch: {
+
+    fullName: function(val){
+      this.thisUser.fullName = val;
+    },
+    phoneNumber: function(val){
+      this.thisUser.phoneNumber = val;
+    },
+    email:function(val){
+      this.thisUser.email = val;
+    },
+    usernameNotEdit: function(val){
+      this.thisUsernameNotEdit = val;
+    },
+
     // firstname: function(newVal, oldVal){
     //     this.InsideValue = newVal
     //     },
@@ -283,7 +297,16 @@ export default {
     //     this.InsideValue = newVal
     //     }
 
+    // loading: function(newVal, oldVal){
+    //   console.log("newVal loading: " + newVal);
+    //   //this.is_loading_local = newVal
+    // }
+
   },
-  methods: {}
+  methods: {},
+  created: async function() {
+    console.log("loading prop: " + this.loading)
+    console.log("loading edit: " + this.is_loading_local)
+  }
 };
 </script>

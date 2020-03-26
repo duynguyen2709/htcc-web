@@ -99,7 +99,7 @@
               <template v-slot:activator="{ on }">
                 <!-- <v-btn color="red lighten-2" dark v-on="on">Click Me</v-btn> -->
                 <!-- <v-btn color="success" rounded class="font-weight-light" v-on="on" @click="resetForm">Change password</v-btn> -->
-                <v-btn color="success" rounded class="font-weight-light" v-on="on">Change password</v-btn>
+                <v-btn color="success" rounded class="font-weight-light" v-on="on" @click="resetFrom">Đổi mật khẩu</v-btn>
               </template>
 
               <material-card color="success" elevation="12" title="Đổi mật khẩu">
@@ -194,7 +194,7 @@ export default {
   data() {
     return {
       //user
-      user: this.$auth.user,
+      user: Object.assign({}, this.$auth.user),
 
       //use for hidden password
       //-----------
@@ -294,21 +294,25 @@ this.is_loading_update = true;
           else{
           //this.is_loading = false;
           this.TriggerNoti("Cập nhập thông tin thành công");
-          window.location.reload(true);
+
+          this.user.fullName = e.user.fullName;
+          this.user.email = e.user.email;
+          this.user.phoneNumber = e.user.phoneNumber;
+
           console.log("Response");
           console.log(res);
           //$this.goBack();
           }
-
+          //this.is_loading_update = false;
          
         })
         .catch(function(error) {
           //handle error
-          //this.is_loading = false;
+          this.is_loading = false;
           console.log("Error:");
           console.log(error);
         });
- this.is_loading_update = false;
+ 
       //e.preventDefault();
     },
     async changePassword() {
@@ -388,7 +392,9 @@ this.is_loading_password = false;
       //   this.$refs[f].reset()
       // })
 
-      this.$refs.form.reset()
+      this.OldPassword= "";
+      this.NewPassword= "";
+      this.NewPasswordConfirm= "";
     },
     TriggerNoti(mess){
       this.setInfo({color: 'success',

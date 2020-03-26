@@ -134,69 +134,31 @@ export default {
     async logIn() {
       console.log("begin login");
       let $this = this;
-      this.is_loading = true;
+      this.isLoading = true;
 
       const credentials = {
         clientId: 3,
         password: this.password,
         username: this.username
       };
-      // try {
-      //   await this.$auth.loginWith('local', {
-      //     data: credentials
-      //   })
-      //   console.log("after login");
-      //   console.log(this.$auth.username)
-      // } catch (e) {
-      //   console.log("fail at login!!!")
-      //   console.log(e)
-      //   this.message=e.Error
-      // }
 
       this.$axios
         .post("/api/gateway/public/login", credentials)
         .then(function(response) {
           if (response.data.returnCode !== 1) {
-            $this.isFalse = true;
+           
             $this.message = response.data.returnMessage;
             console.log("Error 1: ");
             console.log(response.data.returnMessage);
           } else {
-            $this.isFalse = false;
             console.log("Logged User:");
             console.log(response.data.data.token);
 
             $this.$auth.setUserToken(response.data.data.token);
-
-            // let ThisUser = response.data.data.user
-            // ThisUser.password = $this.password
-            // $this.$auth.setUser({
-            //       avatar: ThisUser.avatar,
-            //       email: ThisUser.email,
-            //       fullName: ThisUser.fullName,
-            //       phoneNumber: ThisUser.phoneNumber,
-            //       username: ThisUser.username,
-            //       role: ThisUser.role,
-            //       status: ThisUser.status
-            //     });
-
-           // $this.$auth.setUser(response.data.data.user)
-
-            // this.$axios
-            //   .get("/api/admin/v2/api-docs/user/" + $this.username)
-            //   .then(function(response) {
-            //     $this.$auth.setUser({
-            //       avatar: "string",
-            //       email: "string",
-            //       fullName: "string",
-            //       phoneNumber: "string",
-            //       username: "admin"
-            //     });
-            //   });
-            console.log($this.$auth.loggedIn);
+            //$this.$router.push({path:"/admins"})
           }
 
-          $this.is_loading = false;
+          $this.isLoading = false;
         })
         .catch(function(response) {
           //handle error
