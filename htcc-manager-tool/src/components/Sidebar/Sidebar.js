@@ -3,6 +3,8 @@ import { NavLink } from 'react-router-dom';
 import { PropTypes } from 'prop-types';
 import PerfectScrollbar from 'perfect-scrollbar';
 import { Nav } from 'reactstrap';
+import NumberNotify from '../Tool/NumberNotify';
+import * as _ from 'lodash';
 
 var ps;
 
@@ -75,8 +77,9 @@ class Sidebar extends React.Component {
                     activeClassName="active"
                     onClick={this.props.toggleSidebar}
                   >
-                    <i className={prop.icon} />
+                    <i className={prop.icon} id={prop.id} />
                     <p className="menu-item">{prop.name}</p>
+                    {_.isEqual(prop.name, 'Khiếu nại') && <NumberNotify />}
                   </NavLink>
                 </li>
               );

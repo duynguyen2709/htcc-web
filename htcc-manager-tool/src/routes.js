@@ -25,12 +25,21 @@ var routes = [
     component: Employee,
     layout: '/'
   },
+
+  {
+    path: '/khieu-nai',
+    name: 'Khiếu nại',
+    icon: 'tim-icons icon-chat-33',
+    component: Attendance,
+    layout: '/'
+  },
   {
     path: '/diem-danh',
     name: 'Điểm Danh',
     icon: 'tim-icons icon-calendar-60',
     component: Attendance,
-    layout: '/'
+    layout: '/',
+    id: 'complaint-icon'
   }
 ];
 export default routes;
