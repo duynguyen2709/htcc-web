@@ -1,13 +1,5 @@
 import React from 'react';
-import {
-  Button,
-  CardFooter,
-  FormGroup,
-  Form,
-  Input,
-  Row,
-  Col
-} from 'reactstrap';
+import { FormGroup, Form, Input, Row, Col } from 'reactstrap';
 
 class FormUserInfo extends React.Component {
   constructor(props) {
@@ -186,7 +178,7 @@ class FormUserInfo extends React.Component {
             </FormGroup>
           </Col>
         </Row>
-        <CardFooter>
+        {/* <CardFooter>
           <Button
             onClick={this.handleOnClick}
             id="cancel"
@@ -196,7 +188,7 @@ class FormUserInfo extends React.Component {
           >
             Thoát
           </Button>
-        </CardFooter>
+        </CardFooter> */}
       </Form>
     );
   }

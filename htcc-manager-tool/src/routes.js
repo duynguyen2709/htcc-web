@@ -1,6 +1,7 @@
 import Dashboard from './views/Dashboard';
 import Employee from './views/Employee';
 import Attendance from './views/Attendance';
+import CompanyInfo from './views/CompanyInfo';
 
 var routes = [
   {
@@ -8,6 +9,13 @@ var routes = [
     name: 'Thống kê',
     icon: 'tim-icons icon-chart-pie-36',
     component: Dashboard,
+    layout: '/'
+  },
+  {
+    path: '/thong-tin-cty',
+    name: 'Công Ty',
+    icon: 'tim-icons icon-istanbul',
+    component: CompanyInfo,
     layout: '/'
   },
   {

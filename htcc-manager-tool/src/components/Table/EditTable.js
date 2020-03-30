@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Input, InputNumber, Popconfirm, Form } from 'antd';
+import { Table, Input, InputNumber, Tooltip, Form } from 'antd';
 import * as _ from 'lodash';
-import { EditOutlined, UnlockOutlined, LockOutlined } from '@ant-design/icons';
-
-const mapData = data => {
-  return _.map(data, item => ({
-    key: item.employeeId.toString(),
-    ...item
-  }));
-};
+import {
+  EditOutlined,
+  UnlockOutlined,
+  LockOutlined,
+  CheckCircleOutlined,
+  CloseCircleOutlined
+} from '@ant-design/icons';
+import { store } from 'react-notifications-component';
+import { createNotify } from '../../utils/notifier';
 
 const EditableCell = ({
   editing,
@@ -45,14 +46,20 @@ const EditableCell = ({
   );
 };
 
-const EditableTable = ({ columnsInput = [], dataInput = [] }) => {
+const EditableTable = ({
+  columnsInput = [],
+  dataInput = [],
+  editURL,
+  valideInput,
+  pageSize = 7
+}) => {
   const [form] = Form.useForm();
   const [data, setData] = useState([]);
   const [editingKey, setEditingKey] = useState('');
 
   useEffect(() => {
     if (!_.isEmpty(dataInput)) {
-      setData(mapData(dataInput));
+      setData(dataInput);
     }
   }, [dataInput]);
 
@@ -70,21 +77,28 @@ const EditableTable = ({ columnsInput = [], dataInput = [] }) => {
   const save = async key => {
     try {
       const row = await form.validateFields();
+      console.log('row', row);
+
+      if (!valideInput(row)) {
+        return;
+      }
+
+      //call api update
+
       const newData = [...data];
       const index = newData.findIndex(item => key === item.key);
 
       if (index > -1) {
         const item = newData[index];
         newData.splice(index, 1, { ...item, ...row });
-        setData(newData);
-        setEditingKey('');
       } else {
         newData.push(row);
-        setData(newData);
-        setEditingKey('');
       }
+
+      setData(newData);
+      setEditingKey('');
     } catch (errInfo) {
-      console.log('Validate Failed:', errInfo);
+      store.addNotification(createNotify('danger', errInfo));
     }
   };
 
@@ -98,52 +112,58 @@ const EditableTable = ({ columnsInput = [], dataInput = [] }) => {
       render: (_, record) => {
         const editable = isEditing(record);
         return editable ? (
-          <span>
+          <span className="clearfix">
+            {/* eslint-disable-next-line */}
             <a
-              href="javascript:;"
+              href=""
               onClick={() => save(record.key)}
-              style={{
-                marginRight: 8
-              }}
+              className="btn-confirm-edit float-left"
             >
-              Lưu
+              <CheckCircleOutlined />
             </a>
-            <Popconfirm title="Bạn muốn huỷ?" onConfirm={cancel}>
-              <a>Huỷ</a>
-            </Popconfirm>
+            {/* eslint-disable-next-line */}
+            <a href="" className="btn-cancel-edit float-right" onClick={cancel}>
+              <CloseCircleOutlined />
+            </a>
           </span>
         ) : (
-          <React.Fragment className="clearfix">
-            <EditOutlined
-              style={{
-                color: '#52c41a',
-                fontSize: '23px',
-                float: 'left'
-              }}
-              disabled={editingKey !== ''}
-              onClick={() => edit(record)}
-            />
+          <React.Fragment>
+            <Tooltip placement="top" title={'Chỉnh sửa'}>
+              <EditOutlined
+                style={{
+                  color: '#52c41a',
+                  fontSize: '23px',
+                  float: 'left'
+                }}
+                disabled={editingKey !== ''}
+                onClick={() => edit(record)}
+              />
+            </Tooltip>
             {'   '}
             {record && record.key !== 'VNG-004' ? (
-              <UnlockOutlined
-                style={{
-                  color: '#262626',
-                  fontSize: '23px',
-                  float: 'right'
-                }}
-                disabled={editingKey !== ''}
-                onClick={() => {}}
-              />
+              <Tooltip placement="top" title={'Khoá'}>
+                <UnlockOutlined
+                  style={{
+                    color: '#262626',
+                    fontSize: '23px',
+                    float: 'right'
+                  }}
+                  disabled={editingKey !== ''}
+                  onClick={() => {}}
+                />
+              </Tooltip>
             ) : (
-              <LockOutlined
-                style={{
-                  color: '#ff4d4f',
-                  fontSize: '23px',
-                  float: 'right'
-                }}
-                disabled={editingKey !== ''}
-                onClick={() => {}}
-              />
+              <Tooltip placement="top" title={'Mở khoá'}>
+                <LockOutlined
+                  style={{
+                    color: '#ff4d4f',
+                    fontSize: '23px',
+                    float: 'right'
+                  }}
+                  disabled={editingKey !== ''}
+                  onClick={() => {}}
+                />
+              </Tooltip>
             )}
           </React.Fragment>
         );
@@ -181,9 +201,10 @@ const EditableTable = ({ columnsInput = [], dataInput = [] }) => {
         rowClassName="editable-row"
         pagination={{
           onChange: cancel,
-          pageSize: 7
+          pageSize: pageSize
         }}
-        scroll={{ x: 1000 }}
+        scroll={{ x: 900 }}
+        loading={_.isEmpty(data)}
       />
     </Form>
   );

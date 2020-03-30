@@ -258,3 +258,45 @@ button {
     outline: none;
   }
 }
+
+.info {
+  .btn-custom {
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+    padding: 10px 20px;
+    background: linear-gradient(
+      to bottom right,
+      #81c784,
+      $primary-states
+    ) !important;
+  }
+  .anticon svg {
+    margin-bottom: 0;
+  }
+  .btn-save-text {
+    display: inline;
+    position: relative;
+    top: 4px;
+  }
+}
+
+.btn-confirm-edit {
+  margin-right: 20px;
+  color: $info;
+}
+
+.btn-cancel-edit {
+  color: #e57373 !important;
+}
+
+.btn-new {
+  .anticon {
+    color: $primary;
+    svg {
+      font-size: 35px;
+    }
+    &:hover {
+      color: $primary-states;
+      cursor: pointer;
+    }
+  }
+}

@@ -354,7 +354,8 @@
   }
 
   &[data='blue'] {
-    @include linear-gradient($primary-states, $primary);
+    // @include linear-gradient($primary-states, $primary);
+    background: linear-gradient(to bottom right, $primary, $primary-states);
   }
   &[data='green'] {
     @include linear-gradient($success-states, $success);

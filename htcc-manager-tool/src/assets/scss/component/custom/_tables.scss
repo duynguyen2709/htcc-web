@@ -190,7 +190,7 @@ h6 {
 .Component-horizontalScrollContainer-876,
 .Component-horizontalScrollContainer-1234,
 .Component-horizontalScrollContainer-837 {
-  height: calc(100vh - 210px);
+  height: calc(100vh - 220px);
 }
 
 .table-wrapper {
@@ -207,15 +207,21 @@ h6 {
   }
 }
 
-.table-attendance {
+.table-edit {
   margin-top: 10px;
   .ant-table-content {
-    height: calc(100vh - 212px);
+    height: calc(100vh - 225px);
+  }
+}
+
+#branch {
+  .ant-table-content {
+    height: calc(100vh - 300px);
   }
 }
 
 .table-employee {
   .ant-table-content {
-    height: calc(100vh - 212px);
+    height: calc(100vh - 225px);
   }
 }

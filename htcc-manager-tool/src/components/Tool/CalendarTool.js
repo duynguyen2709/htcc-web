@@ -1,6 +1,7 @@
 import React from 'react';
 import { DatePicker } from 'antd';
 import moment from 'moment';
+import * as _ from 'lodash';
 
 class CalendarTool extends React.Component {
   constructor(props) {
@@ -11,15 +12,18 @@ class CalendarTool extends React.Component {
   }
 
   onChange = value => {
-    this.setState({
-      value
-    });
-    this.props.update(value.month() + 1);
+    if (!_.isEmpty(value)) {
+      this.setState({
+        value
+      });
+      this.props.update(value.month() + 1);
+    }
   };
 
   render() {
     return (
       <DatePicker
+        className="form-control bor-radius"
         onChange={this.onChange}
         value={this.state.value}
         picker="month"

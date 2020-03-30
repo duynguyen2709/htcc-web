@@ -13,6 +13,7 @@ const getAllUsers = () => {
         timeout: 20000
       })
       .then(res => {
+        console.log('res', res);
         resolve(res.data);
       })
       .catch(err => {
