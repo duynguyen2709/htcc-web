@@ -12,9 +12,6 @@ import Branch from '../components/Company/Branch';
 const { TabPane } = Tabs;
 
 class CompanyInfo extends Component {
-  constructor(props) {
-    super(props);
-  }
   render() {
     return (
       <div className="content">

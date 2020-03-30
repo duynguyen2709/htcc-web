@@ -113,14 +113,16 @@ const EditableTable = ({
         const editable = isEditing(record);
         return editable ? (
           <span className="clearfix">
+            {/* eslint-disable-next-line */}
             <a
-              href="javascript:;"
+              href=""
               onClick={() => save(record.key)}
               className="btn-confirm-edit float-left"
             >
               <CheckCircleOutlined />
             </a>
-            <a className="btn-cancel-edit float-right" onClick={cancel}>
+            {/* eslint-disable-next-line */}
+            <a href="" className="btn-cancel-edit float-right" onClick={cancel}>
               <CloseCircleOutlined />
             </a>
           </span>

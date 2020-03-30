@@ -3,7 +3,6 @@ import * as _ from 'lodash';
 import { userApi } from '../../api';
 import { store } from 'react-notifications-component';
 import { createNotify } from '../../utils/notifier';
-import { checkValidEmail, checkValidPhoneNumber } from '../../utils/validate';
 import { PlusSquareOutlined } from '@ant-design/icons';
 import EditTable from '../Table/EditTable';
 import { columns } from '../../constant/tableEmployee';

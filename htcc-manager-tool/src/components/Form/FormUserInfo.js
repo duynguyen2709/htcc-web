@@ -1,13 +1,5 @@
 import React from 'react';
-import {
-  Button,
-  CardFooter,
-  FormGroup,
-  Form,
-  Input,
-  Row,
-  Col
-} from 'reactstrap';
+import { FormGroup, Form, Input, Row, Col } from 'reactstrap';
 
 class FormUserInfo extends React.Component {
   constructor(props) {
