@@ -4,29 +4,16 @@
       <v-layout align-center justify-center>
         <v-flex xs12 sm8 md4>
           <v-alert type="error" v-model="isFalse">{{message}}</v-alert>
-
+          
           <material-card color="success" elevation="12" title="Connexion">
             <v-form @submit.prevent="logIn">
               <!-- <v-form> -->
               <v-card-text>
-                <v-text-field
-                  type="text"
-                  v-model="username"
-                  prepend-icon="person"
-                  name="username"
-                  label="Login"
-                  placeholder
-                ></v-text-field>
-                <v-text-field
-                  v-model="password"
-                  prepend-icon="lock"
-                  name="password"
-                  label="Password"
-                  placeholder
-                  :append-icon="ShowPassword ? 'mdi-eye' : 'mdi-eye-off'"
-                  @click:append="ShowPassword = !ShowPassword"
-                  :type="ShowPassword ? 'text' : 'password'"
-                ></v-text-field>
+                <v-text-field type="text" v-model="username" prepend-icon="person" name="username" label="Login"
+                  placeholder></v-text-field>
+                <v-text-field v-model="password" prepend-icon="lock" name="password" label="Password" placeholder
+                  :append-icon="ShowPassword ? 'mdi-eye' : 'mdi-eye-off'" @click:append="ShowPassword = !ShowPassword"
+                  :type="ShowPassword ? 'text' : 'password'"></v-text-field>
               </v-card-text>
               <v-card-actions>
                 <v-layout justify-center align-center>
@@ -40,13 +27,8 @@
                     <material-card color="success" elevation="12" title="Đổi mật khẩu">
                       <v-card-text>
                         <v-form>
-                          <v-text-field
-                            ref="EmailConfirm"
-                            v-model="EmailConfirm"
-                            prepend-icon="mail"
-                            label="Email để nhận thông báo"
-                            :rules="[rules.required, rules.email]"
-                          ></v-text-field>
+                          <v-text-field ref="EmailConfirm" v-model="EmailConfirm" prepend-icon="mail"
+                            label="Email để nhận thông báo" :rules="[rules.required, rules.email]"></v-text-field>
                         </v-form>
                       </v-card-text>
                       <v-card-actions>
@@ -75,104 +57,112 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
-import materialCard from "~/components/material/AppCard";
+  import {
+    mapActions,
+    mapGetters
+  } from "vuex";
+  import materialCard from "~/components/material/AppCard";
 
-export default {
-  components: {
-    materialCard
-  },
-  data() {
-    return {
-      isFalse: false,
-      message: null,
-      username: "admin",
-      password: "123",
-      ShowPassword: false,
-      EmailConfirm: "",
-      rules: {
-        required: [value => !!value || "Không được để trống"],
-        email: [
-          value => {
-            const pattern = /^[a-z][a-z0-9_\.]{5,32}@[a-z0-9]{2,}(\.[a-z0-9]{2,4}){1,2}$/;
-            return pattern.test(value) || "Email không hợp lệ.";
-          }
-        ]
-      },
-      isLoading: false
-    };
-  },
-  computed: {
-    ...mapGetters({
-      TrueUsername: "user/getUsername",
-      TruePassword: "user/getPassword"
-    }),
-    isDisabled() {
-      if (this.username !== this.TrueUsername) {
-        this.message = "Không tồn tại người dùng này";
-        return false;
-      } else if (this.password !== this.TruePassword) {
-        this.message = "Sai mật khẩu";
-        return false;
-      }
-      return true;
-    }
-  },
-  methods: {
-    ...mapActions({
-      setUsername: "user/setUsername"
-    }),
-    changePassword() {},
-    async authenticate() {
-      if (this.isDisabled) {
-        //await this.setUsername(this.defaultUserPassword);
-        this.$router.push({ path: "dashboard" });
-      } else {
-        this.isFalse = true;
+  export default {
+    components: {
+      materialCard
+    },
+    data() {
+      return {
+      
+
+        isFalse: false,
+        message: null,
+        username: "admin",
+        password: "123",
+        ShowPassword: false,
+        EmailConfirm: "",
+        rules: {
+          required: [value => !!value || "Không được để trống"],
+          email: [
+            value => {
+              const pattern = /^[a-z][a-z0-9_\.]{5,32}@[a-z0-9]{2,}(\.[a-z0-9]{2,4}){1,2}$/;
+              return pattern.test(value) || "Email không hợp lệ.";
+            }
+          ]
+        },
+        isLoading: false
+      };
+    },
+    computed: {
+      ...mapGetters({
+        TrueUsername: "user/getUsername",
+        TruePassword: "user/getPassword"
+      }),
+      isDisabled() {
+        if (this.username !== this.TrueUsername) {
+          this.message = "Không tồn tại người dùng này";
+          return false;
+        } else if (this.password !== this.TruePassword) {
+          this.message = "Sai mật khẩu";
+          return false;
+        }
+        return true;
       }
     },
-    async logIn() {
-      console.log("begin login");
-      let $this = this;
-      this.isLoading = true;
+    methods: {
+      ...mapActions({
+        setUsername: "user/setUsername"
+      }),
+      changePassword() {},
+      async authenticate() {
+        if (this.isDisabled) {
+          //await this.setUsername(this.defaultUserPassword);
+          this.$router.push({
+            path: "dashboard"
+          });
+        } else {
+          this.isFalse = true;
+        }
+      },
+      async logIn() {
+        console.log("begin login");
+        let $this = this;
+        this.isLoading = true;
 
-      const credentials = {
-        clientId: 3,
-        password: this.password,
-        username: this.username
-      };
+        const credentials = {
+          clientId: 3,
+          password: this.password,
+          username: this.username
+        };
 
-      this.$axios
-        .post("/api/gateway/public/login", credentials)
-        .then(function(response) {
-          if (response.data.returnCode !== 1) {
-           
-            $this.message = response.data.returnMessage;
-            console.log("Error 1: ");
-            console.log(response.data.returnMessage);
-          } else {
-            console.log("Logged User:");
-            console.log(response.data.data.token);
+        this.$axios
+          .post("/api/gateway/public/login", credentials)
+          .then(function (response) {
+            if (response.data.returnCode !== 1) {
+              $this.isFalse = true;
+              $this.message = response.data.returnMessage;
+              console.log("Error 1: ");
+              console.log(response.data.returnMessage);
+            } else {
+              console.log("Logged User:");
+              console.log(response.data.data.token);
 
-            $this.$auth.setUserToken(response.data.data.token);
-            //$this.$router.push({path:"/admins"})
-          }
+              $this.$auth.setUserToken(response.data.data.token);
+              //$this.$router.push({path:"/admins"})
+            }
 
-          $this.isLoading = false;
-        })
-        .catch(function(response) {
-          //handle error
-          console.log("Error 2: ");
-          console.log(response);
-          $this.is_loading = false;
-        });
+            $this.isLoading = false;
+          })
+          .catch(function (response) {
+            //handle error
+            console.log("Error 2: ");
+            console.log(response);
+            $this.is_loading = false;
+          });
+      }
+    },
+    watch: {
+      // username: function(newVal, oldVal){
+      //   if(newVal == ){
+      //   }
+      // }
     }
-  },
-  watch: {
-    // username: function(newVal, oldVal){
-    //   if(newVal == ){
-    //   }
-    // }
-  }
-};
+  };
+
 </script>

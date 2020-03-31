@@ -20,9 +20,6 @@
           hide-details
           color="purple"
         />
-        <nuxt-link v-ripple class="toolbar-items" to="/" title="Dashboard">
-          <v-icon color="tertiary">mdi-view-dashboard</v-icon>
-        </nuxt-link>
         <v-menu bottom left content-class="dropdown-menu" offset-y transition="slide-y-transition">
           <router-link v-ripple slot="activator" class="toolbar-items" to="/notifications">
             <v-badge color="error" overlap>
@@ -112,7 +109,7 @@ export default {
       "Another Notification",
       "Another One"
     ],
-    title: "Dashboard",
+    title: "Home",
     responsive: true,
     responsiveInput: true,
     dialog: false
