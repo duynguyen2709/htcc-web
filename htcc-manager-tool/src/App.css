@@ -40,3 +40,7 @@
   max-height: 530px;
   overflow: auto;
 }
+
+.ant-select-single .ant-select-selector {
+  border-radius: 5px/5px !important;
+}

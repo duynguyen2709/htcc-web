@@ -16,7 +16,7 @@ class CalendarTool extends React.Component {
       this.setState({
         value
       });
-      this.props.update(value.month() + 1);
+      this.props.update(value);
     }
   };
 

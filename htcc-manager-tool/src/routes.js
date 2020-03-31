@@ -2,6 +2,7 @@ import Dashboard from './views/Dashboard';
 import Employee from './views/Employee';
 import Attendance from './views/Attendance';
 import CompanyInfo from './views/CompanyInfo';
+import Complaint from './views/Complaint';
 
 var routes = [
   {
@@ -30,7 +31,7 @@ var routes = [
     path: '/khieu-nai',
     name: 'Khiếu nại',
     icon: 'tim-icons icon-chat-33',
-    component: Attendance,
+    component: Complaint,
     layout: '/'
   },
   {

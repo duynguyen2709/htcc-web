@@ -17,7 +17,7 @@ class AsyncModal extends React.Component {
     setTimeout(() => {
       this.setState({ loading: false });
       this.props.toggle();
-      store.addNotification(createNotify('default', 'Thêm mới thành công !'));
+      store.addNotification(createNotify('default', 'Thao tác thành công !'));
     }, 3000);
   };
 
@@ -27,17 +27,17 @@ class AsyncModal extends React.Component {
 
   render() {
     const { loading } = this.state;
-    const { CompomentContent = null, visible } = this.props;
+    const { CompomentContent = null, visible, title, data = [] } = this.props;
     return (
       <Modal
         visible={visible}
-        title="Thêm nhân viên mới"
+        title={title}
         onOk={this.handleOk}
         onCancel={this.handleCancel}
         footer={null}
       >
         {loading && <SubmitLoader />}
-        <CompomentContent onSubmit={this.handleOk} />
+        <CompomentContent data={data} onSubmit={this.handleOk} />
       </Modal>
     );
   }

@@ -1,38 +1,31 @@
 import React from 'react';
 import * as _ from 'lodash';
-import { complaintApi } from '../../api';
-import { store } from 'react-notifications-component';
-import { createNotify } from '../../utils/notifier';
 import { connect } from 'react-redux';
 
 class NumberNotify extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: '5+'
+      value: 0
     };
   }
 
-  componentDidMount() {
-    complaintApi
-      .getTotal()
-      .then(res => {
-        if (res.returnCode === 1) {
-          this.setState({
-            value: res.data.pendingComplaint
-          });
-        } else {
-          store.addNotification(createNotify('danger', res.returnMessage));
-        }
-      })
-      .catch(err => {
-        store.addNotification(createNotify('danger', JSON.stringify(err)));
+  componentWillReceiveProps(nextProps) {
+    if (!_.isEqual(nextProps.value, this.state.value)) {
+      this.setState({
+        value: nextProps.value
       });
+    }
   }
 
   render() {
     const { value } = this.state;
-    return <div className="number-notify">{value}</div>;
+
+    if (value) {
+      return <div className="number-notify">{value > 6 ? '5+' : value}</div>;
+    }
+
+    return null;
   }
 }
 

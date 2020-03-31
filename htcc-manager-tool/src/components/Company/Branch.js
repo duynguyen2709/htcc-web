@@ -5,7 +5,7 @@ import { store } from 'react-notifications-component';
 import { createNotify } from '../../utils/notifier';
 import { PlusSquareOutlined } from '@ant-design/icons';
 import EditTable from '../Table/EditTable';
-import { columns } from '../../constant/tableEmployee';
+import { columnsEmployee } from '../../constant/colTable';
 import { Input, Tooltip } from 'antd';
 import AsyncModal from '../Modal/AsyncModal';
 import FormAddNewBranch from '../Form/FormAddNewBranch';
@@ -78,7 +78,7 @@ class Branch extends React.Component {
         </div>
         <div className="table-edit" id="branch">
           <EditTable
-            columnsInput={columns}
+            columnsInput={columnsEmployee}
             dataInput={this.mapData(data)}
             editURL={editURL}
             valideInput={this.valideInput}
@@ -90,6 +90,7 @@ class Branch extends React.Component {
             CompomentContent={FormAddNewBranch}
             visible={showAddNew}
             toggle={this.toggle}
+            title={'Thêm mới nhân viên'}
           />
         </div>
       </React.Fragment>
