@@ -21,94 +21,92 @@ class Complaint extends Component {
       dataResolved: null,
       dataNotResolve: null,
       showFormEdit: false,
-      curRecordEdit: null
+      curRecordEdit: null,
+      currDate: moment(new Date()).format('YYYYMM'),
+      isLoading: true,
     };
   }
 
-  toggle = () => {
+  toggle = (isLoading = false) => {
     this.setState({
-      showFormEdit: !this.state.showFormEdit
+      showFormEdit: !this.state.showFormEdit,
+      isLoading,
     });
   };
 
-  handleEditStatus = record => {
+  handleEditStatus = (record) => {
     this.setState({
       showFormEdit: true,
-      curRecordEdit: record
+      curRecordEdit: record,
     });
   };
 
-  updateData = value => {
-    if (!_.isEqual(value, moment(new Date()).month())) {
+  updateData = (value) => {
+    if (!_.isEqual(value.format('YYYYMM'), this.state.currDate)) {
       this.setState(
         {
           dataNotResolve: null,
-          dataResolved: null
+          dataResolved: null,
+          currDate: value.format('YYYYMM'),
         },
         () => {
-          complaintApi
-            .getList(value.format('YYYYMM'))
-            .then(res => {
-              if (res.returnCode === 1) {
-                this.setState({
-                  dataNotResolve: _.filter(res.data, item => item.status === 2),
-                  dataResolved: _.filter(res.data, item => item.status !== 2)
-                });
-              } else {
-                store.addNotification(
-                  createNotify('danger', res.returnMessage)
-                );
-              }
-            })
-            .catch(err => {
-              store.addNotification(
-                createNotify('danger', JSON.stringify(err))
-              );
-            });
+          this.getListComplaint(value.format('YYYYMM'));
         }
       );
     }
   };
 
   componentDidMount() {
+    this.getListComplaint(this.state.currDate);
+  }
+
+  getListComplaint = (month) => {
+    console.log('month', month);
     complaintApi
-      .getList(moment(new Date()).format('YYYYMM'))
-      .then(res => {
+      .getList(month)
+      .then((res) => {
         if (res.returnCode === 1) {
           this.setState({
-            dataNotResolve: _.filter(res.data, item => item.status === 2),
-            dataResolved: _.filter(res.data, item => item.status !== 2)
+            dataNotResolve: _.filter(res.data, (item) => item.status === 2),
+            dataResolved: _.filter(res.data, (item) => item.status !== 2),
+            isLoading: false,
           });
         } else {
           store.addNotification(createNotify('danger', res.returnMessage));
         }
       })
-      .catch(err => {
+      .catch((err) => {
         store.addNotification(createNotify('danger', JSON.stringify(err)));
       });
-  }
+  };
 
-  onSearch = e => {
+  onSearch = (e) => {
     let { data } = this.state;
-    data = _.filter(this.data, ele => ele.code.includes(e.target.value));
+    data = _.filter(this.data, (ele) => ele.code.includes(e.target.value));
     this.setState({
-      data
+      data,
     });
   };
 
-  mapData = data => {
-    return _.map(data, item => ({
+  mapData = (data) => {
+    return _.map(data, (item) => ({
       key: item.complaintId.toString(),
-      ...item
+      ...item,
     }));
   };
 
   render() {
-    const { dataResolved, dataNotResolve, showFormEdit } = this.state;
+    const {
+      dataResolved,
+      dataNotResolve,
+      showFormEdit,
+      curRecordEdit,
+      currDate,
+    } = this.state;
 
     return (
       <div className="content">
-        <div className="table-wrapper">
+        <div className="table-wrapper tabs-small">
           <div className="header-table clearfix">
             <div className="float-left">
               <Search
@@ -116,14 +114,13 @@ class Complaint extends Component {
                 placeholder="Tìm kiếm"
                 style={{ width: 300 }}
                 onChange={this.onSearch}
-                name="yet"
               />
             </div>
             <div className="tool-calendar float-right">
               <CalendarTool update={this.updateData} />
             </div>
           </div>
-          <Tabs defaultActiveKey="yet">
+          <Tabs key={this.state.isLoading} defaultActiveKey="yet">
             <TabPane
               tab={
                 <span>
@@ -133,14 +130,16 @@ class Complaint extends Component {
               }
               key="yet"
             >
-              <div className="table-edit" id="branch">
-                <Table
-                  pagination={{ pageSize: 6 }}
-                  columns={buildColsComplaint(this.handleEditStatus)}
-                  dataSource={dataNotResolve}
-                  scroll={{ x: 1300 }}
-                  loading={dataResolved === null}
-                />
+              <div className="table-edit">
+                <div className="table-small">
+                  <Table
+                    pagination={{ pageSize: 6 }}
+                    columns={buildColsComplaint(this.handleEditStatus)}
+                    dataSource={dataNotResolve}
+                    scroll={{ x: 1300 }}
+                    loading={dataResolved === null}
+                  />
+                </div>
               </div>
             </TabPane>
             <TabPane
@@ -152,14 +151,16 @@ class Complaint extends Component {
               }
               key="already"
             >
-              <div className="table-edit" id="branch">
-                <Table
-                  pagination={{ pageSize: 6 }}
-                  columns={buildColsComplaint(this.handleEditStatus)}
-                  dataSource={dataResolved}
-                  scroll={{ x: 1300 }}
-                  loading={dataResolved === null}
-                />
+              <div className="table-edit">
+                <div className="table-small">
+                  <Table
+                    pagination={{ pageSize: 6 }}
+                    columns={buildColsComplaint(this.handleEditStatus)}
+                    dataSource={dataResolved}
+                    scroll={{ x: 1300 }}
+                    loading={dataResolved === null}
+                  />
+                </div>
               </div>
             </TabPane>
           </Tabs>
@@ -169,6 +170,9 @@ class Complaint extends Component {
               visible={showFormEdit}
               toggle={this.toggle}
               title={'Cập nhật trạng thái khiếu nại'}
+              data={curRecordEdit}
+              mode={'edit'}
+              currDate={currDate}
             />
           </div>
         </div>

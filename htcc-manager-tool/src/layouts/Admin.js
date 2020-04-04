@@ -16,7 +16,7 @@ class Admin extends React.Component {
     this.state = {
       backgroundColor: 'blue',
       sidebarOpened:
-        document.documentElement.className.indexOf('nav-open') !== -1
+        document.documentElement.className.indexOf('nav-open') !== -1,
     };
   }
   componentDidMount() {
@@ -56,7 +56,7 @@ class Admin extends React.Component {
     if (sidebarClasses.value.includes('sidebar-minimized')) {
       const listContents = document.getElementsByClassName('content');
 
-      _.forEach(listContents, item => {
+      _.forEach(listContents, (item) => {
         item.classList.add('content-expand');
       });
     }
@@ -68,7 +68,7 @@ class Admin extends React.Component {
     this.setState({ sidebarOpened: !this.state.sidebarOpened });
   };
 
-  getRoutes = routes => {
+  getRoutes = (routes) => {
     return routes.map((prop, key) => {
       if (prop.layout === '/') {
         return <Route path={prop.path} component={prop.component} key={key} />;
@@ -78,11 +78,11 @@ class Admin extends React.Component {
     });
   };
 
-  handleBgClick = color => {
+  handleBgClick = (color) => {
     this.setState({ backgroundColor: color });
   };
 
-  getBrandText = path => {
+  getBrandText = (path) => {
     for (let i = 0; i < routes.length; i++) {
       if (this.props.location.pathname.indexOf(routes[i].path) !== -1) {
         return routes[i].name;
@@ -91,16 +91,16 @@ class Admin extends React.Component {
     return 'Brand';
   };
 
-  switchSideBar = state => {
+  switchSideBar = (state) => {
     const action = state ? 'add' : 'remove';
     const listContents = document.getElementsByClassName('content');
     const listMenuItems = document.getElementsByClassName('menu-item');
 
-    _.forEach(listContents, item => {
+    _.forEach(listContents, (item) => {
       item.classList[action]('content-expand');
     });
 
-    _.forEach(listMenuItems, item => {
+    _.forEach(listMenuItems, (item) => {
       item.classList[action]('hide');
     });
 
@@ -118,7 +118,7 @@ class Admin extends React.Component {
             logo={{
               outterLink: 'https://www.creative-tim.com/',
               text: 'Creative Tim',
-              imgSrc: logo
+              imgSrc: logo,
             }}
             toggleSidebar={this.toggleSidebar}
           />
@@ -137,7 +137,7 @@ class Admin extends React.Component {
             <Switch>
               <AuthRequiredRoute>
                 {this.getRoutes(routes)}
-                <Redirect from="/" to="/thong-ke" />{' '}
+                {/* <Redirect from="/" to="/thong-ke" />{' '} */}
               </AuthRequiredRoute>
             </Switch>
           </div>

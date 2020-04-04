@@ -1,10 +1,11 @@
 import React from 'react';
 import { Button, CardFooter, FormGroup, Form, Row, Col } from 'reactstrap';
 import * as _ from 'lodash';
+import { complaintApi } from '../../api';
 import { store } from 'react-notifications-component';
 import { createNotify } from '../../utils/notifier';
-import { CheckCircleOutlined } from '@ant-design/icons';
-import { DatePicker, Select, Input } from 'antd';
+import { CheckCircleOutlined, QuestionCircleOutlined } from '@ant-design/icons';
+import { DatePicker, Select, Input, Popconfirm } from 'antd';
 import moment from 'moment';
 
 const { Option } = Select;
@@ -18,54 +19,80 @@ class FormEditStatusComplaint extends React.Component {
         complaintId: null,
         response: null,
         status: 1,
-        yyyyMM: moment(new Date()).format('yyyyMM')
-      }
+        yyyyMM: moment(new Date()).format('yyyyMM'),
+      },
     };
   }
 
-  handleChangeStatus(value) {
-    console.log(`selected ${value}`);
-  }
+  handleChangeStatus = (value) => {
+    this.setState({
+      value: {
+        ...this.state.value,
+        status: value,
+      },
+    });
+  };
 
   componentDidMount() {
-    const { data } = this.props;
+    const { data, currDate } = this.props;
     this.setState({
       value: {
         complaintId: data.complaintId,
         response: data.response,
         status: 1,
-        yyyyMM: moment(new Date()).format('yyyyMM')
-      }
+        yyyyMM: currDate,
+      },
     });
   }
 
-  handleOnChange = e => {
+  handleOnChange = (e) => {
     const { value: valueInput, name } = e.target;
     let { value } = this.state;
 
     value[name] = valueInput;
 
     this.setState({
-      value: { ...value }
+      value: { ...value },
     });
   };
 
-  handleSubmit = e => {
-    if (this.checkValidDataInput()) {
-      this.props.onSubmit();
-    } else {
-      store.addNotification(createNotify('warning', 'Thông tin chưa hợp lệ !'));
-    }
+  handleSubmit = (e) => {
+    this.props.onSubmit();
+
+    // if (!_.isEmpty(this.state.value.response)) {
+    //   complaintApi
+    //     .updateStatus(this.state.value)
+    //     .then((res) => {
+    //       if (res.returnCode === 1) {
+    //         this.setState({
+    //           value: {
+    //             ...this.state.value,
+    //             response: null,
+    //           },
+    //         });
+    //         this.props.onSubmit();
+    //       } else {
+    //         store.addNotification(createNotify('danger', res.returnMessage));
+    //       }
+    //     })
+    //     .catch((err) => {
+    //       store.addNotification(createNotify('danger', JSON.stringify(err)));
+    //     });
+    // } else {
+    //   store.addNotification(
+    //     createNotify('warning', 'Bạn chưa nhập thông tin phản hồi')
+    //   );
+    // }
   };
 
-  handleChangeDate = date => {
+  handleChangeDate = (date) => {
     const { value } = this.state;
     if (!_.isEmpty(date)) {
       this.setState({
         value: {
           ...value,
-          yyyyMM: moment(date, 'yyyyMM')
-        }
+          yyyyMM: moment(date, 'YYYYMM'),
+        },
       });
     }
   };
@@ -78,25 +105,25 @@ class FormEditStatusComplaint extends React.Component {
         <Row>
           <Col md="6">
             <FormGroup>
-              <label htmlFor="email">ID</label>
+              <label>ID</label>
               <Input
                 className="form-control bor-radius bor-gray text-dark"
-                placeholder="Nhập username"
                 type="text"
                 name="complaintId"
                 disabled
-                defaultValue={value.complaintId}
+                value={value.complaintId}
               />
             </FormGroup>
           </Col>
           <Col md="6">
             <FormGroup>
-              <label>Ngày thay đổi</label>
+              <label>Tháng</label>
               <DatePicker
                 className="form-control bor-radius"
-                format={'yyyyMM'}
-                value={moment(value.yyyyMM, 'yyyyMM')}
-                onChange={this.handleChangeDate}
+                format={'MM-YYYY'}
+                value={moment(value.yyyyMM, 'YYYYMM')}
+                onChange={() => this.handleChangeDate()}
+                disabled
               />
             </FormGroup>
           </Col>
@@ -109,7 +136,7 @@ class FormEditStatusComplaint extends React.Component {
                 style={{ width: '100%' }}
                 className="bor-radius"
                 defaultValue={1}
-                onChange={this.handleChangeStatus}
+                onChange={(val) => this.handleChangeStatus(val)}
               >
                 <Option className=" bor-radius" value={1}>
                   Đã xử lý
@@ -127,28 +154,35 @@ class FormEditStatusComplaint extends React.Component {
               <label>Nội dung phản hồi</label>
               <TextArea
                 name="response"
-                className="form-control bor-radius"
+                className="form-control bor-radius text-dark"
                 value={value.response}
-                onChange={this.handleOnChange}
+                onChange={(e) => this.handleOnChange(e)}
                 rows={4}
               />
             </FormGroup>
           </Col>
         </Row>
         <CardFooter className="text-right info">
-          <Button
-            id="save"
-            onClick={this.handleSubmit}
-            className="btn-custom"
-            color="primary"
-            type="button"
+          <Popconfirm
+            title="Bạn chắc chắn thay đổi？"
+            icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
+            okText="Đồng ý"
+            cancelText="Huỷ"
+            onConfirm={() => this.handleSubmit()}
           >
-            <CheckCircleOutlined
-              style={{ display: 'inline', margin: '5px 10px 0 0' }}
-            />{' '}
-            {'  '}
-            <span className="btn-save-text"> LƯU</span>
-          </Button>
+            <Button
+              id="save"
+              className="btn-custom"
+              color="primary"
+              type="button"
+            >
+              <CheckCircleOutlined
+                style={{ display: 'inline', margin: '5px 10px 0 0' }}
+              />{' '}
+              {'  '}
+              <span className="btn-save-text"> LƯU</span>
+            </Button>
+          </Popconfirm>
         </CardFooter>
       </Form>
     );
