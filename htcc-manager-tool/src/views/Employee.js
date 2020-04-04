@@ -1,6 +1,6 @@
 import React from 'react';
 import EditTable from '../components/Table/EditTable';
-import { columns } from '../constant/tableEmployee';
+import { columnsEmployee } from '../constant/colTable';
 import { userApi } from '../api';
 import { store } from 'react-notifications-component';
 import { createNotify } from '../utils/notifier';
@@ -80,7 +80,7 @@ class Employee extends React.Component {
           </div>
           <div className="table-edit">
             <EditTable
-              columnsInput={columns}
+              columnsInput={columnsEmployee}
               dataInput={this.mapData(data)}
               editURL={editURL}
               valideInput={this.valideInput}
@@ -92,6 +92,7 @@ class Employee extends React.Component {
             CompomentContent={FormAddNewEmployee}
             visible={showAddNew}
             toggle={this.toggle}
+            title={'Thêm mới nhân viên'}
           />
         </div>
       </div>

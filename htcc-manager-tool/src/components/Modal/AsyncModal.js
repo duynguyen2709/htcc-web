@@ -8,7 +8,7 @@ class AsyncModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading: false
+      loading: false,
     };
   }
 
@@ -16,8 +16,9 @@ class AsyncModal extends React.Component {
     this.setState({ loading: true });
     setTimeout(() => {
       this.setState({ loading: false });
-      this.props.toggle();
-      store.addNotification(createNotify('default', 'Thêm mới thành công !'));
+      this.props.toggle(true);
+      store.addNotification(createNotify('default', 'Thao tác thành công !'));
+      window.location.reload();
     }, 3000);
   };
 
@@ -27,17 +28,30 @@ class AsyncModal extends React.Component {
 
   render() {
     const { loading } = this.state;
-    const { CompomentContent = null, visible } = this.props;
+    const {
+      CompomentContent = null,
+      visible,
+      title,
+      data = [],
+      editURL,
+      mode = 'create',
+      currDate,
+    } = this.props;
     return (
       <Modal
         visible={visible}
-        title="Thêm nhân viên mới"
+        title={title}
         onOk={this.handleOk}
         onCancel={this.handleCancel}
         footer={null}
       >
         {loading && <SubmitLoader />}
-        <CompomentContent onSubmit={this.handleOk} />
+        <CompomentContent
+          editURL={editURL}
+          data={data}
+          onSubmit={this.handleOk}
+          currDate={currDate}
+        />
       </Modal>
     );
   }

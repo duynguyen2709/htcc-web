@@ -58,9 +58,7 @@ const EditableTable = ({
   const [editingKey, setEditingKey] = useState('');
 
   useEffect(() => {
-    if (!_.isEmpty(dataInput)) {
-      setData(dataInput);
-    }
+    setData(dataInput);
   }, [dataInput]);
 
   const isEditing = record => record.key === editingKey;

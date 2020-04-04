@@ -212,11 +212,12 @@ h6 {
   .ant-table-content {
     height: calc(100vh - 225px);
   }
-}
 
-#branch {
-  .ant-table-content {
-    height: calc(100vh - 300px);
+  .table-small {
+    .ant-table-content {
+      height: calc(100vh - 300px);
+      overflow-y: scroll;
+    }
   }
 }
 

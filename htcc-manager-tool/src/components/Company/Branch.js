@@ -5,7 +5,7 @@ import { store } from 'react-notifications-component';
 import { createNotify } from '../../utils/notifier';
 import { PlusSquareOutlined } from '@ant-design/icons';
 import EditTable from '../Table/EditTable';
-import { columns } from '../../constant/tableEmployee';
+import { columnsEmployee } from '../../constant/colTable';
 import { Input, Tooltip } from 'antd';
 import AsyncModal from '../Modal/AsyncModal';
 import FormAddNewBranch from '../Form/FormAddNewBranch';
@@ -18,41 +18,41 @@ class Branch extends React.Component {
     super(props);
     this.state = {
       data: [],
-      showAddNew: false
+      showAddNew: false,
     };
   }
 
   componentDidMount() {
     userApi
       .getAllUsers()
-      .then(res => {
+      .then((res) => {
         if (res.returnCode === 1) {
           this.setState({
-            data: res.data
+            data: res.data,
           });
         } else {
           store.addNotification(createNotify('danger', res.returnMessage));
         }
       })
-      .catch(err => {
+      .catch((err) => {
         store.addNotification(createNotify('danger', JSON.stringify(err)));
       });
   }
 
   toggle = () => {
     this.setState({
-      showAddNew: !this.state.showAddNew
+      showAddNew: !this.state.showAddNew,
     });
   };
 
-  mapData = data => {
-    return _.map(data, item => ({
+  mapData = (data) => {
+    return _.map(data, (item) => ({
       key: item.employeeId.toString(),
-      ...item
+      ...item,
     }));
   };
 
-  valideInput = input => {
+  valideInput = (input) => {
     // store.addNotification(createNotify('danger', 'Thông tin chưa hợp lệ'));
     return true;
   };
@@ -76,9 +76,9 @@ class Branch extends React.Component {
             </Tooltip>
           </div>
         </div>
-        <div className="table-edit" id="branch">
+        <div className="table-edit table-small">
           <EditTable
-            columnsInput={columns}
+            columnsInput={columnsEmployee}
             dataInput={this.mapData(data)}
             editURL={editURL}
             valideInput={this.valideInput}
@@ -90,6 +90,7 @@ class Branch extends React.Component {
             CompomentContent={FormAddNewBranch}
             visible={showAddNew}
             toggle={this.toggle}
+            title={'Thêm mới nhân viên'}
           />
         </div>
       </React.Fragment>
