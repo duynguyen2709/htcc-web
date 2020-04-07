@@ -6,7 +6,7 @@ import {
   UnlockOutlined,
   LockOutlined,
   CheckCircleOutlined,
-  CloseCircleOutlined
+  CloseCircleOutlined,
 } from '@ant-design/icons';
 import { store } from 'react-notifications-component';
 import { createNotify } from '../../utils/notifier';
@@ -28,13 +28,13 @@ const EditableCell = ({
         <Form.Item
           name={dataIndex}
           style={{
-            margin: 0
+            margin: 0,
           }}
           rules={[
             {
               required: true,
-              message: `Please Input ${title}!`
-            }
+              message: `Please Input ${title}!`,
+            },
           ]}
         >
           {inputNode}
@@ -51,7 +51,8 @@ const EditableTable = ({
   dataInput = [],
   editURL,
   valideInput,
-  pageSize = 7
+  pageSize = 7,
+  height = 'calc(100vh - 280px)',
 }) => {
   const [form] = Form.useForm();
   const [data, setData] = useState([]);
@@ -61,9 +62,9 @@ const EditableTable = ({
     setData(dataInput);
   }, [dataInput]);
 
-  const isEditing = record => record.key === editingKey;
+  const isEditing = (record) => record.key === editingKey;
 
-  const edit = record => {
+  const edit = (record) => {
     form.setFieldsValue({ ...record });
     setEditingKey(record.key);
   };
@@ -72,7 +73,7 @@ const EditableTable = ({
     setEditingKey('');
   };
 
-  const save = async key => {
+  const save = async (key) => {
     try {
       const row = await form.validateFields();
       console.log('row', row);
@@ -84,7 +85,7 @@ const EditableTable = ({
       //call api update
 
       const newData = [...data];
-      const index = newData.findIndex(item => key === item.key);
+      const index = newData.findIndex((item) => key === item.key);
 
       if (index > -1) {
         const item = newData[index];
@@ -131,7 +132,7 @@ const EditableTable = ({
                 style={{
                   color: '#52c41a',
                   fontSize: '23px',
-                  float: 'left'
+                  float: 'left',
                 }}
                 disabled={editingKey !== ''}
                 onClick={() => edit(record)}
@@ -144,7 +145,7 @@ const EditableTable = ({
                   style={{
                     color: '#262626',
                     fontSize: '23px',
-                    float: 'right'
+                    float: 'right',
                   }}
                   disabled={editingKey !== ''}
                   onClick={() => {}}
@@ -156,7 +157,7 @@ const EditableTable = ({
                   style={{
                     color: '#ff4d4f',
                     fontSize: '23px',
-                    float: 'right'
+                    float: 'right',
                   }}
                   disabled={editingKey !== ''}
                   onClick={() => {}}
@@ -165,24 +166,24 @@ const EditableTable = ({
             )}
           </React.Fragment>
         );
-      }
-    }
+      },
+    },
   ];
 
-  const mergedColumns = columns.map(col => {
+  const mergedColumns = columns.map((col) => {
     if (!col.editable) {
       return col;
     }
 
     return {
       ...col,
-      onCell: record => ({
+      onCell: (record) => ({
         record,
         inputType: col.dataIndex === 'age' ? 'number' : 'text',
         dataIndex: col.dataIndex,
         title: col.title,
-        editing: isEditing(record)
-      })
+        editing: isEditing(record),
+      }),
     };
   });
 
@@ -191,17 +192,17 @@ const EditableTable = ({
       <Table
         components={{
           body: {
-            cell: EditableCell
-          }
+            cell: EditableCell,
+          },
         }}
         dataSource={data}
         columns={mergedColumns}
         rowClassName="editable-row"
         pagination={{
           onChange: cancel,
-          pageSize: pageSize
+          pageSize: pageSize,
         }}
-        scroll={{ x: 900 }}
+        scroll={{ x: 900, y: `${height}` }}
         loading={_.isEmpty(data)}
       />
     </Form>

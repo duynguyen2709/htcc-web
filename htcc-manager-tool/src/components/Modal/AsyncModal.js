@@ -13,13 +13,10 @@ class AsyncModal extends React.Component {
   }
 
   handleOk = () => {
-    this.setState({ loading: true });
-    setTimeout(() => {
-      this.setState({ loading: false });
-      this.props.toggle(true);
-      store.addNotification(createNotify('default', 'Thao tác thành công !'));
-      window.location.reload();
-    }, 3000);
+    this.setState({ loading: false });
+    this.props.toggle(true);
+    store.addNotification(createNotify('default', 'Thao tác thành công !'));
+    window.location.reload();
   };
 
   handleCancel = () => {
@@ -34,7 +31,6 @@ class AsyncModal extends React.Component {
       title,
       data = [],
       editURL,
-      mode = 'create',
       currDate,
     } = this.props;
     return (
@@ -51,6 +47,7 @@ class AsyncModal extends React.Component {
           data={data}
           onSubmit={this.handleOk}
           currDate={currDate}
+          loading={() => this.setState({ loading: true })}
         />
       </Modal>
     );

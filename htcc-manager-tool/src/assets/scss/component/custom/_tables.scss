@@ -205,24 +205,32 @@ h6 {
     line-height: 1.6;
     font-size: 20px;
   }
+  height: calc(100vh - 88px);
 }
 
 .table-edit {
   margin-top: 10px;
-  .ant-table-content {
-    height: calc(100vh - 225px);
-  }
 
   .table-small {
     .ant-table-content {
       height: calc(100vh - 300px);
-      overflow-y: scroll;
     }
+  }
+}
+.table-complaint {
+  .ant-table-body {
+    height: calc(100vh - 350px);
   }
 }
 
 .table-employee {
-  .ant-table-content {
-    height: calc(100vh - 225px);
+  .ant-table-body {
+    height: calc(100vh - 280px);
+  }
+}
+
+.table-branch {
+  .ant-table-body {
+    height: calc(100vh - 355px);
   }
 }

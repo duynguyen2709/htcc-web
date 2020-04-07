@@ -18,7 +18,7 @@
 
 .anticon svg {
   margin-bottom: 10px;
-  font-size: 23px;
+  font-size: 20px;
 }
 
 .tabs-big .ant-tabs-content {
@@ -58,4 +58,32 @@
   position: relative;
   left: 93%;
   bottom: 37px;
+}
+
+.ant-popover-inner-content .anticon {
+  color: #388e3c;
+  position: absolute;
+  left: -8px;
+  top: 4px;
+}
+
+.ant-btn-primary {
+  background-color: #039be5;
+}
+
+.ant-table-column-sorter-up.active,
+.ant-table-column-sorter-down.active {
+  color: #59885b;
+}
+
+.ant-table-column-sorter-full {
+  margin-top: 0;
+}
+
+.ant-table-column-sorter-full .anticon {
+  height: 13px;
+}
+
+.ant-table-column-sorter-full .anticon svg {
+  font-size: 13px;
 }
