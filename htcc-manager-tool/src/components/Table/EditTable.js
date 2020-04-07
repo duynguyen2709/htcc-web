@@ -52,6 +52,7 @@ const EditableTable = ({
   editURL,
   valideInput,
   pageSize = 7,
+  height = 'calc(100vh - 280px)',
 }) => {
   const [form] = Form.useForm();
   const [data, setData] = useState([]);
@@ -201,8 +202,7 @@ const EditableTable = ({
           onChange: cancel,
           pageSize: pageSize,
         }}
-        scroll={{ x: 900 }}
-        scroll={{ y: 'calc(100vh - 355px)' }}
+        scroll={{ x: 900, y: `${height}` }}
         loading={_.isEmpty(data)}
       />
     </Form>

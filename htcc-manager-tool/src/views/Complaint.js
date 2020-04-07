@@ -24,13 +24,23 @@ class Complaint extends Component {
       curRecordEdit: null,
       currDate: moment(new Date()).format('YYYYMM'),
       isLoading: true,
+      currTab: 'NotResolve',
     };
+    this.dataResolved = [];
+    this.dataNotResolve = [];
   }
 
   toggle = (isLoading = false) => {
     this.setState({
       showFormEdit: !this.state.showFormEdit,
       isLoading,
+      curRecordEdit: null,
+    });
+  };
+
+  onChangeTab = (key) => {
+    this.setState({
+      currTab: key,
     });
   };
 
@@ -65,11 +75,20 @@ class Complaint extends Component {
       .getList(month)
       .then((res) => {
         if (res.returnCode === 1) {
+          const dataResolved = _.filter(res.data, (item) => item.status !== 2);
+          const dataNotResolve = _.filter(
+            res.data,
+            (item) => item.status === 2
+          );
+
           this.setState({
-            dataNotResolve: _.filter(res.data, (item) => item.status === 2),
-            dataResolved: _.filter(res.data, (item) => item.status !== 2),
+            dataNotResolve,
+            dataResolved,
             isLoading: false,
           });
+
+          this.dataNotResolve = dataNotResolve;
+          this.dataResolved = dataResolved;
         } else {
           store.addNotification(createNotify('danger', res.returnMessage));
         }
@@ -80,10 +99,14 @@ class Complaint extends Component {
   };
 
   onSearch = (e) => {
-    let { data } = this.state;
-    data = _.filter(this.data, (ele) => ele.code.includes(e.target.value));
+    const { currTab } = this.state;
+
+    const data = _.filter(this[`data${currTab}`], (ele) =>
+      JSON.stringify(ele).includes(e.target.value)
+    );
+
     this.setState({
-      data,
+      [`data${currTab}`]: data,
     });
   };
 
@@ -119,7 +142,10 @@ class Complaint extends Component {
               <CalendarTool update={this.updateData} />
             </div>
           </div>
-          <Tabs key={this.state.isLoading} defaultActiveKey="yet">
+          <Tabs
+            onTabClick={(key) => this.onChangeTab(key)}
+            defaultActiveKey={this.state.currTab}
+          >
             <TabPane
               tab={
                 <span>
@@ -127,16 +153,15 @@ class Complaint extends Component {
                   Chưa xử lý
                 </span>
               }
-              key="yet"
+              key="NotResolve"
             >
               <div className="table-edit">
-                <div className="table-small">
+                <div className="table-small table-complaint">
                   <Table
                     pagination={{ pageSize: 6 }}
                     columns={buildColsComplaint(this.handleEditStatus)}
                     dataSource={dataNotResolve}
-                    scroll={{ x: 1300 }}
-                    scroll={{ y: 'calc(100vh - 355px)' }}
+                    scroll={{ x: 1300, y: 'calc(100vh - 350px)' }}
                     loading={dataResolved === null}
                   />
                 </div>
@@ -149,10 +174,10 @@ class Complaint extends Component {
                   Đã xử lý
                 </span>
               }
-              key="already"
+              key="Resolved"
             >
               <div className="table-edit">
-                <div className="table-small">
+                <div className="table-small table-complaint">
                   <Table
                     pagination={{ pageSize: 6 }}
                     columns={buildColsComplaint(this.handleEditStatus, [
@@ -163,8 +188,7 @@ class Complaint extends Component {
                       },
                     ])}
                     dataSource={dataResolved}
-                    scroll={{ x: 1300 }}
-                    scroll={{ y: 'calc(100vh - 355px)' }}
+                    scroll={{ x: 1300, y: 'calc(100vh - 355px)' }}
                     loading={dataResolved === null}
                   />
                 </div>
@@ -180,6 +204,7 @@ class Complaint extends Component {
               data={curRecordEdit}
               mode={'edit'}
               currDate={currDate}
+              key={curRecordEdit}
             />
           </div>
         </div>

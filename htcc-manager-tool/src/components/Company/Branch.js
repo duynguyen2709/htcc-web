@@ -76,14 +76,17 @@ class Branch extends React.Component {
             </Tooltip>
           </div>
         </div>
-        <div className="table-edit table-small">
-          <EditTable
-            columnsInput={columnsEmployee}
-            dataInput={this.mapData(data)}
-            editURL={editURL}
-            valideInput={this.valideInput}
-            pageSize={6}
-          />
+        <div className="table-edit">
+          <div className="table-small table-branch">
+            <EditTable
+              columnsInput={columnsEmployee}
+              dataInput={this.mapData(data)}
+              editURL={editURL}
+              valideInput={this.valideInput}
+              pageSize={10}
+              height="calc(100vh - 355px)"
+            />
+          </div>
         </div>
         <div>
           <AsyncModal

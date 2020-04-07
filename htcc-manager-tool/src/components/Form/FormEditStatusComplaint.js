@@ -58,17 +58,13 @@ class FormEditStatusComplaint extends React.Component {
 
   handleSubmit = (e) => {
     if (!_.isEmpty(this.state.value.response)) {
+      this.props.loading();
       complaintApi
         .updateStatus(this.state.value)
         .then((res) => {
           if (res.returnCode === 1) {
-            this.setState({
-              value: {
-                ...this.state.value,
-                response: null,
-              },
-            });
             this.props.onSubmit();
+            this.clear();
           } else {
             store.addNotification(createNotify('danger', res.returnMessage));
           }
@@ -93,6 +89,15 @@ class FormEditStatusComplaint extends React.Component {
         },
       });
     }
+  };
+
+  clear = () => {
+    this.setState({
+      value: {
+        ...this.state.value,
+        response: null,
+      },
+    });
   };
 
   render() {
@@ -135,6 +140,7 @@ class FormEditStatusComplaint extends React.Component {
                 className="bor-radius"
                 defaultValue={1}
                 onChange={(val) => this.handleChangeStatus(val)}
+                onCancel={() => this.clear()}
               >
                 <Option className=" bor-radius" value={1}>
                   Đã xử lý

@@ -53,7 +53,7 @@ class LightboxImages extends Component {
           <Lightbox
             mainSrc={imageSource[photoIndex]}
             nextSrc={
-              photoIndex + 1 == imageSource.length
+              photoIndex + 1 === imageSource.length
                 ? undefined
                 : imageSource[photoIndex + 1]
             }

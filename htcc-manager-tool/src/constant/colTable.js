@@ -1,5 +1,4 @@
 import React from 'react';
-import * as _ from 'lodash';
 import { Tag } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
 import LightboxImages from '../components/Tool/LightboxImages';
@@ -61,52 +60,41 @@ export const buildColsComplaint = (funcEdit, cols = []) => {
     {
       title: 'ID',
       dataIndex: 'complaintId',
-      editable: false,
       fixed: 'left',
       width: '150px',
     },
     {
       title: 'Người gửi',
       dataIndex: 'sender',
-      editable: false,
       width: '150px',
     },
     {
       title: 'Danh mục',
       dataIndex: 'category',
-      editable: false,
       width: '150px',
-      sorter: {
-        compare: (a, b) => a.category - b.category,
-        multiple: 1,
-      },
+      defaultSortOrder: 'descend',
+      sorter: (a, b) => a.category.localeCompare(b.category),
     },
     {
       title: 'Ngày',
       dataIndex: 'date',
-      editable: false,
       width: '150px',
-      sorter: {
-        compare: (a, b) => a.date - b.date,
-        multiple: 2,
-      },
+      defaultSortOrder: 'descend',
+      sorter: (a, b) => a.date.localeCompare(b.date),
     },
     {
       title: 'Thời gian',
       dataIndex: 'time',
-      editable: false,
       width: '100px',
     },
     {
       title: 'Nội dung',
       dataIndex: 'content',
-      editable: false,
       width: '200px',
     },
     {
       title: 'Hình ảnh',
       dataIndex: 'images',
-      editable: false,
       width: '400px',
       render: (o, record) => {
         return (
