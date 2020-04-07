@@ -2,6 +2,8 @@ import React from 'react';
 import * as _ from 'lodash';
 import { Tag } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
+import LightboxImages from '../components/Tool/LightboxImages';
+
 export const columnsEmployee = [
   {
     title: 'Mã nhân viên',
@@ -107,19 +109,10 @@ export const buildColsComplaint = (funcEdit, cols = []) => {
       editable: false,
       width: '400px',
       render: (o, record) => {
-        const list = _.map(record.images, (img, index) => {
-          return (
-            <li className="float-left" key={index}>
-              <a rel="noopener noreferrer" target="_blank" href={img}>
-                <img className="img-complaint" src={img} alt="" />
-              </a>
-            </li>
-          );
-        });
         return (
-          <ul style={{ listStyle: 'none', padding: 0 }} className="clearfix">
-            {list}
-          </ul>
+          <React.Fragment>
+            <LightboxImages imageSource={record.images} />
+          </React.Fragment>
         );
       },
     },

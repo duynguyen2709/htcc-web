@@ -24,6 +24,7 @@
     "react-chartjs-2": "^2.7.4",
     "react-dom": "^16.8.6",
     "react-google-maps": "9.4.5",
+    "react-image-lightbox": "^5.1.1",
     "react-notification-alert": "0.0.8",
     "react-notifications-component": "^2.3.0",
     "react-redux": "^7.1.3",
