@@ -61,7 +61,6 @@ class Complaint extends Component {
   }
 
   getListComplaint = (month) => {
-    console.log('month', month);
     complaintApi
       .getList(month)
       .then((res) => {
@@ -137,6 +136,7 @@ class Complaint extends Component {
                     columns={buildColsComplaint(this.handleEditStatus)}
                     dataSource={dataNotResolve}
                     scroll={{ x: 1300 }}
+                    scroll={{ y: 'calc(100vh - 355px)' }}
                     loading={dataResolved === null}
                   />
                 </div>
@@ -146,7 +146,7 @@ class Complaint extends Component {
               tab={
                 <span>
                   <CheckSquareOutlined />
-                  Đã sử lý
+                  Đã xử lý
                 </span>
               }
               key="already"
@@ -155,9 +155,16 @@ class Complaint extends Component {
                 <div className="table-small">
                   <Table
                     pagination={{ pageSize: 6 }}
-                    columns={buildColsComplaint(this.handleEditStatus)}
+                    columns={buildColsComplaint(this.handleEditStatus, [
+                      {
+                        title: 'Phản hồi',
+                        dataIndex: 'response',
+                        width: '200px',
+                      },
+                    ])}
                     dataSource={dataResolved}
                     scroll={{ x: 1300 }}
+                    scroll={{ y: 'calc(100vh - 355px)' }}
                     loading={dataResolved === null}
                   />
                 </div>

@@ -57,32 +57,30 @@ class FormEditStatusComplaint extends React.Component {
   };
 
   handleSubmit = (e) => {
-    this.props.onSubmit();
-
-    // if (!_.isEmpty(this.state.value.response)) {
-    //   complaintApi
-    //     .updateStatus(this.state.value)
-    //     .then((res) => {
-    //       if (res.returnCode === 1) {
-    //         this.setState({
-    //           value: {
-    //             ...this.state.value,
-    //             response: null,
-    //           },
-    //         });
-    //         this.props.onSubmit();
-    //       } else {
-    //         store.addNotification(createNotify('danger', res.returnMessage));
-    //       }
-    //     })
-    //     .catch((err) => {
-    //       store.addNotification(createNotify('danger', JSON.stringify(err)));
-    //     });
-    // } else {
-    //   store.addNotification(
-    //     createNotify('warning', 'Bạn chưa nhập thông tin phản hồi')
-    //   );
-    // }
+    if (!_.isEmpty(this.state.value.response)) {
+      complaintApi
+        .updateStatus(this.state.value)
+        .then((res) => {
+          if (res.returnCode === 1) {
+            this.setState({
+              value: {
+                ...this.state.value,
+                response: null,
+              },
+            });
+            this.props.onSubmit();
+          } else {
+            store.addNotification(createNotify('danger', res.returnMessage));
+          }
+        })
+        .catch((err) => {
+          store.addNotification(createNotify('danger', JSON.stringify(err)));
+        });
+    } else {
+      store.addNotification(
+        createNotify('warning', 'Bạn chưa nhập thông tin phản hồi')
+      );
+    }
   };
 
   handleChangeDate = (date) => {
@@ -165,7 +163,7 @@ class FormEditStatusComplaint extends React.Component {
         <CardFooter className="text-right info">
           <Popconfirm
             title="Bạn chắc chắn thay đổi？"
-            icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
+            icon={<QuestionCircleOutlined />}
             okText="Đồng ý"
             cancelText="Huỷ"
             onConfirm={() => this.handleSubmit()}

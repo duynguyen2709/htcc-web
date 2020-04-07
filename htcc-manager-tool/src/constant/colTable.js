@@ -8,78 +8,98 @@ export const columnsEmployee = [
     dataIndex: 'employeeId',
     editable: false,
     fixed: 'left',
-    width: '150px'
+    width: '150px',
   },
   {
     title: 'Username',
     dataIndex: 'username',
     editable: true,
-    width: '200px'
+    width: '200px',
   },
   {
     title: 'Ngày sinh',
     dataIndex: 'birthDate',
     editable: true,
-    width: '200px'
+    width: '200px',
   },
   {
     title: 'Email',
     dataIndex: 'email',
     editable: true,
-    width: '350px'
+    width: '350px',
   },
   {
     title: 'CMND',
     dataIndex: 'identityCardNo',
     editable: true,
-    width: '150px'
+    width: '150px',
   },
   {
     title: 'Chi nhánh',
     dataIndex: 'officeId',
     editable: true,
-    width: '150px'
+    width: '150px',
   },
   {
     title: 'Phòng ban',
     dataIndex: 'department',
     editable: true,
-    width: '150px'
+    width: '150px',
   },
   {
     title: 'address',
     dataIndex: 'address',
     editable: true,
-    width: '250px'
-  }
+    width: '250px',
+  },
 ];
 
-export const buildColsComplaint = funcEdit => {
+export const buildColsComplaint = (funcEdit, cols = []) => {
   return [
     {
       title: 'ID',
       dataIndex: 'complaintId',
       editable: false,
       fixed: 'left',
-      width: '200px'
+      width: '150px',
     },
     {
-      title: 'Nội dung',
-      dataIndex: 'content',
+      title: 'Người gửi',
+      dataIndex: 'sender',
       editable: false,
-      width: '200px'
+      width: '150px',
     },
     {
       title: 'Danh mục',
       dataIndex: 'category',
       editable: false,
-      width: '150px'
+      width: '150px',
+      sorter: {
+        compare: (a, b) => a.category - b.category,
+        multiple: 1,
+      },
     },
     {
       title: 'Ngày',
       dataIndex: 'date',
       editable: false,
-      width: '200px'
+      width: '150px',
+      sorter: {
+        compare: (a, b) => a.date - b.date,
+        multiple: 2,
+      },
+    },
+    {
+      title: 'Thời gian',
+      dataIndex: 'time',
+      editable: false,
+      width: '100px',
+    },
+    {
+      title: 'Nội dung',
+      dataIndex: 'content',
+      editable: false,
+      width: '200px',
     },
     {
       title: 'Hình ảnh',
@@ -101,26 +121,9 @@ export const buildColsComplaint = funcEdit => {
             {list}
           </ul>
         );
-      }
+      },
     },
-    {
-      title: 'Phản hồi',
-      dataIndex: 'response',
-      editable: true,
-      width: '200px'
-    },
-    {
-      title: 'Người gửi',
-      dataIndex: 'sender',
-      editable: false,
-      width: '150px'
-    },
-    {
-      title: 'Thời gian',
-      dataIndex: 'time',
-      editable: false,
-      width: '150px'
-    },
+    ...cols,
     {
       title: 'Trạng thái',
       dataIndex: 'status',
@@ -139,7 +142,7 @@ export const buildColsComplaint = funcEdit => {
                   style={{
                     color: '#52c41a',
                     fontSize: '23px',
-                    float: 'left'
+                    float: 'left',
                   }}
                   className="float-right"
                   onClick={() => funcEdit(record)}
@@ -151,7 +154,7 @@ export const buildColsComplaint = funcEdit => {
           default:
             return <Tag color="default">Từ chối</Tag>;
         }
-      }
-    }
+      },
+    },
   ];
 };
