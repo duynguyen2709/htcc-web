@@ -34,7 +34,8 @@ export default {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    '~/plugins/vuetify'
+    '~/plugins/vuetify',
+    '~/plugins/acl.js'
   ],
   /*
   ** Nuxt.js dev-modules
@@ -98,7 +99,7 @@ export default {
           login: {
             url: '/api/gateway/public/login',
             method: 'post',
-            propertyName: 'data.token'
+            propertyName: 'data.data.token'
           },
           user: {
             url: '/api/admin/me',
@@ -118,7 +119,7 @@ export default {
       login: '/login',
       logout: '/login',
       callback: '/login',
-      home: '/admins'
+      home: '/'
     }
   },
   router: {

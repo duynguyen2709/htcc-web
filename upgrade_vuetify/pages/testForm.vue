@@ -1,10 +1,7 @@
 <template>
   <div id="app">
     <v-app id="inspire">
-        <v-dialog>
-            <template v-slot:activator="{ on }">
-                <!-- <v-btn color="red lighten-2" dark v-on="on">Click Me</v-btn> -->
-                <v-btn color="success" rounded class="font-weight-light" v-on="on" >Change password</v-btn>
+        <!-- <v-btn color="success" rounded class="font-weight-light" v-on="on" >Change password</v-btn>
               </template>
               <v-card>
                 <v-card-text>
@@ -38,7 +35,9 @@
         <v-btn color="warning" @click="resetValidation">Reset Validation</v-btn>
                 </v-card-actions>
               </v-card>
-      </v-dialog>
+      </v-dialog> -->
+
+      <!-- <v-img :src="require('~/D:/ho-chi-minh.jpg')" /> -->
     </v-app>
   </div>
 </template>

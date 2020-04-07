@@ -1,14 +1,13 @@
 <template>
 <v-flex xs12 >
         <edit-form
-                          title="Thêm một công ty"
-                          :fullName="companyName"
-                          :companyId="companyId"
+                          title="Thêm một người dùng cho công ty"
+                          :CompanyIdNotEdit="CompanyId"
                           :phoneNumber="phoneNumber"
                           :email="email"
-                          :address="address"
+                          :username="username"
+                          :password="password"
                           :loading="isLoading"
-                          isCompany
                           btn="Thêm"
                           @OnClickEdit="add($event)"
                         ></edit-form>
@@ -28,11 +27,12 @@ export default {
     editForm
   },
   data: () => ({
-   companyName: '',
+      CompanyId: null,
+    username: true,
+    password: true,
+   fullName: '',
    email: '',
    phoneNumber: '',
-   address: '',
-   companyId: '',
    isLoading: false
   }),
   methods:{
@@ -53,13 +53,13 @@ export default {
       this.isLoading = true;
       let $this = this
       await $this.$axios
-        .post('/api/admin/companies', {
-          address: e.company.address,
-          companyName: e.company.companyName,
-          companyId: e.company.companyId,
-          email: e.company.email,
-          phoneNumber: e.company.phoneNumber,
-          status: 1
+        .post('/api/admin/companyusers', {
+          companyId: this.CompanyId,
+          email: e.user.email,
+          password: e.user.password,
+          phoneNumber: e.user.phoneNumber,
+          status: 1,
+          username: e.user.username,
         })
         .then(res => {
           if(res.data.returnCode != 1){
@@ -71,7 +71,7 @@ export default {
           //window.location.reload(true);
           console.log("Response");
           console.log(res);
-          this.$router.push({ path: "/companies/"});
+          this.$router.push({ path: "/companyusers/" + this.CompanyId});
           }
         })
         .catch(function(error) {
@@ -83,6 +83,10 @@ export default {
 
         this.isLoading = false;
     }
-  }
+  },
+  created:async function() {
+
+    this.CompanyId = this.$route.params.id;
+  },
 };
 </script>

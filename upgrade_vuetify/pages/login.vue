@@ -74,7 +74,7 @@
         isFalse: false,
         message: null,
         username: "admin",
-        password: "123",
+        password: "123@123",
         ShowPassword: false,
         EmailConfirm: "",
         rules: {

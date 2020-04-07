@@ -2,7 +2,6 @@
 <v-flex xs12 >
         <edit-form
                           title="Thêm một quản trị viên"
-                          avatar="https://i.pinimg.com/originals/0d/36/e7/0d36e7a476b06333d9fe9960572b66b9.jpg"
                           :fullName="fullName"
                           :phoneNumber="phoneNumber"
                           :email="email"

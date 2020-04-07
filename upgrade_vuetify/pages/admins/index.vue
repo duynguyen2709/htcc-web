@@ -14,7 +14,12 @@
             ></v-text-field>
           </v-card-title>
           <div>
-            <v-data-table
+
+            <div v-if="!isLoadingDataDone" class="text-center">
+                    <v-progress-circular :size="70" :width="7" color="primary" indeterminate></v-progress-circular>
+                  </div>
+            
+            <v-data-table v-if="isLoadingDataDone"
               :headers="headers"
               :items="items"
               :search="search"
@@ -150,6 +155,8 @@ export default {
     editForm
   },
   data: () => ({
+    isLoadingDataDone: false,
+
     ChoosenItem: null,
 
     /*status dialog*/
@@ -270,6 +277,9 @@ export default {
     },
     async getListAdmins() {
       let $this = this;
+
+      $this.isLoadingDataDone = false;
+
       await $this.$axios
         .get("/api/admin/users")
         .then(function(response) {
@@ -277,6 +287,8 @@ export default {
             // console.log("this admins: " +  JSON.stringify(response.data.data))
             $this.items = response.data.data;
             console.log("this admins: " + JSON.stringify($this.items));
+
+            $this.isLoadingDataDone = true;
           } else {
             console.log("this error message: " + response.data.returnMessage);
           }

@@ -69,8 +69,8 @@
           </v-form>
         </material-card>-->
         <edit-form
-          title="Edit profile"
-          text="Complete your profile"
+          title="Thông tin cá nhân"
+          text="Có thể chỉnh sửa"
           :avatar="user.avatar"
           :fullName="user.fullName"
           :phoneNumber="user.phoneNumber"
@@ -85,7 +85,15 @@
       <v-flex xs12 md4>
         <material-card class="v-card-profile">
           <v-avatar slot="offset" class="mx-auto d-block" size="130">
-            <img src="https://i.imgur.com/OoMeq4c.jpeg" />
+            <!-- <v-img src="https://i.imgur.com/OoMeq4c.jpeg" /> -->
+
+            <v-img :src="user.avatar" :lazy-src="LazyImg">
+                                  <template v-slot:placeholder>
+                                    <v-row class="fill-height ma-0" align="center" justify="center">
+                                      <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
+                                    </v-row>
+                                  </template>
+                                </v-img>
           </v-avatar>
           <v-card-text class="text-xs-center">
             <h6 class="category text-gray font-weight-bold title mb-3">{{ user.fullName }}</h6>
@@ -99,7 +107,7 @@
               <template v-slot:activator="{ on }">
                 <!-- <v-btn color="red lighten-2" dark v-on="on">Click Me</v-btn> -->
                 <!-- <v-btn color="success" rounded class="font-weight-light" v-on="on" @click="resetForm">Change password</v-btn> -->
-                <v-btn color="success" rounded class="font-weight-light" v-on="on" @click="resetFrom">Đổi mật khẩu</v-btn>
+                <v-btn color="success" rounded class="font-weight-light" v-on="on" >Đổi mật khẩu</v-btn>
               </template>
 
               <material-card color="success" elevation="12" title="Đổi mật khẩu">
@@ -193,6 +201,9 @@ export default {
   },
   data() {
     return {
+      
+      LazyImg: "/vuetifylogo.png",
+
       //user
       user: Object.assign({}, this.$auth.user),
 
