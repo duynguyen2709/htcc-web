@@ -1,6 +1,7 @@
 image: node:10.20.0-alpine
 
 definitions:
+  services:
     docker:
       memory: 6144
 
