@@ -1,5 +1,9 @@
 image: node:10.20.0
 
+definitions:
+    docker:
+      memory: 6144
+
 pipelines:
   default:
     - step:
@@ -9,9 +13,11 @@ pipelines:
         script:
           - cd htcc-admin-tool/
           - npm install
-          - npm run build
     - step:
+        services:
+          - docker
         name: Deploy htcc-admin-tool
+        size: 2x
         deployment: Production
         trigger: manual
         script:
