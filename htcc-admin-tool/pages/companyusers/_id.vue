@@ -2,16 +2,24 @@
   <v-container fill-height fluid grid-list-xl>
     <v-layout justify-center wrap>
       <v-flex md12>
-        <v-btn color="green white--text" to="/companies/add">Thêm công ty</v-btn>
+        <div>
+          <v-btn color="#4caf50" class="white--text" @click="$router.go(-1)">Quay lại</v-btn>
+        </div>
+        
         <material-card text>
           <v-card-title>
+            <v-col>
+            <div>
+          <v-btn color="green white--text" @click="goAdd">Thêm người dùng</v-btn>
+        </div>
             <v-text-field
               v-model="search"
               append-icon="search"
-              label="Tìm kiếm"
+              label="Search"
               single-line
               hide-details
             ></v-text-field>
+            </v-col>
           </v-card-title>
           <div>
 
@@ -34,16 +42,17 @@
                   <span class="subheading font-weight-light text--darken-3" v-text="headers.text" />
                 </thead>
               </template>
+              <template v-slot:no-data>Không có quản trị viên nào thuộc công ty này</template>
               <!-- <template slot="items" slot-scope="{ item }"> -->
-              <template v-slot:body="{ items }">
+              <template v-if="items.length != 0" v-slot:body="{ items }">
                 <tbody>
-                  <tr v-for="item in items" :key="item.companyName">
+                  <tr v-for="item in items" :key="item.username">
                     <td>
-                      {{item.address}}
+                        {{ item.companyId }}
                     </td>
-                    <td>{{ item.companyId }}</td>
-                    <td>{{ item.companyName }}</td>
                     <td>{{ item.email }}</td>
+                    <td>{{ item.username }}</td>
+                    <!-- <td>{{ item.password }}</td> -->
                     <td>{{ item.phoneNumber }}</td>
                     <td class="text-xs-right">
                       <!-- <v-btn color="success" @click="dialog=true">Chỉnh sửa</v-btn> -->
@@ -54,21 +63,12 @@
                         <!-- </template> -->
                        
                     </td>
-                    <td class="text-xs-right">
-                      <!-- <v-btn color="success" @click="dialog=true">Chỉnh sửa</v-btn> -->
-                      
-                        <!-- <template v-slot:activator="{ on }"> -->
-                          <!-- <v-btn color="success" v-on="on">Chỉnh sửa</v-btn> -->
-                          <v-icon color="tertiary" @click.stop="goToCompanyUserPage(item)">mdi-format-list-bulleted</v-icon>
-                        <!-- </template> -->
-                       
-                    </td>
-                    <td style="width: 115px;">
+                    <td style="width: 100px;">
                       <v-row style="justify-content: space-around">
                         <p
                           class="font-weight-black"
                           v-bind:class="{'green--text': item.status, 'red--text': !item.status}"
-                          style="margin-bottom: 0px !important; margin-left: 5px !important;"
+                          style="margin-bottom: 0px !important"
                         >{{item.status != 0 ? 'Hoạt động' : 'Khóa'}}</p>
                         <v-icon
                           color="tertiary"
@@ -89,13 +89,10 @@
                   
                         <edit-form
                         v-if= "ChoosenItem"
-                          title="Chỉnh sửa thông tin công ty"
-                          isCompany
-                          :companyIdNoEdit="ChoosenItem.companyId"
-                          :fullName="ChoosenItem.companyName"
+                          title="Chỉnh sửa thông tin admin"
+                          :usernameNotEdit="ChoosenItem.username"
                           :phoneNumber="ChoosenItem.phoneNumber"
                           :email="ChoosenItem.email"
-                          :address="ChoosenItem.address"
                           :loading="editFormLoading"
                           btn="Cập nhật"
                           @OnClickEdit="updateProfile($event, ChoosenItem)"
@@ -108,7 +105,7 @@
 
                     <v-card-text
                       class="mt-2"
-                    >Bạn có chắc muốn thay đổi trạng thái của công ty này?</v-card-text>
+                    >Bạn có chắc muốn thay đổi trạng thái của quản trị viên này?</v-card-text>
 
                     <v-card-actions>
                       <v-btn
@@ -125,15 +122,14 @@
 
                 <v-dialog v-model="DeleteDialog" max-width="290">
                   <v-card>
-                    <v-card-title class="green white--text">Xóa công ty</v-card-title>
+                    <v-card-title class="green white--text">Xóa quản trị viên</v-card-title>
 
-                    <v-card-text class="mt-2">Bạn có chắc muốn xóa công ty này?</v-card-text>
+                    <v-card-text class="mt-2">Bạn có chắc muốn xóa quản trị viên này?</v-card-text>
 
                     <v-card-actions>
                       <v-btn
                         color="green darken-1"
-                        text
-                        @click="deleteAdmin()"
+                        text=""
                         :loading="loadingBtnDelete"
                       >Đồng ý</v-btn>
 
@@ -163,6 +159,9 @@ export default {
     editForm
   },
   data: () => ({
+    
+    CompanyId: null,
+
     isLoadingDataDone: false,
 
     ChoosenItem: null,
@@ -188,40 +187,39 @@ export default {
     search: "",
     headers: [
       {
-        text: "Địa chỉ",
-        value: "address"
-      },
-      {
-        sortable: false,
         text: "Mã công ty",
         value: "companyId"
       },
       {
         sortable: false,
-        text: "Tên công ty",
-        value: "conpanyName"
-      },
-      {
-        sortable: false,
-        text: "Email",
+        text: "email",
         value: "email"
       },
       {
         sortable: false,
+        text: "Tên đăng nhập",
+        value: "username"
+      },
+      // {
+      //   text: "Mật khẩu",
+      //   value: "password"
+      // },
+      {
+        sortable: false,
         text: "Số điện thoại",
         value: "phoneNumber"
-      },
-      
+      }
     ],
 
-    items: []
+    items: [],
+    ChoosenItems: []
   }),
   methods: {
     ...mapActions({
       setInfo: "notification/setInfo"
     }),
     clickItem: function(id) {
-      this.$router.push({ path: "/companies/edit/" + id });
+      this.$router.push({ path: "/admins/edit/" + id });
     },
     TriggerNoti(mess) {
       this.setInfo({ color: "success", mess: mess, status: true });
@@ -230,32 +228,30 @@ export default {
       this.setInfo({ color: "error", mess: mess, status: true });
     },
     clickEditForm(item){
+      console.log("this username: " + item.username)
       this.ChoosenItem = item;
+      console.log("this username choosenitem: " + item.username)
       this.editInfoForm = true;
     },
-    updateProfile(e, company) {
+    updateProfile(e, user) {
       // let ChoosenItem = this.items.find(item => item.id === id);
       // ChoosenItem.dialog = false;
+      let $this= this;
       console.log("editloading: " + this.editFormLoading)
       this.editFormLoading = true;
-      company.email = e.company.email;
-      company.companyName = e.company.companyName;
-      company.phoneNumber = e.company.phoneNumber;
-      company.address = e.company.address;
+      user.email = e.user.email;
+      user.phoneNumber = e.user.phoneNumber;
 
-      let url = "/api/admin/companies/" + company.companyId;
+      let url = "/api/admin/companyusers/" + $this.CompanyId + "/" + user.username;
       console.log("url: " + url);
       this.$axios
         .put(url, {
-          address: e.company.address,
-          companyId: company.companyId,
-          companyName: e.company.companyName,
-          
-          email: e.company.email,
-          
-          phoneNumber: e.company.phoneNumber,
-          
-          status: e.company.status,
+            CompanyId: $this.CompanyId,
+          email: e.user.email,
+          password: user.password,
+          phoneNumber: e.user.phoneNumber,
+          status: user.status,
+          username: user.username
         })
         .then(res => {
           if (res.data.returnCode != 1) {
@@ -279,18 +275,20 @@ export default {
           console.log(error);
         });
     },
-    async getListcompanies() {
+    async getListAdmins() {
       let $this = this;
+
+        $this.CompanyId = $this.$route.params.id
 
       $this.isLoadingDataDone = false;
 
       await $this.$axios
-        .get("/api/admin/companies")
+        .get("/api/admin/companyusers/" + $this.CompanyId)
         .then(function(response) {
           if (response.data.returnCode == 1) {
-            // console.log("this companies: " +  JSON.stringify(response.data.data))
+            // console.log("this admins: " +  JSON.stringify(response.data.data))
             $this.items = response.data.data;
-            console.log("this companies: " + JSON.stringify($this.items));
+            console.log("this admins: " + JSON.stringify($this.items));
 
             $this.isLoadingDataDone = true;
           } else {
@@ -315,7 +313,7 @@ export default {
       this.loadingBtnStatus = true;
       await this.$axios
         .put(
-          "/api/admin/companies/" + this.ChoosenItem.companyId + "/status/" + status
+          "/api/admin/companyusers/" + this.CompanyId + "/" + this.ChoosenItem.username + "/status/" + status
         )
         .then(res => {
           if (res.data.returnCode != 1) {
@@ -344,7 +342,7 @@ export default {
     deleteAdmin() {
       this.loadingBtnDelete = true;
       this.$axios
-        .delete("/api/admin/companys/" + this.ChoosenItem.companyname)
+        .delete("/api/admin/users/" + this.ChoosenItem.username)
         .then(res => {
           if (res.data.returnCode != 1) {
             this.TriggerNotiError(res.data.returnMessage);
@@ -370,13 +368,13 @@ export default {
           console.log(error);
         });
     },
-    goToCompanyUserPage(item){
-      this.$router.push({ path: "/companyusers/" + item.companyId })
+    goAdd(){
+        this.$router.push({ path: "/companyusers/add/" + this.CompanyId })
     }
   },
   created: async function() {
 
-    this.getListcompanies();
+    this.getListAdmins();
   },
   watch: {
     editInfoForm: function(val){

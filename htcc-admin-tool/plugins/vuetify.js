@@ -1,10 +1,11 @@
-import Vue from 'vue'
-import Vuetify from 'vuetify/lib'
-import theme from '~/plugins/theme'
-import 'vuetify/dist/vuetify.min.css'
-import '@mdi/font/css/materialdesignicons.css'
+// src/plugins/vuetify.js
 
-Vue.use(Vuetify, {
-  iconfont: 'mdi',
-  theme
-});
+import Vue from 'vue'
+import Vuetify from 'vuetify'
+import 'vuetify/dist/vuetify.min.css'
+
+Vue.use(Vuetify)
+
+const opts = {}
+
+export default new Vuetify(opts)

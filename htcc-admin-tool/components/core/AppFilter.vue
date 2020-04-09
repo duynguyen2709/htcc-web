@@ -9,7 +9,7 @@
     offset-x
     transition="slide-y-transition"
   >
-    <v-btn
+    <!-- <v-btn
       slot="activator"
       class="elevation-0"
       color="grey"
@@ -18,9 +18,21 @@
       fixed
       style="top: 96px;"
       top
+    > -->
+    <template v-slot:activator="{ on }">
+    <v-btn
+      class="elevation-0"
+      color="grey"
+      dark
+      fab
+      fixed
+      style="top: 96px;"
+      top
+      v-on="on"
     >
       <v-icon>mdi-settings</v-icon>
     </v-btn>
+    </template>
     <v-card>
       <v-container grid-list-xl>
         <v-layout wrap>
@@ -90,7 +102,7 @@
                   fab
                   icon
                   small
-                  round
+                  rounded
                 >
                   <v-icon>mdi-facebook</v-icon>
                 </v-btn>
@@ -100,7 +112,7 @@
                   fab
                   icon
                   small
-                  round
+                  rounded
                 >
                   <v-icon>mdi-twitter</v-icon>
                 </v-btn>

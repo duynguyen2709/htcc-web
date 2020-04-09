@@ -1,7 +1,8 @@
-<template>
-  <v-toolbar id="core-toolbar" flat prominent style="background: #eee;">
-    <div class="v-toolbar-title">
-      <v-toolbar-title class="tertiary--text font-weight-light">
+<template class="d-toolbar ">
+  <!-- <v-toolbar id="core-toolbar" flat prominent style="background: #eee;"> -->
+  <v-toolbar id="core-toolbar" class="d-toolbar " text prominent style="background: #eee;">
+    <div class="v-toolbar-title ">
+      <v-toolbar-title class="tertiary--text font-weight-bold ">
         <v-btn v-if="responsive" class="default v-btn--simple" dark icon @click.stop="onClickBtn">
           <v-icon>mdi-view-list</v-icon>
         </v-btn>
@@ -10,18 +11,15 @@
     </div>
 
     <v-spacer />
-    <v-toolbar-items>
-      <v-flex align-center layout py-2>
-        <v-text-field
+    <v-toolbar-items class="d-toolbar ">
+      <v-flex align-center layout py-2 >
+        <v-text-fieldtoolbar-items
           v-if="responsiveInput"
           class="mr-4 mt-2 purple-input"
           label="Search..."
           hide-details
           color="purple"
         />
-        <nuxt-link v-ripple class="toolbar-items" to="/" title="Dashboard">
-          <v-icon color="tertiary">mdi-view-dashboard</v-icon>
-        </nuxt-link>
         <v-menu bottom left content-class="dropdown-menu" offset-y transition="slide-y-transition">
           <router-link v-ripple slot="activator" class="toolbar-items" to="/notifications">
             <v-badge color="error" overlap>
@@ -31,13 +29,13 @@
           </router-link>
           <v-card>
             <v-list dense>
-              <v-list-tile
+              <v-list-item
                 v-for="notification in notifications"
                 :key="notification"
                 @click="onClick"
               >
-                <v-list-tile-title v-text="notification" />
-              </v-list-tile>
+                <v-list-item-title v-text="notification" />
+              </v-list-item>
             </v-list>
           </v-card>
         </v-menu>
@@ -50,11 +48,11 @@
           <v-icon color="tertiary">mdi-account</v-icon>
         </nuxt-link>-->
 
-        <v-dialog width="530">
-          <template v-slot:activator="{ on }">
-            <!-- <v-btn color="red lighten-2" dark v-on="on">Click Me</v-btn> -->
-            <v-icon color="tertiary" v-on="on">mdi-account</v-icon>
-          </template>
+       <!-- <v-icon color="tertiary" @click="dialog = true">mdi-account</v-icon> -->
+       
+      <v-icon color="tertiary" @click="onClickUserProfile">mdi-account</v-icon>
+        <v-dialog width="530" v-model="dialog">
+          
 
           <!-- <v-card>
             <v-card-title class="headline grey lighten-2" primary-title>Privacy Policy</v-card-title>
@@ -77,18 +75,18 @@
             </v-avatar>
             <v-card-text class="text-xs-center">
               <h6 class="category text-gray font-weight-thin mb-3">{{ user.function }}</h6>
-              <h4 class="card-title font-weight-light">{{ fullname }}</h4>
+              <h4 class="card-title font-weight-light">{{ $auth.user.username }}</h4>
               <p class="card-description font-weight-light">{{ user.description }}</p>
               <blockquote class="blockquote">{{ user.citation }}</blockquote>
-              <v-card flat>
-                <v-btn color="success" round class="font-weight-light">Edit profile</v-btn>
-                <v-btn color="success" round class="font-weight-light">Change password</v-btn>
+              <v-card text>
+                <v-btn color="success" rounded class="font-weight-light">Edit profile</v-btn>
+                <v-btn color="success" rounded class="font-weight-light">Change password</v-btn>
               </v-card>
             </v-card-text>
           </material-card>
         </v-dialog>
       </v-flex>
-      <nuxt-link v-ripple class="toolbar-items" to="/" title="Logout" @click.native="logout">
+      <nuxt-link v-ripple class="toolbar-items" to="/" title="Logout" @click.native="$auth.logout()">
         <v-icon color="tertiary">mdi-logout</v-icon>
       </nuxt-link>
     </v-toolbar-items>
@@ -111,9 +109,10 @@ export default {
       "Another Notification",
       "Another One"
     ],
-    title: "Dashboard",
+    title: "Home",
     responsive: true,
-    responsiveInput: true
+    responsiveInput: true,
+    dialog: false
   }),
   watch: {
     $route(val) {
@@ -151,6 +150,9 @@ export default {
     async logout() {
       await this.setUsername(null);
       this.$router.push({ path: "/" });
+    },
+    onClickUserProfile(){
+      this.$router.push({ path:"/user-profile"});
     }
   },
   mounted() {
@@ -166,5 +168,11 @@ export default {
 <style>
 #core-toolbar a {
   text-decoration: none;
+}
+.d-toolbar {
+  height: 64px !important;
+}
+.d-title-toolbar{
+  
 }
 </style>

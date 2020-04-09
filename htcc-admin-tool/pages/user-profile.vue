@@ -67,50 +67,66 @@
               </v-layout>
             </v-container>
           </v-form>
-        </material-card> -->
-        <edit-form 
-          title="Edit profile" 
-          text="Complete your profile" 
-          :firstname="user.firstname"
-          :lastname="user.lastname"
-          :phone="user.phone"
+        </material-card>-->
+        <edit-form
+          title="Thông tin cá nhân"
+          text="Có thể chỉnh sửa"
+          :avatar="user.avatar"
+          :fullName="user.fullName"
+          :phoneNumber="user.phoneNumber"
           :email="user.email"
+          :loading="is_loading_update"
+          btn="Cập nhập thông tin"
           @OnClickEdit="updateProfile($event)"
-          ></edit-form>
+        ></edit-form>
       </v-flex>
+
+      <!-- Card profile -->
       <v-flex xs12 md4>
         <material-card class="v-card-profile">
           <v-avatar slot="offset" class="mx-auto d-block" size="130">
-            <img src="https://demos.creative-tim.com/vue-material-dashboard/img/marc.aba54d65.jpg" />
+            <!-- <v-img src="https://i.imgur.com/OoMeq4c.jpeg" /> -->
+
+            <v-img :src="user.avatar" :lazy-src="LazyImg">
+                                  <template v-slot:placeholder>
+                                    <v-row class="fill-height ma-0" align="center" justify="center">
+                                      <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
+                                    </v-row>
+                                  </template>
+                                </v-img>
           </v-avatar>
           <v-card-text class="text-xs-center">
-           <!-- <v-card-text>  -->
-            <h6 class="category text-gray font-weight-thin mb-3">{{ user.function }}</h6>
-            <h4 class="card-title font-weight-light">{{ fullname }}</h4>
-            <p class="card-description font-weight-light">{{ user.description }}</p>
-            <blockquote class="blockquote">{{ user.citation }}</blockquote>
+            <h6 class="category text-gray font-weight-bold title mb-3">{{ user.fullName }}</h6>
+            <h4 class="card-title font-weight-light">{{ user.email }}</h4>
+            <p class="card-description font-weight-light">{{ user.phoneNumber }}</p>
+            <!-- <blockquote class="blockquote">{{}}</blockquote> -->
             <!-- <v-btn color="success" round class="font-weight-light">Change password</v-btn> -->
-            <v-dialog width="530">
+
+            <!-- Card edit -->
+            <v-dialog width="530" v-model="dialog">
               <template v-slot:activator="{ on }">
                 <!-- <v-btn color="red lighten-2" dark v-on="on">Click Me</v-btn> -->
-                <v-btn color="success" round class="font-weight-light" v-on="on" @click="resetForm">Change password</v-btn>
+                <!-- <v-btn color="success" rounded class="font-weight-light" v-on="on" @click="resetForm">Change password</v-btn> -->
+                <v-btn color="success" rounded class="font-weight-light" v-on="on" >Đổi mật khẩu</v-btn>
               </template>
 
               <material-card color="success" elevation="12" title="Đổi mật khẩu">
-                <v-card-text>
-                  <v-form>
+                <!-- <v-card> -->
+                <v-form ref="form" @submit.prevent>
+                  <v-card-text>
                     <v-text-field
                       ref="OldPassword"
                       v-model="OldPassword"
                       prepend-icon="lock"
                       name="username"
                       label="Mật khẩu hiện tại"
-                      :rules="[rules.required, rules.CurrentPassword]"
+                      :rules="[rules.required]"
                       :append-icon="ShowPasswordOld ? 'mdi-eye' : 'mdi-eye-off'"
                       @click:append="ShowPasswordOld = !ShowPasswordOld"
                       :type="ShowPasswordOld ? 'text' : 'password'"
-                      @click="()=>{rules.CurrentPassword=true}"
+                      @click="rules.CurrentPassword = true"
                     ></v-text-field>
+
                     <v-text-field
                       ref="NewPassword"
                       v-model="NewPassword"
@@ -122,6 +138,7 @@
                       @click:append="ShowPasswordNew = !ShowPasswordNew"
                       :type="ShowPasswordNew ? 'text' : 'password'"
                     ></v-text-field>
+
                     <v-text-field
                       ref="NewPasswordConfirm"
                       v-model="NewPasswordConfirm"
@@ -133,20 +150,29 @@
                       @click:append="ShowPasswordConfirm = !ShowPasswordConfirm"
                       :type="ShowPasswordConfirm ? 'text' : 'password'"
                     ></v-text-field>
-                  </v-form>
-                </v-card-text>
-                <v-card-actions>
-                  <v-layout justify-center align-center>
-                    <v-btn
+                  </v-card-text>
+                  <v-card-actions>
+                    <!-- <v-tooltip bottom>
+                      <template v-slot:activator="{ on }">
+                        <v-icon color="tertiary" v-on="on" @click="resetForm">mdi-refresh</v-icon>
+                      </template>
+                      <span class="white--text">Đặt lại form</span>
+                    </v-tooltip> -->
+
+                    <!-- <v-btn
                     icon
                     @click="resetForm"
+                    class="black--text"
                   >
                     <v-icon>mdi-refresh</v-icon>
-                  </v-btn>
-                    <v-btn color="success" @click="changePassword">Đổi mật khẩu</v-btn>
-                  </v-layout>
-                </v-card-actions>
+                    </v-btn>-->
+                    <v-layout justify-center align-center>
+                      <v-btn :loading="is_loading_password" color="success" @click="changePassword">Đổi mật khẩu</v-btn>
+                    </v-layout>
+                  </v-card-actions>
+                </v-form>
               </material-card>
+              <!-- </v-card> -->
             </v-dialog>
           </v-card-text>
         </material-card>
@@ -154,6 +180,12 @@
     </v-layout>
   </v-container>
 </template>
+
+<style>
+  .text-xs-center{
+      text-align: center!important;
+  }
+</style>
 
 <script>
 import { mapGetters } from "vuex";
@@ -169,6 +201,12 @@ export default {
   },
   data() {
     return {
+      
+      LazyImg: "/vuetifylogo.png",
+
+      //user
+      user: Object.assign({}, this.$auth.user),
+
       //use for hidden password
       //-----------
       ShowPasswordOld: false,
@@ -184,6 +222,8 @@ export default {
       NewPassword: "",
       NewPasswordConfirm: "",
       //------------
+
+      dialog: false,
 
       rules: {
         required: value => !!value || "Không được để trống",
@@ -204,26 +244,34 @@ export default {
           );
         },
         // CurrentPassword: value => {
-        //   return (OldPassword === user.password) || "Mật khẩu hiện tại không trùng khớp"
-        // }
+        //   return (value == this.user.password) || "Mật khẩu hiện tại không trùng khớp"
+        // },
         CurrentPassword: true,
-        NewPasswordConfirm: true
-      }
+        NewPasswordConfirm: value => {
+          return (value == this.NewPassword) || "Mật khẩu mới không trùng khớp"
+        }
+        //CurrentPassword: [true],
+        //NewPasswordConfirm: [true]
+      },
+
+
+      is_loading_update: false,
+      is_loading_password: false
     };
   },
   computed: {
-    ...mapGetters({
-      user: "user/getUser",
-      fullname: "user/getFullname"
-    }),
+    // ...mapGetters({
+    //   user: "user/getUser",
+    //   fullname: "user/getFullname"
+    // }),
 
-    form () {
-      return {
-        OldPassword: this.OldPassword,
-        NewPassword: this.NewPassword,
-        NewPasswordConfirm: this.NewPasswordConfirm
-      }
-    },
+    // form () {
+    //   return {
+    //     OldPassword: this.OldPassword,
+    //     NewPassword: this.NewPassword,
+    //     NewPasswordConfirm: this.NewPasswordConfirm
+    //   }
+    // },
   },
   methods: {
     ...mapActions({
@@ -231,45 +279,141 @@ export default {
       setPassword: "user/setPassword",
       setInfo: "notification/setInfo"
     }),
-    updateProfile: function(user) {
-      this.setUser(user);
-      this.TriggerNoti("Cập nhập thông tin thành công");
+    updateProfile: async function(e) {
+this.is_loading_update = true;
+      //this.setUser(user);
+      
       //console.log("edit profile")
+
+      let url = "/api/admin/users/" + this.user.username
+      console.log("url: " + url);
+      await this.$axios
+        .put(url, {
+          avatar: this.user.avatar,
+          email: e.user.email,
+          fullName: e.user.fullName,
+          password: this.user.password,
+          phoneNumber: e.user.phoneNumber,
+          role: this.user.role,
+          status: this.user.status,
+          username: this.user.username,
+        })
+        .then(res => {
+          if(res.data.returnCode == 0){
+            this.TriggerNoti(res.data.returnMessage);
+          }
+          else{
+          //this.is_loading = false;
+          this.TriggerNoti("Cập nhập thông tin thành công");
+
+          this.user.fullName = e.user.fullName;
+          this.user.email = e.user.email;
+          this.user.phoneNumber = e.user.phoneNumber;
+
+          console.log("Response");
+          console.log(res);
+          //$this.goBack();
+          }
+          this.is_loading_update = false;
+         
+        })
+        .catch(function(error) {
+          //handle error
+          this.is_loading = false;
+          console.log("Error:");
+          console.log(error);
+        });
+ 
+      //e.preventDefault();
     },
-    changePassword() {
+    async changePassword() {
       console.log("New p: " + this.OldPassword);
       console.log("Cur p: " + this.user.password);
-      
+      this.is_loading_password = true;
       let flag = true;
 
-      if (this.OldPassword !== this.user.password) {
-        this.rules.CurrentPassword = "Mật khẩu hiện tại không trùng khớp";
-        flag = false;
-      }
-      if (this.NewPassword !== this.NewPasswordConfirm) {
-        this.rules.NewPasswordConfirm = "Mật khẩu mới không trùng khớp";
-        flag = false;
-      } 
+      // if (this.OldPassword !== this.user.password) {
+      //   this.rules.CurrentPassword = "Mật khẩu hiện tại không trùng khớp";
+      //   flag = false;
+      // }
+      // if (this.NewPassword !== this.NewPasswordConfirm) {
+      //   this.rules.NewPasswordConfirm = "Mật khẩu mới không trùng khớp";
+      //   flag = false;
+      // } 
       
-      Object.keys(this.form).forEach(f => {
-        if (!this.form[f])
-          console.log("error form: " + f);
-        this.$refs[f].validate(true)
-      })
+      // Object.keys(this.form).forEach(f => {
+      //   console.log(f);
+      //   if (!this.form[f])
+      //     console.log("error form: " + f);
+      //   this.$refs[f].validate(true)
+      // })
 
-      if(flag)
-        {
-          this.setPassword(this.NewPassword);
-          this.TriggerNoti("Cập nhập mật khẩu thành công");
-        }
+      if (this.$refs.form.validate()) {
+        console.log("cur pass: " + this.user.password)
+        console.log("ref form validate");
+
+        
+        this.snackbar = true;
+
+        let url = "/api/gateway/private/changepassword/3"
+        await this.$axios
+        .put(url, {
+          "clientId": 3,
+          "companyId": "",
+          "newPassword": this.NewPassword,
+          "oldPassword": this.OldPassword,
+          "username": "admin"
+        })
+        .then(res => {
+          if(res.data.returnCode != 1){
+            this.TriggerNotiError(res.data.returnMessage);
+          }
+          else{
+          //this.is_loading = false;
+          this.TriggerNoti(res.data.returnMessage);
+          console.log("Response");
+          console.log(res);
+          //$this.goBack();
+          }
+
+          this.dialog = false;
+        })
+        .catch(function(error) {
+          //handle error
+          //this.is_loading = false;
+          console.log("Error:");
+          console.log(error);
+        });
+      }
+      else{
+        console.log("ref form validate false");
+        flag = false
+      }
+this.is_loading_password = false;
+      // if(flag)
+      //   {
+      //     this.setPassword(this.NewPassword);
+      //     this.TriggerNoti("Cập nhập mật khẩu thành công");
+      //   }
     },
     resetForm () {
-      Object.keys(this.form).forEach(f => {
-        this.$refs[f].reset()
-      })
+      
+      // Object.keys(this.form).forEach(f => {
+      //   console.log(f);
+      //   this.$refs[f].reset()
+      // })
+
+      this.OldPassword= "";
+      this.NewPassword= "";
+      this.NewPasswordConfirm= "";
     },
     TriggerNoti(mess){
       this.setInfo({color: 'success',
+                mess: mess,
+                status: true})
+      },
+    TriggerNotiError(mess){
+      this.setInfo({color: 'error',
                 mess: mess,
                 status: true})
       }

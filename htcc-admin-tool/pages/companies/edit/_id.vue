@@ -4,7 +4,8 @@
       <v-flex md12>
         <v-btn color="green" to="/admins/add">Add new admin</v-btn>
         <!-- <material-card color="green" flat full-width title="Admins" text="List of sub-admins"> -->
-        <material-card flat>
+        <!-- <material-card flat> -->
+          <material-card text>
           <v-card-title>
             <v-text-field
               v-model="search"

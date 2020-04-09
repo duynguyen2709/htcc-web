@@ -2,14 +2,14 @@
 <v-flex xs12 >
   <v-btn color="#4caf50" class="white--text ml-4" @click="$router.go(-1)">Quay lại</v-btn>
         <edit-form
-                          title="Thêm công ty"
-                          :fullName="companyName"
-                          :companyId="companyId"
+                          title="Thêm người dùng cho công ty"
+                          :CompanyIdNotEdit="CompanyId"
                           :phoneNumber="phoneNumber"
                           :email="email"
-                          :address="address"
+                          :username="username"
+                          :password="password"
                           :loading="isLoading"
-                          isCompany
+                          NoFullName
                           btn="Thêm"
                           @OnClickEdit="add($event)"
                         ></edit-form>
@@ -29,11 +29,12 @@ export default {
     editForm
   },
   data: () => ({
-   companyName: '',
+      CompanyId: null,
+    username: true,
+    password: true,
+   fullName: '',
    email: '',
    phoneNumber: '',
-   address: '',
-   companyId: '',
    isLoading: false
   }),
   methods:{
@@ -54,13 +55,13 @@ export default {
       this.isLoading = true;
       let $this = this
       await $this.$axios
-        .post('/api/admin/companies', {
-          address: e.company.address,
-          companyName: e.company.companyName,
-          companyId: e.company.companyId,
-          email: e.company.email,
-          phoneNumber: e.company.phoneNumber,
-          status: 1
+        .post('/api/admin/companyusers', {
+          companyId: this.CompanyId,
+          email: e.user.email,
+          password: e.user.password,
+          phoneNumber: e.user.phoneNumber,
+          status: 1,
+          username: e.user.username,
         })
         .then(res => {
           if(res.data.returnCode != 1){
@@ -72,7 +73,7 @@ export default {
           //window.location.reload(true);
           console.log("Response");
           console.log(res);
-          this.$router.push({ path: "/companies/"});
+          this.$router.push({ path: "/companyusers/" + this.CompanyId});
           }
         })
         .catch(function(error) {
@@ -83,7 +84,14 @@ export default {
         });
 
         this.isLoading = false;
+    },
+    goBack(){
+      this.$router.push
     }
-  }
+  },
+  created:async function() {
+
+    this.CompanyId = this.$route.params.id;
+  },
 };
 </script>

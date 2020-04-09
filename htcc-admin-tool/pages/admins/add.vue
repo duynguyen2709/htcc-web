@@ -1,76 +1,90 @@
 <template>
 <v-flex xs12 >
-        <material-card color="green" title="Add new admin">
-          <v-form>
-            <v-container py-0>
-              <v-layout wrap>
-                <v-flex xs12 md4>
-                  <v-text-field label="Company (disabled)" disabled />
-                </v-flex>
-                <v-flex xs12 md4>
-                  <v-text-field class="purple-input" label="User Name" />
-                </v-flex>
-                <v-flex xs12 md4>
-                  <v-text-field label="Email Address" class="purple-input" />
-                </v-flex>
-                <v-flex xs12 md6>
-                  <v-text-field
-                    v-model="firstname"
-                    label="First Name"
-                    class="purple-input"
-                  />
-                </v-flex>
-                <v-flex xs12 md6>
-                  <v-text-field
-                    v-model="lastname"
-                    label="Last Name"
-                    class="purple-input"
-                  />
-                </v-flex>
-                <v-flex xs12 md12>
-                  <v-text-field label="Adress" class="purple-input" />
-                </v-flex>
-                <v-flex xs12 md4>
-                  <v-text-field label="City" class="purple-input" />
-                </v-flex>
-                <v-flex xs12 md4>
-                  <v-text-field label="Country" class="purple-input" />
-                </v-flex>
-                <v-flex xs12 md4>
-                  <v-text-field class="purple-input" label="Postal Code" type="number" />
-                </v-flex>
-                <v-flex xs12>
-                  <v-textarea
-                    class="purple-input"
-                    label="About Me"
-                    value="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-                  />
-                </v-flex>
-                <v-flex xs12 text-xs-right>
-                  <v-btn
-                    class="mx-0 font-weight-light"
-                    color="success"
-                  >Add</v-btn>
-                </v-flex>
-              </v-layout>
-            </v-container>
-          </v-form>
-        </material-card>
+  <v-btn color="#4caf50" class="white--text ml-4" @click="$router.go(-1)">Quay lại</v-btn>
+        <edit-form
+                          title="Thêm quản trị viên"
+                          :fullName="fullName"
+                          :phoneNumber="phoneNumber"
+                          :email="email"
+                          :username="username"
+                          :password="password"
+                          :loading="isLoading"
+                          btn="Thêm"
+                          @OnClickEdit="add($event)"
+                        ></edit-form>
       </v-flex>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+import { mapActions } from "vuex";
 import materialCard from "~/components/material/AppCard";
+import editForm from "~/components/material/AppFormEdit";
 
 export default {
   layout: "dashboard",
   components: {
-    materialCard
+    materialCard,
+    editForm
   },
   data: () => ({
-   firstname: '',
-   lastname: '',
-   role: ''
-  })
+    username: true,
+    password: true,
+   fullName: '',
+   email: '',
+   phoneNumber: '',
+   isLoading: false
+  }),
+  methods:{
+    ...mapActions({
+      setInfo: "notification/setInfo"
+    }),
+    TriggerNoti(mess){
+      this.setInfo({color: 'success',
+                mess: mess,
+                status: true})
+      },
+    TriggerNotiError(mess){
+      this.setInfo({color: 'error',
+                mess: mess,
+                status: true})
+      },
+    async add(e){
+      this.isLoading = true;
+      let $this = this
+      await $this.$axios
+        .post('/api/admin/users', {
+          avatar: e.user.avatar,
+          email: e.user.email,
+          fullName: e.user.fullName,
+          password: e.user.password,
+          phoneNumber: e.user.phoneNumber,
+          role: 0,
+          status: 1,
+          username: e.user.username,
+        })
+        .then(res => {
+          if(res.data.returnCode != 1){
+            this.TriggerNotiError(res.data.returnMessage);
+          }
+          else{
+          //this.is_loading = false;
+          this.TriggerNoti(res.data.returnMessage);
+          //window.location.reload(true);
+          console.log("Response");
+          console.log(res);
+          this.$router.push({ path: "/admins/"});
+          }
+        })
+        .catch(function(error) {
+          //handle error
+          //this.is_loading = false;
+          console.log("Error:");
+          console.log(error);
+        });
+
+        this.isLoading = false;
+    }
+  }
 };
 </script>
