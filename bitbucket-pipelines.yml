@@ -29,5 +29,5 @@ pipelines:
           - mkdir -p ~/.ssh
           - cd ../script/
           - cat my_known_hosts >> ~/.ssh/known_hosts
-          - (umask  077 ; echo $KEY_DEV_1 | base64 --decode > ~/.ssh/id_rsa)
+          - (umask  077 ; echo $KEY_DEV_1 | base64 --decode -i > ~/.ssh/id_rsa)
           - ssh root@108.61.162.225 "cd /home/htcc-web/htcc-admin-tool/;./admin.sh"
