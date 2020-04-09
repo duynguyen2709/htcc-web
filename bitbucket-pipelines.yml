@@ -1,0 +1,29 @@
+image: node:10.20.0
+
+pipelines:
+  default:
+    - step:
+        name: Default
+        caches:
+          - node
+        script:
+          - cd htcc-admin-tool/
+          - npm install
+          - npm run build
+    - step:
+        name: Deploy htcc-admin-tool
+        deployment: Production
+        trigger: manual
+        script:
+          - cd htcc-admin-tool/
+          - docker build -t duyna5/htcc-admin-tool .
+          - docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASSWORD
+          - docker push duyna5/htcc-admin-tool:latest
+          - mkdir -p ~/.ssh
+          - cd script/
+          - cat my_known_hosts >> ~/.ssh/known_hosts
+          - (umask  077 ; echo $KEY_DEV_1 | base64 --decode > ~/.ssh/id_rsa)
+          - ssh root@108.61.162.225 "cd /home/htcc-web/htcc-admin-tool/;./admin.sh"
+
+options:
+  docker: true

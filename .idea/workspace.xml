@@ -1,0 +1,545 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="8d5bc4d2-6248-4097-875d-a18b83b422fd" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/htcc-admin-tool/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/htcc-admin-tool/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/.editorconfig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/assets/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/assets/material-dashboard/_alerts.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/assets/material-dashboard/_buttons.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/assets/material-dashboard/_cards.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/assets/material-dashboard/_checkboxes.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/assets/material-dashboard/_colors.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/assets/material-dashboard/_dropdown.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/assets/material-dashboard/_fixed-plugin.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/assets/material-dashboard/_footer.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/assets/material-dashboard/_inputs.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/assets/material-dashboard/_misc.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/assets/material-dashboard/_mixins.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/assets/material-dashboard/_sidebar.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/assets/material-dashboard/_tables.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/assets/material-dashboard/_tabs.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/assets/material-dashboard/_toolbar.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/assets/material-dashboard/_tooltips.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/assets/material-dashboard/_typography.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/assets/material-dashboard/_variables.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/assets/variables.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/assets/vuetify.min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/components/Logo.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/components/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/components/VuetifyLogo.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/components/core/AppDrawer.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/components/core/AppFilter.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/components/core/AppFooter.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/components/core/AppToolbar.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/components/core/AppView.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/components/helper/AppOffset.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/components/material/AppCard.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/components/material/AppChartCard.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/components/material/AppFormEdit.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/components/material/AppNotification.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/components/material/AppStatsCard.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/components/notifications/notifyTopCenter.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/layouts/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/layouts/dashboard.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/layouts/default.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/layouts/error.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/middleware/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/nuxt.config.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/package-lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/pages/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/pages/admins/add.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/pages/admins/edit/_id.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/pages/admins/index.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/pages/companies/add.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/pages/companies/edit/_id.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/pages/companies/index.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/pages/dashboard.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/pages/icons.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/pages/index.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/pages/inspire.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/pages/login.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/pages/maps.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/pages/notifications.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/pages/table-list.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/pages/testForm.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/pages/typography.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/pages/user-profile.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/plugins/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/plugins/chartist.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/plugins/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/plugins/vuetify.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/report.20200310.221007.14528.0.001.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/report.20200310.223428.9284.0.001.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/static/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/static/favicon.ico" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/static/v.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/static/vuetify-material-dashboard.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/static/vuetifylogo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/store/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/store/app/actions.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/store/app/getters.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/store/app/mutations.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/store/app/state.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/store/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/store/notification/actions.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/store/notification/getters.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/store/notification/mutations.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/store/notification/state.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/store/user/actions.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/store/user/getters.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/store/user/mutations.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/store/user/state.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/temp/utils/vuex.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/junk file/testTable.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.editorconfig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/components/core/AppDrawer_20200312091020.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/components/core/AppDrawer_20200316150549.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/components/material/AppFormEdit_20200316150151.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/components/material/AppFormEdit_20200316165026.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/components/material/AppFormEdit_20200316165031.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/components/material/AppFormEdit_20200316165050.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/components/material/AppFormEdit_20200316165131.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/components/material/AppFormEdit_20200316165451.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/components/material/AppFormEdit_20200316165454.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/components/material/AppFormEdit_20200316165526.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/components/material/AppFormEdit_20200316165638.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/components/material/AppFormEdit_20200316165721.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/components/material/AppFormEdit_20200316165731.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/components/material/AppFormEdit_20200316165732.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/components/material/AppFormEdit_20200316170535.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/components/material/AppFormEdit_20200316171543.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/components/material/AppFormEdit_20200316171922.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/components/material/AppFormEdit_20200316172150.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/components/material/AppFormEdit_20200316172359.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/components/material/AppFormEdit_20200316172526.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/components/material/AppFormEdit_20200316172628.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/components/material/AppFormEdit_20200316172755.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/components/material/AppFormEdit_20200316173153.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/components/material/AppFormEdit_20200316173208.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/components/material/AppFormEdit_20200317143644.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/components/material/AppFormEdit_20200317144651.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/components/material/AppFormEdit_20200317172531.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/components/material/AppFormEdit_20200317173127.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/nuxt.config_20200317141712.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/nuxt.config_20200317160246.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/add_20200228082004.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/add_20200316163106.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/add_20200316163132.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/add_20200316163304.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/add_20200316163509.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/add_20200316163703.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200312083031.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200316152333.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200316152338.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200316153035.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200316153052.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200316153103.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200316153143.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200316153303.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200316153336.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200316153409.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200316153536.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200316153603.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200316153715.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200316153810.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200316153824.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200316154332.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200316154357.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200316154443.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200316154533.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200316154609.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200316154736.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200316154834.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200316154907.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200316155100.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200316155446.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200316155501.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200316160221.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200316160248.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200316160320.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200316160422.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200316160440.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200316160649.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200316160727.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200316160918.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200316161033.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200316161158.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200316161210.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200316161253.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200316161550.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200316161909.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200316161914.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200316162015.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200316162029.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200316162043.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200316162055.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200316162108.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200316172235.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200317165843.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200317170851.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200317171909.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200317172041.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200319141435.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200319141557.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200319141900.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200319142040.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200319142110.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200319142352.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200319142420.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200319142424.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200319142444.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200319142452.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200319142613.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200319142703.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200319142719.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200319142817.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200319142844.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200319142901.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200319142920.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200319142931.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200319142950.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200319143008.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200319152150.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/admins/index_20200319152205.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/login_20200316150151.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/login_20200316150942.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/login_20200316151057.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/login_20200316162155.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/login_20200317153148.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/login_20200317153544.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/login_20200317153610.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/login_20200317155937.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/user-profile_20200317134254.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/user-profile_20200317144426.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/user-profile_20200317144538.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/user-profile_20200317144606.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/user-profile_20200317144858.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/user-profile_20200317144921.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/user-profile_20200317145007.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/user-profile_20200317145910.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/user-profile_20200317145926.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/user-profile_20200317150104.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/user-profile_20200317150114.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/user-profile_20200317150216.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/user-profile_20200317150226.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/user-profile_20200317150333.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/user-profile_20200317151008.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/user-profile_20200317151027.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/user-profile_20200317151415.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/user-profile_20200317151428.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/user-profile_20200317151501.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/user-profile_20200317151804.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/user-profile_20200317152131.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/user-profile_20200317153820.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/user-profile_20200317154109.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/user-profile_20200317154140.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/user-profile_20200317154543.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/user-profile_20200317154555.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/user-profile_20200317154843.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/user-profile_20200317154930.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/user-profile_20200317155006.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/user-profile_20200317155035.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/user-profile_20200317155532.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/user-profile_20200317160008.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/user-profile_20200317160017.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/user-profile_20200317161432.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/user-profile_20200317162939.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/user-profile_20200317165054.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/user-profile_20200317165149.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/user-profile_20200317165203.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/user-profile_20200317172236.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.history/pages/user-profile_20200317173047.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/.vscode/settings.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/assets/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/assets/index.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/assets/material-dashboard/_alerts.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/assets/material-dashboard/_buttons.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/assets/material-dashboard/_cards.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/assets/material-dashboard/_checkboxes.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/assets/material-dashboard/_colors.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/assets/material-dashboard/_dropdown.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/assets/material-dashboard/_fixed-plugin.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/assets/material-dashboard/_footer.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/assets/material-dashboard/_inputs.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/assets/material-dashboard/_misc.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/assets/material-dashboard/_mixins.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/assets/material-dashboard/_sidebar.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/assets/material-dashboard/_tables.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/assets/material-dashboard/_tabs.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/assets/material-dashboard/_toolbar.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/assets/material-dashboard/_tooltips.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/assets/material-dashboard/_typography.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/assets/material-dashboard/_variables.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/assets/material-dashboard/_vuetf.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/assets/variables.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/assets/vuetify.min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/components/Logo.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/components/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/components/VuetifyLogo.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/components/core/AppDrawer.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/components/core/AppFilter.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/components/core/AppFooter.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/components/core/AppToolbar.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/components/core/AppView.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/components/helper/AppOffset.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/components/material/AppCard.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/components/material/AppChartCard.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/components/material/AppFormEdit.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/components/material/AppNotification.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/components/material/AppStatsCard.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/components/notifications/notifyTopCenter.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/layouts/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/layouts/dashboard.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/layouts/default.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/layouts/error.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/middleware/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/nuxt.config.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/package-lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/pages/Complaint/edit/_id" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/pages/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/pages/admins/add.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/pages/admins/edit/_id.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/pages/admins/index.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/pages/companies/add.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/pages/companies/edit/_id.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/pages/companies/index.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/pages/companyusers/_id.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/pages/companyusers/add/_id.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/pages/index.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/pages/login.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/pages/maps.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/pages/table-list.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/pages/testForm.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/pages/user-profile.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/plugins/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/plugins/acl.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/plugins/chartist.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/plugins/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/plugins/vuetify.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/report.20200310.221007.14528.0.001.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/report.20200310.223428.9284.0.001.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/static/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/static/favicon.ico" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/static/v.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/static/vuetify-material-dashboard.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/static/vuetifylogo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/store/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/store/app/actions.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/store/app/getters.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/store/app/mutations.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/store/app/state.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/store/complaint/actions.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/store/complaint/getters.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/store/complaint/mutations.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/store/complaint/state.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/store/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/store/notification/actions.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/store/notification/getters.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/store/notification/mutations.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/store/notification/state.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/store/user/actions.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/store/user/getters.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/store/user/mutations.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/store/user/state.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/upgrade_vuetify/utils/vuex.js" beforeDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DefaultGradleProjectSettings">
+    <option name="isMigrated" value="true" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/bitbucket-pipelines.yml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="190">
+              <caret line="10" column="23" selection-start-line="10" selection-start-column="23" selection-end-line="10" selection-end-column="23" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/ssh/log-admin-tool.sh" />
+        <option value="$PROJECT_DIR$/script/admin.sh" />
+        <option value="$PROJECT_DIR$/bitbucket-pipelines.yml" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="65" />
+    <option name="y" value="-4" />
+    <option name="width" value="1855" />
+    <option name="height" value="1084" />
+  </component>
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="cq16-htchamcong-client" type="b2602c69:ProjectViewProjectNode" />
+              <item name="cq16-htchamcong-client" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="editor.config.ad.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/script" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/script" />
+      <recent name="$PROJECT_DIR$" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="8d5bc4d2-6248-4097-875d-a18b83b422fd" name="Default Changelist" comment="" />
+      <created>1586443689440</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1586443689440</updated>
+      <workItem from="1586443690568" duration="1390000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="1390000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="65" y="-4" width="1535" height="904" extended-state="6" />
+    <editor active="true" />
+    <layout>
+      <window_info id="Designer" />
+      <window_info id="UI Designer" />
+      <window_info id="Favorites" side_tool="true" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24983211" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Database Changes" />
+      <window_info anchor="bottom" id="Version Control" />
+      <window_info anchor="bottom" id="Terminal" weight="0.32958803" />
+      <window_info anchor="bottom" id="Event Log" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="right" id="Palette" />
+      <window_info anchor="right" id="Codota" />
+      <window_info anchor="right" id="Maven" />
+      <window_info anchor="right" id="Palette&#9;" />
+      <window_info anchor="right" id="Database" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/ssh/key_dev_1">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/htcc-admin-tool/Dockerfile">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="247">
+          <caret line="13" lean-forward="true" selection-start-line="13" selection-end-line="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/script/my_known_hosts">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/script/admin.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="133">
+          <caret line="7" lean-forward="true" selection-start-line="7" selection-end-line="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/script/view-log-admin-tool.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="57">
+          <caret line="3" column="30" selection-start-line="3" selection-start-column="30" selection-end-line="3" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bitbucket-pipelines.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="190">
+          <caret line="10" column="23" selection-start-line="10" selection-start-column="23" selection-end-line="10" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ProjectJDKs.UI">
+        <settings>
+          <last-edited>1.8</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
+  </component>
+</project>
