@@ -3,10 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="8d5bc4d2-6248-4097-875d-a18b83b422fd" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bitbucket-pipelines.yml" beforeDir="false" afterPath="$PROJECT_DIR$/bitbucket-pipelines.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/htcc-admin-tool/.dockerignore" beforeDir="false" afterPath="$PROJECT_DIR$/htcc-admin-tool/.dockerignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/htcc-admin-tool/pages/user-profile.vue" beforeDir="false" afterPath="$PROJECT_DIR$/htcc-admin-tool/pages/user-profile.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/script/admin.sh" beforeDir="false" afterPath="$PROJECT_DIR$/script/admin.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/htcc-admin-tool/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/htcc-admin-tool/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/script/view-log-admin-tool.sh" beforeDir="false" afterPath="$PROJECT_DIR$/script/view-log-admin-tool.sh" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -18,26 +16,13 @@
     <option name="isMigrated" value="true" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/htcc-admin-tool/pages/index.vue">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2850">
-              <caret line="15" column="22" selection-start-line="15" selection-start-column="22" selection-end-line="15" selection-end-column="22" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/htcc-admin-tool/pages/user-profile.vue">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="57">
-              <caret line="72" column="16" selection-start-line="72" selection-start-column="16" selection-end-line="72" selection-end-column="16" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>router</find>
+      <find>vuetifylogo</find>
+    </findStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -52,14 +37,18 @@
         <option value="$PROJECT_DIR$/script/admin.sh" />
         <option value="$PROJECT_DIR$/htcc-admin-tool/Dockerfile" />
         <option value="$PROJECT_DIR$/htcc-admin-tool/pages/user-profile.vue" />
+        <option value="$PROJECT_DIR$/htcc-admin-tool/nuxt.config.generate.js" />
+        <option value="$PROJECT_DIR$/script/view-log-admin-tool.sh" />
+        <option value="$PROJECT_DIR$/htcc-admin-tool/nuxt.config.js" />
+        <option value="$PROJECT_DIR$/htcc-admin-tool/package.json" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="65" />
-    <option name="y" value="-4" />
-    <option name="width" value="1855" />
-    <option name="height" value="1084" />
+    <option name="x" value="256" />
+    <option name="y" value="133" />
+    <option name="width" value="1153" />
+    <option name="height" value="658" />
   </component>
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="1" id="Add" />
@@ -76,17 +65,6 @@
               <item name="cq16-htchamcong-client" type="b2602c69:ProjectViewProjectNode" />
               <item name="cq16-htchamcong-client" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="cq16-htchamcong-client" type="b2602c69:ProjectViewProjectNode" />
-              <item name="cq16-htchamcong-client" type="462c0819:PsiDirectoryNode" />
-              <item name="htcc-admin-tool" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="cq16-htchamcong-client" type="b2602c69:ProjectViewProjectNode" />
-              <item name="cq16-htchamcong-client" type="462c0819:PsiDirectoryNode" />
-              <item name="htcc-admin-tool" type="462c0819:PsiDirectoryNode" />
-              <item name="pages" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
@@ -99,16 +77,18 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="editor.config.ad.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/script" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/htcc-admin-tool" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/htcc-admin-tool" />
       <recent name="$PROJECT_DIR$/script" />
       <recent name="$PROJECT_DIR$" />
     </key>
@@ -136,18 +116,17 @@
       <option name="presentableId" value="Default" />
       <updated>1586443689440</updated>
       <workItem from="1586443690568" duration="1390000" />
-      <workItem from="1586483098265" duration="50000" />
+      <workItem from="1586483098265" duration="7653000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="2905000" />
+    <option name="totallyTimeSpent" value="10508000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="65" y="-4" width="1535" height="904" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25319007" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1927468" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="UI Designer" order="3" />
@@ -162,8 +141,8 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
-      <window_info anchor="bottom" id="Terminal" order="10" visible="true" weight="0.21972534" />
-      <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="10" sideWeight="0.49966422" visible="true" weight="0.9625468" />
+      <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.5003358" side_tool="true" weight="0.9625468" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -182,25 +161,11 @@
     <entry file="file://$PROJECT_DIR$/script/my_known_hosts">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/script/view-log-admin-tool.sh">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="57">
-          <caret line="3" column="30" selection-start-line="3" selection-start-column="30" selection-end-line="3" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/htcc-admin-tool/nginx.conf" />
     <entry file="file://$PROJECT_DIR$/htcc-admin-tool/.dockerignore">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="95">
           <caret line="5" column="7" selection-start-line="5" selection-start-column="7" selection-end-line="5" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/htcc-admin-tool/Dockerfile">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="209">
-          <caret line="11" column="9" lean-forward="true" selection-start-line="11" selection-start-column="9" selection-end-line="11" selection-end-column="9" />
         </state>
       </provider>
     </entry>
@@ -211,17 +176,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/bitbucket-pipelines.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="380">
-          <caret line="20" column="30" lean-forward="true" selection-start-line="20" selection-start-column="30" selection-end-line="20" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/htcc-admin-tool/pages/index.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2850">
-          <caret line="15" column="22" selection-start-line="15" selection-start-column="22" selection-end-line="15" selection-end-column="22" />
+        <state relative-caret-position="179">
+          <caret line="134" column="19" lean-forward="true" selection-start-line="134" selection-start-column="19" selection-end-line="134" selection-end-column="19" />
         </state>
       </provider>
     </entry>
@@ -229,6 +187,61 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="57">
           <caret line="72" column="16" selection-start-line="72" selection-start-column="16" selection-end-line="72" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/htcc-admin-tool/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="342">
+            <caret line="18" column="18" selection-start-line="18" selection-start-column="18" selection-end-line="18" selection-end-column="18" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/htcc-admin-tool/Dockerfile">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="209">
+          <caret line="11" column="9" selection-start-line="11" selection-start-column="9" selection-end-line="11" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/script/view-log-admin-tool.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="38">
+          <caret line="2" column="111" selection-start-line="2" selection-start-column="111" selection-end-line="2" selection-end-column="111" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/htcc-admin-tool/static/vuetifylogo.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bitbucket-pipelines.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="380">
+          <caret line="20" column="23" lean-forward="true" selection-start-line="20" selection-start-column="23" selection-end-line="20" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/htcc-admin-tool/nuxt.config.generate.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="95">
+          <caret line="5" column="22" selection-start-line="5" selection-start-column="22" selection-end-line="5" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/htcc-admin-tool/nuxt.config.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="114">
+          <caret line="6" column="4" selection-start-line="6" selection-start-column="4" selection-end-line="6" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/htcc-admin-tool/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="190">
+          <caret line="10" column="57" selection-start-line="10" selection-start-column="57" selection-end-line="10" selection-end-column="57" />
         </state>
       </provider>
     </entry>
