@@ -8,6 +8,6 @@ RUN npm run generate
 
 # production stage
 FROM nginx:alpine as production-stage
-COPY --from=build-stage /app/dist /usr/share/nginx/html
+COPY --from=build-stage /app/dist /usr/share/nginx/html/admin-tool
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
