@@ -15,7 +15,7 @@ export default {
     ],
 
     link: [ {rel: 'icon', type: 'image/x-icon', href: '/favicon.ico'}, {rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons'} ],
-  
+
 
 
   },
@@ -107,7 +107,7 @@ export default {
             propertyName: 'data'
           },
           //user: true,
-          logout: { 
+          logout: {
             url: '/api/gateway/private/logout/3',
             method: 'post',
           }
@@ -129,10 +129,6 @@ export default {
   ** Build configuration
   */
   build: {
-    /*
-    ** You can extend webpack config here
-    */
-    extend (config, ctx) {
-    }
+      publicPath: '/admin-tool/_nuxt/'
   }
 }
