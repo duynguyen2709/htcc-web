@@ -129,6 +129,10 @@ export default {
   ** Build configuration
   */
   build: {
-      publicPath: '/admin-tool/_nuxt/'
+    /*
+    ** You can extend webpack config here
+    */
+    extend (config, ctx) {
+    }
   }
 }
