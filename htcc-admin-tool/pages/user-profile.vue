@@ -70,7 +70,7 @@
         </material-card>-->
         <edit-form
           title="Thông tin cá nhân"
-          text="Có thể chỉnh sửa"
+          text=""
           :avatar="user.avatar"
           :fullName="user.fullName"
           :phoneNumber="user.phoneNumber"
@@ -201,7 +201,7 @@ export default {
   },
   data() {
     return {
-      
+
       LazyImg: "/vuetifylogo.png",
 
       //user
@@ -282,7 +282,7 @@ export default {
     updateProfile: async function(e) {
 this.is_loading_update = true;
       //this.setUser(user);
-      
+
       //console.log("edit profile")
 
       let url = "/api/admin/users/" + this.user.username
@@ -315,7 +315,7 @@ this.is_loading_update = true;
           //$this.goBack();
           }
           this.is_loading_update = false;
-         
+
         })
         .catch(function(error) {
           //handle error
@@ -323,7 +323,7 @@ this.is_loading_update = true;
           console.log("Error:");
           console.log(error);
         });
- 
+
       //e.preventDefault();
     },
     async changePassword() {
@@ -339,8 +339,8 @@ this.is_loading_update = true;
       // if (this.NewPassword !== this.NewPasswordConfirm) {
       //   this.rules.NewPasswordConfirm = "Mật khẩu mới không trùng khớp";
       //   flag = false;
-      // } 
-      
+      // }
+
       // Object.keys(this.form).forEach(f => {
       //   console.log(f);
       //   if (!this.form[f])
@@ -352,7 +352,7 @@ this.is_loading_update = true;
         console.log("cur pass: " + this.user.password)
         console.log("ref form validate");
 
-        
+
         this.snackbar = true;
 
         let url = "/api/gateway/private/changepassword/3"
@@ -397,7 +397,7 @@ this.is_loading_password = false;
       //   }
     },
     resetForm () {
-      
+
       // Object.keys(this.form).forEach(f => {
       //   console.log(f);
       //   this.$refs[f].reset()

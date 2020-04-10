@@ -3,7 +3,7 @@ image: atlassian/default-image:2
 definitions:
   services:
     docker:
-      memory: 6144
+      memory: 3072
 
 pipelines:
   default:
@@ -18,7 +18,6 @@ pipelines:
         services:
           - docker
         name: Deploy htcc-admin-tool
-        size: 2x
         deployment: Production
         trigger: manual
         script:
