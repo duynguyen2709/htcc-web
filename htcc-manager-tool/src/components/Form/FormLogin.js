@@ -59,7 +59,9 @@ class FormLogin extends React.Component {
         this.props.toggleLoader();
       })
       .catch(err => {
-        store.addNotification(createNotify('danger', err.payload.message));
+        store.addNotification(
+          createNotify('danger', 'Phiên đăng nhập hết hạn. Mời đăng nhập lại !')
+        );
         this.props.toggleLoader();
       });
   };
