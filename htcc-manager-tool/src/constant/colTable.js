@@ -277,3 +277,83 @@ const renderListDetail = (list = []) => {
 
   return <ul style={{ padding: 15 }}>{listDetail}</ul>;
 };
+
+export const buildColsBranch = (funcEdit, cols = []) => [
+  {
+    title: 'Mã chi nhánh',
+    dataIndex: 'officeId',
+    fixed: 'left',
+    width: '150px'
+  },
+  {
+    title: 'Tên chi nhánh',
+    dataIndex: 'officeName',
+    width: '200px'
+  },
+  {
+    title: 'Email',
+    dataIndex: 'email',
+    width: '350px'
+  },
+  {
+    title: 'address',
+    dataIndex: 'address',
+    width: '250px'
+  },
+  {
+    title: 'Khoảng cách tối đa (m)',
+    dataIndex: 'maxAllowDistance',
+    width: '250px'
+  },
+  {
+    title: 'Vĩ độ',
+    dataIndex: 'latitude',
+    width: '250px'
+  },
+  {
+    title: 'Kinh độ',
+    dataIndex: 'longitude',
+    width: '250px'
+  },
+  ...cols,
+  {
+    title: 'Trụ sở chính',
+    dataIndex: 'isHeadquarter',
+    width: '200px',
+    render: (o, record) => {
+      if (record.isHeadquarter) {
+        return <CheckCircleTwoTone twoToneColor="#52c41a" />;
+      }
+
+      return <CloseCircleTwoTone twoToneColor="#ff7875" />;
+    }
+  },
+  {
+    title: 'Wifi',
+    dataIndex: 'forceUseWifi',
+    width: '200px',
+    render: (o, record) => {
+      if (record.forceUseWifi) {
+        return <CheckCircleTwoTone twoToneColor="#52c41a" />;
+      }
+
+      return <CloseCircleTwoTone twoToneColor="#ff7875" />;
+    }
+  },
+  {
+    title: 'Hành động',
+    width: '150px',
+    fixed: 'right',
+    render: (o, record) => {
+      return (
+        <EditOutlined
+          style={{
+            color: '#52c41a',
+            fontSize: '23px'
+          }}
+          onClick={() => funcEdit(record)}
+        />
+      );
+    }
+  }
+];

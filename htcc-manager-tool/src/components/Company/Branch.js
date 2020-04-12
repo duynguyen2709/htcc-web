@@ -1,30 +1,32 @@
 import React from 'react';
 import * as _ from 'lodash';
-import { userApi } from '../../api';
+import { companyApi } from '../../api';
 import { store } from 'react-notifications-component';
 import { createNotify } from '../../utils/notifier';
 import { PlusSquareOutlined } from '@ant-design/icons';
-import EditTable from '../Table/EditTable';
-import { columnsEmployee } from '../../constant/colTable';
-import { Input, Tooltip } from 'antd';
+import { buildColsBranch } from '../../constant/colTable';
+import { Input, Tooltip, Table } from 'antd';
 import AsyncModal from '../Modal/AsyncModal';
-import FormAddNewBranch from '../Form/FormAddNewBranch';
+import FormEditBranch from '../Form/FormEditBranch';
+import FormNewBranch from '../Form/FormNewBranch';
 
 const { Search } = Input;
-const editURL = 'xxxx';
 
 class Branch extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       data: [],
-      showAddNew: false
+      showModal: false,
+      mode: 'new',
+      curRecordEdit: null,
+      isSubmit: false
     };
   }
 
   componentDidMount() {
-    userApi
-      .getAllUsers()
+    companyApi
+      .getAllOffices()
       .then(res => {
         if (res.returnCode === 1) {
           this.setState({
@@ -39,26 +41,66 @@ class Branch extends React.Component {
       });
   }
 
-  toggle = () => {
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      // !_.isEqual(this.state.showModal, prevState.showModal) ||
+      !_.isEqual(this.state.isSubmit, prevState.isSubmit)
+    ) {
+      this.setState(
+        {
+          data: null
+        },
+        () => {
+          companyApi
+            .getAllOffices()
+            .then(res => {
+              if (res.returnCode === 1) {
+                this.setState({
+                  data: res.data
+                });
+              } else {
+                store.addNotification(
+                  createNotify('danger', res.returnMessage)
+                );
+              }
+            })
+            .catch(err => {
+              store.addNotification(
+                createNotify('danger', JSON.stringify(err))
+              );
+            });
+        }
+      );
+    }
+  }
+
+  toggleNew = (submit = false) => {
     this.setState({
-      showAddNew: !this.state.showAddNew
+      showModal: !this.state.showModal,
+      curRecordEdit: null,
+      mode: 'new',
+      isSubmit: submit
+    });
+  };
+
+  toggleEdit = (record, submit = false) => {
+    this.setState({
+      showModal: !this.state.showModal,
+      curRecordEdit: _.isEmpty(this.state.curRecordEdit) ? record : null,
+      mode: 'edit',
+      isSubmit: submit
     });
   };
 
   mapData = data => {
     return _.map(data, item => ({
-      key: item.employeeId.toString(),
+      key: item.officeId.toString(),
       ...item
     }));
   };
 
-  valideInput = input => {
-    // store.addNotification(createNotify('danger', 'Thông tin chưa hợp lệ'));
-    return true;
-  };
-
   render() {
-    const { data, showAddNew } = this.state;
+    const { data, showModal, curRecordEdit, mode } = this.state;
     return (
       <React.Fragment>
         <div className="header-table clearfix">
@@ -72,28 +114,38 @@ class Branch extends React.Component {
           </div>
           <div className="float-right btn-new">
             <Tooltip placement="left" title={'Thêm chi nhánh'}>
-              <PlusSquareOutlined onClick={this.toggle} />
+              <PlusSquareOutlined onClick={this.toggleNew} />
             </Tooltip>
           </div>
         </div>
         <div className="table-edit">
           <div className="table-small table-branch">
-            <EditTable
-              columnsInput={columnsEmployee}
-              dataInput={this.mapData(data)}
-              editURL={editURL}
-              valideInput={this.valideInput}
-              pageSize={10}
-              height="calc(100vh - 355px)"
+            <Table
+              pagination={{ pageSize: 6 }}
+              columns={buildColsBranch(this.toggleEdit)}
+              dataSource={this.mapData(data)}
+              scroll={{ x: 1300, y: 'calc(100vh - 355px)' }}
+              loading={data === null}
             />
           </div>
         </div>
         <div>
           <AsyncModal
-            CompomentContent={FormAddNewBranch}
-            visible={showAddNew}
-            toggle={this.toggle}
-            title={'Thêm mới nhân viên'}
+            reload={false}
+            CompomentContent={
+              this.state.mode === 'new' ? FormNewBranch : FormEditBranch
+            }
+            visible={showModal}
+            toggle={
+              this.state.mode === 'new'
+                ? submit => this.toggleNew(submit)
+                : submit => this.toggleEdit(curRecordEdit, submit)
+            }
+            title={
+              mode === 'new' ? 'Thêm chi nhánh mới' : 'Chỉnh sửa chi nhánh'
+            }
+            data={curRecordEdit}
+            mode={mode}
           />
         </div>
       </React.Fragment>
