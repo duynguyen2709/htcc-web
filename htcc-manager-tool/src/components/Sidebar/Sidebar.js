@@ -3,12 +3,20 @@ import { NavLink } from 'react-router-dom';
 import { PropTypes } from 'prop-types';
 import PerfectScrollbar from 'perfect-scrollbar';
 import { Nav } from 'reactstrap';
+import NumberNotify from '../Tool/NumberNotify';
+import { homeApi } from '../../api';
+import { store } from 'react-notifications-component';
+import { createNotify } from '../../utils/notifier';
 
 var ps;
 
 class Sidebar extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      pendingComplaint: 0,
+      pendingLeavingRequest: 0
+    };
     this.activeRoute.bind(this);
   }
 
@@ -24,6 +32,22 @@ class Sidebar extends React.Component {
         suppressScrollY: false
       });
     }
+
+    homeApi
+      .getTotal()
+      .then(res => {
+        if (res.returnCode === 1) {
+          this.setState({
+            pendingComplaint: res.data.pendingComplaint,
+            pendingLeavingRequest: res.data.pendingLeavingRequest
+          });
+        } else {
+          store.addNotification(createNotify('danger', res.returnMessage));
+        }
+      })
+      .catch(err => {
+        store.addNotification(createNotify('danger', JSON.stringify(err)));
+      });
   }
 
   componentWillUnmount() {
@@ -36,6 +60,19 @@ class Sidebar extends React.Component {
     document.documentElement.classList.remove('nav-open');
   };
 
+  renderNotification = name => {
+    const { pendingLeavingRequest, pendingComplaint } = this.state;
+
+    switch (name) {
+      case 'Khiếu Nại':
+        return <NumberNotify value={pendingComplaint} />;
+      case 'Nghỉ Phép':
+        return <NumberNotify value={pendingLeavingRequest} />;
+      default:
+        return null;
+    }
+  };
+
   render() {
     const { bgColor, routes, logo } = this.props;
     const logoImg = (
@@ -46,7 +83,7 @@ class Sidebar extends React.Component {
       </a>
     );
     const logoText = (
-      <div className="simple-text logo-normal">HTTC - Manager</div>
+      <div className="simple-text logo-normal">HTCC - Manager</div>
     );
 
     return (
@@ -70,13 +107,14 @@ class Sidebar extends React.Component {
                   key={key}
                 >
                   <NavLink
-                    to={prop.layout + prop.path}
+                    to={prop.path}
                     className="nav-link"
                     activeClassName="active"
                     onClick={this.props.toggleSidebar}
                   >
-                    <i className={prop.icon} />
+                    <i className={prop.icon} id={prop.id} />
                     <p className="menu-item">{prop.name}</p>
+                    {this.renderNotification(prop.name)}
                   </NavLink>
                 </li>
               );

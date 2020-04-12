@@ -3,10 +3,10 @@ import { Route, Switch } from 'react-router-dom';
 import PerfectScrollbar from 'perfect-scrollbar';
 import * as _ from 'lodash';
 import Navbar from '../components/Navbars/Navbar';
-import Footer from '../components/Footer/Footer';
 import Sidebar from '../components/Sidebar/Sidebar';
 import routes from '../routes';
 import logo from '../assets/img/logo.png';
+import AuthRequiredRoute from '../components/AuthRequiredRoute';
 
 var ps;
 
@@ -16,7 +16,7 @@ class Admin extends React.Component {
     this.state = {
       backgroundColor: 'blue',
       sidebarOpened:
-        document.documentElement.className.indexOf('nav-open') !== -1
+        document.documentElement.className.indexOf('nav-open') !== -1,
     };
   }
   componentDidMount() {
@@ -51,6 +51,15 @@ class Admin extends React.Component {
       document.scrollingElement.scrollTop = 0;
       this.refs.mainPanel.scrollTop = 0;
     }
+
+    const sidebarClasses = document.getElementById('sidebar').classList;
+    if (sidebarClasses.value.includes('sidebar-minimized')) {
+      const listContents = document.getElementsByClassName('content');
+
+      _.forEach(listContents, (item) => {
+        item.classList.add('content-expand');
+      });
+    }
   }
 
   // this function opens and closes the sidebar on small devices
@@ -59,7 +68,7 @@ class Admin extends React.Component {
     this.setState({ sidebarOpened: !this.state.sidebarOpened });
   };
 
-  getRoutes = routes => {
+  getRoutes = (routes) => {
     return routes.map((prop, key) => {
       if (prop.layout === '/') {
         return <Route path={prop.path} component={prop.component} key={key} />;
@@ -69,11 +78,11 @@ class Admin extends React.Component {
     });
   };
 
-  handleBgClick = color => {
+  handleBgClick = (color) => {
     this.setState({ backgroundColor: color });
   };
 
-  getBrandText = path => {
+  getBrandText = (path) => {
     for (let i = 0; i < routes.length; i++) {
       if (this.props.location.pathname.indexOf(routes[i].path) !== -1) {
         return routes[i].name;
@@ -82,16 +91,16 @@ class Admin extends React.Component {
     return 'Brand';
   };
 
-  switchSideBar = state => {
+  switchSideBar = (state) => {
     const action = state ? 'add' : 'remove';
     const listContents = document.getElementsByClassName('content');
     const listMenuItems = document.getElementsByClassName('menu-item');
 
-    _.forEach(listContents, item => {
+    _.forEach(listContents, (item) => {
       item.classList[action]('content-expand');
     });
 
-    _.forEach(listMenuItems, item => {
+    _.forEach(listMenuItems, (item) => {
       item.classList[action]('hide');
     });
 
@@ -101,7 +110,7 @@ class Admin extends React.Component {
   render() {
     return (
       <>
-        <div className="wrapper">
+        <div className="app wrapper">
           <Sidebar
             {...this.props}
             routes={routes}
@@ -109,7 +118,7 @@ class Admin extends React.Component {
             logo={{
               outterLink: 'https://www.creative-tim.com/',
               text: 'Creative Tim',
-              imgSrc: logo
+              imgSrc: logo,
             }}
             toggleSidebar={this.toggleSidebar}
           />
@@ -125,8 +134,12 @@ class Admin extends React.Component {
               sidebarOpened={this.state.sidebarOpened}
               switchSideBar={this.switchSideBar}
             />
-            <Switch>{this.getRoutes(routes)}</Switch>
-            <Footer fluid />
+            <Switch>
+              <AuthRequiredRoute>
+                {this.getRoutes(routes)}
+                {/* <Redirect from="/" to="/thong-ke" />{' '} */}
+              </AuthRequiredRoute>
+            </Switch>
           </div>
         </div>
       </>

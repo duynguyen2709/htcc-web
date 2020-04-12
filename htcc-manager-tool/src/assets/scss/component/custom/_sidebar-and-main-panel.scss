@@ -9,6 +9,13 @@
   }
 }
 
+.nav-link {
+  .menu-item {
+    font-size: 14px;
+    font-weight: 400;
+  }
+}
+
 .sidebar-wrapper ul li div.collapse ul li div.collapse ul li a,
 .sidebar-wrapper ul li div.collapse ul li div.collapsing ul li a,
 .sidebar-wrapper ul li div.collapsing ul li div.collapse ul li a {
@@ -35,7 +42,7 @@
     position: absolute;
     border-left: 5px solid transparent;
     border-right: 5px solid transparent;
-    border-bottom: 5px solid $info;
+    border-bottom: 5px solid $primary;
     top: -5px;
     left: 40px;
     -webkit-transform: translate(-50%);
@@ -347,7 +354,8 @@
   }
 
   &[data='blue'] {
-    @include linear-gradient($info-states, $info);
+    // @include linear-gradient($primary-states, $primary);
+    background: linear-gradient(to bottom right, $primary, $primary-states);
   }
   &[data='green'] {
     @include linear-gradient($success-states, $success);
@@ -448,7 +456,7 @@
   @include transitions(0.5s, cubic-bezier(0.685, 0.0473, 0.346, 1));
 
   &[data='blue'] {
-    border-top: 2px solid $info;
+    border-top: 2px solid $primary;
   }
 
   &[data='green'] {
@@ -460,8 +468,8 @@
   }
 
   > .content {
-    padding: 78px 30px 30px 260px;
-    min-height: calc(100vh - 70px);
+    padding: 78px 30px 10px 260px;
+    height: 99vh;
   }
 
   > .navbar {
@@ -661,7 +669,14 @@
   height: 380px;
 }
 
+.nav-link {
+  height: 50px;
+}
+
 @media screen and (max-width: 991px) {
+  .minimize-sidebar {
+    display: none;
+  }
   .sidebar {
     position: fixed;
     display: block;

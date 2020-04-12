@@ -1,8 +1,8 @@
 .navbar {
   padding: 10px 30px 10px 15px;
   width: 100%;
-  z-index: 1050;
-  background: $navbar-color;
+  z-index: 950;
+  background: linear-gradient($navbar-color, #4caf50);
 
   .photo {
     display: inline-block;
@@ -31,11 +31,11 @@
 
   &.navbar-absolute {
     position: absolute;
-    z-index: 1050;
+    z-index: 950;
   }
 
   &.navbar-transparent {
-    background: transparent !important;
+    // background: transparent !important;
   }
 
   &.bg-white {
