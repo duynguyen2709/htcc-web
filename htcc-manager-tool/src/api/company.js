@@ -2,13 +2,13 @@ import axios from 'axios';
 import { API_URL_EMPLOYEE } from '../constant/url';
 import { TOKEN, USER } from '../constant/localStorageKey';
 
-const getList = month => {
+const getInfoCompany = () => {
   const token = localStorage.getItem(TOKEN);
   const user = JSON.parse(localStorage.getItem(USER));
 
   return new Promise((resolve, reject) => {
     axios
-      .get(`${API_URL_EMPLOYEE}/complaint/${user.companyId}/${month}`, {
+      .get(`${API_URL_EMPLOYEE}/companies/${user.companyId}`, {
         headers: {
           Authorization: `Bearer ${token}`
         },
@@ -23,13 +23,14 @@ const getList = month => {
   });
 };
 
-const updateStatus = data => {
+const updateInfoCompany = data => {
   const token = localStorage.getItem(TOKEN);
+  const user = JSON.parse(localStorage.getItem(USER));
 
   return new Promise((resolve, reject) => {
     axios({
       method: 'put',
-      url: `${API_URL_EMPLOYEE}/complaint/status`,
+      url: `${API_URL_EMPLOYEE}/companies/${user.companyId}`,
       data: data,
       headers: {
         Authorization: `Bearer ${token}`
@@ -45,6 +46,6 @@ const updateStatus = data => {
 };
 
 export default {
-  getList,
-  updateStatus
+  getInfoCompany,
+  updateInfoCompany
 };

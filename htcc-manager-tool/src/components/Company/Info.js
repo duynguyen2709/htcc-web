@@ -9,11 +9,17 @@ import {
   Row,
   Col
 } from 'reactstrap';
+import { Popconfirm } from 'antd';
 import * as _ from 'lodash';
 import { store } from 'react-notifications-component';
 import { createNotify } from '../../utils/notifier';
 import { checkValidEmail, checkValidPhoneNumber } from '../../utils/validate';
-import { CheckCircleOutlined, EditOutlined } from '@ant-design/icons';
+import {
+  CheckCircleOutlined,
+  EditOutlined,
+  QuestionCircleOutlined
+} from '@ant-design/icons';
+import { companyApi } from '../../api';
 
 class CompayInfo extends React.Component {
   constructor(props) {
@@ -21,39 +27,57 @@ class CompayInfo extends React.Component {
     this.state = {
       value: {
         email: '',
-        phone: '',
+        phoneNumber: '',
         address: '',
         companyName: '',
-        website: ''
+        companyId: ''
       },
       messageInvalid: {
         email: 'Email không hợp lệ',
         address: 'Địa chỉ không được rỗng',
-        phone: 'Số điện thoại không hợp lệ'
+        phoneNumber: 'Số điện thoại không hợp lệ'
       },
       readOnly: true
     };
   }
 
   componentDidMount() {
-    this.setState({
-      value: {
-        email: 'testemail@gmail.com',
-        phone: '0987654321',
-        address: 'test address',
-        companyName: 'ABC CBA XXX YYY',
-        website: 'http://abc.com.vn'
-      }
-    });
+    companyApi
+      .getInfoCompany()
+      .then(res => {
+        if (res.returnCode === 1) {
+          this.setState({
+            value: {
+              email: res.data.email,
+              phoneNumber: res.data.phoneNumber,
+              address: res.data.address,
+              companyName: res.data.companyName,
+              companyId: res.data.companyId,
+              status: res.data.status
+            }
+          });
+        } else {
+          store.addNotification(createNotify('danger', res.returnMessage));
+        }
+      })
+      .catch(err => {
+        store.addNotification(createNotify('danger', JSON.stringify(err)));
+      });
   }
 
   checkValidDataInput = () => {
-    const { email, phone, address, website, companyName } = this.state.value;
+    const {
+      email,
+      phoneNumber,
+      address,
+      companyId,
+      companyName
+    } = this.state.value;
 
     return (
       checkValidEmail(email) &&
-      checkValidPhoneNumber(phone) &&
-      !_.isEmpty(website) &&
+      checkValidPhoneNumber(phoneNumber) &&
+      !_.isEmpty(companyId) &&
       !_.isEmpty(address) &&
       !_.isEmpty(companyName)
     );
@@ -72,10 +96,23 @@ class CompayInfo extends React.Component {
 
   handleSubmit = e => {
     if (this.checkValidDataInput()) {
-      store.addNotification(createNotify('default', 'Cập nhật thành công !'));
-      this.setState({
-        readOnly: true
-      });
+      companyApi
+        .updateInfoCompany(this.state.value)
+        .then(res => {
+          if (res.returnCode === 1) {
+            this.setState({
+              readOnly: true
+            });
+            store.addNotification(
+              createNotify('default', 'Cập nhật thành công !')
+            );
+          } else {
+            store.addNotification(createNotify('danger', res.returnMessage));
+          }
+        })
+        .catch(err => {
+          store.addNotification(createNotify('danger', JSON.stringify(err)));
+        });
     } else {
       store.addNotification(createNotify('warning', 'Thông tin chưa hợp lệ !'));
     }
@@ -107,19 +144,27 @@ class CompayInfo extends React.Component {
     }
 
     return (
-      <Button
-        id="save"
-        onClick={this.handleSubmit}
-        className="btn-custom"
-        color="primary"
-        type="button"
+      <Popconfirm
+        title="Bạn chắc chắn thay đổi？"
+        icon={<QuestionCircleOutlined />}
+        okText="Đồng ý"
+        cancelText="Huỷ"
+        onConfirm={() => this.handleSubmit()}
       >
-        <CheckCircleOutlined
-          style={{ display: 'inline', margin: '5px 10px 0 0' }}
-        />{' '}
-        {'  '}
-        <span className="btn-save-text"> LƯU</span>
-      </Button>
+        <Button
+          id="save"
+          // onClick={this.handleSubmit}
+          className="btn-custom"
+          color="primary"
+          type="button"
+        >
+          <CheckCircleOutlined
+            style={{ display: 'inline', margin: '5px 10px 0 0' }}
+          />{' '}
+          {'  '}
+          <span className="btn-save-text"> LƯU</span>
+        </Button>
+      </Popconfirm>
     );
   };
 
@@ -128,6 +173,20 @@ class CompayInfo extends React.Component {
     return (
       <Form className="form-company-info">
         <Row>
+          <Col md="5">
+            <FormGroup>
+              <label>ID</label>
+              <Input
+                placeholder="Id cty"
+                type="text"
+                className="bor-gray text-dark"
+                name="companyId"
+                value={value.companyId}
+                readOnly={readOnly}
+                disabled
+              />
+            </FormGroup>
+          </Col>
           <Col className="pr-md-1" md="7">
             <FormGroup>
               <label>Tên Công ty</label>
@@ -139,20 +198,6 @@ class CompayInfo extends React.Component {
                 className="bor-gray text-dark"
                 readOnly={readOnly}
                 name="companyName"
-              />
-            </FormGroup>
-          </Col>
-          <Col md="5">
-            <FormGroup>
-              <label>Website</label>
-              <Input
-                onChange={this.handleOnChange}
-                placeholder="Nhập website công ty"
-                type="text"
-                className="bor-gray text-dark"
-                name="website"
-                value={value.website}
-                readOnly={readOnly}
               />
             </FormGroup>
           </Col>
@@ -206,13 +251,13 @@ class CompayInfo extends React.Component {
                 type="text"
                 className="bor-gray text-dark"
                 onChange={this.handleOnChange}
-                name="phone"
-                value={value.phone}
-                invalid={!checkValidPhoneNumber(value.phone)}
+                name="phoneNumber"
+                value={value.phoneNumber}
+                invalid={!checkValidPhoneNumber(value.phoneNumber)}
                 readOnly={readOnly}
               />
               <FormFeedback invalid={'true'}>
-                {messageInvalid.phone}
+                {messageInvalid.phoneNumber}
               </FormFeedback>
             </FormGroup>
           </Col>
