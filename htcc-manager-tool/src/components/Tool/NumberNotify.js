@@ -6,14 +6,14 @@ class NumberNotify extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: 0,
+      value: 0
     };
   }
 
   componentWillReceiveProps(nextProps) {
     if (!_.isEqual(nextProps.value, this.state.value)) {
       this.setState({
-        value: nextProps.value,
+        value: nextProps.value
       });
     }
   }
@@ -22,17 +22,16 @@ class NumberNotify extends React.Component {
     const { value } = this.state;
 
     if (value) {
-      return <div className="number-notify">{value}</div>;
-      // return <div className="number-notify">{value > 6 ? '5+' : value}</div>;
+      return <div className="number-notify">{value > 10 ? '10+' : value}</div>;
     }
 
     return null;
   }
 }
 
-const mapStateToProps = (state) => ({
-  user: state.authReducer.user,
+const mapStateToProps = state => ({
+  user: state.authReducer.user
 });
 
-const mapDispatchToProps = (dispatch) => ({});
+const mapDispatchToProps = dispatch => ({});
 export default connect(mapStateToProps, mapDispatchToProps)(NumberNotify);

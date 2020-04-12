@@ -4,8 +4,7 @@ import { PropTypes } from 'prop-types';
 import PerfectScrollbar from 'perfect-scrollbar';
 import { Nav } from 'reactstrap';
 import NumberNotify from '../Tool/NumberNotify';
-import * as _ from 'lodash';
-import { complaintApi } from '../../api';
+import { homeApi } from '../../api';
 import { store } from 'react-notifications-component';
 import { createNotify } from '../../utils/notifier';
 
@@ -15,7 +14,8 @@ class Sidebar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      pendingComplaint: 0
+      pendingComplaint: 0,
+      pendingLeavingRequest: 0
     };
     this.activeRoute.bind(this);
   }
@@ -33,12 +33,13 @@ class Sidebar extends React.Component {
       });
     }
 
-    complaintApi
+    homeApi
       .getTotal()
       .then(res => {
         if (res.returnCode === 1) {
           this.setState({
-            pendingComplaint: res.data.pendingComplaint
+            pendingComplaint: res.data.pendingComplaint,
+            pendingLeavingRequest: res.data.pendingLeavingRequest
           });
         } else {
           store.addNotification(createNotify('danger', res.returnMessage));
@@ -59,9 +60,21 @@ class Sidebar extends React.Component {
     document.documentElement.classList.remove('nav-open');
   };
 
+  renderNotification = name => {
+    const { pendingLeavingRequest, pendingComplaint } = this.state;
+
+    switch (name) {
+      case 'Khiếu Nại':
+        return <NumberNotify value={pendingComplaint} />;
+      case 'Nghỉ Phép':
+        return <NumberNotify value={pendingLeavingRequest} />;
+      default:
+        return null;
+    }
+  };
+
   render() {
     const { bgColor, routes, logo } = this.props;
-    const { pendingComplaint } = this.state;
     const logoImg = (
       <a href="/" className="simple-text logo-mini">
         <div className="logo-img">
@@ -101,9 +114,7 @@ class Sidebar extends React.Component {
                   >
                     <i className={prop.icon} id={prop.id} />
                     <p className="menu-item">{prop.name}</p>
-                    {_.isEqual(prop.name, 'Khiếu nại') && (
-                      <NumberNotify value={pendingComplaint} />
-                    )}
+                    {this.renderNotification(prop.name)}
                   </NavLink>
                 </li>
               );

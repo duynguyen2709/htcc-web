@@ -1,20 +1,20 @@
 import React, { Component } from 'react';
 import { Tabs, Table, Input } from 'antd';
 import { WarningOutlined, CheckSquareOutlined } from '@ant-design/icons';
-import { complaintApi } from '../api';
+import { leaveRequestApi } from '../api';
 import { store } from 'react-notifications-component';
 import { createNotify } from '../utils/notifier';
 import * as _ from 'lodash';
-import { buildColsComplaint } from '../constant/colTable';
+import { buildColsLeaveRequest } from '../constant/colTable';
 import moment from 'moment';
 import CalendarTool from '../components/Tool/CalendarTool';
-import FormEditStatusComplaint from '../components/Form/FormEditStatusComplaint';
+import FormEditStatusLeaveRequest from '../components/Form/FormEditStatusLeaveRequest';
 import AsyncModal from '../components/Modal/AsyncModal';
 
 const { Search } = Input;
 const { TabPane } = Tabs;
 
-class Complaint extends Component {
+class LeaveRequest extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -71,7 +71,7 @@ class Complaint extends Component {
   }
 
   getListComplaint = month => {
-    complaintApi
+    leaveRequestApi
       .getList(month)
       .then(res => {
         if (res.returnCode === 1) {
@@ -157,7 +157,7 @@ class Complaint extends Component {
                 <div className="table-small table-complaint">
                   <Table
                     pagination={{ pageSize: 6 }}
-                    columns={buildColsComplaint(this.handleEditStatus)}
+                    columns={buildColsLeaveRequest(this.handleEditStatus)}
                     dataSource={dataNotResolve}
                     scroll={{ x: 1300, y: 'calc(100vh - 350px)' }}
                     loading={dataResolved === null}
@@ -178,11 +178,16 @@ class Complaint extends Component {
                 <div className="table-small table-complaint">
                   <Table
                     pagination={{ pageSize: 6 }}
-                    columns={buildColsComplaint(this.handleEditStatus, [
+                    columns={buildColsLeaveRequest(this.handleEditStatus, [
+                      {
+                        title: 'Người duyệt',
+                        dataIndex: 'approver',
+                        width: '150px'
+                      },
                       {
                         title: 'Phản hồi',
                         dataIndex: 'response',
-                        width: '200px'
+                        width: '150px'
                       }
                     ])}
                     dataSource={dataResolved}
@@ -195,10 +200,10 @@ class Complaint extends Component {
           </Tabs>
           <div>
             <AsyncModal
-              CompomentContent={FormEditStatusComplaint}
+              CompomentContent={FormEditStatusLeaveRequest}
               visible={showFormEdit}
               toggle={this.toggle}
-              title={'Cập nhật trạng thái khiếu nại'}
+              title={'Cập nhật trạng thái đơn nghỉ phép'}
               data={curRecordEdit}
               mode={'edit'}
               currDate={currDate}
@@ -211,4 +216,4 @@ class Complaint extends Component {
   }
 }
 
-export default Complaint;
+export default LeaveRequest;

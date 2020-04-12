@@ -1,22 +1,24 @@
 import React from 'react';
 import { Button, CardFooter, FormGroup, Form, Row, Col } from 'reactstrap';
 import * as _ from 'lodash';
-import { complaintApi } from '../../api';
+import { leaveRequestApi } from '../../api';
 import { store } from 'react-notifications-component';
 import { createNotify } from '../../utils/notifier';
 import { CheckCircleOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import { DatePicker, Select, Input, Popconfirm } from 'antd';
 import moment from 'moment';
+import { USER } from '../../constant/localStorageKey';
 
 const { Option } = Select;
 const { TextArea } = Input;
 
-class FormEditStatusComplaint extends React.Component {
+class FormEditStatusLeaveRequest extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       value: {
-        complaintId: null,
+        approver: null,
+        leavingRequestId: null,
         response: null,
         status: 1,
         yyyyMM: moment(new Date()).format('yyyyMM')
@@ -35,12 +37,14 @@ class FormEditStatusComplaint extends React.Component {
 
   componentDidMount() {
     const { data, currDate } = this.props;
+    const user = JSON.parse(localStorage.getItem(USER));
     this.setState({
       value: {
-        complaintId: data.complaintId,
+        leavingRequestId: data.leavingRequestId,
         response: data.response,
         status: 1,
-        yyyyMM: currDate
+        yyyyMM: currDate,
+        approver: user.username
       }
     });
   }
@@ -59,7 +63,7 @@ class FormEditStatusComplaint extends React.Component {
   handleSubmit = e => {
     if (!_.isEmpty(this.state.value.response)) {
       this.props.loading();
-      complaintApi
+      leaveRequestApi
         .updateStatus(this.state.value)
         .then(res => {
           if (res.returnCode === 1) {
@@ -76,18 +80,6 @@ class FormEditStatusComplaint extends React.Component {
       store.addNotification(
         createNotify('warning', 'Bạn chưa nhập thông tin phản hồi')
       );
-    }
-  };
-
-  handleChangeDate = date => {
-    const { value } = this.state;
-    if (!_.isEmpty(date)) {
-      this.setState({
-        value: {
-          ...value,
-          yyyyMM: moment(date, 'YYYYMM')
-        }
-      });
     }
   };
 
@@ -112,9 +104,9 @@ class FormEditStatusComplaint extends React.Component {
               <Input
                 className="form-control bor-radius bor-gray text-dark"
                 type="text"
-                name="complaintId"
+                name="leavingRequestId"
                 disabled
-                value={value.complaintId}
+                value={value.leavingRequestId}
               />
             </FormGroup>
           </Col>
@@ -125,14 +117,25 @@ class FormEditStatusComplaint extends React.Component {
                 className="form-control bor-radius"
                 format={'MM-YYYY'}
                 value={moment(value.yyyyMM, 'YYYYMM')}
-                onChange={() => this.handleChangeDate()}
                 disabled
               />
             </FormGroup>
           </Col>
         </Row>
         <Row>
-          <Col md="12">
+          <Col md="6">
+            <FormGroup>
+              <label>Người duyệt</label>
+              <Input
+                className="form-control bor-radius bor-gray text-dark"
+                type="text"
+                name="approver"
+                disabled
+                value={value.approver}
+              />
+            </FormGroup>
+          </Col>
+          <Col md="6">
             <FormGroup>
               <label>Trạng thái</label>
               <Select
@@ -193,4 +196,4 @@ class FormEditStatusComplaint extends React.Component {
   }
 }
 
-export default FormEditStatusComplaint;
+export default FormEditStatusLeaveRequest;
