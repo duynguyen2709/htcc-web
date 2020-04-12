@@ -56,7 +56,7 @@
 .ant-select-arrow {
   width: 5px;
   position: relative;
-  left: 93%;
+  left: calc(100% - 25px);
   bottom: 37px;
 }
 

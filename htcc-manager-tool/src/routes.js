@@ -3,6 +3,7 @@ import Employee from './views/Employee';
 import Attendance from './views/Attendance';
 import CompanyInfo from './views/CompanyInfo';
 import Complaint from './views/Complaint';
+import LeaveRequest from './views/LeaveRequest';
 
 var routes = [
   {
@@ -26,10 +27,9 @@ var routes = [
     component: Employee,
     layout: '/'
   },
-
   {
     path: '/khieu-nai',
-    name: 'Khiếu nại',
+    name: 'Khiếu Nại',
     icon: 'tim-icons icon-chat-33',
     component: Complaint,
     layout: '/'
@@ -41,6 +41,13 @@ var routes = [
     component: Attendance,
     layout: '/',
     id: 'complaint-icon'
+  },
+  {
+    path: '/nghi-phep',
+    name: 'Nghỉ Phép',
+    icon: 'tim-icons icon-send',
+    component: LeaveRequest,
+    layout: '/'
   }
 ];
 export default routes;

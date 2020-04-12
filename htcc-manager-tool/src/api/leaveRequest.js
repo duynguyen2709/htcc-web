@@ -8,7 +8,7 @@ const getList = month => {
 
   return new Promise((resolve, reject) => {
     axios
-      .get(`${API_URL_EMPLOYEE}/complaint/${user.companyId}/${month}`, {
+      .get(`${API_URL_EMPLOYEE}/leaving/${user.companyId}/${month}`, {
         headers: {
           Authorization: `Bearer ${token}`
         },
@@ -31,7 +31,7 @@ const updateStatus = data => {
   return new Promise((resolve, reject) => {
     axios({
       method: 'put',
-      url: `${API_URL_EMPLOYEE}/complaint/status`,
+      url: `${API_URL_EMPLOYEE}/leaving/status`,
       data: data,
       headers: {
         Authorization: `Bearer ${token}`
