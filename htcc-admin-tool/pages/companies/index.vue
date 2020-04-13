@@ -50,6 +50,7 @@
                       
                         <!-- <template v-slot:activator="{ on }"> -->
                           <!-- <v-btn color="success" v-on="on">Chỉnh sửa</v-btn> -->
+                          
                           <v-icon color="tertiary" @click.stop="clickEditForm(item)">edit</v-icon>
                         <!-- </template> -->
                        
@@ -59,7 +60,13 @@
                       
                         <!-- <template v-slot:activator="{ on }"> -->
                           <!-- <v-btn color="success" v-on="on">Chỉnh sửa</v-btn> -->
-                          <v-icon color="tertiary" @click.stop="goToCompanyUserPage(item)">mdi-format-list-bulleted</v-icon>
+                          <v-tooltip bottom>
+                                  <template v-slot:activator="{ on }">
+                                    <v-icon color="tertiary" v-on="on" @click.stop="goToCompanyUserPage(item)">mdi-format-list-bulleted</v-icon>
+                                  </template>
+                                  <span class="white--text">Xem danh sách quản trị viên</span>
+                                </v-tooltip>
+                          <!-- <v-icon color="tertiary" @click.stop="goToCompanyUserPage(item)">mdi-format-list-bulleted</v-icon> -->
                         <!-- </template> -->
                        
                     </td>

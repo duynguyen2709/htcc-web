@@ -1,8 +1,8 @@
 <template class="d-toolbar ">
   <!-- <v-toolbar id="core-toolbar" flat prominent style="background: #eee;"> -->
-  <v-toolbar id="core-toolbar" class="d-toolbar " text prominent style="background: #eee;">
-    <div class="v-toolbar-title ">
-      <v-toolbar-title class="tertiary--text font-weight-bold ">
+  <v-toolbar id="core-toolbar" class="d-toolbar" text prominent style="background: #eee;">
+    <div class="v-toolbar-title">
+      <v-toolbar-title class="tertiary--text font-weight-bold">
         <v-btn v-if="responsive" class="default v-btn--simple" dark icon @click.stop="onClickBtn">
           <v-icon>mdi-view-list</v-icon>
         </v-btn>
@@ -11,8 +11,8 @@
     </div>
 
     <v-spacer />
-    <v-toolbar-items class="d-toolbar ">
-      <v-flex align-center layout py-2 >
+    <v-toolbar-items class="d-toolbar">
+      <v-flex align-center layout py-2>
         <v-text-fieldtoolbar-items
           v-if="responsiveInput"
           class="mr-4 mt-2 purple-input"
@@ -21,12 +21,12 @@
           color="purple"
         />
         <v-menu bottom left content-class="dropdown-menu" offset-y transition="slide-y-transition">
-          <router-link v-ripple slot="activator" class="toolbar-items" to="/notifications">
+          <!-- <router-link v-ripple slot="activator" class="toolbar-items" to="/notifications">
             <v-badge color="error" overlap>
               <template slot="badge">{{ notifications.length }}</template>
               <v-icon color="tertiary">mdi-bell</v-icon>
             </v-badge>
-          </router-link>
+          </router-link> -->
           <v-card>
             <v-list dense>
               <v-list-item
@@ -48,12 +48,10 @@
           <v-icon color="tertiary">mdi-account</v-icon>
         </nuxt-link>-->
 
-       <!-- <v-icon color="tertiary" @click="dialog = true">mdi-account</v-icon> -->
-       
-      <v-icon color="tertiary" @click="onClickUserProfile">mdi-account</v-icon>
-        <v-dialog width="530" v-model="dialog">
-          
+        <!-- <v-icon color="tertiary" @click="dialog = true">mdi-account</v-icon> -->
 
+        <v-icon color="tertiary" @click="onClickUserProfile">mdi-account</v-icon>
+        <v-dialog width="530" v-model="dialog">
           <!-- <v-card>
             <v-card-title class="headline grey lighten-2" primary-title>Privacy Policy</v-card-title>
 
@@ -86,7 +84,13 @@
           </material-card>
         </v-dialog>
       </v-flex>
-      <nuxt-link v-ripple class="toolbar-items" to="/" title="Logout" @click.native="$auth.logout()">
+      <nuxt-link
+        v-ripple
+        class="toolbar-items"
+        to="/"
+        title="Logout"
+        @click.native="$auth.logout()"
+      >
         <v-icon color="tertiary">mdi-logout</v-icon>
       </nuxt-link>
     </v-toolbar-items>
@@ -109,14 +113,14 @@ export default {
       "Another Notification",
       "Another One"
     ],
-    title: "Home",
+    title: "",
     responsive: true,
     responsiveInput: true,
     dialog: false
   }),
   watch: {
     $route(val) {
-      this.title = val.name;
+      this.convertRouteToName(val.name)
     }
   },
   computed: {
@@ -131,6 +135,24 @@ export default {
       setUsername: "user/setUsername",
       setDrawer: "app/setDrawer"
     }),
+
+    convertRouteToName(RouteName) {
+      let titleMap = new Map([
+        ["index", "Khiếu nại"],
+        ["Home", "Khiếu nại"],
+        ["user-profile", "Thông tin cá nhân"],
+        ["companies", "Danh sách công ty"],
+        ["companyusers-id", "Danh sách quản trị viên công ty"],
+        ["admins", "Danh sách quản trị viên"],
+        ["admins-add", "Thêm quản trị viên"]
+      ]);
+
+      if (titleMap.has(RouteName)) {
+        console.log("val name: ");
+        console.log(RouteName);
+        this.title = titleMap.get(RouteName);
+      } else this.title = RouteName;
+    },
 
     onClickBtn() {
       this.setDrawer(!this.drawer);
@@ -149,13 +171,18 @@ export default {
     },
     async logout() {
       await this.setUsername(null);
-      this.$router.push({ path: "/" });
+      this.$router.push({
+        path: "/"
+      });
     },
-    onClickUserProfile(){
-      this.$router.push({ path:"/user-profile"});
+    onClickUserProfile() {
+      this.$router.push({
+        path: "/user-profile"
+      });
     }
   },
   mounted() {
+    this.convertRouteToName(this.$route.name);
     this.onResponsiveInverted();
     window.addEventListener("resize", this.onResponsiveInverted);
   },
@@ -169,10 +196,11 @@ export default {
 #core-toolbar a {
   text-decoration: none;
 }
+
 .d-toolbar {
   height: 64px !important;
 }
-.d-title-toolbar{
-  
+
+.d-title-toolbar {
 }
 </style>

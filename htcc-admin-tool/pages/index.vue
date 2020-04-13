@@ -42,7 +42,6 @@
                 </v-card-title>
 
                 <div>
-
                   <div v-if="!isLoadingDataDone" class="text-center">
                     <v-progress-circular :size="70" :width="7" color="primary" indeterminate></v-progress-circular>
                   </div>
@@ -50,9 +49,6 @@
                   <v-data-table v-if="isLoadingDataDone" :headers="headersPending" :items="PendingItems"
                     :search="searchPending" hide-default-footer :page.sync="pagePending" :items-per-page="itemsPerPage"
                     @page-count="pageCountPending = $event">
-
-
-
                     <template v-slot:no-data>Không có khiếu nại chưa giải quyết của tháng này</template>
 
                     <template v-if=" PendingItems.length !== 0" v-slot:body="{ items }">
@@ -60,7 +56,26 @@
                         <tr v-for="item in items" :key="item.ComplaintId">
                           <td>{{ item.category }}</td>
                           <td>{{ item.complaintId }}</td>
-                          <td>{{ item.content }}</td>
+                          <!-- <td>{{ item.content }}</td> -->
+                          <td>
+                            <v-row>
+                               <v-col cols="12">
+                                <v-row>
+                              <v-col cols="11">{{ item.content[item.content.length - 1] }}</v-col>
+
+                              <v-col cols="1" v-if="item.content.length > 1">
+                                <v-tooltip bottom>
+                                  <template v-slot:activator="{ on }">
+                                    <v-icon color="tertiary" v-on="on" @click="clickListContent(item)">mdi-chevron-down
+                                    </v-icon>
+                                  </template>
+                                  <span class="white--text">Xem lịch sử khiếu nại</span>
+                                </v-tooltip>
+                              </v-col>
+                                </v-row>
+                               </v-col>
+                            </v-row>
+                          </td>
                           <td>{{ item.time }}</td>
                           <td>{{ item.date }}</td>
                           <td class="max-width: 180px !important;">
@@ -84,7 +99,6 @@
                         </tr>
                       </tbody>
                     </template>
-
 
                     <!-- <template v-slot:item.actions="{ item }">
                       <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
@@ -115,12 +129,55 @@
                     @page-count="pageCountConfirmed = $event">
                     <template v-slot:no-data>Không có khiếu nại đã giải quyết của tháng này</template>
 
-                    <template v-if="PendingItems.length !== 0" v-slot:body="{ items }">
+                    <template v-if="ConfirmedItems.length !== 0" v-slot:body="{ items }">
                       <tbody>
                         <tr v-for="item in items" :key="item.ComplaintId">
                           <td>{{ item.category }}</td>
                           <td>{{ item.complaintId }}</td>
-                          <td style="max-width: 300px;">{{ item.content }}</td>
+
+                          <!-- <td style="max-width: 600px;">
+                            <v-row>
+                              <v-col cols="12">
+                                <v-row>
+                              <v-col cols = "5">{{ item.content[item.content.length - 1] }}</v-col>
+                              <v-col cols="1"><b>-</b></v-col>
+                              <v-col cols = "5">{{ item.response[item.response.length - 1] }}</v-col>
+                              <v-col cols="1" v-if="item.content.length > 1">
+                                <v-tooltip bottom>
+                                  <template v-slot:activator="{ on }">
+                                    <v-icon color="tertiary" v-on="on" @click="clickListContent(item)">mdi-chevron-down
+                                    </v-icon>
+                                  </template>
+                                  <span class="white--text">Xem lịch sử khiếu nại</span>
+                                </v-tooltip>
+                              </v-col>
+                                </v-row>
+                              </v-col>
+                            </v-row>
+                          </td> -->
+
+                          <td style="max-width: 300px;">{{ item.content[MaxLengthContent(item) - 1] }}</td>
+                          <td style="max-width: 350px;">
+                            <v-row>
+                              <v-col cols="12">
+                                <v-row>
+                              <v-col cols="11">{{ item.response[MaxLengthContent(item) - 1] }}</v-col>
+
+                              <v-col cols="1" v-if="item.content.length > 1">
+                                <v-tooltip bottom>
+                                  <template v-slot:activator="{ on }">
+                                    <v-icon color="tertiary" v-on="on" @click="clickListConfirmedContent(item)">mdi-chevron-down
+                                    </v-icon>
+                                  </template>
+                                  <span class="white--text">Xem lịch sử khiếu nại</span>
+                                </v-tooltip>
+                              </v-col>
+                                </v-row>
+                              </v-col>
+                            </v-row>
+                          </td>
+
+
                           <td class="max-width: 180px !important;">{{ item.time }}</td>
                           <td>{{ item.date }}</td>
                           <td class="max-width: 180px !important;">
@@ -137,18 +194,15 @@
                               </v-col>
                             </v-row>
                           </td>
-                          <td>{{ item.response }}</td>
+                          <!-- <td>{{ item.response }}</td> -->
                           <!-- <td>{{ item.status }}</td> -->
                           <td>
                             <p class="font-weight-black"
                               v-bind:class="{'green--text': (item.status == '1'), 'red--text': (item.status == '0')}"
-                              style="margin-bottom: 0px !important">{{item.status != 0 ? 'Đã xử lý' : 'Từ chối xử lý'}}</p>
+                              style="margin-bottom: 0px !important">{{item.status != 0 ? 'Đã xử lý' : 'Từ chối xử lý'}}
+                            </p>
                           </td>
                           <td>{{ item.sender }}</td>
-
-                          <td class="justify-center align-center">
-                            <v-icon class="mr-2 justify-center align-center" @click="editItem(item)">mdi-pencil</v-icon>
-                          </td>
                         </tr>
                       </tbody>
                     </template>
@@ -208,6 +262,21 @@
             </v-img>
           </v-dialog>
 
+          <v-dialog width="700" v-model="ListContentDialog">
+            <material-card color="success" elevation="12" title="Danh sách lịch sử khiếu nại">
+              <v-data-table :headers="headersContent" :items="ChoosenContents" hide-default-footer>
+                <template v-slot:body="{ items }">
+                  <tbody>
+                    <tr v-for="item in items" :key="item.Content">
+                      <td style="max-width: 300px;">{{ item.content }}</td>
+                      <td style="max-width: 300px;">{{ item.response }}</td>
+                    </tr>
+                  </tbody>
+                </template>
+              </v-data-table>
+            </material-card>
+          </v-dialog>
+
           <!-- <v-card-title>
             <v-text-field
               v-model="searchConfirmed"
@@ -254,8 +323,11 @@
       editForm
     },
     data: () => ({
-
       isLoadingDataDone: false,
+
+      /*content dialog*/
+      ListContentDialog: false,
+      ChoosenContents: [],
 
       /*images*/
       LazyImg: "/vuetifylogo.png",
@@ -367,9 +439,15 @@
         {
           sortable: false,
           text: "Nội dung",
-          value: "content",
           align: "center",
           width: "300"
+        },
+        {
+          sortable: false,
+          text: "Ghi chú",
+          value: "response",
+          align: "center",
+          width: "350"
         },
         {
           text: "Thời gian",
@@ -390,12 +468,6 @@
         },
         {
           sortable: false,
-          text: "Ghi chú",
-          value: "response",
-          width: 100
-        },
-        {
-          sortable: false,
           text: "Trạng thái",
           value: "status",
           width: 140
@@ -405,6 +477,20 @@
           text: "Người gửi",
           value: "sender",
           width: 110
+        }
+      ],
+      headersContent: [{
+          text: "Nội dung",
+          value: "content",
+          align: "center",
+          divine: true,
+          width: 300
+        },
+        {
+          text: "Ghi chú",
+          value: "response",
+          align: "center",
+          width: 300
         }
       ],
       PendingItems: [],
@@ -425,6 +511,10 @@
       clickImg(img) {
         this.ChoosenImage = img;
         this.ImgDialog = true;
+      },
+
+      MaxLengthContent(item){
+        return item.content.length > item.response.length ? item.content.length : item.response.length
       },
 
       async clickDatePicker() {
@@ -489,7 +579,6 @@
 
         month = month.replace("-", "");
 
-
         $this.PendingItems = [];
         $this.ConfirmedItems = [];
 
@@ -504,7 +593,7 @@
                 else $this.ConfirmedItems.push(element);
               });
 
-              console.log("done data pending complaint")
+              console.log("done data pending complaint");
               $this.isLoadingDataDone = true;
             } else {
               console.log(
@@ -530,6 +619,49 @@
           mess: mess,
           status: true
         });
+      },
+
+      clickListContent(item) {
+        //this.ChoosenItem = item;
+        this.ListContentDialog = true;
+        this.ChoosenContents = [];
+
+        let i = 0;
+        console.log("size response: " + item.response.length)
+        console.log(item.content)
+        for (; i < item.response.length; i++) {
+          console.log("item content: ")
+          console.log(item.content[i])
+          let temp = {
+            content: item.content[i],
+            response: item.response[i] || '',
+          }
+          console.log(temp)
+          this.ChoosenContents.push(temp)
+        }
+
+        this.ChoosenContents.push({
+          content: item.content[i],
+          response: '',
+        })
+
+        console.log("Choosen contents: ");
+        console.log(this.ChoosenContents)
+      },
+      clickListConfirmedContent(item){
+        this.ListContentDialog = true;
+        this.ChoosenContents = [];
+
+        let i = 0;
+        console.log("size response: " + item.response.length)
+        console.log(item.content)
+        for (; i < item.response.length; i++) {
+          let temp = {
+            content: item.content[i],
+            response: item.response[i] || '',
+          }
+          this.ChoosenContents.push(temp)
+        }
       }
     },
     created: async function () {
