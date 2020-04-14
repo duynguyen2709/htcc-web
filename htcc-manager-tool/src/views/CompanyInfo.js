@@ -3,7 +3,7 @@ import { Tabs } from 'antd';
 import {
   BranchesOutlined,
   ProfileOutlined,
-  EnvironmentOutlined,
+  EnvironmentOutlined
 } from '@ant-design/icons';
 import Info from '../components/Company/Info';
 import Map from '../components/Company/Map';
@@ -16,7 +16,7 @@ class CompanyInfo extends Component {
     return (
       <div className="content">
         <div className="table-wrapper tabs-big">
-          <Tabs defaultActiveKey="info">
+          <Tabs defaultActiveKey="branch">
             <TabPane
               tab={
                 <span>

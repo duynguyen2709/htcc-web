@@ -70,13 +70,16 @@ class FormEditStatusLeaveRequest extends React.Component {
             this.props.onSubmit();
             this.clear();
           } else {
+            this.props.loading();
             store.addNotification(createNotify('danger', res.returnMessage));
           }
         })
         .catch(err => {
+          this.props.loading();
           store.addNotification(createNotify('danger', JSON.stringify(err)));
         });
     } else {
+      this.props.loading();
       store.addNotification(
         createNotify('warning', 'Bạn chưa nhập thông tin phản hồi')
       );
