@@ -16,12 +16,14 @@ class Branch extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: [],
+      data: null,
       showModal: false,
       mode: 'new',
       curRecordEdit: null,
-      isSubmit: false
+      isSubmit: false,
+      loading: false
     };
+    this.data = [];
   }
 
   componentDidMount() {
@@ -32,6 +34,7 @@ class Branch extends React.Component {
           this.setState({
             data: res.data
           });
+          this.data = res.data;
         } else {
           store.addNotification(createNotify('danger', res.returnMessage));
         }
@@ -42,52 +45,64 @@ class Branch extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (
-      // !_.isEqual(this.state.showModal, prevState.showModal) ||
-      !_.isEqual(this.state.isSubmit, prevState.isSubmit)
-    ) {
-      this.setState(
-        {
-          data: null
-        },
-        () => {
-          companyApi
-            .getAllOffices()
-            .then(res => {
-              if (res.returnCode === 1) {
-                this.setState({
-                  data: res.data
-                });
-              } else {
-                store.addNotification(
-                  createNotify('danger', res.returnMessage)
-                );
-              }
-            })
-            .catch(err => {
-              store.addNotification(
-                createNotify('danger', JSON.stringify(err))
-              );
+    if (!_.isEqual(this.state.data, prevState.data)) {
+      companyApi
+        .getAllOffices()
+        .then(res => {
+          if (res.returnCode === 1) {
+            this.setState({
+              data: res.data
             });
-        }
-      );
+            this.data = res.data;
+          } else {
+            store.addNotification(createNotify('danger', res.returnMessage));
+          }
+        })
+        .catch(err => {
+          store.addNotification(createNotify('danger', JSON.stringify(err)));
+        });
     }
   }
 
-  toggleNew = (submit = false) => {
+  handleEdit = record => {
     this.setState({
-      showModal: !this.state.showModal,
-      curRecordEdit: null,
-      mode: 'new',
-      isSubmit: submit
+      showModal: true,
+      curRecordEdit: record,
+      mode: 'edit'
     });
   };
 
-  toggleEdit = (record, submit = false) => {
+  handleDelete = record => {
+    this.setState({
+      loading: true
+    });
+
+    companyApi
+      .deleteBranch(record)
+      .then(res => {
+        if (res.returnCode === 1) {
+          this.setState({
+            data: res.data,
+            loading: false
+          });
+
+          this.data = res.data;
+          store.addNotification(createNotify('default', 'Xoá thành công !'));
+        } else {
+          store.addNotification(createNotify('danger', res.returnMessage));
+        }
+      })
+      .catch(err => {
+        store.addNotification(createNotify('danger', JSON.stringify(err)));
+      });
+  };
+
+  toggle = (submit = false) => {
+    const { data } = this.state;
     this.setState({
       showModal: !this.state.showModal,
-      curRecordEdit: _.isEmpty(this.state.curRecordEdit) ? record : null,
-      mode: 'edit',
+      curRecordEdit: null,
+      data: submit ? null : data,
       isSubmit: submit
     });
   };
@@ -99,22 +114,32 @@ class Branch extends React.Component {
     }));
   };
 
+  onSearch = e => {
+    const data = _.filter(this.data, ele =>
+      JSON.stringify(ele).includes(e.target.value)
+    );
+
+    this.setState({
+      data: data
+    });
+  };
+
   render() {
-    const { data, showModal, curRecordEdit, mode } = this.state;
+    const { data, showModal, curRecordEdit, mode, loading } = this.state;
     return (
       <React.Fragment>
         <div className="header-table clearfix">
           <div className="float-left">
             <Search
               className="form-control bor-radius"
-              placeholder="Tìm mã chi nhánh"
+              placeholder="Tìm kiếm nhanh"
               style={{ width: 300 }}
               onChange={this.onSearch}
             />
           </div>
           <div className="float-right btn-new">
             <Tooltip placement="left" title={'Thêm chi nhánh'}>
-              <PlusSquareOutlined onClick={this.toggleNew} />
+              <PlusSquareOutlined onClick={() => this.toggle(false)} />
             </Tooltip>
           </div>
         </div>
@@ -122,25 +147,22 @@ class Branch extends React.Component {
           <div className="table-small table-branch">
             <Table
               pagination={{ pageSize: 6 }}
-              columns={buildColsBranch(this.toggleEdit)}
+              columns={buildColsBranch(this.handleEdit, this.handleDelete)}
               dataSource={this.mapData(data)}
               scroll={{ x: 1300, y: 'calc(100vh - 355px)' }}
-              loading={data === null}
+              loading={loading || data === null}
             />
           </div>
         </div>
         <div>
           <AsyncModal
+            key={curRecordEdit}
             reload={false}
             CompomentContent={
               this.state.mode === 'new' ? FormNewBranch : FormEditBranch
             }
             visible={showModal}
-            toggle={
-              this.state.mode === 'new'
-                ? submit => this.toggleNew(submit)
-                : submit => this.toggleEdit(curRecordEdit, submit)
-            }
+            toggle={submit => this.toggle(submit)}
             title={
               mode === 'new' ? 'Thêm chi nhánh mới' : 'Chỉnh sửa chi nhánh'
             }

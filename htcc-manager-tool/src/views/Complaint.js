@@ -91,7 +91,6 @@ class Complaint extends Component {
         }
       })
       .catch(err => {
-        debugger;
         store.addNotification(createNotify('danger', JSON.stringify(err)));
       });
   };
@@ -131,7 +130,7 @@ class Complaint extends Component {
             <div className="float-left">
               <Search
                 className="form-control bor-radius"
-                placeholder="Tìm kiếm"
+                placeholder="Tìm kiếm nhanh"
                 style={{ width: 300 }}
                 onChange={this.onSearch}
               />

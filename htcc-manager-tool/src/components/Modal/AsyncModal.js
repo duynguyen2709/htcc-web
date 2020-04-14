@@ -12,7 +12,7 @@ class AsyncModal extends React.Component {
     };
   }
 
-  handleOk = (submit = false) => {
+  handleOk = (submit = true) => {
     const { reload = true } = this.props;
     this.setState({ loading: false });
     this.props.toggle(submit);

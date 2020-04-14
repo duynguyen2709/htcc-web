@@ -108,10 +108,33 @@ const createBranch = data => {
   });
 };
 
+const deleteBranch = data => {
+  const token = localStorage.getItem(TOKEN);
+  const user = JSON.parse(localStorage.getItem(USER));
+
+  return new Promise((resolve, reject) => {
+    axios({
+      method: 'delete',
+      url: `${API_URL_EMPLOYEE}/offices/${user.companyId}/${data.officeId}`,
+      data: data,
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+      .then(res => {
+        resolve(res.data);
+      })
+      .catch(err => {
+        reject(err);
+      });
+  });
+};
+
 export default {
   getInfoCompany,
   updateInfoCompany,
   getAllOffices,
   updateInfoBranch,
-  createBranch
+  createBranch,
+  deleteBranch
 };

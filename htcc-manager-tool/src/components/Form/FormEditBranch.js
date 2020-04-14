@@ -59,8 +59,7 @@ class FormAddNewBranch extends React.Component {
     this.setState({
       value: {
         ...this.props.data
-      },
-      mode: this.props.mode
+      }
     });
   }
 
@@ -109,6 +108,7 @@ class FormAddNewBranch extends React.Component {
     if (this.checkValidDataInput()) {
       const { value } = this.state;
 
+      this.props.loading();
       companyApi
         .updateInfoBranch(value)
         .then(res => {
@@ -116,13 +116,16 @@ class FormAddNewBranch extends React.Component {
             this.props.onSubmit(true);
             this.clear();
           } else {
+            this.props.loading();
             store.addNotification(createNotify('danger', res.returnMessage));
           }
         })
         .catch(err => {
+          this.props.loading();
           store.addNotification(createNotify('danger', JSON.stringify(err)));
         });
     } else {
+      this.props.loading();
       store.addNotification(createNotify('warning', 'Thông tin chưa hợp lệ !'));
     }
   };
@@ -229,7 +232,7 @@ class FormAddNewBranch extends React.Component {
             <FormGroup>
               <label>Địa chỉ</label>
               <Input
-                placeholder="Nhập địa chỉ trụ sở chính"
+                placeholder="Nhập địa chỉ chi nhánh"
                 type="text"
                 className="bor-gray text-dark"
                 name="address"

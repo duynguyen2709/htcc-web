@@ -4,7 +4,8 @@ import {
   EditOutlined,
   CheckCircleTwoTone,
   CloseCircleTwoTone,
-  BarsOutlined
+  BarsOutlined,
+  DeleteTwoTone
 } from '@ant-design/icons';
 import LightboxImages from '../components/Tool/LightboxImages';
 import * as _ from 'lodash';
@@ -209,7 +210,7 @@ export const buildColsLeaveRequest = (funcEdit, cols = []) => {
 
         return (
           <Tooltip placement="top" title={'Không dùng phép'}>
-            <CloseCircleTwoTone twoToneColor="#ff7875" />;
+            <CloseCircleTwoTone twoToneColor="#ff7875" />
           </Tooltip>
         );
       }
@@ -278,7 +279,7 @@ const renderListDetail = (list = []) => {
   return <ul style={{ padding: 15 }}>{listDetail}</ul>;
 };
 
-export const buildColsBranch = (funcEdit, cols = []) => [
+export const buildColsBranch = (funcEdit, funcDelete, cols = []) => [
   {
     title: 'Mã chi nhánh',
     dataIndex: 'officeId',
@@ -342,17 +343,28 @@ export const buildColsBranch = (funcEdit, cols = []) => [
   },
   {
     title: 'Hành động',
-    width: '150px',
+    width: '110px',
     fixed: 'right',
     render: (o, record) => {
       return (
-        <EditOutlined
-          style={{
-            color: '#52c41a',
-            fontSize: '23px'
-          }}
-          onClick={() => funcEdit(record)}
-        />
+        <React.Fragment>
+          <EditOutlined
+            style={{
+              color: '#52c41a',
+              fontSize: '23px',
+              float: 'left'
+            }}
+            onClick={() => funcEdit(record)}
+          />
+          <DeleteTwoTone
+            twoToneColor="#ff7875"
+            style={{
+              fontSize: '23px',
+              float: 'right'
+            }}
+            onClick={() => funcDelete(record)}
+          />
+        </React.Fragment>
       );
     }
   }

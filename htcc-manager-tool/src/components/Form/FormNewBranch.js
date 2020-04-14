@@ -124,6 +124,7 @@ class FormNewBranch extends React.Component {
     if (this.checkValidDataInput()) {
       const { value } = this.state;
 
+      this.props.loading();
       companyApi
         .createBranch(value)
         .then(res => {
@@ -131,13 +132,27 @@ class FormNewBranch extends React.Component {
             this.props.onSubmit(true);
             this.clear();
           } else {
+            this.props.loading();
             store.addNotification(createNotify('danger', res.returnMessage));
           }
         })
         .catch(err => {
+          this.props.loading();
           store.addNotification(createNotify('danger', JSON.stringify(err)));
         });
     } else {
+      this.setState({
+        touch: {
+          email: true,
+          phoneNumber: true,
+          address: true,
+          latitude: true,
+          longitude: true,
+          maxAllowDistance: true,
+          officeName: true,
+          officeId: true
+        }
+      });
       store.addNotification(createNotify('warning', 'Thông tin chưa hợp lệ !'));
     }
   };
@@ -246,7 +261,7 @@ class FormNewBranch extends React.Component {
             <FormGroup>
               <label>Địa chỉ</label>
               <Input
-                placeholder="Nhập địa chỉ trụ sở chính"
+                placeholder="Nhập địa chỉ chi nhánh"
                 type="text"
                 className="bor-gray text-dark"
                 name="address"
