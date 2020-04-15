@@ -62,6 +62,19 @@ export const columnsEmployee = [
   }
 ];
 
+export const columnsHistoryResponse = [
+  {
+    title: 'Nội dung',
+    dataIndex: 'content',
+    width: '100px'
+  },
+  {
+    title: 'Phải hồi',
+    dataIndex: 'response',
+    width: '100px'
+  }
+];
+
 export const buildColsComplaint = (funcEdit, cols = []) => {
   return [
     {
@@ -97,7 +110,22 @@ export const buildColsComplaint = (funcEdit, cols = []) => {
     {
       title: 'Nội dung',
       dataIndex: 'content',
-      width: '200px'
+      width: '200px',
+      render: (o, record) => {
+        if (_.size(record.content) < 2) {
+          return record.content;
+        }
+
+        return (
+          <Popover
+            content={renderListContent(record.content)}
+            title={`Danh sách nội dung đã khiếu nại`}
+            trigger="hover"
+          >
+            <BarsOutlined style={{ color: '#40a9ff' }} />
+          </Popover>
+        );
+      }
     },
     {
       title: 'Hình ảnh',
@@ -112,6 +140,23 @@ export const buildColsComplaint = (funcEdit, cols = []) => {
       }
     },
     ...cols,
+    {
+      title: 'Phản hồi',
+      dataIndex: 'response',
+      width: '120px',
+      render: (o, record) => {
+        if (_.size(record.response) > 2) {
+          return (
+            <Tooltip placement="top" title={'Xem chi tiết'}>
+              <BarsOutlined
+                style={{ color: '#40a9ff' }}
+                onClick={() => funcEdit(record, true)}
+              />
+            </Tooltip>
+          );
+        }
+      }
+    },
     {
       title: 'Trạng thái',
       dataIndex: 'status',
@@ -277,6 +322,20 @@ const renderListDetail = (list = []) => {
   });
 
   return <ul style={{ padding: 15 }}>{listDetail}</ul>;
+};
+
+const renderListContent = (list = []) => {
+  const listContent = _.map(list, (item, index) => {
+    return (
+      <li
+        style={{ maxWidth: 200 }}
+        className="text-dark"
+        key={index}
+      >{`${item}`}</li>
+    );
+  });
+
+  return <ul style={{ padding: 15 }}>{listContent}</ul>;
 };
 
 export const buildColsBranch = (funcEdit, funcDelete, cols = []) => [

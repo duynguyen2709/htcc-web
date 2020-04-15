@@ -35,8 +35,10 @@ class AsyncModal extends React.Component {
       title,
       data = {},
       currDate,
-      mode
+      mode,
+      onlyView = false
     } = this.props;
+
     return (
       <Modal
         visible={visible}
@@ -52,6 +54,7 @@ class AsyncModal extends React.Component {
           currDate={currDate}
           loading={() => this.setState({ loading: true })}
           mode={mode}
+          onlyView={onlyView}
         />
       </Modal>
     );

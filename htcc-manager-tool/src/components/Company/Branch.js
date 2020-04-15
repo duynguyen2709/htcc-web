@@ -146,11 +146,14 @@ class Branch extends React.Component {
         <div className="table-edit">
           <div className="table-small table-branch">
             <Table
-              pagination={{ pageSize: 6 }}
               columns={buildColsBranch(this.handleEdit, this.handleDelete)}
               dataSource={this.mapData(data)}
               scroll={{ x: 1300, y: 'calc(100vh - 355px)' }}
               loading={loading || data === null}
+              pagination={{
+                hideOnSinglePage: true,
+                pageSize: 6
+              }}
             />
           </div>
         </div>
