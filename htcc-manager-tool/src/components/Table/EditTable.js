@@ -76,7 +76,6 @@ const EditableTable = ({
   const save = async key => {
     try {
       const row = await form.validateFields();
-      console.log('row', row);
 
       if (!valideInput(row)) {
         return;
