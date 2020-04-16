@@ -4,9 +4,14 @@ import * as _ from 'lodash';
 import { complaintApi } from '../../api';
 import { store } from 'react-notifications-component';
 import { createNotify } from '../../utils/notifier';
-import { CheckCircleOutlined, QuestionCircleOutlined } from '@ant-design/icons';
-import { DatePicker, Select, Input, Popconfirm } from 'antd';
+import {
+  CheckCircleOutlined,
+  EditOutlined,
+  QuestionCircleOutlined
+} from '@ant-design/icons';
+import { DatePicker, Select, Input, Popconfirm, Table } from 'antd';
 import moment from 'moment';
+import { columnsHistoryResponse } from '../../constant/colTable';
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -20,7 +25,9 @@ class FormEditStatusComplaint extends React.Component {
         response: null,
         status: 1,
         yyyyMM: moment(new Date()).format('yyyyMM')
-      }
+      },
+      onlyView: props.onlyView,
+      response: []
     };
   }
 
@@ -38,10 +45,23 @@ class FormEditStatusComplaint extends React.Component {
     this.setState({
       value: {
         complaintId: data.complaintId,
-        response: data.response,
+        response: null,
         status: 1,
         yyyyMM: currDate
-      }
+      },
+      response: [
+        'nội dung',
+        'phan hoi ne',
+        'nội dung tiếp nè',
+        'phan hoi ne',
+        'nội dung tiếp nè',
+        'phan hoi ne',
+        'nội dung tiếp nè',
+        'phan hoi ne',
+        'nội dung tiếp nè',
+        'phan hoi ne',
+        'nội dung tiếp nè'
+      ] //data.response
     });
   }
 
@@ -57,22 +77,31 @@ class FormEditStatusComplaint extends React.Component {
   };
 
   handleSubmit = e => {
-    if (!_.isEmpty(this.state.value.response)) {
+    const { value, response } = this.state;
+    if (!_.isEmpty(value.response)) {
+      const data = _.cloneDeep(value);
+
+      response.push(value.response);
+      data.response = [...response];
+
       this.props.loading();
       complaintApi
-        .updateStatus(this.state.value)
+        .updateStatus(data)
         .then(res => {
           if (res.returnCode === 1) {
             this.props.onSubmit();
             this.clear();
           } else {
+            this.props.loading();
             store.addNotification(createNotify('danger', res.returnMessage));
           }
         })
         .catch(err => {
+          this.props.loading();
           store.addNotification(createNotify('danger', JSON.stringify(err)));
         });
     } else {
+      this.props.loading();
       store.addNotification(
         createNotify('warning', 'Bạn chưa nhập thông tin phản hồi')
       );
@@ -100,8 +129,27 @@ class FormEditStatusComplaint extends React.Component {
     });
   };
 
+  mapDataResponse = data => {
+    const result = [];
+    let k = -1;
+
+    for (let i = 0; i < _.size(data); i += 1) {
+      debugger;
+
+      if (i % 2 === 0) {
+        k++;
+        result.push({});
+        result[k].content = data[i];
+      } else {
+        result[k].response = data[i];
+      }
+    }
+
+    return result;
+  };
+
   render() {
-    const { value } = this.state;
+    const { value, onlyView, response } = this.state;
 
     return (
       <Form>
@@ -131,7 +179,23 @@ class FormEditStatusComplaint extends React.Component {
             </FormGroup>
           </Col>
         </Row>
-        <Row>
+        {_.size(response) > 2 && (
+          <Row>
+            <Col md="12">
+              <FormGroup>
+                <label>Lịch sử phản hồi</label>
+                <Table
+                  columns={columnsHistoryResponse}
+                  dataSource={this.mapDataResponse(response)}
+                  bordered
+                  pagination={false}
+                  scroll={{ y: 150 }}
+                />
+              </FormGroup>
+            </Col>
+          </Row>
+        )}
+        <Row style={{ display: onlyView ? 'none' : '' }}>
           <Col md="12">
             <FormGroup>
               <label>Trạng thái</label>
@@ -152,7 +216,7 @@ class FormEditStatusComplaint extends React.Component {
             </FormGroup>
           </Col>
         </Row>
-        <Row>
+        <Row style={{ display: onlyView ? 'none' : '' }}>
           <Col md="12">
             <FormGroup>
               <label>Nội dung phản hồi</label>
@@ -167,26 +231,36 @@ class FormEditStatusComplaint extends React.Component {
           </Col>
         </Row>
         <CardFooter className="text-right info">
-          <Popconfirm
-            title="Bạn chắc chắn thay đổi？"
-            icon={<QuestionCircleOutlined />}
-            okText="Đồng ý"
-            cancelText="Huỷ"
-            onConfirm={() => this.handleSubmit()}
-          >
+          {onlyView ? (
             <Button
-              id="save"
               className="btn-custom"
               color="primary"
               type="button"
+              onClick={() => this.setState({ onlyView: false })}
             >
-              <CheckCircleOutlined
+              <EditOutlined
                 style={{ display: 'inline', margin: '5px 10px 0 0' }}
               />{' '}
               {'  '}
-              <span className="btn-save-text"> LƯU</span>
+              <span className="btn-save-text">Thêm phản hồi</span>
             </Button>
-          </Popconfirm>
+          ) : (
+            <Popconfirm
+              title="Bạn chắc chắn thay đổi？"
+              icon={<QuestionCircleOutlined />}
+              okText="Đồng ý"
+              cancelText="Huỷ"
+              onConfirm={() => this.handleSubmit()}
+            >
+              <Button className="btn-custom" color="primary" type="button">
+                <CheckCircleOutlined
+                  style={{ display: 'inline', margin: '5px 10px 0 0' }}
+                />{' '}
+                {'  '}
+                <span className="btn-save-text"> LƯU</span>
+              </Button>
+            </Popconfirm>
+          )}
         </CardFooter>
       </Form>
     );

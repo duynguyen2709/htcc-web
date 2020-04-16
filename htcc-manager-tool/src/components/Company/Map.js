@@ -1,17 +1,52 @@
 import React, { Component } from 'react';
 import GoogleMapReact from 'google-map-react';
 import { GOOGLE_MAP_API_KEY } from '../../constant/url';
+import { companyApi } from '../../api';
+import { store } from 'react-notifications-component';
+import { createNotify } from '../../utils/notifier';
+import * as _ from 'lodash';
 
-const AnyReactComponent = ({ text }) => <div>{text}</div>;
+const MarkerComponent = ({ text }) => (
+  <div style={{ color: '#f5222d', fontSize: 15 }}>{text}</div>
+);
 
 class CompanyMap extends Component {
-  static defaultProps = {
-    center: {
-      lat: 59.95,
-      lng: 30.33
-    },
-    zoom: 11
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: [],
+      center: {
+        lat: 0,
+        lng: 0
+      },
+      zoom: 2
+    };
+  }
+
+  componentDidMount() {
+    companyApi
+      .getAllOffices()
+      .then(res => {
+        if (res.returnCode === 1) {
+          const headquarter =
+            _.find(res.data, office => office.isHeadquarter) || {};
+
+          this.setState({
+            data: res.data,
+            center: {
+              lat: headquarter.latitude,
+              lng: headquarter.longitude
+            }
+          });
+          this.data = res.data;
+        } else {
+          store.addNotification(createNotify('danger', res.returnMessage));
+        }
+      })
+      .catch(err => {
+        store.addNotification(createNotify('danger', JSON.stringify(err)));
+      });
+  }
 
   render() {
     return (
@@ -19,10 +54,20 @@ class CompanyMap extends Component {
       <div style={{ height: '100vh', width: '100%' }}>
         <GoogleMapReact
           bootstrapURLKeys={{ key: GOOGLE_MAP_API_KEY }}
-          defaultCenter={this.props.center}
-          defaultZoom={this.props.zoom}
+          defaultCenter={this.state.center}
+          defaultZoom={this.state.zoom}
+          key={this.state.center}
         >
-          <AnyReactComponent lat={59.955413} lng={30.337844} text="My Marker" />
+          {_.map(this.state.data, (office, index) => {
+            return (
+              <MarkerComponent
+                key={index}
+                lat={office.latitude}
+                lng={office.longitude}
+                text={office.officeName}
+              />
+            );
+          })}
         </GoogleMapReact>
       </div>
     );

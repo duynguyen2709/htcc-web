@@ -91,7 +91,6 @@ class LeaveRequest extends Component {
         }
       })
       .catch(err => {
-        debugger;
         store.addNotification(createNotify('danger', JSON.stringify(err)));
       });
   };
@@ -131,7 +130,7 @@ class LeaveRequest extends Component {
             <div className="float-left">
               <Search
                 className="form-control bor-radius"
-                placeholder="Tìm kiếm"
+                placeholder="Tìm kiếm nhanh"
                 style={{ width: 300 }}
                 onChange={this.onSearch}
               />
@@ -156,11 +155,14 @@ class LeaveRequest extends Component {
               <div className="table-edit">
                 <div className="table-small table-complaint">
                   <Table
-                    pagination={{ pageSize: 6 }}
                     columns={buildColsLeaveRequest(this.handleEditStatus)}
                     dataSource={dataNotResolve}
                     scroll={{ x: 1300, y: 'calc(100vh - 350px)' }}
                     loading={dataResolved === null}
+                    pagination={{
+                      hideOnSinglePage: true,
+                      pageSize: 6
+                    }}
                   />
                 </div>
               </div>
@@ -177,7 +179,6 @@ class LeaveRequest extends Component {
               <div className="table-edit">
                 <div className="table-small table-complaint">
                   <Table
-                    pagination={{ pageSize: 6 }}
                     columns={buildColsLeaveRequest(this.handleEditStatus, [
                       {
                         title: 'Người duyệt',
@@ -193,6 +194,10 @@ class LeaveRequest extends Component {
                     dataSource={dataResolved}
                     scroll={{ x: 1300, y: 'calc(100vh - 355px)' }}
                     loading={dataResolved === null}
+                    pagination={{
+                      hideOnSinglePage: true,
+                      pageSize: 6
+                    }}
                   />
                 </div>
               </div>

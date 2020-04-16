@@ -24,7 +24,8 @@ class Complaint extends Component {
       curRecordEdit: null,
       currDate: moment(new Date()).format('YYYYMM'),
       isLoading: true,
-      currTab: 'NotResolve'
+      currTab: 'NotResolve',
+      onlyView: false
     };
     this.dataResolved = [];
     this.dataNotResolve = [];
@@ -44,10 +45,11 @@ class Complaint extends Component {
     });
   };
 
-  handleEditStatus = record => {
+  handleEditStatus = (record, onlyView = false) => {
     this.setState({
       showFormEdit: true,
-      curRecordEdit: record
+      curRecordEdit: record,
+      onlyView: onlyView
     });
   };
 
@@ -91,7 +93,6 @@ class Complaint extends Component {
         }
       })
       .catch(err => {
-        debugger;
         store.addNotification(createNotify('danger', JSON.stringify(err)));
       });
   };
@@ -121,7 +122,8 @@ class Complaint extends Component {
       dataNotResolve,
       showFormEdit,
       curRecordEdit,
-      currDate
+      currDate,
+      onlyView
     } = this.state;
 
     return (
@@ -131,7 +133,7 @@ class Complaint extends Component {
             <div className="float-left">
               <Search
                 className="form-control bor-radius"
-                placeholder="Tìm kiếm"
+                placeholder="Tìm kiếm nhanh"
                 style={{ width: 300 }}
                 onChange={this.onSearch}
               />
@@ -156,11 +158,14 @@ class Complaint extends Component {
               <div className="table-edit">
                 <div className="table-small table-complaint">
                   <Table
-                    pagination={{ pageSize: 6 }}
                     columns={buildColsComplaint(this.handleEditStatus)}
                     dataSource={dataNotResolve}
                     scroll={{ x: 1300, y: 'calc(100vh - 350px)' }}
                     loading={dataResolved === null}
+                    pagination={{
+                      hideOnSinglePage: true,
+                      pageSize: 6
+                    }}
                   />
                 </div>
               </div>
@@ -177,17 +182,14 @@ class Complaint extends Component {
               <div className="table-edit">
                 <div className="table-small table-complaint">
                   <Table
-                    pagination={{ pageSize: 6 }}
-                    columns={buildColsComplaint(this.handleEditStatus, [
-                      {
-                        title: 'Phản hồi',
-                        dataIndex: 'response',
-                        width: '200px'
-                      }
-                    ])}
+                    columns={buildColsComplaint(this.handleEditStatus)}
                     dataSource={dataResolved}
                     scroll={{ x: 1300, y: 'calc(100vh - 355px)' }}
                     loading={dataResolved === null}
+                    pagination={{
+                      hideOnSinglePage: true,
+                      pageSize: 6
+                    }}
                   />
                 </div>
               </div>
@@ -198,11 +200,12 @@ class Complaint extends Component {
               CompomentContent={FormEditStatusComplaint}
               visible={showFormEdit}
               toggle={this.toggle}
-              title={'Cập nhật trạng thái khiếu nại'}
+              title={'Thông tin khiếu nại'}
               data={curRecordEdit}
               mode={'edit'}
               currDate={currDate}
               key={curRecordEdit}
+              onlyView={onlyView}
             />
           </div>
         </div>

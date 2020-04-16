@@ -26,8 +26,6 @@ const getList = month => {
 const updateStatus = data => {
   const token = localStorage.getItem(TOKEN);
 
-  console.log('token', token);
-
   return new Promise((resolve, reject) => {
     axios({
       method: 'put',

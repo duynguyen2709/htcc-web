@@ -4,7 +4,8 @@ import {
   EditOutlined,
   CheckCircleTwoTone,
   CloseCircleTwoTone,
-  BarsOutlined
+  BarsOutlined,
+  DeleteTwoTone
 } from '@ant-design/icons';
 import LightboxImages from '../components/Tool/LightboxImages';
 import * as _ from 'lodash';
@@ -61,6 +62,19 @@ export const columnsEmployee = [
   }
 ];
 
+export const columnsHistoryResponse = [
+  {
+    title: 'Nội dung',
+    dataIndex: 'content',
+    width: '100px'
+  },
+  {
+    title: 'Phải hồi',
+    dataIndex: 'response',
+    width: '100px'
+  }
+];
+
 export const buildColsComplaint = (funcEdit, cols = []) => {
   return [
     {
@@ -96,7 +110,22 @@ export const buildColsComplaint = (funcEdit, cols = []) => {
     {
       title: 'Nội dung',
       dataIndex: 'content',
-      width: '200px'
+      width: '200px',
+      render: (o, record) => {
+        if (_.size(record.content) < 2) {
+          return record.content;
+        }
+
+        return (
+          <Popover
+            content={renderListContent(record.content)}
+            title={`Danh sách nội dung đã khiếu nại`}
+            trigger="hover"
+          >
+            <BarsOutlined style={{ color: '#40a9ff' }} />
+          </Popover>
+        );
+      }
     },
     {
       title: 'Hình ảnh',
@@ -111,6 +140,23 @@ export const buildColsComplaint = (funcEdit, cols = []) => {
       }
     },
     ...cols,
+    {
+      title: 'Phản hồi',
+      dataIndex: 'response',
+      width: '120px',
+      render: (o, record) => {
+        if (_.size(record.response) > 2) {
+          return (
+            <Tooltip placement="top" title={'Xem chi tiết'}>
+              <BarsOutlined
+                style={{ color: '#40a9ff' }}
+                onClick={() => funcEdit(record, true)}
+              />
+            </Tooltip>
+          );
+        }
+      }
+    },
     {
       title: 'Trạng thái',
       dataIndex: 'status',
@@ -209,7 +255,7 @@ export const buildColsLeaveRequest = (funcEdit, cols = []) => {
 
         return (
           <Tooltip placement="top" title={'Không dùng phép'}>
-            <CloseCircleTwoTone twoToneColor="#ff7875" />;
+            <CloseCircleTwoTone twoToneColor="#ff7875" />
           </Tooltip>
         );
       }
@@ -277,3 +323,108 @@ const renderListDetail = (list = []) => {
 
   return <ul style={{ padding: 15 }}>{listDetail}</ul>;
 };
+
+const renderListContent = (list = []) => {
+  const listContent = _.map(list, (item, index) => {
+    return (
+      <li
+        style={{ maxWidth: 200 }}
+        className="text-dark"
+        key={index}
+      >{`${item}`}</li>
+    );
+  });
+
+  return <ul style={{ padding: 15 }}>{listContent}</ul>;
+};
+
+export const buildColsBranch = (funcEdit, funcDelete, cols = []) => [
+  {
+    title: 'Mã chi nhánh',
+    dataIndex: 'officeId',
+    fixed: 'left',
+    width: '150px'
+  },
+  {
+    title: 'Tên chi nhánh',
+    dataIndex: 'officeName',
+    width: '200px'
+  },
+  {
+    title: 'Email',
+    dataIndex: 'email',
+    width: '350px'
+  },
+  {
+    title: 'address',
+    dataIndex: 'address',
+    width: '250px'
+  },
+  {
+    title: 'Khoảng cách tối đa (m)',
+    dataIndex: 'maxAllowDistance',
+    width: '250px'
+  },
+  {
+    title: 'Vĩ độ',
+    dataIndex: 'latitude',
+    width: '250px'
+  },
+  {
+    title: 'Kinh độ',
+    dataIndex: 'longitude',
+    width: '250px'
+  },
+  ...cols,
+  {
+    title: 'Trụ sở chính',
+    dataIndex: 'isHeadquarter',
+    width: '200px',
+    render: (o, record) => {
+      if (record.isHeadquarter) {
+        return <CheckCircleTwoTone twoToneColor="#52c41a" />;
+      }
+
+      return <CloseCircleTwoTone twoToneColor="#ff7875" />;
+    }
+  },
+  {
+    title: 'Wifi',
+    dataIndex: 'forceUseWifi',
+    width: '200px',
+    render: (o, record) => {
+      if (record.forceUseWifi) {
+        return <CheckCircleTwoTone twoToneColor="#52c41a" />;
+      }
+
+      return <CloseCircleTwoTone twoToneColor="#ff7875" />;
+    }
+  },
+  {
+    title: 'Hành động',
+    width: '110px',
+    fixed: 'right',
+    render: (o, record) => {
+      return (
+        <React.Fragment>
+          <EditOutlined
+            style={{
+              color: '#52c41a',
+              fontSize: '23px',
+              float: 'left'
+            }}
+            onClick={() => funcEdit(record)}
+          />
+          <DeleteTwoTone
+            twoToneColor="#ff7875"
+            style={{
+              fontSize: '23px',
+              float: 'right'
+            }}
+            onClick={() => funcDelete(record)}
+          />
+        </React.Fragment>
+      );
+    }
+  }
+];

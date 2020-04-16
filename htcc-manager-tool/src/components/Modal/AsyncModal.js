@@ -8,15 +8,19 @@ class AsyncModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading: false,
+      loading: false
     };
   }
 
-  handleOk = () => {
+  handleOk = (submit = true) => {
+    const { reload = true } = this.props;
     this.setState({ loading: false });
-    this.props.toggle(true);
+    this.props.toggle(submit);
     store.addNotification(createNotify('default', 'Thao tác thành công !'));
-    window.location.reload();
+
+    if (reload) {
+      window.location.reload();
+    }
   };
 
   handleCancel = () => {
@@ -29,10 +33,12 @@ class AsyncModal extends React.Component {
       CompomentContent = null,
       visible,
       title,
-      data = [],
-      editURL,
+      data = {},
       currDate,
+      mode,
+      onlyView = false
     } = this.props;
+
     return (
       <Modal
         visible={visible}
@@ -43,11 +49,12 @@ class AsyncModal extends React.Component {
       >
         {loading && <SubmitLoader />}
         <CompomentContent
-          editURL={editURL}
           data={data}
           onSubmit={this.handleOk}
           currDate={currDate}
           loading={() => this.setState({ loading: true })}
+          mode={mode}
+          onlyView={onlyView}
         />
       </Modal>
     );
