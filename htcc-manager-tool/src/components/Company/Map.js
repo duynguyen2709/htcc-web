@@ -7,7 +7,10 @@ import { createNotify } from '../../utils/notifier';
 import * as _ from 'lodash';
 
 const MarkerComponent = ({ text }) => (
-  <div style={{ color: '#f5222d', fontSize: 15 }}>{text}</div>
+  <div className="container-marker">
+    <div className="marker"></div>
+    <strong className="text">{text}</strong>
+  </div>
 );
 
 class CompanyMap extends Component {
@@ -19,7 +22,7 @@ class CompanyMap extends Component {
         lat: 0,
         lng: 0,
       },
-      zoom: 2,
+      zoom: 9,
     };
   }
 
