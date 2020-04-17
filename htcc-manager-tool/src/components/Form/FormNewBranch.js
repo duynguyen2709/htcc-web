@@ -7,7 +7,7 @@ import {
   Form,
   Input,
   Row,
-  Col
+  Col,
 } from 'reactstrap';
 import * as _ from 'lodash';
 import { store } from 'react-notifications-component';
@@ -15,7 +15,7 @@ import { createNotify } from '../../utils/notifier';
 import {
   checkValidEmail,
   checkValidPhoneNumber,
-  checkValidNumber
+  checkValidNumber,
 } from '../../utils/validate';
 import { CheckCircleOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import { Select, Popconfirm } from 'antd';
@@ -30,12 +30,23 @@ const INITFORM = {
   address: '',
   forceUseWifi: false,
   isHeadquarter: false,
-  latitude: null,
-  longitude: null,
-  maxAllowDistance: null,
+  latitude: 0,
+  longitude: 0,
+  maxAllowDistance: 10,
   officeName: '',
   allowWifiIP: '',
-  officeId: ''
+  officeId: '',
+};
+
+const RESET_TOUCH = {
+  email: false,
+  phoneNumber: false,
+  address: false,
+  latitude: false,
+  longitude: false,
+  maxAllowDistance: false,
+  officeName: false,
+  officeId: false,
 };
 
 class FormNewBranch extends React.Component {
@@ -51,7 +62,7 @@ class FormNewBranch extends React.Component {
         longitude: 'Kinh độ là số thực',
         maxAllowDistance: 'Khoảng cách là số lớn hơn 0',
         officeName: 'Tên chi nhánh không được rỗng',
-        officeId: 'Mã chi nhánh không được rỗng'
+        officeId: 'Mã chi nhánh không được rỗng',
       },
       touch: {
         email: false,
@@ -61,8 +72,8 @@ class FormNewBranch extends React.Component {
         longitude: false,
         maxAllowDistance: false,
         officeName: false,
-        officeId: false
-      }
+        officeId: false,
+      },
     };
   }
 
@@ -70,11 +81,11 @@ class FormNewBranch extends React.Component {
     const user = JSON.parse(localStorage.getItem(USER));
     this.setState({
       value: {
-        ...this.state,
+        ...this.state.value,
         companyId: user.companyId,
         isHeadquarter: false,
-        forceUseWifi: false
-      }
+        forceUseWifi: false,
+      },
     });
   }
 
@@ -87,7 +98,7 @@ class FormNewBranch extends React.Component {
       latitude,
       longitude,
       officeName,
-      officeId
+      officeId,
     } = this.state.value;
 
     return (
@@ -102,7 +113,7 @@ class FormNewBranch extends React.Component {
     );
   };
 
-  handleOnChange = e => {
+  handleOnChange = (e) => {
     const { value: valueInput, name } = e.target;
     let { value, touch } = this.state;
 
@@ -110,34 +121,35 @@ class FormNewBranch extends React.Component {
     touch[name] = true;
     this.setState({
       value: { ...value },
-      touch: { ...touch }
+      touch: { ...touch },
     });
   };
 
   clear = () => {
     this.setState({
-      value: { ...INITFORM }
+      value: { ...INITFORM },
+      touch: { ...RESET_TOUCH },
     });
   };
 
-  handleSubmit = e => {
+  handleSubmit = (e) => {
     if (this.checkValidDataInput()) {
       const { value } = this.state;
 
       this.props.loading();
       companyApi
         .createBranch(value)
-        .then(res => {
+        .then((res) => {
           if (res.returnCode === 1) {
-            this.props.onSubmit(true);
             this.clear();
+            this.props.onSubmit(true);
           } else {
-            this.props.loading();
+            this.props.stopLoading();
             store.addNotification(createNotify('danger', res.returnMessage));
           }
         })
-        .catch(err => {
-          this.props.loading();
+        .catch((err) => {
+          this.props.stopLoading();
           store.addNotification(createNotify('danger', JSON.stringify(err)));
         });
     } else {
@@ -150,28 +162,28 @@ class FormNewBranch extends React.Component {
           longitude: true,
           maxAllowDistance: true,
           officeName: true,
-          officeId: true
-        }
+          officeId: true,
+        },
       });
       store.addNotification(createNotify('warning', 'Thông tin chưa hợp lệ !'));
     }
   };
 
-  handleChangeHeadquarter = value => {
+  handleChangeHeadquarter = (value) => {
     this.setState({
       value: {
         ...this.state.value,
-        isHeadquarter: value
-      }
+        isHeadquarter: value,
+      },
     });
   };
 
-  handleChangeforceUseWifi = value => {
+  handleChangeforceUseWifi = (value) => {
     this.setState({
       value: {
         ...this.state.value,
-        forceUseWifi: value
-      }
+        forceUseWifi: value,
+      },
     });
   };
 
@@ -286,10 +298,7 @@ class FormNewBranch extends React.Component {
                 onChange={this.handleOnChange}
                 name="maxAllowDistance"
                 value={value.maxAllowDistance}
-                invalid={
-                  touch.maxAllowDistance &&
-                  !checkValidNumber(value.maxAllowDistance)
-                }
+                invalid={touch.maxAllowDistance && value.maxAllowDistance <= 0}
               />
               <FormFeedback invalid={'true'}>
                 {messageInvalid.maxAllowDistance}
@@ -341,7 +350,7 @@ class FormNewBranch extends React.Component {
                 style={{ width: '100%' }}
                 className="bor-radius"
                 defaultValue={false}
-                onChange={val => this.handleChangeHeadquarter(val)}
+                onChange={(val) => this.handleChangeHeadquarter(val)}
                 onCancel={() => this.clear()}
                 value={value.isHeadquarter}
               >
@@ -363,7 +372,7 @@ class FormNewBranch extends React.Component {
                 style={{ width: '100%' }}
                 className="bor-radius"
                 defaultValue={false}
-                onChange={val => this.handleChangeforceUseWifi(val)}
+                onChange={(val) => this.handleChangeforceUseWifi(val)}
                 onCancel={() => this.clear()}
                 value={value.forceUseWifi}
               >

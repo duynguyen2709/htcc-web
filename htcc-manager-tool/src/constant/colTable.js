@@ -1,11 +1,12 @@
 import React from 'react';
-import { Tag, Popover, Tooltip } from 'antd';
+import { Tag, Popover, Tooltip, Popconfirm } from 'antd';
 import {
   EditOutlined,
   CheckCircleTwoTone,
   CloseCircleTwoTone,
   BarsOutlined,
-  DeleteTwoTone
+  DeleteTwoTone,
+  QuestionCircleOutlined,
 } from '@ant-design/icons';
 import LightboxImages from '../components/Tool/LightboxImages';
 import * as _ from 'lodash';
@@ -16,63 +17,63 @@ export const columnsEmployee = [
     dataIndex: 'employeeId',
     editable: false,
     fixed: 'left',
-    width: '150px'
+    width: '150px',
   },
   {
     title: 'Username',
     dataIndex: 'username',
     editable: true,
-    width: '200px'
+    width: '200px',
   },
   {
     title: 'Ngày sinh',
     dataIndex: 'birthDate',
     editable: true,
-    width: '200px'
+    width: '200px',
   },
   {
     title: 'Email',
     dataIndex: 'email',
     editable: true,
-    width: '350px'
+    width: '350px',
   },
   {
     title: 'CMND',
     dataIndex: 'identityCardNo',
     editable: true,
-    width: '150px'
+    width: '150px',
   },
   {
     title: 'Chi nhánh',
     dataIndex: 'officeId',
     editable: true,
-    width: '150px'
+    width: '150px',
   },
   {
     title: 'Phòng ban',
     dataIndex: 'department',
     editable: true,
-    width: '150px'
+    width: '150px',
   },
   {
     title: 'address',
     dataIndex: 'address',
     editable: true,
-    width: '250px'
-  }
+    width: '250px',
+  },
 ];
 
 export const columnsHistoryResponse = [
   {
     title: 'Nội dung',
     dataIndex: 'content',
-    width: '100px'
+    width: '100px',
   },
   {
     title: 'Phải hồi',
     dataIndex: 'response',
-    width: '100px'
-  }
+    width: '100px',
+  },
 ];
 
 export const buildColsComplaint = (funcEdit, cols = []) => {
@@ -81,31 +82,31 @@ export const buildColsComplaint = (funcEdit, cols = []) => {
       title: 'ID',
       dataIndex: 'complaintId',
       fixed: 'left',
-      width: '150px'
+      width: '150px',
     },
     {
       title: 'Người gửi',
       dataIndex: 'sender',
-      width: '150px'
+      width: '150px',
     },
     {
       title: 'Danh mục',
       dataIndex: 'category',
       width: '150px',
       defaultSortOrder: 'descend',
-      sorter: (a, b) => a.category.localeCompare(b.category)
+      sorter: (a, b) => a.category.localeCompare(b.category),
     },
     {
       title: 'Ngày',
       dataIndex: 'date',
       width: '150px',
       defaultSortOrder: 'descend',
-      sorter: (a, b) => a.date.localeCompare(b.date)
+      sorter: (a, b) => a.date.localeCompare(b.date),
     },
     {
       title: 'Thời gian',
       dataIndex: 'time',
-      width: '100px'
+      width: '100px',
     },
     {
       title: 'Nội dung',
@@ -125,7 +126,7 @@ export const buildColsComplaint = (funcEdit, cols = []) => {
             <BarsOutlined style={{ color: '#40a9ff' }} />
           </Popover>
         );
-      }
+      },
     },
     {
       title: 'Hình ảnh',
@@ -137,7 +138,7 @@ export const buildColsComplaint = (funcEdit, cols = []) => {
             <LightboxImages imageSource={record.images} />
           </React.Fragment>
         );
-      }
+      },
     },
     ...cols,
     {
@@ -155,7 +156,7 @@ export const buildColsComplaint = (funcEdit, cols = []) => {
             </Tooltip>
           );
         }
-      }
+      },
     },
     {
       title: 'Trạng thái',
@@ -175,7 +176,7 @@ export const buildColsComplaint = (funcEdit, cols = []) => {
                   style={{
                     color: '#52c41a',
                     fontSize: '23px',
-                    float: 'left'
+                    float: 'left',
                   }}
                   className="float-right"
                   onClick={() => funcEdit(record)}
@@ -187,8 +188,8 @@ export const buildColsComplaint = (funcEdit, cols = []) => {
           default:
             return <Tag color="default">Từ chối</Tag>;
         }
-      }
-    }
+      },
+    },
   ];
 };
 
@@ -198,47 +199,47 @@ export const buildColsLeaveRequest = (funcEdit, cols = []) => {
       title: 'ID',
       dataIndex: 'leavingRequestId',
       fixed: 'left',
-      width: '150px'
+      width: '150px',
     },
     {
       title: 'Người gửi',
       dataIndex: 'sender',
-      width: '150px'
+      width: '150px',
     },
     {
       title: 'Danh mục',
       dataIndex: 'category',
       width: '150px',
       defaultSortOrder: 'descend',
-      sorter: (a, b) => a.category.localeCompare(b.category)
+      sorter: (a, b) => a.category.localeCompare(b.category),
     },
     {
       title: 'Lý do',
       dataIndex: 'reason',
       width: '150px',
       defaultSortOrder: 'descend',
-      sorter: (a, b) => a.reason.localeCompare(b.reason)
+      sorter: (a, b) => a.reason.localeCompare(b.reason),
     },
     {
       title: 'Ngày gửi',
       dataIndex: 'dateSubmit',
       width: '150px',
       defaultSortOrder: 'descend',
-      sorter: (a, b) => a.dateSubmit.localeCompare(b.dateSubmit)
+      sorter: (a, b) => a.dateSubmit.localeCompare(b.dateSubmit),
     },
     {
       title: 'Ngày bắt đầu',
       dataIndex: 'dateFrom',
       width: '150px',
       defaultSortOrder: 'descend',
-      sorter: (a, b) => a.dateFrom.localeCompare(b.dateFrom)
+      sorter: (a, b) => a.dateFrom.localeCompare(b.dateFrom),
     },
     {
       title: 'Ngày kết thúc',
       dataIndex: 'dateTo',
       width: '150px',
       defaultSortOrder: 'descend',
-      sorter: (a, b) => a.dateTo.localeCompare(b.dateTo)
+      sorter: (a, b) => a.dateTo.localeCompare(b.dateTo),
     },
     {
       title: 'Dùng ngày phép',
@@ -258,7 +259,7 @@ export const buildColsLeaveRequest = (funcEdit, cols = []) => {
             <CloseCircleTwoTone twoToneColor="#ff7875" />
           </Tooltip>
         );
-      }
+      },
     },
     {
       title: 'Chi tiết',
@@ -274,7 +275,7 @@ export const buildColsLeaveRequest = (funcEdit, cols = []) => {
             <BarsOutlined style={{ color: '#40a9ff' }} />
           </Popover>
         );
-      }
+      },
     },
     ...cols,
     {
@@ -295,7 +296,7 @@ export const buildColsLeaveRequest = (funcEdit, cols = []) => {
                   style={{
                     color: '#52c41a',
                     fontSize: '23px',
-                    float: 'left'
+                    float: 'left',
                   }}
                   className="float-right"
                   onClick={() => funcEdit(record)}
@@ -307,8 +308,8 @@ export const buildColsLeaveRequest = (funcEdit, cols = []) => {
           default:
             return <Tag color="default">Từ chối</Tag>;
         }
-      }
-    }
+      },
+    },
   ];
 };
 
@@ -343,62 +344,67 @@ export const buildColsBranch = (funcEdit, funcDelete, cols = []) => [
     title: 'Mã chi nhánh',
     dataIndex: 'officeId',
     fixed: 'left',
-    width: '150px'
+    width: '150px',
   },
   {
     title: 'Tên chi nhánh',
     dataIndex: 'officeName',
-    width: '200px'
+    width: '200px',
   },
   {
     title: 'Email',
     dataIndex: 'email',
-    width: '350px'
+    width: '350px',
   },
   {
     title: 'address',
     dataIndex: 'address',
-    width: '250px'
+    width: '250px',
   },
   {
     title: 'Khoảng cách tối đa (m)',
     dataIndex: 'maxAllowDistance',
-    width: '250px'
+    width: '250px',
   },
   {
     title: 'Vĩ độ',
     dataIndex: 'latitude',
-    width: '250px'
+    width: '250px',
   },
   {
     title: 'Kinh độ',
     dataIndex: 'longitude',
-    width: '250px'
+    width: '250px',
   },
   ...cols,
   {
     title: 'Trụ sở chính',
     dataIndex: 'isHeadquarter',
-    width: '200px',
+    width: '150px',
     render: (o, record) => {
       if (record.isHeadquarter) {
         return <CheckCircleTwoTone twoToneColor="#52c41a" />;
       }
 
       return <CloseCircleTwoTone twoToneColor="#ff7875" />;
-    }
+    },
   },
   {
     title: 'Wifi',
     dataIndex: 'forceUseWifi',
-    width: '200px',
+    width: '100px',
     render: (o, record) => {
       if (record.forceUseWifi) {
         return <CheckCircleTwoTone twoToneColor="#52c41a" />;
       }
 
       return <CloseCircleTwoTone twoToneColor="#ff7875" />;
-    }
+    },
+  },
+  {
+    title: 'IP subnet',
+    dataIndex: 'allowWifiIP',
+    width: '200px',
   },
   {
     title: 'Hành động',
@@ -411,20 +417,27 @@ export const buildColsBranch = (funcEdit, funcDelete, cols = []) => [
             style={{
               color: '#52c41a',
               fontSize: '23px',
-              float: 'left'
+              float: 'left',
             }}
             onClick={() => funcEdit(record)}
           />
-          <DeleteTwoTone
-            twoToneColor="#ff7875"
-            style={{
-              fontSize: '23px',
-              float: 'right'
-            }}
-            onClick={() => funcDelete(record)}
-          />
+          <Popconfirm
+            title="Bạn chắc chắn muốn xoá？"
+            icon={<QuestionCircleOutlined />}
+            okText="Đồng ý"
+            cancelText="Huỷ"
+            onConfirm={() => funcDelete(record)}
+          >
+            <DeleteTwoTone
+              twoToneColor="#ff7875"
+              style={{
+                fontSize: '23px',
+                float: 'right',
+              }}
+            />
+          </Popconfirm>
         </React.Fragment>
       );
-    }
-  }
+    },
+  },
 ];

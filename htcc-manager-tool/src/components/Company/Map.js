@@ -17,33 +17,33 @@ class CompanyMap extends Component {
       data: [],
       center: {
         lat: 0,
-        lng: 0
+        lng: 0,
       },
-      zoom: 2
+      zoom: 2,
     };
   }
 
   componentDidMount() {
     companyApi
       .getAllOffices()
-      .then(res => {
+      .then((res) => {
         if (res.returnCode === 1) {
           const headquarter =
-            _.find(res.data, office => office.isHeadquarter) || {};
-
+            _.find(res.data, (office) => office.isHeadquarter) || {};
+          console.log('headquarter', headquarter);
           this.setState({
             data: res.data,
             center: {
               lat: headquarter.latitude,
-              lng: headquarter.longitude
-            }
+              lng: headquarter.longitude,
+            },
           });
           this.data = res.data;
         } else {
           store.addNotification(createNotify('danger', res.returnMessage));
         }
       })
-      .catch(err => {
+      .catch((err) => {
         store.addNotification(createNotify('danger', JSON.stringify(err)));
       });
   }
@@ -54,9 +54,8 @@ class CompanyMap extends Component {
       <div style={{ height: '100vh', width: '100%' }}>
         <GoogleMapReact
           bootstrapURLKeys={{ key: GOOGLE_MAP_API_KEY }}
-          defaultCenter={this.state.center}
           defaultZoom={this.state.zoom}
-          key={this.state.center}
+          center={this.state.center}
         >
           {_.map(this.state.data, (office, index) => {
             return (

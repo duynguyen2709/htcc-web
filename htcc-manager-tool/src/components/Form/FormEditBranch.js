@@ -7,7 +7,7 @@ import {
   Form,
   Input,
   Row,
-  Col
+  Col,
 } from 'reactstrap';
 import * as _ from 'lodash';
 import { store } from 'react-notifications-component';
@@ -15,7 +15,7 @@ import { createNotify } from '../../utils/notifier';
 import {
   checkValidEmail,
   checkValidPhoneNumber,
-  checkValidNumber
+  checkValidNumber,
 } from '../../utils/validate';
 import { CheckCircleOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import { Select, Popconfirm } from 'antd';
@@ -34,7 +34,7 @@ const INITFORM = {
   maxAllowDistance: null,
   officeName: '',
   allowWifiIP: '',
-  officeId: ''
+  officeId: '',
 };
 
 class FormAddNewBranch extends React.Component {
@@ -50,16 +50,16 @@ class FormAddNewBranch extends React.Component {
         longitude: 'Kinh độ là số thực',
         maxAllowDistance: 'Khoảng cách là số lớn hơn 0',
         officeId: 'Mã chi nhánh không được rỗng',
-        officeName: 'Mã chi nhánh không được rỗng'
-      }
+        officeName: 'Mã chi nhánh không được rỗng',
+      },
     };
   }
 
   componentDidMount() {
     this.setState({
       value: {
-        ...this.props.data
-      }
+        ...this.props.data,
+      },
     });
   }
 
@@ -72,7 +72,7 @@ class FormAddNewBranch extends React.Component {
       latitude,
       longitude,
       officeName,
-      officeId
+      officeId,
     } = this.state.value;
 
     return (
@@ -87,64 +87,66 @@ class FormAddNewBranch extends React.Component {
     );
   };
 
-  handleOnChange = e => {
+  handleOnChange = (e) => {
     const { value: valueInput, name } = e.target;
     let { value } = this.state;
 
     value[name] = valueInput;
 
     this.setState({
-      value: { ...value }
+      value: { ...value },
     });
   };
 
   clear = () => {
     this.setState({
-      value: { ...INITFORM }
+      value: { ...INITFORM },
     });
   };
 
-  handleSubmit = e => {
+  handleSubmit = (e) => {
     if (this.checkValidDataInput()) {
       const { value } = this.state;
 
       this.props.loading();
       companyApi
         .updateInfoBranch(value)
-        .then(res => {
+        .then((res) => {
           if (res.returnCode === 1) {
             this.props.onSubmit(true);
             this.clear();
           } else {
-            this.props.loading();
+            this.props.stopLoading();
+
             store.addNotification(createNotify('danger', res.returnMessage));
           }
         })
-        .catch(err => {
-          this.props.loading();
+        .catch((err) => {
+          this.props.stopLoading();
+
           store.addNotification(createNotify('danger', JSON.stringify(err)));
         });
     } else {
-      this.props.loading();
+      this.props.stopLoading();
       store.addNotification(createNotify('warning', 'Thông tin chưa hợp lệ !'));
     }
   };
 
-  handleChangeHeadquarter = value => {
+  handleChangeHeadquarter = (value) => {
     this.setState({
       value: {
         ...this.state.value,
-        isHeadquarter: value
-      }
+        isHeadquarter: value,
+      },
     });
   };
 
-  handleChangeforceUseWifi = value => {
+  handleChangeforceUseWifi = (value) => {
     this.setState({
       value: {
         ...this.state.value,
-        forceUseWifi: value
-      }
+        forceUseWifi: value,
+      },
     });
   };
 
@@ -184,6 +186,7 @@ class FormAddNewBranch extends React.Component {
                 name="officeId"
                 value={value.officeId}
                 invalid={_.isEmpty(value.officeId)}
+                disabled
               />
               <FormFeedback invalid={'true'}>
                 {messageInvalid.officeId}
@@ -309,7 +312,7 @@ class FormAddNewBranch extends React.Component {
                 style={{ width: '100%' }}
                 className="bor-radius"
                 defaultValue={false}
-                onChange={val => this.handleChangeHeadquarter(val)}
+                onChange={(val) => this.handleChangeHeadquarter(val)}
                 onCancel={() => this.clear()}
                 value={value.isHeadquarter}
               >
@@ -331,7 +334,7 @@ class FormAddNewBranch extends React.Component {
                 style={{ width: '100%' }}
                 className="bor-radius"
                 defaultValue={false}
-                onChange={val => this.handleChangeforceUseWifi(val)}
+                onChange={(val) => this.handleChangeforceUseWifi(val)}
                 onCancel={() => this.clear()}
                 value={value.forceUseWifi}
               >

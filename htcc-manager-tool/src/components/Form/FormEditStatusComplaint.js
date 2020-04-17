@@ -7,7 +7,7 @@ import { createNotify } from '../../utils/notifier';
 import {
   CheckCircleOutlined,
   EditOutlined,
-  QuestionCircleOutlined
+  QuestionCircleOutlined,
 } from '@ant-design/icons';
 import { DatePicker, Select, Input, Popconfirm, Table } from 'antd';
 import moment from 'moment';
@@ -24,19 +24,19 @@ class FormEditStatusComplaint extends React.Component {
         complaintId: null,
         response: null,
         status: 1,
-        yyyyMM: moment(new Date()).format('yyyyMM')
+        yyyyMM: moment(new Date()).format('yyyyMM'),
       },
       onlyView: props.onlyView,
-      response: []
+      response: [],
     };
   }
 
-  handleChangeStatus = value => {
+  handleChangeStatus = (value) => {
     this.setState({
       value: {
         ...this.state.value,
-        status: value
-      }
+        status: value,
+      },
     });
   };
 
@@ -47,7 +47,7 @@ class FormEditStatusComplaint extends React.Component {
         complaintId: data.complaintId,
         response: null,
         status: 1,
-        yyyyMM: currDate
+        yyyyMM: currDate,
       },
       response: [
         'nội dung',
@@ -60,23 +60,23 @@ class FormEditStatusComplaint extends React.Component {
         'phan hoi ne',
         'nội dung tiếp nè',
         'phan hoi ne',
-        'nội dung tiếp nè'
-      ] //data.response
+        'nội dung tiếp nè',
+      ], //data.response
     });
   }
 
-  handleOnChange = e => {
+  handleOnChange = (e) => {
     const { value: valueInput, name } = e.target;
     let { value } = this.state;
 
     value[name] = valueInput;
 
     this.setState({
-      value: { ...value }
+      value: { ...value },
     });
   };
 
-  handleSubmit = e => {
+  handleSubmit = (e) => {
     const { value, response } = this.state;
     if (!_.isEmpty(value.response)) {
       const data = _.cloneDeep(value);
@@ -87,35 +87,35 @@ class FormEditStatusComplaint extends React.Component {
       this.props.loading();
       complaintApi
         .updateStatus(data)
-        .then(res => {
+        .then((res) => {
           if (res.returnCode === 1) {
             this.props.onSubmit();
             this.clear();
           } else {
-            this.props.loading();
+            this.props.stopLoading();
             store.addNotification(createNotify('danger', res.returnMessage));
           }
         })
-        .catch(err => {
-          this.props.loading();
+        .catch((err) => {
+          this.props.stopLoading();
           store.addNotification(createNotify('danger', JSON.stringify(err)));
         });
     } else {
-      this.props.loading();
+      this.props.stopLoading();
       store.addNotification(
         createNotify('warning', 'Bạn chưa nhập thông tin phản hồi')
       );
     }
   };
 
-  handleChangeDate = date => {
+  handleChangeDate = (date) => {
     const { value } = this.state;
     if (!_.isEmpty(date)) {
       this.setState({
         value: {
           ...value,
-          yyyyMM: moment(date, 'YYYYMM')
-        }
+          yyyyMM: moment(date, 'YYYYMM'),
+        },
       });
     }
   };
@@ -124,18 +124,16 @@ class FormEditStatusComplaint extends React.Component {
     this.setState({
       value: {
         ...this.state.value,
-        response: null
-      }
+        response: null,
+      },
     });
   };
 
-  mapDataResponse = data => {
+  mapDataResponse = (data) => {
     const result = [];
     let k = -1;
 
     for (let i = 0; i < _.size(data); i += 1) {
-      debugger;
-
       if (i % 2 === 0) {
         k++;
         result.push({});
@@ -203,7 +201,7 @@ class FormEditStatusComplaint extends React.Component {
                 style={{ width: '100%' }}
                 className="bor-radius"
                 defaultValue={1}
-                onChange={val => this.handleChangeStatus(val)}
+                onChange={(val) => this.handleChangeStatus(val)}
                 onCancel={() => this.clear()}
               >
                 <Option className=" bor-radius" value={1}>
@@ -224,7 +222,7 @@ class FormEditStatusComplaint extends React.Component {
                 name="response"
                 className="form-control bor-radius text-dark"
                 value={value.response}
-                onChange={e => this.handleOnChange(e)}
+                onChange={(e) => this.handleOnChange(e)}
                 rows={4}
               />
             </FormGroup>
