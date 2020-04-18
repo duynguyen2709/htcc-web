@@ -12,11 +12,25 @@ import Branch from '../components/Company/Branch';
 const { TabPane } = Tabs;
 
 class CompanyInfo extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      updateMap: false,
+    };
+  }
+
+  changeTab = (key) => {
+    this.setState({
+      updateMap: key === 'map',
+    });
+  };
+
   render() {
     return (
       <div className="content">
         <div className="table-wrapper tabs-big">
-          <Tabs defaultActiveKey="info">
+          <Tabs defaultActiveKey="info" onChange={(key) => this.changeTab(key)}>
             <TabPane
               tab={
                 <span>
@@ -48,7 +62,7 @@ class CompanyInfo extends Component {
               }
               key="map"
             >
-              <Map />
+              <Map updateMap={this.state.updateMap} />
             </TabPane>
           </Tabs>
         </div>
