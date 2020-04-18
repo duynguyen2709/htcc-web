@@ -3,7 +3,7 @@ import { Tabs } from 'antd';
 import {
   BranchesOutlined,
   ProfileOutlined,
-  EnvironmentOutlined
+  EnvironmentOutlined,
 } from '@ant-design/icons';
 import Info from '../components/Company/Info';
 import Map from '../components/Company/Map';
@@ -16,18 +16,7 @@ class CompanyInfo extends Component {
     return (
       <div className="content">
         <div className="table-wrapper tabs-big">
-          <Tabs defaultActiveKey="branch">
-            <TabPane
-              tab={
-                <span>
-                  <BranchesOutlined />
-                  Chi Nhánh
-                </span>
-              }
-              key="branch"
-            >
-              <Branch />
-            </TabPane>
+          <Tabs defaultActiveKey="info">
             <TabPane
               tab={
                 <span>
@@ -38,6 +27,17 @@ class CompanyInfo extends Component {
               key="info"
             >
               <Info />
+            </TabPane>
+            <TabPane
+              tab={
+                <span>
+                  <BranchesOutlined />
+                  Chi Nhánh
+                </span>
+              }
+              key="branch"
+            >
+              <Branch />
             </TabPane>
             <TabPane
               tab={

@@ -8,7 +8,7 @@ class AsyncModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading: false
+      loading: false,
     };
   }
 
@@ -36,7 +36,7 @@ class AsyncModal extends React.Component {
       data = {},
       currDate,
       mode,
-      onlyView = false
+      onlyView = false,
     } = this.props;
 
     return (
@@ -53,6 +53,7 @@ class AsyncModal extends React.Component {
           onSubmit={this.handleOk}
           currDate={currDate}
           loading={() => this.setState({ loading: true })}
+          stopLoading={() => this.setState({ loading: false })}
           mode={mode}
           onlyView={onlyView}
         />

@@ -21,17 +21,17 @@ class FormEditStatusLeaveRequest extends React.Component {
         leavingRequestId: null,
         response: null,
         status: 1,
-        yyyyMM: moment(new Date()).format('yyyyMM')
-      }
+        yyyyMM: moment(new Date()).format('yyyyMM'),
+      },
     };
   }
 
-  handleChangeStatus = value => {
+  handleChangeStatus = (value) => {
     this.setState({
       value: {
         ...this.state.value,
-        status: value
-      }
+        status: value,
+      },
     });
   };
 
@@ -44,42 +44,42 @@ class FormEditStatusLeaveRequest extends React.Component {
         response: data.response,
         status: 1,
         yyyyMM: currDate,
-        approver: user.username
-      }
+        approver: user.username,
+      },
     });
   }
 
-  handleOnChange = e => {
+  handleOnChange = (e) => {
     const { value: valueInput, name } = e.target;
     let { value } = this.state;
 
     value[name] = valueInput;
 
     this.setState({
-      value: { ...value }
+      value: { ...value },
     });
   };
 
-  handleSubmit = e => {
+  handleSubmit = (e) => {
     if (!_.isEmpty(this.state.value.response)) {
       this.props.loading();
       leaveRequestApi
         .updateStatus(this.state.value)
-        .then(res => {
+        .then((res) => {
           if (res.returnCode === 1) {
             this.props.onSubmit();
             this.clear();
           } else {
-            this.props.loading();
+            this.props.stopLoading();
             store.addNotification(createNotify('danger', res.returnMessage));
           }
         })
-        .catch(err => {
-          this.props.loading();
+        .catch((err) => {
+          this.props.stopLoading();
           store.addNotification(createNotify('danger', JSON.stringify(err)));
         });
     } else {
-      this.props.loading();
+      this.props.stopLoading();
       store.addNotification(
         createNotify('warning', 'Bạn chưa nhập thông tin phản hồi')
       );
@@ -90,8 +90,8 @@ class FormEditStatusLeaveRequest extends React.Component {
     this.setState({
       value: {
         ...this.state.value,
-        response: null
-      }
+        response: null,
+      },
     });
   };
 
@@ -145,7 +145,7 @@ class FormEditStatusLeaveRequest extends React.Component {
                 style={{ width: '100%' }}
                 className="bor-radius"
                 defaultValue={1}
-                onChange={val => this.handleChangeStatus(val)}
+                onChange={(val) => this.handleChangeStatus(val)}
                 onCancel={() => this.clear()}
               >
                 <Option className=" bor-radius" value={1}>
@@ -166,7 +166,7 @@ class FormEditStatusLeaveRequest extends React.Component {
                 name="response"
                 className="form-control bor-radius text-dark"
                 value={value.response}
-                onChange={e => this.handleOnChange(e)}
+                onChange={(e) => this.handleOnChange(e)}
                 rows={4}
               />
             </FormGroup>
