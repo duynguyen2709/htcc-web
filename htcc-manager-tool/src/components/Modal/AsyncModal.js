@@ -30,10 +30,10 @@ class AsyncModal extends React.Component {
   render() {
     const { loading } = this.state;
     const {
-      CompomentContent = null,
+      CompomentContent,
       visible,
       title,
-      data = {},
+      data,
       currDate,
       mode,
       onlyView = false,

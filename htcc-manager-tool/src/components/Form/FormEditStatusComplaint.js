@@ -21,15 +21,15 @@ class FormEditStatusComplaint extends React.Component {
     super(props);
     this.state = {
       value: {
-        complaintId: null,
+        complaintId: this.props.data.complaintId,
         response: null,
         status: 1,
-        yyyyMM: moment(new Date()).format('yyyyMM'),
+        yyyyMM: this.props.currDate
       },
       onlyView: props.onlyView,
-      response: [],
-      content: [],
-      status: 2
+      response: this.props.data.response,
+      content: this.props.data.content,
+      status: this.props.data.status
     };
   }
 
@@ -41,21 +41,6 @@ class FormEditStatusComplaint extends React.Component {
       },
     });
   };
-
-  componentDidMount() {
-    const { data, currDate } = this.props;
-    this.setState({
-      value: {
-        complaintId: data.complaintId,
-        response: null,
-        status: 1,
-        yyyyMM: currDate,
-      },
-      response: data.response,
-      content: data.content,
-      data: data.status
-    });
-  }
 
   handleOnChange = (e) => {
     const { value: valueInput, name } = e.target;
