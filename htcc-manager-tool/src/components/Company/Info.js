@@ -20,6 +20,7 @@ import {
   QuestionCircleOutlined
 } from '@ant-design/icons';
 import { companyApi } from '../../api';
+import ReactLoading from "react-loading";
 
 class CompayInfo extends React.Component {
   constructor(props) {
@@ -37,7 +38,8 @@ class CompayInfo extends React.Component {
         address: 'Địa chỉ không được rỗng',
         phoneNumber: 'Số điện thoại không hợp lệ'
       },
-      readOnly: true
+      readOnly: true,
+      isLoading: true
     };
   }
 
@@ -62,7 +64,11 @@ class CompayInfo extends React.Component {
       })
       .catch(err => {
         store.addNotification(createNotify('danger', JSON.stringify(err)));
-      });
+      }).finally(() => {
+        this.setState({
+          isLoading: false
+        })
+    })
   }
 
   checkValidDataInput = () => {
@@ -138,7 +144,7 @@ class CompayInfo extends React.Component {
         >
           <EditOutlined style={{ display: 'inline', margin: '5px 10px 0 0' }} />{' '}
           {'  '}
-          <span className="btn-save-text"> Edit</span>
+          <span className="btn-save-text"> Chỉnh sửa</span>
         </Button>
       );
     }
@@ -169,7 +175,15 @@ class CompayInfo extends React.Component {
   };
 
   render() {
-    const { value, messageInvalid, readOnly } = this.state;
+    const { value, messageInvalid, readOnly, isLoading } = this.state;
+    if (isLoading) {
+      return <ReactLoading type={"spinningBubbles"}
+                           color={"#4caf50"}
+                           className={"center-div"}
+                           height={'10%'}
+                           width={'10%'}/>
+    }
+
     return (
       <Form className="form-company-info">
         <Row>

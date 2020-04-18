@@ -2,6 +2,7 @@ import React from 'react';
 import { Card, CardHeader, CardBody, CardText, Row, Col } from 'reactstrap';
 import { connect } from 'react-redux';
 import FormUserInfo from '../components/Form/FormUserInfo';
+import {ERROR_IMAGE} from "../constant/constant";
 
 class UserProfile extends React.Component {
   constructor(props) {
@@ -42,17 +43,17 @@ class UserProfile extends React.Component {
                   <div className="block block-two" />
                   <div className="block block-three" />
                   <div className="block block-four" />
-                  <a href="#pablo" onClick={e => e.preventDefault()}>
+                  <a href="#" onClick={e => e.preventDefault()}>
                     <img
                       alt="..."
                       className="avatar"
-                      src={user ? user.avatar : ''}
+                      src={user ? user.avatar : ERROR_IMAGE}
                     />
                     <h5 className="title text-dark">
                       {user ? user.fullName : ''}
                     </h5>
                   </a>
-                  <p className="description text-dark">{user.employeeId}</p>
+                  <p className="description text-dark">{user ? user.employeeId : ''}</p>
                 </div>
               </CardBody>
             </Card>

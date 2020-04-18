@@ -21,7 +21,7 @@ class CompanyInfo extends Component {
               tab={
                 <span>
                   <ProfileOutlined />
-                  Thông tin Cty
+                  Thông tin Công ty
                 </span>
               }
               key="info"

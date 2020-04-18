@@ -1,8 +1,8 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { TOKEN, USER } from '../../constant/localStorageKey';
-import { fetchUser } from '../../reducers/auth.reducer';
+import {Redirect} from 'react-router-dom';
+import {connect} from 'react-redux';
+import {TOKEN, USER} from '../../constant/localStorageKey';
+import {fetchUser} from '../../reducers/auth.reducer';
 
 const AuthRequiredRoute = props => {
   const { user, children, fetchUser, error } = props;
@@ -20,7 +20,7 @@ const AuthRequiredRoute = props => {
     }
   }
 
-  return <React.Fragment>{children}</React.Fragment>;
+  return <>{children}</>;
 };
 
 const mapStateToProps = state => ({
@@ -29,8 +29,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchUser: (companyId, username, token) =>
-    dispatch(fetchUser(companyId, username, token))
+  fetchUser: (companyId, username, token) => dispatch(fetchUser(companyId, username, token))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AuthRequiredRoute);

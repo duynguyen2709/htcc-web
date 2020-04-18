@@ -28,6 +28,8 @@ class FormEditStatusComplaint extends React.Component {
       },
       onlyView: props.onlyView,
       response: [],
+      content: [],
+      status: 2
     };
   }
 
@@ -49,19 +51,9 @@ class FormEditStatusComplaint extends React.Component {
         status: 1,
         yyyyMM: currDate,
       },
-      response: [
-        'nội dung',
-        'phan hoi ne',
-        'nội dung tiếp nè',
-        'phan hoi ne',
-        'nội dung tiếp nè',
-        'phan hoi ne',
-        'nội dung tiếp nè',
-        'phan hoi ne',
-        'nội dung tiếp nè',
-        'phan hoi ne',
-        'nội dung tiếp nè',
-      ], //data.response
+      response: data.response,
+      content: data.content,
+      data: data.status
     });
   }
 
@@ -77,12 +69,11 @@ class FormEditStatusComplaint extends React.Component {
   };
 
   handleSubmit = (e) => {
-    const { value, response } = this.state;
+    const { value } = this.state;
     if (!_.isEmpty(value.response)) {
       const data = _.cloneDeep(value);
 
-      response.push(value.response);
-      data.response = [...response];
+      data.response = value.response;
 
       this.props.loading();
       complaintApi
@@ -129,25 +120,22 @@ class FormEditStatusComplaint extends React.Component {
     });
   };
 
-  mapDataResponse = (data) => {
+  mapDataResponse = (contentList, responseList) => {
     const result = [];
-    let k = -1;
 
-    for (let i = 0; i < _.size(data); i += 1) {
-      if (i % 2 === 0) {
-        k++;
-        result.push({});
-        result[k].content = data[i];
-      } else {
-        result[k].response = data[i];
-      }
+    for (let i = 0; i < _.size(contentList); i += 1) {
+        result.push({
+          key: i,
+          content: contentList[i],
+          response: responseList[i] ? responseList[i] : ''
+        });
     }
 
     return result;
   };
 
   render() {
-    const { value, onlyView, response } = this.state;
+    const { value, onlyView, content, response, status} = this.state;
 
     return (
       <Form>
@@ -177,22 +165,20 @@ class FormEditStatusComplaint extends React.Component {
             </FormGroup>
           </Col>
         </Row>
-        {_.size(response) > 2 && (
-          <Row>
-            <Col md="12">
-              <FormGroup>
-                <label>Lịch sử phản hồi</label>
-                <Table
+        <Row>
+          <Col md="12">
+            <FormGroup>
+              <label>Lịch sử phản hồi</label>
+              <Table
                   columns={columnsHistoryResponse}
-                  dataSource={this.mapDataResponse(response)}
+                  dataSource={this.mapDataResponse(content, response)}
                   bordered
                   pagination={false}
                   scroll={{ y: 150 }}
-                />
-              </FormGroup>
-            </Col>
-          </Row>
-        )}
+              />
+            </FormGroup>
+          </Col>
+        </Row>
         <Row style={{ display: onlyView ? 'none' : '' }}>
           <Col md="12">
             <FormGroup>
@@ -228,38 +214,41 @@ class FormEditStatusComplaint extends React.Component {
             </FormGroup>
           </Col>
         </Row>
-        <CardFooter className="text-right info">
-          {onlyView ? (
-            <Button
-              className="btn-custom"
-              color="primary"
-              type="button"
-              onClick={() => this.setState({ onlyView: false })}
-            >
-              <EditOutlined
-                style={{ display: 'inline', margin: '5px 10px 0 0' }}
-              />{' '}
-              {'  '}
-              <span className="btn-save-text">Thêm phản hồi</span>
-            </Button>
-          ) : (
-            <Popconfirm
-              title="Bạn chắc chắn thay đổi？"
-              icon={<QuestionCircleOutlined />}
-              okText="Đồng ý"
-              cancelText="Huỷ"
-              onConfirm={() => this.handleSubmit()}
-            >
-              <Button className="btn-custom" color="primary" type="button">
-                <CheckCircleOutlined
+        {status === 2 ?
+          <CardFooter className="text-right info">
+            {onlyView ? (
+              <Button
+                className="btn-custom"
+                color="primary"
+                type="button"
+                onClick={() => this.setState({ onlyView: false })}
+              >
+                <EditOutlined
                   style={{ display: 'inline', margin: '5px 10px 0 0' }}
                 />{' '}
                 {'  '}
-                <span className="btn-save-text"> LƯU</span>
+                <span className="btn-save-text">Thêm phản hồi</span>
               </Button>
-            </Popconfirm>
-          )}
-        </CardFooter>
+            ) : (
+              <Popconfirm
+                title="Bạn chắc chắn thay đổi？"
+                icon={<QuestionCircleOutlined />}
+                okText="Đồng ý"
+                cancelText="Huỷ"
+                onConfirm={() => this.handleSubmit()}
+              >
+                <Button className="btn-custom" color="primary" type="button">
+                  <CheckCircleOutlined
+                    style={{ display: 'inline', margin: '5px 10px 0 0' }}
+                  />{' '}
+                  {'  '}
+                  <span className="btn-save-text"> LƯU</span>
+                </Button>
+              </Popconfirm>
+            )}
+          </CardFooter>
+            : null
+        }
       </Form>
     );
   }

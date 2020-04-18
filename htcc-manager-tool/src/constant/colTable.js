@@ -70,7 +70,7 @@ export const columnsHistoryResponse = [
     width: '100px',
   },
   {
-    title: 'Phải hồi',
+    title: 'Phản hồi',
     dataIndex: 'response',
     width: '100px',
   },
@@ -79,10 +79,10 @@ export const columnsHistoryResponse = [
 export const buildColsComplaint = (funcEdit, cols = []) => {
   return [
     {
-      title: 'ID',
+      title: 'Mã khiếu nại',
       dataIndex: 'complaintId',
       fixed: 'left',
-      width: '150px',
+      width: '160px',
     },
     {
       title: 'Người gửi',
@@ -146,7 +146,7 @@ export const buildColsComplaint = (funcEdit, cols = []) => {
       dataIndex: 'response',
       width: '120px',
       render: (o, record) => {
-        if (_.size(record.response) > 2) {
+        if (_.size(record.response) > 1) {
           return (
             <Tooltip placement="top" title={'Xem chi tiết'}>
               <BarsOutlined
@@ -155,6 +155,8 @@ export const buildColsComplaint = (funcEdit, cols = []) => {
               />
             </Tooltip>
           );
+        } else {
+          return record.response[0];
         }
       },
     },
@@ -169,7 +171,7 @@ export const buildColsComplaint = (funcEdit, cols = []) => {
           case 2:
             return (
               <span className="clearfix">
-                <Tag className="float-left" color="error">
+                <Tag className="float-left" color="warning">
                   Chưa xử lý
                 </Tag>
                 <EditOutlined
@@ -186,7 +188,7 @@ export const buildColsComplaint = (funcEdit, cols = []) => {
           case 1:
             return <Tag color="success">Đã xử lý</Tag>;
           default:
-            return <Tag color="default">Từ chối</Tag>;
+            return <Tag color="error">Từ chối</Tag>;
         }
       },
     },
@@ -196,10 +198,10 @@ export const buildColsComplaint = (funcEdit, cols = []) => {
 export const buildColsLeaveRequest = (funcEdit, cols = []) => {
   return [
     {
-      title: 'ID',
+      title: 'Mã đơn',
       dataIndex: 'leavingRequestId',
       fixed: 'left',
-      width: '150px',
+      width: '160px',
     },
     {
       title: 'Người gửi',
@@ -289,7 +291,7 @@ export const buildColsLeaveRequest = (funcEdit, cols = []) => {
           case 2:
             return (
               <span className="clearfix">
-                <Tag className="float-left" color="error">
+                <Tag className="float-left" color="warning">
                   Chưa xử lý
                 </Tag>
                 <EditOutlined
@@ -306,7 +308,7 @@ export const buildColsLeaveRequest = (funcEdit, cols = []) => {
           case 1:
             return <Tag color="success">Đã xử lý</Tag>;
           default:
-            return <Tag color="default">Từ chối</Tag>;
+            return <Tag color="error">Từ chối</Tag>;
         }
       },
     },

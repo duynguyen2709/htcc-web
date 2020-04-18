@@ -10,6 +10,7 @@ import moment from 'moment';
 import CalendarTool from '../components/Tool/CalendarTool';
 import FormEditStatusComplaint from '../components/Form/FormEditStatusComplaint';
 import AsyncModal from '../components/Modal/AsyncModal';
+import {addKeyPropsToTable} from "../utils/dataTable";
 
 const { Search } = Input;
 const { TabPane } = Tabs;
@@ -77,8 +78,11 @@ class Complaint extends Component {
       .getList(month)
       .then(res => {
         if (res.returnCode === 1) {
-          const dataResolved = _.filter(res.data, item => item.status !== 2);
-          const dataNotResolve = _.filter(res.data, item => item.status === 2);
+          let dataResolved = _.filter(res.data, item => item.status !== 2);
+          let dataNotResolve = _.filter(res.data, item => item.status === 2);
+
+          dataResolved = addKeyPropsToTable('dataResolved', dataResolved);
+          dataNotResolve = addKeyPropsToTable('dataResolved', dataNotResolve);
 
           this.setState({
             dataNotResolve,

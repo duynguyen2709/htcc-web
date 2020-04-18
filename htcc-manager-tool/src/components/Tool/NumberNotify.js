@@ -22,7 +22,7 @@ class NumberNotify extends React.Component {
     const { value } = this.state;
 
     if (value) {
-      return <div className="number-notify">{value > 10 ? '10+' : value}</div>;
+      return <div className="number-notify">{value > 10 ? '10+' : (value <= 0) ? '' : value}</div>;
     }
 
     return null;
