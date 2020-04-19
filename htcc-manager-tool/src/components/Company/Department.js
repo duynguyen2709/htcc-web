@@ -4,15 +4,15 @@ import {companyApi} from '../../api';
 import {store} from 'react-notifications-component';
 import {createNotify} from '../../utils/notifier';
 import {PlusSquareOutlined} from '@ant-design/icons';
-import {buildColsBranch} from '../../constant/colTable';
+import {buildColsDepartment} from '../../constant/colTable';
 import {Input, Table, Tooltip} from 'antd';
 import AsyncModal from '../Modal/AsyncModal';
-import FormEditBranch from '../Form/FormEditBranch';
-import FormNewBranch from '../Form/FormNewBranch';
+import FormNewDepartment from "../Form/FormNewDepartment";
+import FormEditDepartment from "../Form/FormEditDepartment";
 
 const {Search} = Input;
 
-class Branch extends React.Component {
+class Department extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -21,7 +21,8 @@ class Branch extends React.Component {
             mode: 'new',
             curRecordEdit: null,
             isSubmit: false,
-            loading: false
+            loading: false,
+            headManagerList: []
         };
         this.data = [];
     }
@@ -36,23 +37,36 @@ class Branch extends React.Component {
         }
     }
 
+    toggleLoading(){
+        const {loading} = this.state;
+        this.setState({
+            loading: !loading
+        })
+    }
+
     getData = () => {
+        this.toggleLoading();
+
         companyApi
-            .getAllOffices()
+            .getAllDepartment()
             .then(res => {
                 if (res.returnCode === 1) {
                     this.setState({
-                        data: res.data
+                        data: res.data.departmentList,
+                        headManagerList: res.data.headManagerList
                     });
-                    this.data = res.data;
+                    this.data = res.data.departmentList;
                 } else {
                     store.addNotification(createNotify('danger', res.returnMessage));
                 }
             })
             .catch(err => {
                 store.addNotification(createNotify('danger', JSON.stringify(err)));
-            });
+            }).finally(() => {
+                this.toggleLoading();
+        })
     };
+
 
     handleEdit = record => {
         this.setState({
@@ -63,17 +77,14 @@ class Branch extends React.Component {
     };
 
     handleDelete = record => {
-        this.setState({
-            loading: true
-        });
+        this.toggleLoading();
 
         companyApi
-            .deleteBranch(record)
+            .deleteDepartment(record)
             .then(res => {
                 if (res.returnCode === 1) {
                     this.setState({
                         data: res.data,
-                        loading: false
                     });
 
                     this.data = res.data;
@@ -84,7 +95,7 @@ class Branch extends React.Component {
             })
             .catch(err => {
                 store.addNotification(createNotify('danger', JSON.stringify(err)));
-            });
+            }).finally(() => this.toggleLoading());
     };
 
     toggle = (submit = false) => {
@@ -99,7 +110,7 @@ class Branch extends React.Component {
 
     mapData = data => {
         return _.map(data, item => ({
-            key: item.officeId.toString(),
+            key: item.department.toString(),
             ...item
         }));
     };
@@ -115,7 +126,7 @@ class Branch extends React.Component {
     };
 
     render() {
-        const {data, showModal, curRecordEdit, mode, loading} = this.state;
+        const {data, showModal, curRecordEdit, mode, loading, headManagerList} = this.state;
         return (
             <React.Fragment>
                 <div className="header-table clearfix">
@@ -128,7 +139,7 @@ class Branch extends React.Component {
                         />
                     </div>
                     <div className="float-right btn-new">
-                        <Tooltip placement="left" title={'Thêm chi nhánh'}>
+                        <Tooltip placement="left" title={'Thêm phòng ban'}>
                             <PlusSquareOutlined onClick={() => this.toggle(false)}/>
                         </Tooltip>
                     </div>
@@ -136,7 +147,7 @@ class Branch extends React.Component {
                 <div className="table-edit">
                     <div className="table-small table-branch">
                         <Table
-                            columns={buildColsBranch(this.handleEdit, this.handleDelete)}
+                            columns={buildColsDepartment(this.handleEdit, this.handleDelete)}
                             dataSource={this.mapData(data)}
                             scroll={{x: 1300, y: 'calc(100vh - 355px)'}}
                             loading={loading || data === null}
@@ -152,14 +163,17 @@ class Branch extends React.Component {
                         key={curRecordEdit}
                         reload={false}
                         CompomentContent={
-                            this.state.mode === 'new' ? FormNewBranch : FormEditBranch
+                            this.state.mode === 'new' ? FormNewDepartment : FormEditDepartment
                         }
                         visible={showModal}
                         toggle={submit => this.toggle(submit)}
                         title={
-                            mode === 'new' ? 'Thêm chi nhánh mới' : 'Chỉnh sửa chi nhánh'
+                            mode === 'new' ? 'Thêm phòng ban mới' : 'Chỉnh sửa phòng ban'
                         }
-                        data={curRecordEdit}
+                        data={{
+                            ...curRecordEdit,
+                            headManagerList: headManagerList
+                        }}
                         mode={mode}
                     />
                 </div>
@@ -168,4 +182,4 @@ class Branch extends React.Component {
     }
 }
 
-export default Branch;
+export default Department;
