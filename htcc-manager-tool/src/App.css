@@ -1,97 +1,104 @@
 @import '~antd/dist/antd.css';
 
 .ant-tabs-nav .ant-tabs-tab-active {
-  color: #388e3c;
+    color: #388e3c;
 }
 
 .ant-tabs-nav .ant-tabs-tab-active:hover,
 .ant-tabs-nav .ant-tabs-tab:hover {
-  color: #388e3c;
+    color: #388e3c;
 }
 .ant-tabs-ink-bar {
-  background-color: #388e3c;
+    background-color: #388e3c;
 }
 
 .ant-table:not(.ant-table-fixed-header) .ant-table-content {
-  overflow-y: scroll;
+    overflow-y: scroll;
 }
 
 .anticon svg {
-  margin-bottom: 10px;
-  font-size: 20px;
+    margin-bottom: 10px;
+    font-size: 20px;
 }
 
 .tabs-big .ant-tabs-content {
-  height: calc(100vh - 180px);
+    height: calc(100vh - 180px);
 }
 
 .tabs-small .ant-tabs-content {
-  height: calc(100vh - 218px);
+    height: calc(100vh - 218px);
 }
 
 .ant-tabs .ant-tabs-top-content > .ant-tabs-tabpane,
 .ant-tabs-tabpane-active {
-  overflow: scroll;
+    overflow: scroll;
 }
 
 .ant-input:hover,
 .ant-input:focus {
-  border-color: #66bb6a;
+    border-color: #66bb6a;
 }
 
 .ant-tooltip-inner,
 .ant-tooltip-arrow::before {
-  background-color: rgba(9, 159, 72, 0.6);
+    background-color: rgba(9, 159, 72, 0.6);
 }
 
 .ant-modal-body {
-  max-height: 530px;
-  overflow: auto;
+    max-height: 530px;
+    overflow: auto;
 }
 
 .ant-select-single .ant-select-selector {
-  border-radius: 5px/5px !important;
+    border-radius: 5px/5px !important;
 }
 
 .ant-select-arrow {
-  width: 5px;
-  position: relative;
-  left: calc(100% - 25px);
-  bottom: 37px;
+    width: 5px;
+    position: relative;
+    left: calc(100% - 25px);
+    bottom: 37px;
 }
 
 .ant-popover-inner-content .anticon {
-  color: #388e3c;
-  position: absolute;
-  left: -8px;
-  top: 4px;
+    color: #388e3c;
+    position: absolute;
+    left: -8px;
+    top: 4px;
 }
 
 .ant-btn-primary {
-  background-color: #039be5;
+    background-color: #039be5;
 }
 
 .ant-table-column-sorter-up.active,
 .ant-table-column-sorter-down.active {
-  color: #59885b;
+    color: #59885b;
 }
 
 .ant-table-column-sorter-full {
-  margin-top: 0;
+    margin-top: 0;
 }
 
 .ant-table-column-sorter-full .anticon {
-  height: 13px;
+    height: 13px;
 }
 
 .ant-table-column-sorter-full .anticon svg {
-  font-size: 13px;
+    font-size: 13px;
 }
 
 .center-div {
-  position:absolute;
-  left:50%;
-  top: 50%;
-  transform: translate(-50%,-50%);
-  -webkit-transform: translate(-50%,-50%);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+}
+
+.ant-select:not(.ant-select-disabled):hover .ant-select-selector {
+    border-color: #59885b;
+}
+.ant-select-single:not(.ant-select-customize-input) .ant-select-selector {
+    height: 39px;
 }
