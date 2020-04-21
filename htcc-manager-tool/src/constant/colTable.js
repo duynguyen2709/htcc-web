@@ -582,3 +582,57 @@ export const buildColsDayOffLevel = (funcEdit, funcDelete, cols = []) => [
         },
     },
 ];
+
+export const buildColsDepartment = (funcEdit, funcDelete, cols = []) => [
+  {
+    title: 'Mã phòng ban',
+    dataIndex: 'department',
+    fixed: 'left',
+    width: '150px',
+  },
+  {
+    title: 'Tên phòng ban',
+    dataIndex: 'departmentName',
+    width: '250px',
+  },
+  {
+    title: 'Người quản lý',
+    dataIndex: 'headManager',
+    width: '350px',
+  },
+  ...cols,
+  {
+    title: 'Hành động',
+    width: '110px',
+    fixed: 'right',
+    render: (o, record) => {
+      return (
+          <React.Fragment>
+            <EditOutlined
+                style={{
+                  color: '#52c41a',
+                  fontSize: '23px',
+                  float: 'left',
+                }}
+                onClick={() => funcEdit(record)}
+            />
+            <Popconfirm
+                title="Bạn chắc chắn muốn xoá？"
+                icon={<QuestionCircleOutlined />}
+                okText="Đồng ý"
+                cancelText="Huỷ"
+                onConfirm={() => funcDelete(record)}
+            >
+              <DeleteTwoTone
+                  twoToneColor="#ff7875"
+                  style={{
+                    fontSize: '23px',
+                    float: 'right',
+                  }}
+              />
+            </Popconfirm>
+          </React.Fragment>
+      );
+    },
+  },
+];

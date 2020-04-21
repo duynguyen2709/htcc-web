@@ -1,13 +1,10 @@
-import React, { Component } from 'react';
-import { Tabs } from 'antd';
-import {
-  BranchesOutlined,
-  ProfileOutlined,
-  EnvironmentOutlined,
-} from '@ant-design/icons';
+import React, {Component} from 'react';
+import {Tabs} from 'antd';
+import {ApartmentOutlined, BranchesOutlined, EnvironmentOutlined, ProfileOutlined} from '@ant-design/icons';
 import Info from '../components/Company/Info';
 import Map from '../components/Company/Map';
 import Branch from '../components/Company/Branch';
+import Department from "../components/Company/Department";
 
 const { TabPane } = Tabs;
 
@@ -52,6 +49,17 @@ class CompanyInfo extends Component {
               key="branch"
             >
               <Branch />
+            </TabPane>
+            <TabPane
+                tab={
+                  <span>
+                  <ApartmentOutlined />
+                  Phòng ban
+                </span>
+                }
+                key="department"
+            >
+              <Department />
             </TabPane>
             <TabPane
               tab={

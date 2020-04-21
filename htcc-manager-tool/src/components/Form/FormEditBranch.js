@@ -35,7 +35,7 @@ const RESET_TOUCH = {
     officeId: false,
 };
 
-class FormAddNewBranch extends React.Component {
+class FormEditBranch extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -108,7 +108,6 @@ class FormAddNewBranch extends React.Component {
     };
 
     clear = () => {
-        console.log("clear");
         this.setState({
             value: {...INITFORM},
             touch: {...RESET_TOUCH},
@@ -406,4 +405,4 @@ class FormAddNewBranch extends React.Component {
     }
 }
 
-export default FormAddNewBranch;
+export default FormEditBranch;

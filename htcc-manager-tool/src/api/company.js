@@ -12,7 +12,7 @@ const getInfoCompany = () => {
         headers: {
           Authorization: `Bearer ${token}`
         },
-        timeout: 20000
+        timeout: 30000
       })
       .then(res => {
         resolve(res.data);
@@ -45,6 +45,8 @@ const updateInfoCompany = data => {
   });
 };
 
+// ################### Office Section ###################
+
 const getAllOffices = () => {
   const token = localStorage.getItem(TOKEN);
   const user = JSON.parse(localStorage.getItem(USER));
@@ -55,7 +57,7 @@ const getAllOffices = () => {
         headers: {
           Authorization: `Bearer ${token}`
         },
-        timeout: 20000
+        timeout: 30000
       })
       .then(res => {
         resolve(res.data);
@@ -97,7 +99,7 @@ const createBranch = data => {
         headers: {
           Authorization: `Bearer ${token}`
         },
-        timeout: 20000
+        timeout: 30000
       })
       .then(res => {
         resolve(res.data);
@@ -130,11 +132,104 @@ const deleteBranch = data => {
   });
 };
 
+// ################### Department Section ###################
+
+const getAllDepartment = () => {
+  const token = localStorage.getItem(TOKEN);
+  const user = JSON.parse(localStorage.getItem(USER));
+
+  return new Promise((resolve, reject) => {
+    axios
+        .get(`${API_URL_EMPLOYEE}/departments/${user.companyId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          },
+          timeout: 30000
+        })
+        .then(res => {
+          resolve(res.data);
+        })
+        .catch(err => {
+          reject(err);
+        });
+  });
+};
+
+const updateDepartment = data => {
+  const token = localStorage.getItem(TOKEN);
+  const user = JSON.parse(localStorage.getItem(USER));
+
+  return new Promise((resolve, reject) => {
+    axios({
+      method: 'put',
+      url: `${API_URL_EMPLOYEE}/departments/${user.companyId}/${data.department}`,
+      data: data,
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+        .then(res => {
+          resolve(res.data);
+        })
+        .catch(err => {
+          reject(err);
+        });
+  });
+};
+
+const createDepartment = data => {
+  const token = localStorage.getItem(TOKEN);
+
+  return new Promise((resolve, reject) => {
+    axios
+        .post(`${API_URL_EMPLOYEE}/departments`, data, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          },
+          timeout: 30000
+        })
+        .then(res => {
+          resolve(res.data);
+        })
+        .catch(err => {
+          reject(err);
+        });
+  });
+};
+
+const deleteDepartment = data => {
+  const token = localStorage.getItem(TOKEN);
+  const user = JSON.parse(localStorage.getItem(USER));
+
+  return new Promise((resolve, reject) => {
+    axios({
+      method: 'delete',
+      url: `${API_URL_EMPLOYEE}/departments/${user.companyId}/${data.department}`,
+      data: data,
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+        .then(res => {
+          resolve(res.data);
+        })
+        .catch(err => {
+          reject(err);
+        });
+  });
+};
+
+
 export default {
   getInfoCompany,
   updateInfoCompany,
   getAllOffices,
   updateInfoBranch,
   createBranch,
-  deleteBranch
+  deleteBranch,
+
+  getAllDepartment,
+  updateDepartment,
+  createDepartment,
+  deleteDepartment
 };
