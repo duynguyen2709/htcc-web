@@ -1,0 +1,11 @@
+@import "../themes/default";
+
+
+.link {
+  color: map-get($root, "link__foreground-color");
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: map-get($root, "link__foreground-color--hover");
+  }
+}

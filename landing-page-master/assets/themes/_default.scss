@@ -1,0 +1,89 @@
+/// Default theme functional variables divided into sections using maps
+///
+/// @access public
+///
+/// @author Radmir Nabiullin
+///
+/// @example
+///   $root: (
+///     "background-color--primary": $color-name--white,
+///     "background-color--secondary": $color-name--hint-of-red,
+///     "foreground-color--primary": $color-name--dove-gray,
+///     "link__foreground-color": $color-name--white,
+///   );
+///
+///   $main-footer: (
+///     "background-color": $color-name--big-stone,
+///   );
+///
+/// @example scss — Using
+///   .foo {
+///     background: map-get($root, "background-color--primary");
+///   }
+///
+/// @example css — Output CSS
+///   .foo {
+///     background: #ffffff;
+///   }
+///
+/// @type Map
+$root: (
+  "background-color--primary": $color-name--white,
+  "background-color--secondary": $color-name--hint-of-red,
+  "foreground-color--primary": $color-name--dove-gray,
+  "foreground-color--secondary": $color-name--white,
+  "foreground-color--tertiary": $color-name--dodger-green,
+  "link__foreground-color": $color-name--white,
+  "link__foreground-color--hover": $color-name--royal-green,
+  "heading__foreground-color--primary": $color-name--scorpion_base,
+  "heading__foreground-color--secondary": $color-name--white,
+  "heading__foreground-color--tertiary": $color-name--scorpion_dark,
+  "icon__foreground-color--primary": $color-name--white,
+  "icon__foreground-color--secondary": $color-name--dodger-green,
+  "icon__foreground-color--tertiary": $color-name--pomegranate,
+  "icon__foreground-color--quaternary": $color-name--royal-green,
+  "border__background-color--primary": $color-name--white,
+  "border__background-color--secondary": $color-name--royal-green,
+);
+
+$navbar: (
+  "button__background-color": $color-name--white,
+);
+
+$promo: (
+  "button__background-color": $color-name--ebony-clay,
+);
+
+$card: (
+  "rhombus-layer__background-color--primary": $color-name--athens-gray,
+  "rhombus-layer__background-color--secondary": $color-name--dodger-blue,
+);
+
+$features: (
+  "circle-layer__background-color": $color-name--white,
+);
+
+$plan: (
+  "button__background-color--primary": $color-name--white,
+  "button__background-color--secondary": $color-name--hint-of-red,
+);
+
+$navigation: (
+  "button__background-color": $color-name--dodger-green,
+);
+
+$contact-section: (
+  "background-color": $color-name--alabaster,
+  "heading__foreground-color": $color-name--mine-shaft_base,
+  "underline__background-color": $color-name--royal-green,
+  "foreground-color": $color-name--mine-shaft_base,
+);
+
+$feedback: (
+  "placeholder__foreground-color": $color-name--silver-chalice,
+  "button__background-color": $color-name--royal-green,
+);
+
+$main-footer: (
+  "background-color": $color-name--big-stone,
+);

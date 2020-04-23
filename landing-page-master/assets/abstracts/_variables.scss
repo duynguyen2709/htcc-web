@@ -1,0 +1,77 @@
+/// Font family property declaration
+///
+/// @access public
+///
+/// @author Radmir Nabiullin
+///
+/// @example
+///   $font-family--open-sans: ("Open Sans", sans-serif);
+///
+/// @type List
+$font-family--poppins: ("Poppins", sans-serif);
+$font-family--montserrat: ("Montserrat", sans-serif);
+$font-family--raleway: ("Raleway", sans-serif);
+
+
+/// Font size property declaration in rem units into property value and
+/// px units in variable name
+///
+/// @access public
+///
+/// @author Radmir Nabiullin
+///
+/// @example
+///   $font-size--13: 0.8125rem;
+///
+/// @type Number
+$font-size--13: 0.8125rem;
+$font-size--14: 0.875rem;
+$font-size--15: 0.9375rem;
+$font-size--16: 1rem;
+$font-size--18: 1.125rem;
+$font-size--19: 1.1875rem;
+$font-size--20: 1.25rem;
+$font-size--24: 1.5rem;
+$font-size--25: 1.5625rem;
+$font-size--27: 1.6875rem;
+$font-size--28: 1.75rem;
+$font-size--30: 1.875rem;
+$font-size--32: 2rem;
+$font-size--34: 2.125rem;
+$font-size--36: 2.25rem;
+$font-size--46: 2.875rem;
+
+
+/// Color names and their shades divided by underscore,
+/// used by box shadows, gradients and functional variables
+///
+/// @access public
+///
+/// @author Radmir Nabiullin
+///
+/// @example
+///   $color-name--mine-black: #000000;
+///   $color-name--mine-shaft_base: #2c2c2c;
+///   $color-name--mine-shaft_dark: #212121;
+///
+/// @type Color
+$color-name--alabaster: #f7f7f7;
+$color-name--athens-gray: #f3f5f8;
+$color-name--big-stone: #13253b;
+$color-name--denim: #1760d7;
+$color-name--dodger-blue: #4085f6;
+$color-name--dodger-green: #14e296;
+$color-name--denim-green: #1bee90;
+
+$color-name--dove-gray: #737373;
+$color-name--ebony-clay: #22233a;
+$color-name--hint-of-red: #f8f6f6;
+$color-name--mine-shaft_base: #3b3b3b;
+$color-name--mine-shaft_dark: #3b3b3b;
+$color-name--pomegranate: #f33131;
+$color-name--royal-blue: #226be2;
+$color-name--royal-green:#5CB860;
+$color-name--scorpion_base: #5d5d5d;
+$color-name--scorpion_dark: #585858;
+$color-name--silver-chalice: #a2a2a2;
+$color-name--white: #ffffff;

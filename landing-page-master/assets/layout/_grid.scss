@@ -1,0 +1,29 @@
+.l-container {
+  @include flex--column;
+  justify-content: center;
+  text-align: center;
+}
+
+.l-navbar,
+.l-header,
+.l-content,
+.l-footer {
+  @include flex--column;
+  height: 100%;
+  padding: 0 19.53125%;
+}
+
+.l-header {
+  text-align: right;
+}
+
+.l-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.l-col {
+  @include flex--column;
+  align-items: center;
+}

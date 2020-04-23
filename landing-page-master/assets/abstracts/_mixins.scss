@@ -1,0 +1,22 @@
+/// Flex items laying out in vertical columns
+///
+/// @access public
+///
+/// @author Radmir Nabiullin
+///
+/// @example scss — Using
+/// .foo {
+///   @include flex--column;
+///   justify-content: flex-end;
+/// }
+///
+/// @example css — Output CSS
+/// .foo {
+///   display: flex;
+///   flex-direction: column;
+///   justify-content: flex-end;
+/// }
+@mixin flex--column() {
+  display: flex;
+  flex-direction: column;
+}

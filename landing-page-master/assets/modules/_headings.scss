@@ -1,0 +1,8 @@
+@import "../themes/default";
+
+
+.heading {
+  &--primary {
+    color: map-get($root, "heading__foreground-color--primary");
+  }
+}
