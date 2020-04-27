@@ -64,8 +64,6 @@ class FormEditLevel extends React.Component {
             return false;
         }
 
-        console.log('list', listData);
-
         const index = _.findIndex(listData, (item) => item.level == level);
 
         if (index > -1) {

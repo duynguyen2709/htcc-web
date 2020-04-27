@@ -74,7 +74,6 @@ class ConfigDayOff extends Component {
             .getConfig()
             .then((res) => {
                 if (res.returnCode === 1) {
-                    console.log('data', res.data);
                     this.setState({
                         value: {
                             categoryList: res.data.categoryList,
@@ -291,8 +290,6 @@ class ConfigDayOff extends Component {
             showModal,
             dataModal,
         } = this.state;
-
-        console.log('value', this.state.value);
 
         if (loadDayoff && loadCategory) {
             return (

@@ -38,7 +38,7 @@ var routes = [
     {
         path: '/diem-danh',
         name: 'Điểm Danh',
-        icon: 'tim-icons icon-calendar-60',
+        icon: 'tim-icons icon-check-2',
         component: Attendance,
         layout: '/',
         id: 'complaint-icon',
@@ -49,6 +49,34 @@ var routes = [
         icon: 'tim-icons icon-send',
         component: LeaveRequest,
         layout: '/',
+    },
+    {
+        path: '/lich-lam',
+        name: 'Lịch Làm',
+        icon: 'tim-icons icon-calendar-60',
+        component: '',
+        layout: '/',
+        id: 'canManageOffices',
+        childs: [
+            {
+                name: 'Ngày',
+                icon: 'tim-icons icon-book-bookmark',
+                class: 'sub-menu canManageOffices',
+                path: '/lich-lam/ngay',
+                brand: 'Lịch Làm / Ngày',
+                component: LeaveRequest,
+                layout: '/',
+            },
+            {
+                name: 'Ca',
+                icon: 'tim-icons icon-time-alarm',
+                class: 'sub-menu canManageOffices',
+                path: '/lich-lam/ca',
+                brand: 'Lịch Làm / Ca',
+                component: ConfigDayOff,
+                layout: '/',
+            },
+        ],
     },
     {
         path: '/ngay-nghi',
