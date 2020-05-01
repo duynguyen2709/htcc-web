@@ -246,7 +246,7 @@ class ConfigDayOff extends Component {
                 [loading]: true,
             });
 
-            if (mode == 'new') {
+            if (mode === 'new') {
                 value[name].push(newData);
             } else {
                 value[name] = updateItem(value[name], key, newData);

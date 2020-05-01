@@ -5,6 +5,7 @@ import CompanyInfo from './views/CompanyInfo';
 import Complaint from './views/Complaint';
 import LeaveRequest from './views/LeaveRequest';
 import ConfigDayOff from './views/ConfigDayOff';
+import ShiftTime from './views/ShiftTime';
 
 var routes = [
     {
@@ -73,7 +74,7 @@ var routes = [
                 class: 'sub-menu canManageOffices',
                 path: '/lich-lam/ca',
                 brand: 'Lịch Làm / Ca',
-                component: ConfigDayOff,
+                component: ShiftTime,
                 layout: '/',
             },
         ],

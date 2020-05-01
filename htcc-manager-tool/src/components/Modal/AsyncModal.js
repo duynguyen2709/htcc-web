@@ -38,6 +38,7 @@ class AsyncModal extends React.Component {
             mode,
             onlyView = false,
             listData = [],
+            prop = {},
         } = this.props;
 
         return (
@@ -58,6 +59,7 @@ class AsyncModal extends React.Component {
                     mode={mode}
                     onlyView={onlyView}
                     listData={listData}
+                    {...prop}
                 />
             </Modal>
         );

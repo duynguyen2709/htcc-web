@@ -1,16 +1,16 @@
 import React from 'react';
 import * as _ from 'lodash';
-import {companyApi} from '../../api';
-import {store} from 'react-notifications-component';
-import {createNotify} from '../../utils/notifier';
-import {PlusSquareOutlined} from '@ant-design/icons';
-import {buildColsBranch} from '../../constant/colTable';
-import {Input, Table, Tooltip} from 'antd';
+import { companyApi } from '../../api';
+import { store } from 'react-notifications-component';
+import { createNotify } from '../../utils/notifier';
+import { PlusSquareOutlined } from '@ant-design/icons';
+import { buildColsBranch } from '../../constant/colTable';
+import { Input, Table, Tooltip } from 'antd';
 import AsyncModal from '../Modal/AsyncModal';
 import FormEditBranch from '../Form/FormEditBranch';
 import FormNewBranch from '../Form/FormNewBranch';
 
-const {Search} = Input;
+const { Search } = Input;
 
 class Branch extends React.Component {
     constructor(props) {
@@ -21,7 +21,7 @@ class Branch extends React.Component {
             mode: 'new',
             curRecordEdit: null,
             isSubmit: false,
-            loading: false
+            loading: false,
         };
         this.data = [];
     }
@@ -39,83 +39,95 @@ class Branch extends React.Component {
     getData = () => {
         companyApi
             .getAllOffices()
-            .then(res => {
+            .then((res) => {
                 if (res.returnCode === 1) {
                     this.setState({
-                        data: res.data
+                        data: res.data,
                     });
                     this.data = res.data;
                 } else {
-                    store.addNotification(createNotify('danger', res.returnMessage));
+                    store.addNotification(
+                        createNotify('danger', res.returnMessage)
+                    );
                 }
             })
-            .catch(err => {
-                store.addNotification(createNotify('danger', JSON.stringify(err)));
+            .catch((err) => {
+                store.addNotification(
+                    createNotify('danger', JSON.stringify(err))
+                );
             });
     };
 
-    handleEdit = record => {
+    handleEdit = (record) => {
         this.setState({
             showModal: true,
             curRecordEdit: record,
-            mode: 'edit'
+            mode: 'edit',
         });
     };
 
-    handleDelete = record => {
+    handleDelete = (record) => {
         this.setState({
-            loading: true
+            loading: true,
         });
 
         companyApi
             .deleteBranch(record)
-            .then(res => {
+            .then((res) => {
                 if (res.returnCode === 1) {
                     this.setState({
                         data: res.data,
-                        loading: false
+                        loading: false,
                     });
 
                     this.data = res.data;
-                    store.addNotification(createNotify('default', 'Xoá thành công !'));
+                    store.addNotification(
+                        createNotify('default', 'Xoá thành công !')
+                    );
                 } else {
-                    store.addNotification(createNotify('danger', res.returnMessage));
+                    store.addNotification(
+                        createNotify('danger', res.returnMessage)
+                    );
                 }
             })
-            .catch(err => {
-                store.addNotification(createNotify('danger', JSON.stringify(err)));
+            .catch((err) => {
+                store.addNotification(
+                    createNotify('danger', JSON.stringify(err))
+                );
             });
     };
 
     toggle = (submit = false) => {
-        const {data} = this.state;
+        const { data } = this.state;
         this.setState({
             showModal: !this.state.showModal,
             curRecordEdit: null,
             data: submit ? null : data,
-            isSubmit: submit
+            isSubmit: submit,
         });
     };
 
-    mapData = data => {
-        return _.map(data, item => ({
+    mapData = (data) => {
+        return _.map(data, (item) => ({
             key: item.officeId.toString(),
-            ...item
+            ...item,
         }));
     };
 
-    onSearch = e => {
-        const data = _.filter(this.data, ele =>
-            JSON.stringify(ele).toLowerCase().includes(e.target.value.toLowerCase())
+    onSearch = (e) => {
+        const data = _.filter(this.data, (ele) =>
+            JSON.stringify(ele)
+                .toLowerCase()
+                .includes(e.target.value.toLowerCase())
         );
 
         this.setState({
-            data: data
+            data: data,
         });
     };
 
     render() {
-        const {data, showModal, curRecordEdit, mode, loading} = this.state;
+        const { data, showModal, curRecordEdit, mode, loading } = this.state;
         return (
             <React.Fragment>
                 <div className="header-table clearfix">
@@ -123,26 +135,31 @@ class Branch extends React.Component {
                         <Search
                             className="form-control bor-radius"
                             placeholder="Tìm kiếm nhanh"
-                            style={{width: 300}}
+                            style={{ width: 300 }}
                             onChange={this.onSearch}
                         />
                     </div>
                     <div className="float-right btn-new">
                         <Tooltip placement="left" title={'Thêm chi nhánh'}>
-                            <PlusSquareOutlined onClick={() => this.toggle(false)}/>
+                            <PlusSquareOutlined
+                                onClick={() => this.toggle(false)}
+                            />
                         </Tooltip>
                     </div>
                 </div>
                 <div className="table-edit">
                     <div className="table-small table-branch">
                         <Table
-                            columns={buildColsBranch(this.handleEdit, this.handleDelete)}
+                            columns={buildColsBranch(
+                                this.handleEdit,
+                                this.handleDelete
+                            )}
                             dataSource={this.mapData(data)}
-                            scroll={{x: 1300, y: 'calc(100vh - 355px)'}}
+                            scroll={{ x: 1300, y: 'calc(100vh - 355px)' }}
                             loading={loading || data === null}
                             pagination={{
                                 hideOnSinglePage: true,
-                                pageSize: 6
+                                pageSize: 6,
                             }}
                         />
                     </div>
@@ -152,12 +169,16 @@ class Branch extends React.Component {
                         key={curRecordEdit}
                         reload={false}
                         CompomentContent={
-                            this.state.mode === 'new' ? FormNewBranch : FormEditBranch
+                            this.state.mode === 'new'
+                                ? FormNewBranch
+                                : FormEditBranch
                         }
                         visible={showModal}
-                        toggle={submit => this.toggle(submit)}
+                        toggle={(submit) => this.toggle(submit)}
                         title={
-                            mode === 'new' ? 'Thêm chi nhánh mới' : 'Chỉnh sửa chi nhánh'
+                            mode === 'new'
+                                ? 'Thêm chi nhánh mới'
+                                : 'Chỉnh sửa chi nhánh'
                         }
                         data={curRecordEdit}
                         mode={mode}

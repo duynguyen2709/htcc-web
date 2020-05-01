@@ -9,17 +9,14 @@ import { homeApi } from '../../api';
 import { store } from 'react-notifications-component';
 import { createNotify } from '../../utils/notifier';
 import * as _ from 'lodash';
+import { connect } from 'react-redux';
+import { getDataHome } from '../../reducers/home.reducer';
 
 var ps;
 
 class Sidebar extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            pendingComplaint: 0,
-            pendingLeavingRequest: 0,
-            canManageOffices: [],
-        };
         this.activeRoute.bind(this);
     }
 
@@ -37,27 +34,6 @@ class Sidebar extends React.Component {
                 suppressScrollY: false,
             });
         }
-
-        homeApi
-            .getTotal()
-            .then((res) => {
-                if (res.returnCode === 1) {
-                    this.setState({
-                        pendingComplaint: res.data.pendingComplaint,
-                        pendingLeavingRequest: res.data.pendingLeavingRequest,
-                        canManageOffices: res.data.canManageOffices,
-                    });
-                } else {
-                    store.addNotification(
-                        createNotify('danger', res.returnMessage)
-                    );
-                }
-            })
-            .catch((err) => {
-                store.addNotification(
-                    createNotify('danger', JSON.stringify(err))
-                );
-            });
     }
 
     componentWillUnmount() {
@@ -71,7 +47,10 @@ class Sidebar extends React.Component {
     };
 
     renderNotification = (name) => {
-        const { pendingLeavingRequest, pendingComplaint } = this.state;
+        const { pendingLeavingRequest, pendingComplaint } = this.props.data || {
+            pendingLeavingRequest: 0,
+            pendingComplaint: 0,
+        };
 
         switch (name) {
             case 'Khiếu Nại':
@@ -84,7 +63,7 @@ class Sidebar extends React.Component {
     };
 
     renderMenuItem = (prop, key) => {
-        const { canManageOffices } = this.state;
+        const { canManageOffices } = this.props.data || [];
         const list = {
             canManageOffices: canManageOffices,
         };
@@ -121,7 +100,7 @@ class Sidebar extends React.Component {
                     this.activeRoute(prop.path) +
                     (prop.pro ? ' active-pro' : '')
                 }
-                key={key}
+                key={`${key}-${prop.path}`}
             >
                 <NavLink
                     to={prop.path}
@@ -138,7 +117,7 @@ class Sidebar extends React.Component {
     };
 
     render() {
-        const { bgColor, routes, logo } = this.props;
+        const { bgColor, routes, logo, data, getDataHome } = this.props;
         const logoImg = (
             <a href="/" className="simple-text logo-mini">
                 <div className="logo-img">
@@ -149,6 +128,10 @@ class Sidebar extends React.Component {
         const logoText = (
             <div className="simple-text logo-normal">HTCC - Manager</div>
         );
+
+        if (_.isEmpty(data)) {
+            getDataHome();
+        }
 
         return (
             <div id="sidebar" className="sidebar" data={bgColor}>
@@ -187,4 +170,12 @@ Sidebar.propTypes = {
     }),
 };
 
-export default Sidebar;
+const mapStateToProps = (state) => ({
+    data: state.homeReducer.data,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+    getDataHome: () => dispatch(getDataHome()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);
