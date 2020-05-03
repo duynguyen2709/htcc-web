@@ -118,10 +118,35 @@ const deleteShiftTime = (officeId, shiftId) => {
     });
 };
 
+const getListWorkingDay = (officeId, year) => {
+    const token = localStorage.getItem(TOKEN);
+    const user = JSON.parse(localStorage.getItem(USER));
+
+    return new Promise((resolve, reject) => {
+        axios
+            .get(
+                `${API_URL_EMPLOYEE}/workingday/${user.companyId}/${officeId}/${year}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                    timeout: 20000,
+                }
+            )
+            .then((res) => {
+                resolve(res.data);
+            })
+            .catch((err) => {
+                reject(err);
+            });
+    });
+};
+
 export default {
     getListShiftTime,
     configLikeHeadquarter,
     createShiftTime,
     deleteShiftTime,
     updateShiftTime,
+    getListWorkingDay,
 };

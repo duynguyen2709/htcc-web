@@ -168,7 +168,7 @@ class ShiftTime extends Component {
     };
 
     handleDeleteShiftTime = (record) => {
-        const { officeId, dataTable } = this.state;
+        const { officeId } = this.state;
 
         this.setState({
             dataTable: null,

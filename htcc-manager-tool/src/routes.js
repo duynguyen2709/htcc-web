@@ -6,6 +6,7 @@ import Complaint from './views/Complaint';
 import LeaveRequest from './views/LeaveRequest';
 import ConfigDayOff from './views/ConfigDayOff';
 import ShiftTime from './views/ShiftTime';
+import WorkingDay from './views/WorkingDay';
 
 var routes = [
     {
@@ -65,7 +66,7 @@ var routes = [
                 class: 'sub-menu canManageOffices',
                 path: '/lich-lam/ngay',
                 brand: 'Lịch Làm / Ngày',
-                component: LeaveRequest,
+                component: WorkingDay,
                 layout: '/',
             },
             {

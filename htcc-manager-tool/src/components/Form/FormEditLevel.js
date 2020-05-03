@@ -13,9 +13,7 @@ import * as _ from 'lodash';
 import { store } from 'react-notifications-component';
 import { createNotify } from '../../utils/notifier';
 import { CheckCircleOutlined, QuestionCircleOutlined } from '@ant-design/icons';
-import { Popconfirm, Select } from 'antd';
-
-const { Option } = Select;
+import { Popconfirm } from 'antd';
 
 const INITFORM = {
     level: '',
@@ -34,7 +32,7 @@ class FormEditLevel extends React.Component {
             value: { ...INITFORM },
             messageInvalid: {
                 level: 'Cấp bậc là số',
-                level: 'Ngày nghỉ là số',
+                totalDayOff: 'Ngày nghỉ là số',
             },
             touch: {
                 ...RESET_TOUCH,
@@ -64,7 +62,10 @@ class FormEditLevel extends React.Component {
             return false;
         }
 
-        const index = _.findIndex(listData, (item) => item.level == level);
+        const index = _.findIndex(
+            listData,
+            (item) => parseFloat(item.level) === parseFloat(level)
+        );
 
         if (index > -1) {
             store.addNotification(

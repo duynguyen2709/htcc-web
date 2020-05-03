@@ -8,12 +8,15 @@ const getTotal = () => {
 
     return new Promise((resolve, reject) => {
         axios
-            .get(`${API_URL_EMPLOYEE}/home/${user.companyId}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-                timeout: 20000,
-            })
+            .get(
+                `${API_URL_EMPLOYEE}/home/manager/${user.companyId}/${user.username}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                    timeout: 20000,
+                }
+            )
             .then((res) => {
                 resolve(res.data);
             })

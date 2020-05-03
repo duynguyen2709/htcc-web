@@ -1,6 +1,5 @@
 import React from 'react';
-import { DatePicker, Select } from 'antd';
-import moment from 'moment';
+import { Select } from 'antd';
 import * as _ from 'lodash';
 
 const { Option } = Select;
