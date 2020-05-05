@@ -6,6 +6,7 @@ import { workScheduleApi } from '../../api';
 import { store } from 'react-notifications-component';
 import { createNotify } from '../../utils/notifier';
 import * as _ from 'lodash';
+import ReactLoading from 'react-loading';
 
 class CalendarView extends Component {
     constructor(props) {
@@ -15,8 +16,6 @@ class CalendarView extends Component {
             year: moment(new Date()).format('YYYY'),
             month: moment(new Date()).format('MM'),
             currentOffices: props.currentOffices,
-            normalDays: [],
-            specialDays: [],
         };
     }
 
@@ -38,8 +37,6 @@ class CalendarView extends Component {
                 element.type === 2 &&
                 _.isEqual(value.format('YYYYMMDD'), element.date)
             ) {
-                console.log('value', value.format('YYYYMMDD'), element.date);
-
                 return [{ type: 'success', content: element.extraInfo }];
             }
 
@@ -56,7 +53,6 @@ class CalendarView extends Component {
             .getListWorkingDay(officeId, year)
             .then((res) => {
                 if (res.returnCode === 1) {
-                    console.log('res', res.data);
                     this.setState({
                         listDays: [
                             ...res.data.normalDays,
@@ -89,17 +85,15 @@ class CalendarView extends Component {
         );
     };
 
-    getData = (month) => {};
-
-    getMonthData = (value) => {
-        if (value.month() === 8) {
-            return 1394;
-        }
-    };
-
     onPanelChange = (value, mode) => {
+        const { year, officeId } = this.state;
+        const newYear = value.format('YYYY');
+
+        if (!_.isEqual(year, newYear)) {
+            this.getListDay(officeId, newYear);
+        }
         this.setState({
-            year: value.format('YYYY'),
+            year: newYear,
             month: value.format('MM'),
         });
     };
@@ -108,11 +102,10 @@ class CalendarView extends Component {
         this.setState({
             currentOffices: id,
         });
+        this.getListDay(id, this.state.year);
     };
 
     render() {
-        console.log('this.state', this.state, this.props);
-        const { currentOffices } = this.state;
         const { optionsOffices } = this.props;
 
         return (
