@@ -102,3 +102,33 @@
 .ant-select-single:not(.ant-select-customize-input) .ant-select-selector {
     height: 39px;
 }
+.ant-select-arrow {
+    left: calc(100% - 18px);
+    bottom: 37px;
+}
+.ant-select-arrow .anticon svg {
+    font-size: 13px;
+}
+.ant-picker-calendar-date-content .events {
+    padding: 0;
+}
+
+.ant-picker-calendar-full .ant-picker-panel .ant-picker-calendar-date-today {
+    border-color: #73d13d;
+}
+
+.ant-picker-cell-selected:hover
+    .ant-picker-calendar-date
+    .ant-picker-calendar-date-value,
+.ant-picker-calendar-full
+    .ant-picker-panel
+    .ant-picker-cell-selected
+    .ant-picker-calendar-date-today
+    .ant-picker-calendar-date-value,
+.ant-picker-calendar-full
+    .ant-picker-panel
+    .ant-picker-cell-selected:hover
+    .ant-picker-calendar-date-today
+    .ant-picker-calendar-date-value {
+    color: #237804;
+}

@@ -6,7 +6,6 @@ import Login from './views/Login';
 import './App.css';
 import './assets/scss/index.scss';
 import './assets/css/nucleo-icons.css';
-import 'moment/locale/vi';
 
 const hist = createHashHistory();
 

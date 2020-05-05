@@ -3,6 +3,7 @@ import { Tabs } from 'antd';
 import { InsertRowAboveOutlined, ToolOutlined } from '@ant-design/icons';
 import CalendarView from '../components/WorkingDay/CalendarView';
 import Branch from '../components/Company/Branch';
+import { connect } from 'react-redux';
 
 const { TabPane } = Tabs;
 
@@ -12,6 +13,7 @@ class WorkingDay extends Component {
 
         this.state = {
             listData: [],
+            currentOffices: '',
         };
     }
 
@@ -24,6 +26,9 @@ class WorkingDay extends Component {
     };
 
     render() {
+        const { data = {} } = this.props;
+        const { currentOffices } = this.state;
+
         return (
             <div className="content">
                 <div className="table-wrapper tabs-big">
@@ -46,12 +51,15 @@ class WorkingDay extends Component {
                             tab={
                                 <span>
                                     <InsertRowAboveOutlined />
-                                    Tổng quan
+                                    Lịch
                                 </span>
                             }
                             key="view"
                         >
-                            <CalendarView />
+                            <CalendarView
+                                optionsOffices={data.canManageOffices}
+                                currentOffices={'CAMPUS'}
+                            />
                         </TabPane>
                     </Tabs>
                 </div>
@@ -60,4 +68,8 @@ class WorkingDay extends Component {
     }
 }
 
-export default WorkingDay;
+const mapStateToProps = (state) => ({
+    data: state.homeReducer.data,
+});
+
+export default connect(mapStateToProps)(WorkingDay);
