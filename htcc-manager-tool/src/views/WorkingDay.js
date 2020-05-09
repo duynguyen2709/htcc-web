@@ -20,12 +20,6 @@ class WorkingDay extends Component {
 
     getList = () => {};
 
-    changeTab = (key) => {
-        this.setState({
-            updateMap: key === 'map',
-        });
-    };
-
     componentWillReceiveProps(nextProps) {
         const { data: nextData = [] } = nextProps;
         const { data = [] } = this.props;
@@ -53,10 +47,7 @@ class WorkingDay extends Component {
         return (
             <div className="content">
                 <div className="table-wrapper tabs-big">
-                    <Tabs
-                        defaultActiveKey="config"
-                        onChange={(key) => this.changeTab(key)}
-                    >
+                    <Tabs defaultActiveKey="config">
                         <TabPane
                             tab={
                                 <span>

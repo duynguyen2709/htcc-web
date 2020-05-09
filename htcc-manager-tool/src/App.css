@@ -140,3 +140,8 @@
 .ant-table-pagination.ant-pagination {
     margin: 0;
 }
+
+.ant-picker-body {
+    max-height: calc(100vh - 250px);
+    overflow: scroll;
+}
