@@ -10,6 +10,7 @@ import {
 } from '@ant-design/icons';
 import LightboxImages from '../components/Tool/LightboxImages';
 import * as _ from 'lodash';
+import moment from 'moment';
 
 export const columnsEmployee = [
     {
@@ -102,6 +103,7 @@ export const buildColsComplaint = (funcEdit, cols = []) => {
             width: '150px',
             defaultSortOrder: 'descend',
             sorter: (a, b) => a.date.localeCompare(b.date),
+            render: (o, record) => moment(record.date).format('DD/MM/YYYY'),
         },
         {
             title: 'Thời gian',
@@ -228,6 +230,8 @@ export const buildColsLeaveRequest = (funcEdit, cols = []) => {
             width: '150px',
             defaultSortOrder: 'descend',
             sorter: (a, b) => a.dateSubmit.localeCompare(b.dateSubmit),
+            render: (o, record) =>
+                moment(record.dateSubmit).format('DD-MM-YYYY'),
         },
         {
             title: 'Ngày bắt đầu',
@@ -235,6 +239,7 @@ export const buildColsLeaveRequest = (funcEdit, cols = []) => {
             width: '150px',
             defaultSortOrder: 'descend',
             sorter: (a, b) => a.dateFrom.localeCompare(b.dateFrom),
+            render: (o, record) => moment(record.dateFrom).format('DD-MM-YYYY'),
         },
         {
             title: 'Ngày kết thúc',
@@ -242,6 +247,7 @@ export const buildColsLeaveRequest = (funcEdit, cols = []) => {
             width: '150px',
             defaultSortOrder: 'descend',
             sorter: (a, b) => a.dateTo.localeCompare(b.dateTo),
+            render: (o, record) => moment(record.dateTo).format('DD-MM-YYYY'),
         },
         {
             title: 'Dùng ngày phép',
@@ -324,10 +330,9 @@ const renderListDetail = (list = []) => {
                 ? 'Sáng'
                 : 'Chiều';
         return (
-            <li
-                className="text-dark"
-                key={index}
-            >{`${item.date}: ${session}`}</li>
+            <li className="text-dark" key={index}>{`${moment(item.date).format(
+                'DD-MM-YYYY'
+            )}: ${session}`}</li>
         );
     });
 
@@ -584,55 +589,182 @@ export const buildColsDayOffLevel = (funcEdit, funcDelete, cols = []) => [
 ];
 
 export const buildColsDepartment = (funcEdit, funcDelete, cols = []) => [
-  {
-    title: 'Mã phòng ban',
-    dataIndex: 'department',
-    fixed: 'left',
-    width: '150px',
-  },
-  {
-    title: 'Tên phòng ban',
-    dataIndex: 'departmentName',
-    width: '250px',
-  },
-  {
-    title: 'Người quản lý',
-    dataIndex: 'headManager',
-    width: '350px',
-  },
-  ...cols,
-  {
-    title: 'Hành động',
-    width: '110px',
-    fixed: 'right',
-    render: (o, record) => {
-      return (
-          <React.Fragment>
-            <EditOutlined
-                style={{
-                  color: '#52c41a',
-                  fontSize: '23px',
-                  float: 'left',
-                }}
-                onClick={() => funcEdit(record)}
-            />
-            <Popconfirm
-                title="Bạn chắc chắn muốn xoá？"
-                icon={<QuestionCircleOutlined />}
-                okText="Đồng ý"
-                cancelText="Huỷ"
-                onConfirm={() => funcDelete(record)}
-            >
-              <DeleteTwoTone
-                  twoToneColor="#ff7875"
-                  style={{
-                    fontSize: '23px',
-                    float: 'right',
-                  }}
-              />
-            </Popconfirm>
-          </React.Fragment>
-      );
+    {
+        title: 'Mã phòng ban',
+        dataIndex: 'department',
+        fixed: 'left',
+        width: '150px',
     },
-  },
+    {
+        title: 'Tên phòng ban',
+        dataIndex: 'departmentName',
+        width: '250px',
+    },
+    {
+        title: 'Người quản lý',
+        dataIndex: 'headManager',
+        width: '350px',
+    },
+    ...cols,
+    {
+        title: 'Hành động',
+        width: '110px',
+        fixed: 'right',
+        render: (o, record) => {
+            return (
+                <React.Fragment>
+                    <EditOutlined
+                        style={{
+                            color: '#52c41a',
+                            fontSize: '23px',
+                            float: 'left',
+                        }}
+                        onClick={() => funcEdit(record)}
+                    />
+                    <Popconfirm
+                        title="Bạn chắc chắn muốn xoá？"
+                        icon={<QuestionCircleOutlined />}
+                        okText="Đồng ý"
+                        cancelText="Huỷ"
+                        onConfirm={() => funcDelete(record)}
+                    >
+                        <DeleteTwoTone
+                            twoToneColor="#ff7875"
+                            style={{
+                                fontSize: '23px',
+                                float: 'right',
+                            }}
+                        />
+                    </Popconfirm>
+                </React.Fragment>
+            );
+        },
+    },
+];
+
+export const buildColsShift = (funcEdit, funcDelete, cols = []) => [
+    {
+        title: 'ID',
+        dataIndex: 'shiftId',
+        width: '70px',
+        fixed: 'left',
+        defaultSortOrder: 'descend',
+        sorter: (a, b) => a.shiftId < b.shiftId,
+    },
+    {
+        title: 'Bắt đầu',
+        dataIndex: 'startTime',
+        width: '150px',
+    },
+    {
+        title: 'Kết thúc',
+        dataIndex: 'endTime',
+        width: '150px',
+    },
+    {
+        title: 'Thời gian trễ',
+        dataIndex: 'allowLateMinutes',
+        width: '150px',
+        render: (o, record) => record.allowLateMinutes + ' phút',
+    },
+    {
+        title: 'Hành động',
+        width: '70px',
+        fixed: 'right',
+        render: (o, record) => {
+            return (
+                <React.Fragment>
+                    <Tooltip placement="left" title={'Chỉnh sửa'}>
+                        <EditOutlined
+                            style={{
+                                color: '#52c41a',
+                                fontSize: '23px',
+                                float: 'left',
+                            }}
+                            onClick={() => funcEdit(record)}
+                        />
+                    </Tooltip>
+                    <Popconfirm
+                        title="Bạn chắc chắn muốn xoá？"
+                        icon={<QuestionCircleOutlined />}
+                        okText="Đồng ý"
+                        cancelText="Huỷ"
+                        onConfirm={() => funcDelete(record)}
+                    >
+                        <Tooltip placement="left" title={'Xoá'}>
+                            <DeleteTwoTone
+                                twoToneColor="#ff7875"
+                                style={{
+                                    fontSize: '23px',
+                                    float: 'right',
+                                }}
+                            />
+                        </Tooltip>
+                    </Popconfirm>
+                </React.Fragment>
+            );
+        },
+    },
+];
+
+export const buildColsConfigDay = (funcEdit, funcDelete, cols = []) => [
+    {
+        title: 'ID',
+        dataIndex: 'id',
+        width: '70px',
+        fixed: 'left',
+        defaultSortOrder: 'descend',
+        sorter: (a, b) => a.shiftId < b.shiftId,
+    },
+    ...cols,
+    {
+        title: 'Đi làm',
+        dataIndex: 'isWorking',
+        width: '150px',
+        render: (o, record) => {
+            if (record.isWorking) {
+                return <CheckCircleTwoTone twoToneColor="#52c41a" />;
+            }
+
+            return <CloseCircleTwoTone twoToneColor="#ff7875" />;
+        },
+    },
+    {
+        title: 'Hành động',
+        width: '70px',
+        fixed: 'right',
+        render: (o, record) => {
+            return (
+                <React.Fragment>
+                    <Tooltip placement="left" title={'Chỉnh sửa'}>
+                        <EditOutlined
+                            style={{
+                                color: '#52c41a',
+                                fontSize: '23px',
+                                float: 'left',
+                            }}
+                            onClick={() => funcEdit(record)}
+                        />
+                    </Tooltip>
+                    <Popconfirm
+                        title="Bạn chắc chắn muốn xoá？"
+                        icon={<QuestionCircleOutlined />}
+                        okText="Đồng ý"
+                        cancelText="Huỷ"
+                        onConfirm={() => funcDelete(record)}
+                    >
+                        <Tooltip placement="left" title={'Xoá'}>
+                            <DeleteTwoTone
+                                twoToneColor="#ff7875"
+                                style={{
+                                    fontSize: '23px',
+                                    float: 'right',
+                                }}
+                            />
+                        </Tooltip>
+                    </Popconfirm>
+                </React.Fragment>
+            );
+        },
+    },
 ];

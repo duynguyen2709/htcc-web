@@ -4,14 +4,10 @@ import {
     CardFooter,
     Col,
     Form,
-    FormFeedback,
     FormGroup,
     Input,
     Row,
 } from 'reactstrap';
-import * as _ from 'lodash';
-import { store } from 'react-notifications-component';
-import { createNotify } from '../../utils/notifier';
 import { CheckCircleOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import { Popconfirm, Select } from 'antd';
 
@@ -95,7 +91,7 @@ class FormEditCategory extends React.Component {
     };
 
     render() {
-        const { value, messageInvalid, touch } = this.state;
+        const { value } = this.state;
 
         return (
             <Form>

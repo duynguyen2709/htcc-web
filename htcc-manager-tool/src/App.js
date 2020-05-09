@@ -10,23 +10,23 @@ import './assets/css/nucleo-icons.css';
 const hist = createHashHistory();
 
 const App = () => {
-  return (
-    <Router history={hist}>
-      <Switch>
-        <Route
-          exact
-          path="/login"
-          render={(props) => <Login {...props} />}
-          key={'login'}
-        />
-        <Route
-          path="/"
-          render={(props) => <AdminLayout {...props} />}
-          key="other"
-        />
-      </Switch>
-    </Router>
-  );
+    return (
+        <Router history={hist}>
+            <Switch>
+                <Route
+                    exact
+                    path="/login"
+                    render={(props) => <Login {...props} />}
+                    key={'login'}
+                />
+                <Route
+                    path="/"
+                    render={(props) => <AdminLayout {...props} />}
+                    key="other"
+                />
+            </Switch>
+        </Router>
+    );
 };
 
 export default App;

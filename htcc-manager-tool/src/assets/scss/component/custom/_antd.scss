@@ -1,45 +1,45 @@
 .ant-picker {
-  &:hover,
-  &:focus,
-  &:active {
-    border-color: $primary !important;
-  }
+    &:hover,
+    &:focus,
+    &:active {
+        border-color: $primary !important;
+    }
 }
 
 .ant-picker-focused {
-  border-color: $primary !important;
+    border-color: $primary !important;
 }
 
 .ant-picker-cell-selected {
-  .ant-picker-cell-inner {
-    background: $primary !important;
-  }
+    .ant-picker-cell-inner {
+        background: #d9f7be !important;
+    }
 }
 .ant-pagination-item {
-  color: $black !important;
-  &:hover,
-  &:focus,
-  &:active {
-    border-color: $primary !important;
-    color: $primary !important;
-  }
+    color: $black !important;
+    &:hover,
+    &:focus,
+    &:active {
+        border-color: $primary !important;
+        color: $primary !important;
+    }
 }
 
 .ant-pagination-item-active {
-  border-color: $primary !important;
+    border-color: $primary !important;
 }
 
 .ant-pagination-item-link {
-  border: none !important;
+    border: none !important;
 }
 
 .ant-input-affix-wrapper {
-  &:focus,
-  &:hover {
-    border-color: $primary !important;
-  }
+    &:focus,
+    &:hover {
+        border-color: $primary !important;
+    }
 }
 
 .ant-input-affix-wrapper-focused {
-  border-color: $primary !important;
+    border-color: $primary !important;
 }
