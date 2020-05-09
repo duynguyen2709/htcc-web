@@ -118,6 +118,12 @@ class SpecialDayTable extends React.Component {
                                             ),
                                     },
                                     {
+                                        title: 'Mô tả',
+                                        dataIndex: 'extraInfo',
+                                        width: '150px',
+                                        defaultSortOrder: 'descend',
+                                    },
+                                    {
                                         title: 'Buổi làm',
                                         dataIndex: 'session',
                                         width: '150px',
