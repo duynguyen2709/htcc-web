@@ -21,7 +21,7 @@
     font-size: 20px;
 }
 
-.tabs-big .ant-tabs-content {
+.tabs-big > .ant-tabs-content {
     height: calc(100vh - 180px);
 }
 
@@ -131,4 +131,12 @@
     .ant-picker-calendar-date-today
     .ant-picker-calendar-date-value {
     color: #237804;
+}
+
+.ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-tab-active {
+    color: #388e3c;
+}
+
+.ant-table-pagination.ant-pagination {
+    margin: 0;
 }

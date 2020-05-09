@@ -19,10 +19,15 @@ class SelectBox extends React.Component {
     };
 
     componentDidMount() {
-        const { options = [] } = this.props;
-        this.setState({
-            value: options[0] || null,
-        });
+        const { options = [], currentOffices } = this.props;
+        this.setState(
+            {
+                value: _.isEmpty(currentOffices) ? options[0] : currentOffices,
+            },
+            () => {
+                this.props.returnValue(this.state.value);
+            }
+        );
     }
 
     onChange = (value) => {

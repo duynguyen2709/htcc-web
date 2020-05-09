@@ -6,7 +6,6 @@ import { workScheduleApi } from '../../api';
 import { store } from 'react-notifications-component';
 import { createNotify } from '../../utils/notifier';
 import * as _ from 'lodash';
-import ReactLoading from 'react-loading';
 
 class CalendarView extends Component {
     constructor(props) {
@@ -105,8 +104,19 @@ class CalendarView extends Component {
         this.getListDay(id, this.state.year);
     };
 
+    componentWillReceiveProps(nextProps) {
+        if (
+            !_.isEqual(nextProps.currentOffices, this.props.currentOffices) &&
+            !_.isEmpty(nextProps.currentOffices)
+        ) {
+            this.setState({
+                currentOffices: nextProps.currentOffices,
+            });
+        }
+    }
+
     render() {
-        const { optionsOffices } = this.props;
+        const { optionsOffices, currentOffices } = this.props;
 
         return (
             <Row>
@@ -157,6 +167,7 @@ class CalendarView extends Component {
                                         key={optionsOffices}
                                         options={optionsOffices}
                                         returnValue={this.getOfficeId}
+                                        currentOffices={currentOffices}
                                     />
                                 </Col>
                                 <Col sm={2} className="mr-2">

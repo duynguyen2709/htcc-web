@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { Tabs } from 'antd';
 import { InsertRowAboveOutlined, ToolOutlined } from '@ant-design/icons';
 import CalendarView from '../components/WorkingDay/CalendarView';
-import Branch from '../components/Company/Branch';
+import Config from '../components/WorkingDay/Config';
 import { connect } from 'react-redux';
+import * as _ from 'lodash';
 
 const { TabPane } = Tabs;
 
@@ -25,6 +26,26 @@ class WorkingDay extends Component {
         });
     };
 
+    componentWillReceiveProps(nextProps) {
+        const { data: nextData = [] } = nextProps;
+        const { data = [] } = this.props;
+
+        if (
+            !_.isEmpty(nextData) &&
+            !_.isEqual(nextData.canManageOffices, data.canManageOffices)
+        ) {
+            this.setState({
+                currentOffices: nextData.canManageOffices[0],
+            });
+        }
+    }
+
+    getCurrentOffices = (id) => {
+        this.setState({
+            currentOffices: id,
+        });
+    };
+
     render() {
         const { data = {} } = this.props;
         const { currentOffices } = this.state;
@@ -33,7 +54,7 @@ class WorkingDay extends Component {
             <div className="content">
                 <div className="table-wrapper tabs-big">
                     <Tabs
-                        defaultActiveKey="view"
+                        defaultActiveKey="config"
                         onChange={(key) => this.changeTab(key)}
                     >
                         <TabPane
@@ -45,7 +66,9 @@ class WorkingDay extends Component {
                             }
                             key="config"
                         >
-                            <Branch />
+                            <Config
+                                getCurrentOffices={this.getCurrentOffices}
+                            />
                         </TabPane>
                         <TabPane
                             tab={
@@ -57,8 +80,9 @@ class WorkingDay extends Component {
                             key="view"
                         >
                             <CalendarView
+                                key={currentOffices}
                                 optionsOffices={data.canManageOffices}
-                                currentOffices={'CAMPUS'}
+                                currentOffices={currentOffices}
                             />
                         </TabPane>
                     </Tabs>

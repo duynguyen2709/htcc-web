@@ -142,11 +142,108 @@ const getListWorkingDay = (officeId, year) => {
     });
 };
 
+const deleteWorkingDay = (id) => {
+    const token = localStorage.getItem(TOKEN);
+
+    return new Promise((resolve, reject) => {
+        axios({
+            method: 'delete',
+            url: `${API_URL_EMPLOYEE}/workingday/${id}`,
+            data: {},
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+            .then((res) => {
+                resolve(res.data);
+            })
+            .catch((err) => {
+                reject(err);
+            });
+    });
+};
+
+const configWorkingDayLikeHeadquarter = (officeId) => {
+    const token = localStorage.getItem(TOKEN);
+    const user = JSON.parse(localStorage.getItem(USER));
+
+    return new Promise((resolve, reject) => {
+        axios
+            .post(
+                `${API_URL_EMPLOYEE}/workingday/default/${user.companyId}/${officeId}`,
+                {},
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                    timeout: 30000,
+                }
+            )
+            .then((res) => {
+                resolve(res.data);
+            })
+            .catch((err) => {
+                reject(err);
+            });
+    });
+};
+
+const createWorkingDay = (data) => {
+    const token = localStorage.getItem(TOKEN);
+    const user = JSON.parse(localStorage.getItem(USER));
+
+    data['companyId'] = user.companyId;
+
+    return new Promise((resolve, reject) => {
+        axios
+            .post(`${API_URL_EMPLOYEE}/workingday`, data, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+                timeout: 30000,
+            })
+            .then((res) => {
+                resolve(res.data);
+            })
+            .catch((err) => {
+                reject(err);
+            });
+    });
+};
+
+const updateWorkingDay = (data) => {
+    const token = localStorage.getItem(TOKEN);
+    const user = JSON.parse(localStorage.getItem(USER));
+    data['companyId'] = user.companyId;
+
+    return new Promise((resolve, reject) => {
+        axios({
+            method: 'put',
+            url: `${API_URL_EMPLOYEE}/workingday/${data.id}`,
+            data: data,
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+            .then((res) => {
+                resolve(res.data);
+            })
+            .catch((err) => {
+                reject(err);
+            });
+    });
+};
+
 export default {
     getListShiftTime,
     configLikeHeadquarter,
     createShiftTime,
     deleteShiftTime,
     updateShiftTime,
+
     getListWorkingDay,
+    deleteWorkingDay,
+    configWorkingDayLikeHeadquarter,
+    createWorkingDay,
+    updateWorkingDay,
 };

@@ -314,3 +314,22 @@ button {
         }
     }
 }
+
+.btn-new-big {
+    .anticon {
+        color: $primary;
+        svg {
+            font-size: 43px;
+        }
+        &:hover {
+            color: $primary-states;
+            cursor: pointer;
+        }
+    }
+}
+
+.no-mar {
+    .btn {
+        margin: 0;
+    }
+}
