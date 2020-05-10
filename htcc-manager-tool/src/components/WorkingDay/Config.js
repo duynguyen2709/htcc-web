@@ -36,7 +36,7 @@ class Config extends Component {
     }
 
     toggle = (submit = false) => {
-        const { currentOffices, year, normalDays, specialDays } = this.state;
+        const { normalDays, specialDays } = this.state;
 
         this.setState({
             showModal: !this.state.showModal,
@@ -45,7 +45,7 @@ class Config extends Component {
         });
 
         if (submit) {
-            this.getListDay(currentOffices, year);
+            this.reloadData();
         }
     };
 
@@ -74,8 +74,6 @@ class Config extends Component {
             normalDays: null,
             specialDays: null,
         });
-
-        console.log("CALL API");
 
         workScheduleApi
             .getListWorkingDay(officeId, year)
@@ -163,6 +161,7 @@ class Config extends Component {
 
     reloadData = () => {
         this.getListDay(this.state.currentOffices, this.state.year);
+        this.props.reload();
     };
 
     render() {

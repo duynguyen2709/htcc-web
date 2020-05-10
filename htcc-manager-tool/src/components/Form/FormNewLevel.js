@@ -57,8 +57,6 @@ class FormNewLevel extends React.Component {
             (item) => parseFloat(item.level) === parseFloat(level)
         );
 
-        console.log(listData, level);
-
         if (index > -1) {
             store.addNotification(
                 createNotify('warning', `Cấp bậc [ ${level} ] đã tồn tại !`)

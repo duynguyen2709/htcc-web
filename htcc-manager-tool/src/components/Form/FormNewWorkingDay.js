@@ -67,6 +67,7 @@ class FormNewWorkingDay extends React.Component {
         if (this.checkValidDataInput()) {
             const {value} = this.state;
             value['officeId'] = this.props.officeId;
+            value.date = String(moment(value.date).format("YYYYMMDD"));
 
             this.props.loading();
             workScheduleApi
