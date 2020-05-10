@@ -68,23 +68,21 @@ class Sidebar extends React.Component {
         if (!_.isEmpty(prop.childs)) {
             if (!_.isEmpty(list[prop.id])) {
                 return (
-                    <React.Fragment>
-                        <li
-                            className={
-                                this.activeRoute(prop.path) +
-                                (prop.pro ? ' active-pro' : '')
-                            }
-                            key={key}
-                        >
-                            <Dropdown
-                                toggleSidebar={this.props.toggleSidebar}
-                                classes={prop.id}
-                                items={prop.childs}
-                                prop={prop}
-                                activeRoute={this.activeRoute}
-                            />
-                        </li>
-                    </React.Fragment>
+                    <li
+                        className={
+                            this.activeRoute(prop.path) +
+                            (prop.pro ? ' active-pro' : '')
+                        }
+                        key={key}
+                    >
+                        <Dropdown
+                            toggleSidebar={this.props.toggleSidebar}
+                            classes={prop.id}
+                            items={prop.childs}
+                            prop={prop}
+                            activeRoute={this.activeRoute}
+                        />
+                    </li>
                 );
             }
 

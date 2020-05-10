@@ -1,12 +1,12 @@
 import React from 'react';
 import * as _ from 'lodash';
-import { workScheduleApi } from '../../api';
-import { store } from 'react-notifications-component';
-import { createNotify } from '../../utils/notifier';
-import { buildColsConfigDay } from '../../constant/colTable';
-import { Table, Tag } from 'antd';
+import {workScheduleApi} from '../../api';
+import {store} from 'react-notifications-component';
+import {createNotify} from '../../utils/notifier';
+import {buildColsConfigDay} from '../../constant/colTable';
+import {Table, Tag} from 'antd';
 import AsyncModal from '../Modal/AsyncModal';
-import FormEditNormalDay from '../Form/FormEditSpecialDay';
+import FormEditNormalDay from '../Form/FormEditWorkingDay';
 
 const WEEK_DAY = [
     '',
@@ -39,7 +39,7 @@ class NormalDayTable extends React.Component {
         });
     };
 
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps, nextContext) {
         if (!_.isEqual(nextProps.data, this.props.data)) {
             this.setState({
                 data: nextProps.data,
@@ -79,14 +79,16 @@ class NormalDayTable extends React.Component {
     };
 
     toggle = (submit = false) => {
-        const { data } = this.state;
+        const {data} = this.state;
         this.setState({
             showModal: !this.state.showModal,
             curRecordEdit: null,
             data: submit ? null : data,
         });
 
-        this.props.reloadData();
+        if (submit) {
+            this.props.reloadData();
+        }
     };
 
     mapData = (data) => {
@@ -105,10 +107,8 @@ class NormalDayTable extends React.Component {
             officeId,
         } = this.state;
 
-        console.log('data', this.state);
-
         return (
-            <React.Fragment>
+            <>
                 <div className="table-edit">
                     <div className="table-small table-branch">
                         <Table
@@ -117,24 +117,26 @@ class NormalDayTable extends React.Component {
                                 this.handleDelete,
                                 [
                                     {
-                                        title: 'Thứ trong tuần',
+                                        title: 'Thứ',
                                         dataIndex: 'weekDay',
                                         width: '150px',
                                         render: (o, record) => {
                                             return WEEK_DAY[record.weekDay];
                                         },
+                                        sorter: (a, b) => a.weekDay - b.weekDay
                                     },
                                     {
                                         title: 'Buổi làm',
                                         dataIndex: 'session',
                                         width: '150px',
+                                        sorter: (a, b) => a.session - b.session,
                                         render: (o, record) => {
                                             switch (record.session) {
                                                 case 0:
                                                     return (
                                                         <Tag
                                                             className="float-left"
-                                                            color="success"
+                                                            color="blue"
                                                         >
                                                             Cả ngày
                                                         </Tag>
@@ -143,7 +145,7 @@ class NormalDayTable extends React.Component {
                                                     return (
                                                         <Tag
                                                             className="float-left"
-                                                            color="warning"
+                                                            color="green"
                                                         >
                                                             Sáng
                                                         </Tag>
@@ -152,7 +154,7 @@ class NormalDayTable extends React.Component {
                                                     return (
                                                         <Tag
                                                             className="float-left"
-                                                            color="error"
+                                                            color="volcano"
                                                         >
                                                             Chiều
                                                         </Tag>
@@ -165,9 +167,10 @@ class NormalDayTable extends React.Component {
                                 ]
                             )}
                             dataSource={this.mapData(data)}
-                            scroll={{ y: 'calc(100vh - 395px)' }}
+                            scroll={{y: 'calc(100vh - 385px)'}}
                             loading={loading || data === null}
                             pagination={false}
+                            bordered={true}
                         />
                     </div>
                 </div>
@@ -181,10 +184,10 @@ class NormalDayTable extends React.Component {
                         title={'Chỉnh sửa ngày làm việc'}
                         data={curRecordEdit}
                         mode={'edit'}
-                        prop={{ officeId: officeId }}
+                        prop={{officeId: officeId}}
                     />
                 </div>
-            </React.Fragment>
+            </>
         );
     }
 }

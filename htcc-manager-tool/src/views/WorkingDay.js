@@ -49,6 +49,7 @@ class WorkingDay extends Component {
                 <div className="table-wrapper tabs-big">
                     <Tabs defaultActiveKey="config">
                         <TabPane
+                            style={{overflow: 'auto'}}
                             tab={
                                 <span>
                                     <ToolOutlined />
@@ -62,6 +63,7 @@ class WorkingDay extends Component {
                             />
                         </TabPane>
                         <TabPane
+                            style={{overflow: 'auto'}}
                             tab={
                                 <span>
                                     <InsertRowAboveOutlined />

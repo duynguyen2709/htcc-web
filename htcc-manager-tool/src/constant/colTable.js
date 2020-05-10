@@ -1,11 +1,11 @@
 import React from 'react';
-import { Tag, Popover, Tooltip, Popconfirm } from 'antd';
+import {Popconfirm, Popover, Tag, Tooltip} from 'antd';
 import {
-    EditOutlined,
+    BarsOutlined,
     CheckCircleTwoTone,
     CloseCircleTwoTone,
-    BarsOutlined,
     DeleteTwoTone,
+    EditOutlined,
     QuestionCircleOutlined,
 } from '@ant-design/icons';
 import LightboxImages from '../components/Tool/LightboxImages';
@@ -125,7 +125,7 @@ export const buildColsComplaint = (funcEdit, cols = []) => {
                         title={`Danh sách nội dung đã khiếu nại`}
                         trigger="hover"
                     >
-                        <BarsOutlined style={{ color: '#40a9ff' }} />
+                        <BarsOutlined style={{color: '#40a9ff'}}/>
                     </Popover>
                 );
             },
@@ -137,7 +137,7 @@ export const buildColsComplaint = (funcEdit, cols = []) => {
             render: (o, record) => {
                 return (
                     <React.Fragment>
-                        <LightboxImages imageSource={record.images} />
+                        <LightboxImages imageSource={record.images}/>
                     </React.Fragment>
                 );
             },
@@ -152,7 +152,7 @@ export const buildColsComplaint = (funcEdit, cols = []) => {
                     return (
                         <Tooltip placement="top" title={'Xem chi tiết'}>
                             <BarsOutlined
-                                style={{ color: '#40a9ff' }}
+                                style={{color: '#40a9ff'}}
                                 onClick={() => funcEdit(record, true)}
                             />
                         </Tooltip>
@@ -179,7 +179,7 @@ export const buildColsComplaint = (funcEdit, cols = []) => {
                                 <EditOutlined
                                     style={{
                                         color: '#52c41a',
-                                        fontSize: '23px',
+                                        fontSize: '25px',
                                         float: 'left',
                                     }}
                                     className="float-right"
@@ -257,14 +257,14 @@ export const buildColsLeaveRequest = (funcEdit, cols = []) => {
                 if (record.useDayOff) {
                     return (
                         <Tooltip placement="top" title={'Dùng phép'}>
-                            <CheckCircleTwoTone twoToneColor="#52c41a" />
+                            <CheckCircleTwoTone twoToneColor="#52c41a"/>
                         </Tooltip>
                     );
                 }
 
                 return (
                     <Tooltip placement="top" title={'Không dùng phép'}>
-                        <CloseCircleTwoTone twoToneColor="#ff7875" />
+                        <CloseCircleTwoTone twoToneColor="#ff7875"/>
                     </Tooltip>
                 );
             },
@@ -280,7 +280,7 @@ export const buildColsLeaveRequest = (funcEdit, cols = []) => {
                         title={`Chi tiết ngày nghỉ`}
                         trigger="hover"
                     >
-                        <BarsOutlined style={{ color: '#40a9ff' }} />
+                        <BarsOutlined style={{color: '#40a9ff'}}/>
                     </Popover>
                 );
             },
@@ -303,7 +303,7 @@ export const buildColsLeaveRequest = (funcEdit, cols = []) => {
                                 <EditOutlined
                                     style={{
                                         color: '#52c41a',
-                                        fontSize: '23px',
+                                        fontSize: '25px',
                                         float: 'left',
                                     }}
                                     className="float-right"
@@ -336,21 +336,21 @@ const renderListDetail = (list = []) => {
         );
     });
 
-    return <ul style={{ padding: 15 }}>{listDetail}</ul>;
+    return <ul style={{padding: 15}}>{listDetail}</ul>;
 };
 
 const renderListContent = (list = []) => {
     const listContent = _.map(list, (item, index) => {
         return (
             <li
-                style={{ maxWidth: 200 }}
+                style={{maxWidth: 200}}
                 className="text-dark"
                 key={index}
             >{`${item}`}</li>
         );
     });
 
-    return <ul style={{ padding: 15 }}>{listContent}</ul>;
+    return <ul style={{padding: 15}}>{listContent}</ul>;
 };
 
 export const buildColsBranch = (funcEdit, funcDelete, cols = []) => [
@@ -397,10 +397,10 @@ export const buildColsBranch = (funcEdit, funcDelete, cols = []) => [
         width: '150px',
         render: (o, record) => {
             if (record.isHeadquarter) {
-                return <CheckCircleTwoTone twoToneColor="#52c41a" />;
+                return <CheckCircleTwoTone twoToneColor="#52c41a"/>;
             }
 
-            return <CloseCircleTwoTone twoToneColor="#ff7875" />;
+            return <CloseCircleTwoTone twoToneColor="#ff7875"/>;
         },
     },
     {
@@ -409,10 +409,10 @@ export const buildColsBranch = (funcEdit, funcDelete, cols = []) => [
         width: '100px',
         render: (o, record) => {
             if (record.forceUseWifi) {
-                return <CheckCircleTwoTone twoToneColor="#52c41a" />;
+                return <CheckCircleTwoTone twoToneColor="#52c41a"/>;
             }
 
-            return <CloseCircleTwoTone twoToneColor="#ff7875" />;
+            return <CloseCircleTwoTone twoToneColor="#ff7875"/>;
         },
     },
     {
@@ -431,7 +431,7 @@ export const buildColsBranch = (funcEdit, funcDelete, cols = []) => [
                         <EditOutlined
                             style={{
                                 color: '#52c41a',
-                                fontSize: '23px',
+                                fontSize: '25px',
                                 float: 'left',
                             }}
                             onClick={() => funcEdit(record)}
@@ -439,7 +439,7 @@ export const buildColsBranch = (funcEdit, funcDelete, cols = []) => [
                     </Tooltip>
                     <Popconfirm
                         title="Bạn chắc chắn muốn xoá？"
-                        icon={<QuestionCircleOutlined />}
+                        icon={<QuestionCircleOutlined/>}
                         okText="Đồng ý"
                         cancelText="Huỷ"
                         onConfirm={() => funcDelete(record)}
@@ -448,7 +448,7 @@ export const buildColsBranch = (funcEdit, funcDelete, cols = []) => [
                             <DeleteTwoTone
                                 twoToneColor="#ff7875"
                                 style={{
-                                    fontSize: '23px',
+                                    fontSize: '25px',
                                     float: 'right',
                                 }}
                             />
@@ -475,10 +475,10 @@ export const buildColsCategoryDayOff = (funcEdit, funcDelete, cols = []) => [
         width: '70px',
         render: (o, record) => {
             if (record.hasSalary) {
-                return <CheckCircleTwoTone twoToneColor="#52c41a" />;
+                return <CheckCircleTwoTone twoToneColor="#52c41a"/>;
             }
 
-            return <CloseCircleTwoTone twoToneColor="#ff7875" />;
+            return <CloseCircleTwoTone twoToneColor="#ff7875"/>;
         },
     },
     {
@@ -487,10 +487,10 @@ export const buildColsCategoryDayOff = (funcEdit, funcDelete, cols = []) => [
         width: '70px',
         render: (o, record) => {
             if (record.useDayOff) {
-                return <CheckCircleTwoTone twoToneColor="#52c41a" />;
+                return <CheckCircleTwoTone twoToneColor="#52c41a"/>;
             }
 
-            return <CloseCircleTwoTone twoToneColor="#ff7875" />;
+            return <CloseCircleTwoTone twoToneColor="#ff7875"/>;
         },
     },
     {
@@ -504,7 +504,7 @@ export const buildColsCategoryDayOff = (funcEdit, funcDelete, cols = []) => [
                         <EditOutlined
                             style={{
                                 color: '#52c41a',
-                                fontSize: '23px',
+                                fontSize: '25px',
                                 float: 'left',
                             }}
                             onClick={() => funcEdit(record)}
@@ -512,7 +512,7 @@ export const buildColsCategoryDayOff = (funcEdit, funcDelete, cols = []) => [
                     </Tooltip>
                     <Popconfirm
                         title="Bạn chắc chắn muốn xoá？"
-                        icon={<QuestionCircleOutlined />}
+                        icon={<QuestionCircleOutlined/>}
                         okText="Đồng ý"
                         cancelText="Huỷ"
                         onConfirm={() => funcDelete(record)}
@@ -521,7 +521,7 @@ export const buildColsCategoryDayOff = (funcEdit, funcDelete, cols = []) => [
                             <DeleteTwoTone
                                 twoToneColor="#ff7875"
                                 style={{
-                                    fontSize: '23px',
+                                    fontSize: '25px',
                                     float: 'right',
                                 }}
                             />
@@ -559,7 +559,7 @@ export const buildColsDayOffLevel = (funcEdit, funcDelete, cols = []) => [
                         <EditOutlined
                             style={{
                                 color: '#52c41a',
-                                fontSize: '23px',
+                                fontSize: '25px',
                                 float: 'left',
                             }}
                             onClick={() => funcEdit(record)}
@@ -567,7 +567,7 @@ export const buildColsDayOffLevel = (funcEdit, funcDelete, cols = []) => [
                     </Tooltip>
                     <Popconfirm
                         title="Bạn chắc chắn muốn xoá？"
-                        icon={<QuestionCircleOutlined />}
+                        icon={<QuestionCircleOutlined/>}
                         okText="Đồng ý"
                         cancelText="Huỷ"
                         onConfirm={() => funcDelete(record)}
@@ -576,7 +576,7 @@ export const buildColsDayOffLevel = (funcEdit, funcDelete, cols = []) => [
                             <DeleteTwoTone
                                 twoToneColor="#ff7875"
                                 style={{
-                                    fontSize: '23px',
+                                    fontSize: '25px',
                                     float: 'right',
                                 }}
                             />
@@ -616,14 +616,14 @@ export const buildColsDepartment = (funcEdit, funcDelete, cols = []) => [
                     <EditOutlined
                         style={{
                             color: '#52c41a',
-                            fontSize: '23px',
+                            fontSize: '25px',
                             float: 'left',
                         }}
                         onClick={() => funcEdit(record)}
                     />
                     <Popconfirm
                         title="Bạn chắc chắn muốn xoá？"
-                        icon={<QuestionCircleOutlined />}
+                        icon={<QuestionCircleOutlined/>}
                         okText="Đồng ý"
                         cancelText="Huỷ"
                         onConfirm={() => funcDelete(record)}
@@ -631,7 +631,7 @@ export const buildColsDepartment = (funcEdit, funcDelete, cols = []) => [
                         <DeleteTwoTone
                             twoToneColor="#ff7875"
                             style={{
-                                fontSize: '23px',
+                                fontSize: '25px',
                                 float: 'right',
                             }}
                         />
@@ -678,7 +678,7 @@ export const buildColsShift = (funcEdit, funcDelete, cols = []) => [
                         <EditOutlined
                             style={{
                                 color: '#52c41a',
-                                fontSize: '23px',
+                                fontSize: '25px',
                                 float: 'left',
                             }}
                             onClick={() => funcEdit(record)}
@@ -686,7 +686,7 @@ export const buildColsShift = (funcEdit, funcDelete, cols = []) => [
                     </Tooltip>
                     <Popconfirm
                         title="Bạn chắc chắn muốn xoá？"
-                        icon={<QuestionCircleOutlined />}
+                        icon={<QuestionCircleOutlined/>}
                         okText="Đồng ý"
                         cancelText="Huỷ"
                         onConfirm={() => funcDelete(record)}
@@ -695,7 +695,7 @@ export const buildColsShift = (funcEdit, funcDelete, cols = []) => [
                             <DeleteTwoTone
                                 twoToneColor="#ff7875"
                                 style={{
-                                    fontSize: '23px',
+                                    fontSize: '25px',
                                     float: 'right',
                                 }}
                             />
@@ -708,14 +708,14 @@ export const buildColsShift = (funcEdit, funcDelete, cols = []) => [
 ];
 
 export const buildColsConfigDay = (funcEdit, funcDelete, cols = []) => [
-    {
-        title: 'ID',
-        dataIndex: 'id',
-        width: '70px',
-        fixed: 'left',
-        defaultSortOrder: 'descend',
-        sorter: (a, b) => a.shiftId < b.shiftId,
-    },
+    // {
+    //     title: 'ID',
+    //     dataIndex: 'id',
+    //     width: '50px',
+    //     fixed: 'left',
+    //     defaultSortOrder: 'descend',
+    //     sorter: (a, b) => a.id - b.id,
+    // },
     ...cols,
     {
         title: 'Đi làm',
@@ -723,11 +723,12 @@ export const buildColsConfigDay = (funcEdit, funcDelete, cols = []) => [
         width: '150px',
         render: (o, record) => {
             if (record.isWorking) {
-                return <CheckCircleTwoTone twoToneColor="#52c41a" />;
+                return <CheckCircleTwoTone twoToneColor="#52c41a"/>;
             }
 
-            return <CloseCircleTwoTone twoToneColor="#ff7875" />;
+            return <CloseCircleTwoTone twoToneColor="#ff7875"/>;
         },
+        sorter: (a, b) => String(a.isWorking).localeCompare(String(b.isWorking))
     },
     {
         title: 'Hành động',
@@ -735,12 +736,12 @@ export const buildColsConfigDay = (funcEdit, funcDelete, cols = []) => [
         fixed: 'right',
         render: (o, record) => {
             return (
-                <React.Fragment>
+                <>
                     <Tooltip placement="left" title={'Chỉnh sửa'}>
                         <EditOutlined
                             style={{
                                 color: '#52c41a',
-                                fontSize: '23px',
+                                fontSize: '25px',
                                 float: 'left',
                             }}
                             onClick={() => funcEdit(record)}
@@ -748,7 +749,7 @@ export const buildColsConfigDay = (funcEdit, funcDelete, cols = []) => [
                     </Tooltip>
                     <Popconfirm
                         title="Bạn chắc chắn muốn xoá？"
-                        icon={<QuestionCircleOutlined />}
+                        icon={<QuestionCircleOutlined/>}
                         okText="Đồng ý"
                         cancelText="Huỷ"
                         onConfirm={() => funcDelete(record)}
@@ -757,13 +758,13 @@ export const buildColsConfigDay = (funcEdit, funcDelete, cols = []) => [
                             <DeleteTwoTone
                                 twoToneColor="#ff7875"
                                 style={{
-                                    fontSize: '23px',
+                                    fontSize: '25px',
                                     float: 'right',
                                 }}
                             />
                         </Tooltip>
                     </Popconfirm>
-                </React.Fragment>
+                </>
             );
         },
     },

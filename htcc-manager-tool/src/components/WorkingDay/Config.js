@@ -66,6 +66,17 @@ class Config extends Component {
     }
 
     getListDay = (officeId, year) => {
+        if (!officeId || _.isEmpty(officeId)) {
+            return;
+        }
+
+        this.setState({
+            normalDays: null,
+            specialDays: null,
+        });
+
+        console.log("CALL API");
+
         workScheduleApi
             .getListWorkingDay(officeId, year)
             .then((res) => {
@@ -88,11 +99,10 @@ class Config extends Component {
     };
 
     renderYearOptions = () => {
-        let { year } = this.state;
-        year = parseInt(year);
+        const year = new Date().getFullYear();
 
         const options = [];
-        for (let i = year - 10; i < year + 10; i += 1) {
+        for (let i = year - 5; i <= year + 1; i += 1) {
             options.push(
                 <Select.Option key={i} value={i} className="year-item">
                     {i}
@@ -165,8 +175,6 @@ class Config extends Component {
             showModal,
         } = this.state;
 
-        console.log('normalDays', this.state);
-
         return (
             <div className="content">
                 <div className="tabs-big">
@@ -233,6 +241,7 @@ class Config extends Component {
 
                     <Tabs defaultActiveKey="normal" type="card">
                         <TabPane
+                            style={{overflowY: 'auto', overflowX: 'scroll'}}
                             tab={
                                 <span>
                                     <CalendarOutlined />
@@ -249,6 +258,7 @@ class Config extends Component {
                             />
                         </TabPane>
                         <TabPane
+                            tyle={{overflowY: 'auto', overflowX: 'scroll'}}
                             tab={
                                 <span>
                                     <ScheduleOutlined />
