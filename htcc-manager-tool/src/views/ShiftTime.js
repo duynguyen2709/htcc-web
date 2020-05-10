@@ -240,7 +240,7 @@ class ShiftTime extends Component {
                                 this.handleEditShiftTime,
                                 this.handleDeleteShiftTime
                             )}
-                            dataSource={dataTable}
+                            dataSource={this.mapData(dataTable)}
                             scroll={{
                                 y: 'calc(100vh - 355px)',
                             }}

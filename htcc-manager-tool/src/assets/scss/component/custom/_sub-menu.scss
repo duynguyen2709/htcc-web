@@ -27,8 +27,20 @@
 .sub-menu {
     margin: 0 !important;
     padding: 0 0 10px 40px !important;
-    .menu-item,
+    color: lightgrey;
+    display: block;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-size: 0.7rem;
+    line-height: 1.625rem;
+    &:hover {
+        color: #ffffff;
+    }
+    &:active,
+    &:focus {
+        color: #ffffff !important;
+    }
     .tim-icons {
-        font-size: 14px !important;
+        font-size: 0.7rem !important;
     }
 }
