@@ -30,3 +30,19 @@ pipelines:
           - cat my_known_hosts >> ~/.ssh/known_hosts
           - (umask  077 ; echo $KEY_DEV_1 | base64 --decode -i > ~/.ssh/id_rsa)
           - ssh root@108.61.162.225 "cd /home/htcc-web/htcc-admin-tool/;./admin.sh"
+  custom:
+    build-manager-tool:
+      - step:
+          services:
+            - docker
+          name: Deploy htcc-manager-tool
+          script:
+            - cd htcc-manager-tool/
+            - docker build -t duyna5/htcc-manager-tool .
+            - docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASSWORD
+            - docker push duyna5/htcc-manager-tool:latest
+            - mkdir -p ~/.ssh
+            - cd ../script/
+            - cat my_known_hosts >> ~/.ssh/known_hosts
+            - (umask  077 ; echo $KEY_DEV_1 | base64 --decode -i > ~/.ssh/id_rsa)
+            - ssh root@108.61.162.225 "cd /home/htcc-web/htcc-manager-tool/;./manager.sh"
