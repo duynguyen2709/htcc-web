@@ -1,19 +1,19 @@
-import React, { Component } from 'react';
-import { Tabs, Table, Input } from 'antd';
-import { WarningOutlined, CheckSquareOutlined } from '@ant-design/icons';
-import { complaintApi } from '../api';
-import { store } from 'react-notifications-component';
-import { createNotify } from '../utils/notifier';
+import React, {Component} from 'react';
+import {Input, Table, Tabs} from 'antd';
+import {CheckSquareOutlined, WarningOutlined} from '@ant-design/icons';
+import {complaintApi} from '../api';
+import {store} from 'react-notifications-component';
+import {createNotify} from '../utils/notifier';
 import * as _ from 'lodash';
-import { buildColsComplaint } from '../constant/colTable';
+import {buildColsComplaint} from '../constant/colTable';
 import moment from 'moment';
 import CalendarTool from '../components/Tool/CalendarTool';
 import FormEditStatusComplaint from '../components/Form/FormEditStatusComplaint';
 import AsyncModal from '../components/Modal/AsyncModal';
-import { addKeyPropsToTable } from '../utils/dataTable';
+import {addKeyPropsToTable} from '../utils/dataTable';
 
-const { Search } = Input;
-const { TabPane } = Tabs;
+const {Search} = Input;
+const {TabPane} = Tabs;
 
 class Complaint extends Component {
     constructor(props) {
@@ -118,7 +118,7 @@ class Complaint extends Component {
     };
 
     onSearch = (e) => {
-        const { currTab } = this.state;
+        const {currTab} = this.state;
 
         const data = _.filter(this[`data${currTab}`], (ele) =>
             JSON.stringify(ele).includes(e.target.value)
@@ -154,12 +154,12 @@ class Complaint extends Component {
                             <Search
                                 className="form-control bor-radius"
                                 placeholder="Tìm kiếm nhanh"
-                                style={{ width: 300 }}
+                                style={{width: 300}}
                                 onChange={this.onSearch}
                             />
                         </div>
-                        <div className="tool-calendar float-right">
-                            <CalendarTool update={this.updateData} />
+                        <div className="tool-calendar float-left" style={{marginLeft: '20px'}}>
+                            <CalendarTool update={this.updateData}/>
                         </div>
                     </div>
                     <Tabs
@@ -167,9 +167,10 @@ class Complaint extends Component {
                         defaultActiveKey={this.state.currTab}
                     >
                         <TabPane
+                            style={{overflow: 'auto'}}
                             tab={
                                 <span>
-                                    <WarningOutlined />
+                                    <WarningOutlined/>
                                     Chưa xử lý
                                 </span>
                             }
@@ -196,9 +197,10 @@ class Complaint extends Component {
                             </div>
                         </TabPane>
                         <TabPane
+                            style={{overflow: 'auto'}}
                             tab={
                                 <span>
-                                    <CheckSquareOutlined />
+                                    <CheckSquareOutlined/>
                                     Đã xử lý
                                 </span>
                             }

@@ -103,10 +103,6 @@ export const buildColsComplaint = (funcEdit, cols = []) => {
             width: '150px',
             defaultSortOrder: 'descend',
             sorter: (a, b) => a.date.localeCompare(b.date),
-            render: (o, record) => {
-                console.log(record.date);
-                return moment(record.date).format('DD/MM/YYYY')
-            },
         },
         {
             title: 'Thời gian',
@@ -371,29 +367,13 @@ export const buildColsBranch = (funcEdit, funcDelete, cols = []) => [
     {
         title: 'Email',
         dataIndex: 'email',
-        width: '350px',
+        width: '250px',
     },
     {
-        title: 'address',
+        title: 'Địa chỉ',
         dataIndex: 'address',
-        width: '250px',
+        width: '450px',
     },
-    {
-        title: 'Khoảng cách tối đa (m)',
-        dataIndex: 'maxAllowDistance',
-        width: '250px',
-    },
-    {
-        title: 'Vĩ độ',
-        dataIndex: 'latitude',
-        width: '250px',
-    },
-    {
-        title: 'Kinh độ',
-        dataIndex: 'longitude',
-        width: '250px',
-    },
-    ...cols,
     {
         title: 'Trụ sở chính',
         dataIndex: 'isHeadquarter',
@@ -407,7 +387,23 @@ export const buildColsBranch = (funcEdit, funcDelete, cols = []) => [
         },
     },
     {
-        title: 'Wifi',
+        title: 'Vĩ độ',
+        dataIndex: 'latitude',
+        width: '200px',
+    },
+    {
+        title: 'Kinh độ',
+        dataIndex: 'longitude',
+        width: '200px',
+    },
+    ...cols,
+    {
+        title: 'Khoảng cách tối đa cho phép điểm danh (m)',
+        dataIndex: 'maxAllowDistance',
+        width: '120px',
+    },
+    {
+        title: 'Bắt buộc dùng wifi điểm danh',
         dataIndex: 'forceUseWifi',
         width: '100px',
         render: (o, record) => {

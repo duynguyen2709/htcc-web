@@ -283,6 +283,7 @@ class ConfigDayOff extends Component {
                 />
             );
         }
+
         return (
             <div className="content">
                 <div className="table-wrapper tabs-small">
@@ -457,19 +458,18 @@ class ConfigDayOff extends Component {
                     </Form>
                 </div>
                 <div>
-                    {form !== '' && dataModal !== null ?
-                        <AsyncModal
-                            key={showModal}
-                            reload={false}
-                            CompomentContent={COMPONENT[form]}
-                            visible={showModal}
-                            toggle={(submit, newData) =>
-                                this.toggle(submit, newData)
-                            }
-                            title={TITLE[form]}
-                            data={dataModal}
-                            listData={this.getListDataTable()}
-                        /> : null}
+                    <AsyncModal
+                        key={showModal}
+                        reload={false}
+                        CompomentContent={COMPONENT[form]}
+                        visible={showModal}
+                        toggle={(submit, newData) =>
+                            this.toggle(submit, newData)
+                        }
+                        title={TITLE[form]}
+                        data={dataModal}
+                        listData={this.getListDataTable()}
+                    />
                 </div>
             </div>
         );

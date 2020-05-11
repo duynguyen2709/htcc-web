@@ -155,6 +155,7 @@ class Department extends React.Component {
                                 hideOnSinglePage: true,
                                 pageSize: 6
                             }}
+                            bordered={true}
                         />
                     </div>
                 </div>

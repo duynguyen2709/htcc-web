@@ -1,8 +1,8 @@
 import React from 'react';
-import { Modal } from 'antd';
-import { SubmitLoader } from '../Loader';
-import { store } from 'react-notifications-component';
-import { createNotify } from '../../utils/notifier';
+import {Modal} from 'antd';
+import {SubmitLoader} from '../Loader';
+import {store} from 'react-notifications-component';
+import {createNotify} from '../../utils/notifier';
 
 class AsyncModal extends React.Component {
     constructor(props) {
@@ -13,8 +13,8 @@ class AsyncModal extends React.Component {
     }
 
     handleOk = (submit = true, data = {}) => {
-        const { reload = true } = this.props;
-        this.setState({ loading: false });
+        const {reload = true} = this.props;
+        this.setState({loading: false});
         this.props.toggle(submit, data);
         store.addNotification(createNotify('default', 'Thao tác thành công !'));
 
@@ -28,7 +28,7 @@ class AsyncModal extends React.Component {
     };
 
     render() {
-        const { loading } = this.state;
+        const {loading} = this.state;
         const {
             CompomentContent,
             visible,
@@ -44,23 +44,24 @@ class AsyncModal extends React.Component {
         return (
             <Modal
                 visible={visible}
-                title={title}
+                title={title ? title : ''}
                 onOk={this.handleOk}
                 onCancel={this.handleCancel}
                 footer={null}
             >
-                {loading && <SubmitLoader />}
-                <CompomentContent
-                    data={data}
-                    onSubmit={this.handleOk}
-                    currDate={currDate}
-                    loading={() => this.setState({ loading: true })}
-                    stopLoading={() => this.setState({ loading: false })}
-                    mode={mode}
-                    onlyView={onlyView}
-                    listData={listData}
-                    {...prop}
-                />
+                {loading && <SubmitLoader/>}
+                {CompomentContent ?
+                    <CompomentContent
+                        data={data ? data : {}}
+                        onSubmit={this.handleOk}
+                        currDate={currDate}
+                        loading={() => this.setState({loading: true})}
+                        stopLoading={() => this.setState({loading: false})}
+                        mode={mode}
+                        onlyView={onlyView}
+                        listData={listData}
+                        {...prop}
+                    /> : null}
             </Modal>
         );
     }
