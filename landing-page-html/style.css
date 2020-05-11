@@ -39,6 +39,8 @@
 @import 'css/all.min.css';
 @import 'css/color.css';
 
+@import  'css/nav.css';
+
 /* --------------------------
 :: 1.0 Base CSS Start
 -------------------------- */
@@ -49,7 +51,7 @@
 }
 
 body {
-    font-family: 'Poppins', sans-serif;
+    font-family: "Lato", sans-serif;
     background-color: #fff;
 }
 
@@ -64,7 +66,7 @@ h3,
 h4,
 h5,
 h6 {
-    font-family: 'Poppins', sans-serif;
+    /* font-family: 'Poppins', sans-serif; */
     font-weight: 400;
     color: #000;
     line-height: 1.2;
@@ -215,7 +217,7 @@ ol {
     font-size: 24px;
     right: 30px;
     width: 50px;
-    background-color: #fb397d;
+    background-color: #4CAF50;
     color: #fff;
     text-align: center;
     height: 50px;
@@ -454,6 +456,8 @@ p {
 }
 
 
+
+
 /* --------------------------
 :: 3.0 Wellcome Area CSS
 -------------------------- */
@@ -499,6 +503,10 @@ p {
     font-weight: 700;
     position: relative;
     z-index: 3;
+}
+
+.wellcome-heading p {
+    font-size: 20px;
 }
 
 .get-start-area .email {
@@ -898,6 +906,14 @@ p {
     transform: scale(0.85)
 }
 
+.app_screenshots_slides .edge-shot {
+    opacity: 0.5;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
+    -webkit-transform: scale(0.65);
+    -ms-transform: scale(0.65);
+    transform: scale(0.65)
+}
+
 .app_screenshots_slides .center .single-shot {
     opacity: 1;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
@@ -917,7 +933,7 @@ p {
 }
 
 .app-screenshots-area .owl-dot.active {
-    background-color: #fb397d;
+    background-color: #4CAF50;
     border: transparent;
 }
 

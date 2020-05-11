@@ -24,9 +24,9 @@
             navText: ["<i class='pe-7s-angle-left'</i>", "<i class='pe-7s-angle-right'</i>"]
         });
         $(".app_screenshots_slides").owlCarousel({
-            items: 1,
-            loop: true,
-            autoplay: true,
+            //loop: true,
+            mouseDrag: true,
+            // autoplay: true,
             smartSpeed: 800,
             margin: 30,
             center: true,
@@ -41,8 +41,33 @@
                 992: {
                     items: 5
                 }
-            }
+            },
+
+            onChanged: callback
         });
+
+        function callback(event) {
+            //console.log(event.target)
+            //event.target.addClass("edge-shot")
+
+            //console.log(event.target.id)
+            //console.log($(".app_screenshots_slides.center.single-shot"))
+
+            //let el = event.target.find(".center")
+
+            let el = $('.owl-item.active');
+
+            let els = document.getElementsByClassName("owl-item active");
+
+            console.log(el);
+
+            // console.log(el[0]);
+
+            // console.log(el[4]);
+
+            // console.log(el[1]);
+            // console.log(el[4]);
+        }
     }
 
     // :: 2.0 Slick Active Code
@@ -85,7 +110,8 @@
     // :: 4.0 ScrollUp Active Code
     if ($.fn.scrollUp) {
         $.scrollUp({
-            scrollSpeed: 1500,
+            //scrollSpeed: 3000,
+            topSpeed: 800,
             scrollText: '<i class="fa fa-angle-up"></i>'
         });
     }

@@ -156,6 +156,15 @@
 }
 
 @media (min-width: 320px) and (max-width: 767px) {
+
+    .menu_area #nav .nav-link {
+        color: black;
+    }
+
+    .icons {
+        display: block;
+    }
+
     .header_area {
         padding: 0;
     }
