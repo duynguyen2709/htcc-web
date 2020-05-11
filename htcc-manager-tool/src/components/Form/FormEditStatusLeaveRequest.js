@@ -149,7 +149,7 @@ class FormEditStatusLeaveRequest extends React.Component {
                 onCancel={() => this.clear()}
               >
                 <Option className=" bor-radius" value={1}>
-                  Đã xử lý
+                  Chấp nhận
                 </Option>
                 <Option className=" bor-radius" value={0}>
                   Từ chối

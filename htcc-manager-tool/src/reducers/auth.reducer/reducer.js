@@ -50,7 +50,6 @@ const reducer = (state = INITIAL_STATE, action) => {
     }
 
     case authAction.LOGIN_SUCCESS: {
-      console.log('success', action.payload.user);
       return applyLoginSuccess(state, action);
     }
 

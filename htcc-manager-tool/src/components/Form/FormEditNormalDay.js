@@ -127,8 +127,6 @@ class FormEditNormalDay extends React.Component {
     render() {
         const { value } = this.state;
 
-        console.log('value', value);
-
         return (
             <Form>
                 <Row>

@@ -1,28 +1,13 @@
-import React, { Component } from 'react';
-import { Table, Select, Popconfirm, Tooltip } from 'antd';
-import {
-    Button,
-    CardFooter,
-    FormGroup,
-    Form,
-    Row,
-    Col,
-    Input,
-} from 'reactstrap';
-import {
-    CheckCircleOutlined,
-    QuestionCircleOutlined,
-    PlusSquareOutlined,
-} from '@ant-design/icons';
-import { configDayOffApi } from '../api';
-import { store } from 'react-notifications-component';
-import { createNotify } from '../utils/notifier';
+import React, {Component} from 'react';
+import {Popconfirm, Select, Table, Tooltip} from 'antd';
+import {Button, CardFooter, Col, Form, FormGroup, Input, Row,} from 'reactstrap';
+import {CheckCircleOutlined, PlusSquareOutlined, QuestionCircleOutlined,} from '@ant-design/icons';
+import {configDayOffApi} from '../api';
+import {store} from 'react-notifications-component';
+import {createNotify} from '../utils/notifier';
 import * as _ from 'lodash';
-import {
-    buildColsCategoryDayOff,
-    buildColsDayOffLevel,
-} from '../constant/colTable';
-import { removeItem, updateItem } from '../utils/config';
+import {buildColsCategoryDayOff, buildColsDayOffLevel,} from '../constant/colTable';
+import {removeItem, updateItem} from '../utils/config';
 import ReactLoading from 'react-loading';
 import AsyncModal from '../components/Modal/AsyncModal';
 import FormNewCategory from '../components/Form/FormNewCategory';
@@ -30,7 +15,7 @@ import FormNewLevel from '../components/Form/FormNewLevel';
 import FormEditCategory from '../components/Form/FormEditCategory';
 import FormEditLevel from '../components/Form/FormEditLevel';
 
-const { Option } = Select;
+const {Option} = Select;
 const COMPONENT = {
     FormNewCategory: FormNewCategory,
     FormNewLevel: FormNewLevel,
@@ -48,7 +33,6 @@ class ConfigDayOff extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            readOnlyMaxDay: false,
             value: {
                 allowCancelRequest: true,
                 categoryList: null,
@@ -69,7 +53,7 @@ class ConfigDayOff extends Component {
     }
 
     getConfig = () => {
-        this.setState({ loadCategory: true, loadDayoff: true });
+        this.setState({loadCategory: true, loadDayoff: true});
         configDayOffApi
             .getConfig()
             .then((res) => {
@@ -102,7 +86,7 @@ class ConfigDayOff extends Component {
             loadCategory: true,
         });
 
-        const { value } = this.state;
+        const {value} = this.state;
         const result = removeItem(
             value.categoryList,
             'category',
@@ -134,7 +118,7 @@ class ConfigDayOff extends Component {
             loadDayoff: true,
         });
 
-        const { value } = this.state;
+        const {value} = this.state;
         const result = removeItem(value.dayOffByLevel, 'level', record.level);
 
         setTimeout(() => {
@@ -165,7 +149,7 @@ class ConfigDayOff extends Component {
     };
 
     handleSubmit = () => {
-        const { value } = this.state;
+        const {value} = this.state;
 
         this.setState({
             loadDayoff: true,
@@ -204,22 +188,20 @@ class ConfigDayOff extends Component {
     };
 
     changeAllowCancelRequests = (val) => {
-        const { value } = this.state;
+        const {value} = this.state;
         this.setState({
-            readOnlyMaxDay: !val,
             value: {
                 ...value,
-                allowCancelRequest: val,
-                maxDayAllowCancel: val ? 1 : 0,
+                allowCancelRequest: val
             },
         });
     };
 
-    changeMaxDay = (val) => {
+    changeMaxDay = (e) => {
         this.setState({
             value: {
                 ...this.state.value,
-                maxDayAllowCancel: val > 0 ? val : 1,
+                maxDayAllowCancel: e.target.value
             },
         });
     };
@@ -233,7 +215,7 @@ class ConfigDayOff extends Component {
     };
 
     toggle = (submit, newData = {}) => {
-        const { mode, value, form } = this.state;
+        const {mode, value, form} = this.state;
         const [name, key, loading] = _.isEqual(
             form,
             `Form${_.upperFirst(mode)}Category`
@@ -268,7 +250,7 @@ class ConfigDayOff extends Component {
     };
 
     getListDataTable = () => {
-        const { form, value } = this.state;
+        const {form, value} = this.state;
 
         switch (form) {
             case 'FormNewCategory':
@@ -282,7 +264,6 @@ class ConfigDayOff extends Component {
 
     render() {
         const {
-            readOnlyMaxDay,
             value,
             loadCategory,
             loadDayoff,
@@ -302,18 +283,19 @@ class ConfigDayOff extends Component {
                 />
             );
         }
+
         return (
             <div className="content">
                 <div className="table-wrapper tabs-small">
                     <Form>
                         <Row>
-                            <Col sm={{ size: 5, offset: 2 }}>
+                            <Col sm={{size: 5, offset: 2}}>
                                 <FormGroup>
                                     <h5 className="text-dark">
                                         Cho phép huỷ đơn ?
                                     </h5>
                                     <Select
-                                        style={{ width: '100%' }}
+                                        style={{width: '100%'}}
                                         className="bor-radius"
                                         value={value.allowCancelRequest}
                                         onChange={(val) =>
@@ -336,23 +318,22 @@ class ConfigDayOff extends Component {
                                     </Select>
                                 </FormGroup>
                             </Col>
-                            <Col sm="3">
-                                <FormGroup>
-                                    <h5 className="text-dark">
-                                        Số ngày được huỷ trước khi duyệt
-                                    </h5>
-                                    <Input
-                                        onChange={this.changeMaxDay}
-                                        value={value.maxDayAllowCancel}
-                                        placeholder="Nhập số ngày tối đa"
-                                        type="number"
-                                        className="bor-gray text-dark"
-                                        disabled={readOnlyMaxDay}
-                                        name="maxDayAllowCancel"
-                                        min={1}
-                                    />
-                                </FormGroup>
-                            </Col>
+                            {value.allowCancelRequest ?
+                                <Col sm="3">
+                                    <FormGroup>
+                                        <h5 className="text-dark">
+                                            Số ngày được huỷ trước khi duyệt
+                                        </h5>
+                                        <Input
+                                            onChange={this.changeMaxDay}
+                                            value={value.maxDayAllowCancel}
+                                            placeholder="Nhập số ngày tối đa"
+                                            type="number"
+                                            className="bor-gray text-dark"
+                                            name="maxDayAllowCancel"
+                                        />
+                                    </FormGroup>
+                                </Col> : null}
                         </Row>
                         <Row>
                             <Col sm="7">
@@ -365,7 +346,7 @@ class ConfigDayOff extends Component {
                                     <div className="float-right btn-new-small">
                                         <Tooltip
                                             placement="left"
-                                            title={'Thêm thêm danh mục'}
+                                            title={'Thêm danh mục'}
                                         >
                                             <PlusSquareOutlined
                                                 onClick={() =>
@@ -446,14 +427,14 @@ class ConfigDayOff extends Component {
                                 </div>
                             </Col>
                         </Row>
-                        <h5 style={{ marginTop: 30 }} className="text-right">
+                        <h5 style={{marginTop: 30}} className="text-right">
                             <i>Nếu có thay đổi xin hãy bấm LƯU để cập nhật</i>
                         </h5>
-                        <hr style={{ marginTop: 0 }} />
+                        <hr style={{marginTop: 0}}/>
                         <CardFooter className="text-right info">
                             <Popconfirm
                                 title="Bạn chắc chắn thay đổi？"
-                                icon={<QuestionCircleOutlined />}
+                                icon={<QuestionCircleOutlined/>}
                                 okText="Đồng ý"
                                 cancelText="Huỷ"
                                 onConfirm={() => this.handleSubmit()}

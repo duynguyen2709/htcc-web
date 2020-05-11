@@ -30,7 +30,7 @@ class Branch extends React.Component {
         this.getData();
     }
 
-    componentDidUpdate(prevProps, prevState) {
+    componentDidUpdate(prevProps, prevState, snapshot) {
         if (this.state.data === null && this.state.loading === false) {
             this.getData();
         }
@@ -161,6 +161,7 @@ class Branch extends React.Component {
                                 hideOnSinglePage: true,
                                 pageSize: 6,
                             }}
+                            bordered={true}
                         />
                     </div>
                 </div>

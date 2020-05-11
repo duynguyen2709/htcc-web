@@ -142,9 +142,9 @@ class FormNewCategory extends React.Component {
                     </Col>
                 </Row>
                 <Row>
-                    <Col md="12">
+                    <Col md="6">
                         <FormGroup>
-                            <label>Có được hưởng lương không ?</label>
+                            <label>Được hưởng lương ?</label>
                             <Select
                                 style={{ width: '100%' }}
                                 className="bor-radius"
@@ -164,11 +164,9 @@ class FormNewCategory extends React.Component {
                             </Select>
                         </FormGroup>
                     </Col>
-                </Row>
-                <Row>
-                    <Col md="12">
+                    <Col md="6">
                         <FormGroup>
-                            <label>Có trừ ngày phép không ?</label>
+                            <label>Trừ ngày phép ?</label>
                             <Select
                                 style={{ width: '100%' }}
                                 className="bor-radius"

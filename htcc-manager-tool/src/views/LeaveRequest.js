@@ -149,7 +149,7 @@ class LeaveRequest extends Component {
                                 onChange={this.onSearch}
                             />
                         </div>
-                        <div className="tool-calendar float-right">
+                        <div className="tool-calendar float-left" style={{marginLeft: '20px'}}>
                             <CalendarTool update={this.updateData} />
                         </div>
                     </div>
@@ -158,6 +158,7 @@ class LeaveRequest extends Component {
                         defaultActiveKey={this.state.currTab}
                     >
                         <TabPane
+                            style={{overflow: 'auto'}}
                             tab={
                                 <span>
                                     <WarningOutlined />
@@ -187,6 +188,7 @@ class LeaveRequest extends Component {
                             </div>
                         </TabPane>
                         <TabPane
+                            style={{overflow: 'auto'}}
                             tab={
                                 <span>
                                     <CheckSquareOutlined />

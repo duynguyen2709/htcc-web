@@ -73,7 +73,7 @@ class FormNewBranch extends React.Component {
                 isHeadquarter: false,
                 forceUseWifi: false,
             },
-        }, () => console.log(this.state.value));
+        });
     }
 
     checkValidDataInput = () => {

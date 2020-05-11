@@ -1,35 +1,24 @@
 import React from 'react';
-import {
-    Button,
-    CardFooter,
-    Col,
-    Form,
-    FormFeedback,
-    FormGroup,
-    Input,
-    Row,
-} from 'reactstrap';
+import {Button, CardFooter, Col, Form, FormFeedback, FormGroup, Input, Row,} from 'reactstrap';
 import * as _ from 'lodash';
-import { store } from 'react-notifications-component';
-import { createNotify } from '../../utils/notifier';
-import { CheckCircleOutlined, QuestionCircleOutlined } from '@ant-design/icons';
-import { Popconfirm, DatePicker, Select } from 'antd';
-import { workScheduleApi } from '../../api';
-import { checkValidNumber } from '../../utils/validate';
+import {store} from 'react-notifications-component';
+import {createNotify} from '../../utils/notifier';
+import {CheckCircleOutlined, QuestionCircleOutlined} from '@ant-design/icons';
+import {DatePicker, Popconfirm, Select} from 'antd';
+import {workScheduleApi} from '../../api';
 import moment from 'moment';
 
-const { Option } = Select;
+const {Option} = Select;
 const INITFORM = {
     session: 0,
-    id: '',
     date: moment(new Date()).format('YYYYMMDD'),
     type: 1,
+    weekDay: 1,
     isWorking: true,
     extraInfo: '',
 };
 
 const RESET_TOUCH = {
-    id: false,
     extraInfo: false,
 };
 
@@ -37,12 +26,12 @@ class FormNewWorkingDay extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            value: { ...INITFORM },
+            value: {...INITFORM},
             messageInvalid: {
                 session: 'Chưa chọn buổi làm',
-                id: 'ID là số và duy nhất',
                 date: 'Chưa chọn ngày',
-                extraInfo: 'Thêm thông tin cho ngày đặc biệt',
+                weekDay: 'Chưa chọn thứ',
+                extraInfo: 'Cần mô tả lý do cho ngày đặc biệt',
             },
             touch: {
                 ...RESET_TOUCH,
@@ -51,35 +40,34 @@ class FormNewWorkingDay extends React.Component {
     }
 
     checkValidDataInput = () => {
-        const { value } = this.state;
-
-        return checkValidNumber(value.id) && this.checkExtraInfo();
+        return this.checkExtraInfo();
     };
 
     handleOnChange = (e) => {
-        const { value: valueInput, name, type } = e.target;
-        let { value, touch } = this.state;
+        const {value: valueInput, name, type} = e.target;
+        let {value, touch} = this.state;
 
         value[name] = type === 'number' ? parseInt(valueInput) : valueInput;
         touch[name] = true;
 
         this.setState({
-            value: { ...value },
-            touch: { ...touch },
+            value: {...value},
+            touch: {...touch},
         });
     };
 
     clear = () => {
         this.setState({
-            value: { ...INITFORM },
-            touch: { ...RESET_TOUCH },
+            value: {...INITFORM},
+            touch: {...RESET_TOUCH},
         });
     };
 
     handleSubmit = (e) => {
         if (this.checkValidDataInput()) {
-            const { value } = this.state;
+            const {value} = this.state;
             value['officeId'] = this.props.officeId;
+            value.date = String(moment(value.date).format("YYYYMMDD"));
 
             this.props.loading();
             workScheduleApi
@@ -105,7 +93,6 @@ class FormNewWorkingDay extends React.Component {
         } else {
             this.setState({
                 touch: {
-                    id: true,
                     extraInfo: true,
                 },
             });
@@ -116,7 +103,7 @@ class FormNewWorkingDay extends React.Component {
     };
 
     handleChangeDate = (dateInput) => {
-        const { value } = this.state;
+        const {value} = this.state;
         if (!_.isEmpty(dateInput)) {
             this.setState({
                 value: {
@@ -125,6 +112,15 @@ class FormNewWorkingDay extends React.Component {
                 },
             });
         }
+    };
+
+    handleChangeWeekDay = (weekDay) => {
+        this.setState({
+            value: {
+                ...this.state.value,
+                weekDay: weekDay,
+            },
+        });
     };
 
     handleChangeIsWorking = (value) => {
@@ -155,48 +151,80 @@ class FormNewWorkingDay extends React.Component {
     };
 
     checkExtraInfo = () => {
-        const { type, extraInfo } = this.state.value;
+        const {type, extraInfo} = this.state.value;
         return type === 1 || (type === 2 && !_.isEmpty(extraInfo));
     };
 
     render() {
-        const { value, messageInvalid, touch } = this.state;
-
-        console.log('value', value);
+        const {value, messageInvalid, touch} = this.state;
 
         return (
             <Form>
                 <Row>
                     <Col md="6">
                         <FormGroup>
-                            <label>ID</label>
-                            <Input
-                                className="bor-gray text-dark"
-                                placeholder="Nhập ID"
-                                type="number"
-                                name="id"
-                                value={value.id}
-                                onChange={this.handleOnChange}
-                                invalid={
-                                    touch.id && !checkValidNumber(value.id)
-                                }
-                                min={0}
-                            />
-                            <FormFeedback invalid={'true'}>
-                                {messageInvalid.id}
-                            </FormFeedback>
+                            <label>Loại ngày</label>
+                            <Select
+                                style={{width: '100%'}}
+                                className="bor-radius"
+                                value={value.type}
+                                onChange={(val) => this.handleChangeType(val)}
+                                onCancel={() => this.clear()}
+                            >
+                                <Option className=" bor-radius" value={1}>
+                                    Ngày thường
+                                </Option>
+                                <Option className=" bor-radius" value={2}>
+                                    Ngày đặc biệt
+                                </Option>
+                            </Select>
                         </FormGroup>
                     </Col>
                     <Col md="6">
-                        <FormGroup>
-                            <label>Ngày</label>
-                            <DatePicker
-                                className="form-control bor-radius"
-                                format={'DD-MM-YYYY'}
-                                value={moment(value.date)}
-                                onChange={(val) => this.handleChangeDate(val)}
-                            />
-                        </FormGroup>
+                        {value.type === 2 ?
+                            <FormGroup>
+                                <label>Ngày</label>
+                                <DatePicker
+                                    className="form-control bor-radius"
+                                    format={'DD-MM-YYYY'}
+                                    value={moment(value.date)}
+                                    onChange={(val) => this.handleChangeDate(val)}
+                                />
+                            </FormGroup> :
+                            <FormGroup>
+                                <label>Thứ</label>
+                                <Select
+                                    style={{width: '100%'}}
+                                    className="bor-radius"
+                                    value={value.weekDay}
+                                    onChange={(val) =>
+                                        this.handleChangeWeekDay(val)
+                                    }
+                                    onCancel={() => this.clear()}
+                                >
+                                    <Option className=" bor-radius" value={1}>
+                                        Chủ nhật
+                                    </Option>
+                                    <Option className=" bor-radius" value={2}>
+                                        Thứ 2
+                                    </Option>
+                                    <Option className=" bor-radius" value={3}>
+                                        Thứ 3
+                                    </Option>
+                                    <Option className=" bor-radius" value={4}>
+                                        Thứ 4
+                                    </Option>
+                                    <Option className=" bor-radius" value={5}>
+                                        Thứ 5
+                                    </Option>
+                                    <Option className=" bor-radius" value={6}>
+                                        Thứ 6
+                                    </Option>
+                                    <Option className=" bor-radius" value={7}>
+                                        Thứ 7
+                                    </Option>
+                                </Select>
+                            </FormGroup>}
                     </Col>
                 </Row>
                 <Row>
@@ -204,7 +232,7 @@ class FormNewWorkingDay extends React.Component {
                         <FormGroup>
                             <label>Buổi làm</label>
                             <Select
-                                style={{ width: '100%' }}
+                                style={{width: '100%'}}
                                 className="bor-radius"
                                 value={value.session}
                                 onChange={(val) =>
@@ -228,7 +256,7 @@ class FormNewWorkingDay extends React.Component {
                         <FormGroup>
                             <label>Có đi làm không ?</label>
                             <Select
-                                style={{ width: '100%' }}
+                                style={{width: '100%'}}
                                 className="bor-radius"
                                 value={value.isWorking}
                                 onChange={(val) =>
@@ -246,53 +274,32 @@ class FormNewWorkingDay extends React.Component {
                         </FormGroup>
                     </Col>
                 </Row>
-                <Row>
-                    <Col md="12">
-                        <FormGroup>
-                            <label>Loại ngày</label>
-                            <Select
-                                style={{ width: '100%' }}
-                                className="bor-radius"
-                                value={value.type}
-                                onChange={(val) => this.handleChangeType(val)}
-                                onCancel={() => this.clear()}
-                            >
-                                <Option className=" bor-radius" value={1}>
-                                    Ngày thường
-                                </Option>
-                                <Option className=" bor-radius" value={2}>
-                                    Ngày đặc biệt
-                                </Option>
-                            </Select>
-                        </FormGroup>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col md="12">
-                        <FormGroup>
-                            <label>Mô tả</label>
-                            <Input
-                                className="bor-gray text-dark"
-                                placeholder="Nhập mô tả cho ngày làm việc"
-                                type="text"
-                                name="extraInfo"
-                                value={value.extraInfo}
-                                onChange={this.handleOnChange}
-                                invalid={
-                                    touch.extraInfo && !this.checkExtraInfo()
-                                }
-                                min={0}
-                            />
-                            <FormFeedback invalid={'true'}>
-                                {messageInvalid.extraInfo}
-                            </FormFeedback>
-                        </FormGroup>
-                    </Col>
-                </Row>
+                {value.type === 2 ?
+                    <Row>
+                        <Col md="12">
+                            <FormGroup>
+                                <label>Mô tả</label>
+                                <Input
+                                    className="bor-gray text-dark"
+                                    placeholder="Nhập lý do thêm cho ngày nghỉ / ngày làm việc (VD : nghỉ lễ...)"
+                                    type="text"
+                                    name="extraInfo"
+                                    value={value.extraInfo}
+                                    onChange={this.handleOnChange}
+                                    invalid={
+                                        touch.extraInfo && !this.checkExtraInfo()
+                                    }
+                                />
+                                <FormFeedback invalid={'true'}>
+                                    {messageInvalid.extraInfo}
+                                </FormFeedback>
+                            </FormGroup>
+                        </Col>
+                    </Row> : null}
                 <CardFooter className="text-right info">
                     <Popconfirm
-                        title="Bạn chắc chắn thay đổi？"
-                        icon={<QuestionCircleOutlined />}
+                        title="Bạn chắc chắn thêm mới？"
+                        icon={<QuestionCircleOutlined/>}
                         okText="Đồng ý"
                         cancelText="Huỷ"
                         onConfirm={() => this.handleSubmit()}

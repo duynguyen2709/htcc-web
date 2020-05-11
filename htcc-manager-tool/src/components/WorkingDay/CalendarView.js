@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import { Calendar, Badge, Select, Col, Row } from 'antd';
+import React, {Component} from 'react';
+import {Badge, Calendar, Col, Row, Select} from 'antd';
 import moment from 'moment';
 import SelectBox from '../Tool/SelectBox';
-import { workScheduleApi } from '../../api';
-import { store } from 'react-notifications-component';
-import { createNotify } from '../../utils/notifier';
+import {workScheduleApi} from '../../api';
+import {store} from 'react-notifications-component';
+import {createNotify} from '../../utils/notifier';
 import * as _ from 'lodash';
 
 class CalendarView extends Component {
@@ -19,7 +19,7 @@ class CalendarView extends Component {
     }
 
     componentDidMount() {
-        const { currentOffices, year } = this.state;
+        const {currentOffices, year} = this.state;
 
         if (!_.isEmpty(currentOffices) && !_.isEmpty(year)) {
             this.getListDay(currentOffices, year);
@@ -27,27 +27,63 @@ class CalendarView extends Component {
     }
 
     getListData = (value) => {
-        const { listDays = [] } = this.state;
+        const {listDays = []} = this.state;
+        const result = [];
 
-        for (let index = 0; index < listDays.length; index++) {
-            const element = listDays[index];
-
-            if (
+        const specialDays = listDays.filter((element) => {
+            return (
                 element.type === 2 &&
                 _.isEqual(value.format('YYYYMMDD'), element.date)
-            ) {
-                return [{ type: 'success', content: element.extraInfo }];
-            }
+            )
+        });
 
-            if (value.day() + 1 === element.weekDay && !element.isWorking) {
-                return [{ type: 'orange' }];
+        const normalDays = listDays.filter((element) => {
+            return (
+                element.type === 1 && !element.isWorking &&
+                value.day() + 1 === element.weekDay
+            )
+        });
+
+        for (let element of specialDays) {
+            let color = 'success';
+            if (element.isWorking) {
+                color = 'red';
+            } else {
+                if (element.session === 1) {
+                    color = 'purple';
+                } else if (element.session === 2) {
+                    color = 'orange';
+                } else {
+                    color = 'success';
+                }
             }
+            result.push({key: element.id, type: color, content: element.extraInfo});
         }
 
-        return [];
+        for (let element of normalDays) {
+            let color = 'blue';
+            if (element.session === 1) {
+                color = 'purple';
+            } else if (element.session === 2) {
+                color = 'orange';
+            } else {
+                color = 'blue';
+            }
+            result.push({key: element.id, type: color});
+        }
+
+        return result;
     };
 
     getListDay = (officeId, year) => {
+        if (!officeId || _.isEmpty(officeId)) {
+            return;
+        }
+
+        this.setState({
+            listDays: []
+        });
+
         workScheduleApi
             .getListWorkingDay(officeId, year)
             .then((res) => {
@@ -76,35 +112,41 @@ class CalendarView extends Component {
         return (
             <ul className="events">
                 {listData.map((item) => (
-                    <li key={item.content} className="text-center">
-                        <Badge status={item.type} text={item.content} />
-                    </li>
-                ))}
+                    <li key={item.key} className="text-left">
+                        <Badge status={item.type} text={item.content}/>
+                    </li>)
+                )}
             </ul>
         );
     };
 
     onPanelChange = (value, mode) => {
-        const { year, officeId } = this.state;
+        const {year, currentOffices} = this.state;
         const newYear = value.format('YYYY');
+        const newMonth = value.format('MM');
 
         if (!_.isEqual(year, newYear)) {
-            this.getListDay(officeId, newYear);
+            this.getListDay(currentOffices, newYear);
         }
+
         this.setState({
             year: newYear,
-            month: value.format('MM'),
+            month: newMonth,
         });
     };
 
     getOfficeId = (id) => {
+        const lastOffice = this.state.currentOffices;
         this.setState({
             currentOffices: id,
         });
-        this.getListDay(id, this.state.year);
+
+        if (!_.isEqual(lastOffice, id)) {
+            this.getListDay(id, this.state.year);
+        }
     };
 
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps, nextContext) {
         if (
             !_.isEqual(nextProps.currentOffices, this.props.currentOffices) &&
             !_.isEmpty(nextProps.currentOffices)
@@ -113,16 +155,25 @@ class CalendarView extends Component {
                 currentOffices: nextProps.currentOffices,
             });
         }
+
+        if (
+            !_.isEqual(nextProps.refresh, this.props.refresh) &&
+            nextProps.refresh !== null
+        ) {
+            const {currentOffices, year} = this.state;
+            this.getListDay(currentOffices, year);
+        }
     }
 
     render() {
-        const { optionsOffices, currentOffices } = this.props;
+        const {optionsOffices} = this.props;
+        const {currentOffices} = this.state;
 
         return (
             <Row>
                 <Calendar
                     dateCellRender={this.dateCellRender}
-                    headerRender={({ value, type, onChange, onTypeChange }) => {
+                    headerRender={({value, type, onChange, onTypeChange}) => {
                         const start = 0;
                         const end = 12;
                         const monthOptions = [];
@@ -148,8 +199,14 @@ class CalendarView extends Component {
                         const month = value.month();
 
                         const year = value.year();
+                        const currentYear = new Date().getFullYear();
+
                         const options = [];
                         for (let i = year - 10; i < year + 10; i += 1) {
+                            if (i < currentYear - 5 || i > currentYear + 1) {
+                                continue;
+                            }
+
                             options.push(
                                 <Select.Option
                                     key={i}
@@ -161,7 +218,7 @@ class CalendarView extends Component {
                             );
                         }
                         return (
-                            <Row style={{ borderBottom: '2px solid #389e0d' }}>
+                            <Row style={{borderBottom: '2px solid #389e0d'}}>
                                 <Col sm={4} className="mr-2">
                                     <SelectBox
                                         key={optionsOffices}
@@ -172,6 +229,7 @@ class CalendarView extends Component {
                                 </Col>
                                 <Col sm={2} className="mr-2">
                                     <Select
+                                        style={{width: '100%'}}
                                         dropdownMatchSelectWidth={false}
                                         value={String(month)}
                                         onChange={(selectedMonth) => {
@@ -187,6 +245,7 @@ class CalendarView extends Component {
                                 </Col>
                                 <Col sm={2} className="mr-2">
                                     <Select
+                                        style={{width: '100%'}}
                                         dropdownMatchSelectWidth={false}
                                         className="my-year-select"
                                         onChange={(newYear) => {
@@ -200,17 +259,35 @@ class CalendarView extends Component {
                                         {options}
                                     </Select>
                                 </Col>
-                                <Col className="mr-2">
+                                <Col offset={1} className="mr-2">
                                     <Badge
                                         status="success"
                                         text="Ngày nghỉ lễ"
                                     />
-                                    <br />
+                                    <br/>
+                                    <Badge
+                                        status="red"
+                                        text="Tăng ca/ làm thêm"
+                                    />
+                                    <br/>
+                                </Col>
+                                <Col offset={1} className="mr-2">
+                                    <Badge
+                                        status="purple"
+                                        text="Nghỉ buổi sáng"
+                                    />
+                                    <br/>
                                     <Badge
                                         status="orange"
-                                        text="Ngày nghỉ thường"
+                                        text="Nghỉ buổi chiều"
                                     />
-                                    <br />
+                                    <br/>
+                                </Col>
+                                <Col offset={1} className="mr-2">
+                                    <Badge
+                                        status="blue"
+                                        text="Ngày nghỉ thường (cả ngày)"
+                                    />
                                 </Col>
                             </Row>
                         );

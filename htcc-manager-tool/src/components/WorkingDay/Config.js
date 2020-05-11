@@ -1,26 +1,26 @@
-import React, { Component } from 'react';
-import { Tabs, Col, Select, Row, Popconfirm, Tooltip } from 'antd';
+import React, {Component} from 'react';
+import {Col, Popconfirm, Row, Select, Tabs, Tooltip} from 'antd';
 import {
-    PlusSquareOutlined,
-    ScheduleOutlined,
     CalendarOutlined,
+    PlusSquareOutlined,
     QuestionCircleOutlined,
+    ScheduleOutlined,
     SettingOutlined,
 } from '@ant-design/icons';
 import NormalDayTable from './NormalDayTable';
 import SpecialDayTable from './SpecialDayTable';
 import SelectBox from '../Tool/SelectBox';
-import { connect } from 'react-redux';
-import { workScheduleApi } from '../../api';
-import { store } from 'react-notifications-component';
-import { createNotify } from '../../utils/notifier';
+import {connect} from 'react-redux';
+import {workScheduleApi} from '../../api';
+import {store} from 'react-notifications-component';
+import {createNotify} from '../../utils/notifier';
 import moment from 'moment';
 import * as _ from 'lodash';
-import { Button, CardFooter } from 'reactstrap';
+import {Button, CardFooter} from 'reactstrap';
 import FormNewWorkingDay from '../Form/FormNewWorkingDay';
 import AsyncModal from '../Modal/AsyncModal';
 
-const { TabPane } = Tabs;
+const {TabPane} = Tabs;
 
 class Config extends Component {
     constructor(props) {
@@ -36,7 +36,7 @@ class Config extends Component {
     }
 
     toggle = (submit = false) => {
-        const { currentOffices, year, normalDays, specialDays } = this.state;
+        const {normalDays, specialDays} = this.state;
 
         this.setState({
             showModal: !this.state.showModal,
@@ -45,7 +45,7 @@ class Config extends Component {
         });
 
         if (submit) {
-            this.getListDay(currentOffices, year);
+            this.reloadData();
         }
     };
 
@@ -58,7 +58,7 @@ class Config extends Component {
     };
 
     componentDidMount() {
-        const { currentOffices, year } = this.state;
+        const {currentOffices, year} = this.state;
 
         if (!_.isEmpty(currentOffices)) {
             this.getListDay(currentOffices, year);
@@ -66,6 +66,15 @@ class Config extends Component {
     }
 
     getListDay = (officeId, year) => {
+        if (!officeId || _.isEmpty(officeId)) {
+            return;
+        }
+
+        this.setState({
+            normalDays: null,
+            specialDays: null,
+        });
+
         workScheduleApi
             .getListWorkingDay(officeId, year)
             .then((res) => {
@@ -88,11 +97,10 @@ class Config extends Component {
     };
 
     renderYearOptions = () => {
-        let { year } = this.state;
-        year = parseInt(year);
+        const year = new Date().getFullYear();
 
         const options = [];
-        for (let i = year - 10; i < year + 10; i += 1) {
+        for (let i = year - 5; i <= year + 1; i += 1) {
             options.push(
                 <Select.Option key={i} value={i} className="year-item">
                     {i}
@@ -112,7 +120,7 @@ class Config extends Component {
     };
 
     submitConfigLikeHeadquarter = () => {
-        const { currentOffices, normalDays, specialDays, year } = this.state;
+        const {currentOffices, normalDays, specialDays} = this.state;
 
         this.setState({
             normalDays: null,
@@ -123,8 +131,6 @@ class Config extends Component {
             .configWorkingDayLikeHeadquarter(currentOffices)
             .then((res) => {
                 if (res.returnCode === 1) {
-                    this.getListDay(currentOffices, year);
-
                     store.addNotification(
                         createNotify('default', 'Thiết lập thành công')
                     );
@@ -148,15 +154,18 @@ class Config extends Component {
                 store.addNotification(
                     createNotify('danger', JSON.stringify(err))
                 );
-            });
+            }).finally(() => {
+            this.reloadData();
+        })
     };
 
     reloadData = () => {
         this.getListDay(this.state.currentOffices, this.state.year);
+        this.props.reload();
     };
 
     render() {
-        const { data = {} } = this.props;
+        const {data = {}} = this.props;
         const {
             currentOffices,
             normalDays,
@@ -164,8 +173,6 @@ class Config extends Component {
             year,
             showModal,
         } = this.state;
-
-        console.log('normalDays', this.state);
 
         return (
             <div className="content">
@@ -192,7 +199,7 @@ class Config extends Component {
                             <CardFooter className="text-right info no-mar">
                                 <Popconfirm
                                     title="Bạn chắc chắn về thiết lập này ？"
-                                    icon={<QuestionCircleOutlined />}
+                                    icon={<QuestionCircleOutlined/>}
                                     okText="Đồng ý"
                                     cancelText="Huỷ"
                                     onConfirm={() =>
@@ -233,9 +240,10 @@ class Config extends Component {
 
                     <Tabs defaultActiveKey="normal" type="card">
                         <TabPane
+                            style={{overflowY: 'auto', overflowX: 'scroll'}}
                             tab={
                                 <span>
-                                    <CalendarOutlined />
+                                    <CalendarOutlined/>
                                     Ngày thường
                                 </span>
                             }
@@ -249,9 +257,10 @@ class Config extends Component {
                             />
                         </TabPane>
                         <TabPane
+                            tyle={{overflowY: 'auto', overflowX: 'scroll'}}
                             tab={
                                 <span>
-                                    <ScheduleOutlined />
+                                    <ScheduleOutlined/>
                                     Ngày đặc biệt
                                 </span>
                             }
@@ -276,7 +285,7 @@ class Config extends Component {
                         title={'Thêm ngày làm việc mới'}
                         data={null}
                         mode={'new'}
-                        prop={{ officeId: currentOffices }}
+                        prop={{officeId: currentOffices}}
                     />
                 </div>
             </div>

@@ -15,12 +15,19 @@ class WorkingDay extends Component {
         this.state = {
             listData: [],
             currentOffices: '',
+            refresh: null,
         };
     }
 
-    getList = () => {};
+    toggleRefresh = () => {
+        let {refresh} = this.state;
 
-    componentWillReceiveProps(nextProps) {
+        this.setState({
+            refresh: !refresh
+        })
+    };
+
+    componentWillReceiveProps(nextProps, nextContext) {
         const { data: nextData = [] } = nextProps;
         const { data = [] } = this.props;
 
@@ -42,26 +49,14 @@ class WorkingDay extends Component {
 
     render() {
         const { data = {} } = this.props;
-        const { currentOffices } = this.state;
+        const { currentOffices, refresh } = this.state;
 
         return (
             <div className="content">
                 <div className="table-wrapper tabs-big">
-                    <Tabs defaultActiveKey="config">
+                    <Tabs defaultActiveKey="view">
                         <TabPane
-                            tab={
-                                <span>
-                                    <ToolOutlined />
-                                    Thiết lập
-                                </span>
-                            }
-                            key="config"
-                        >
-                            <Config
-                                getCurrentOffices={this.getCurrentOffices}
-                            />
-                        </TabPane>
-                        <TabPane
+                            style={{overflow: 'auto'}}
                             tab={
                                 <span>
                                     <InsertRowAboveOutlined />
@@ -71,9 +66,25 @@ class WorkingDay extends Component {
                             key="view"
                         >
                             <CalendarView
+                                refresh={refresh}
                                 key={currentOffices}
                                 optionsOffices={data.canManageOffices}
                                 currentOffices={currentOffices}
+                            />
+                        </TabPane>
+                        <TabPane
+                            style={{overflow: 'auto'}}
+                            tab={
+                                <span>
+                                    <ToolOutlined />
+                                    Thiết lập
+                                </span>
+                            }
+                            key="config"
+                        >
+                            <Config
+                                reload={this.toggleRefresh}
+                                getCurrentOffices={this.getCurrentOffices}
                             />
                         </TabPane>
                     </Tabs>

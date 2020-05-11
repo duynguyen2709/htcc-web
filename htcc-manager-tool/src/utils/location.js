@@ -24,7 +24,9 @@ export const calculateMaxDistance = (arr) => {
 };
 
 export const calculateZoomRatio = (distance) => {
-    if (distance < 20){
+    if (distance < 10) {
+        return 12;
+    } else if (distance < 20){
         return 11;
     } else if (distance < 500){
         return 7;
