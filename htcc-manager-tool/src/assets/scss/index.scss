@@ -60,6 +60,8 @@
 @import 'component/custom/sidebar-and-main-panel.scss';
 @import 'component/custom/misc.scss';
 @import 'component/custom/input-group.scss';
+@import 'component/custom/user-profile.scss';
+@import 'component/custom/sub-menu.scss';
 
 // Vendor / Plugins
 
@@ -78,3 +80,11 @@
 @import 'component/custom/cards/card-user';
 @import 'component/custom/cards/card-task';
 @import 'component/custom/cards/card-plain';
+
+//login
+@import 'component/custom/login';
+@import 'component/custom/loader';
+
+//antd
+@import 'component/custom/antd';
+@import 'component/custom/marker';

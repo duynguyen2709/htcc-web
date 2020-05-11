@@ -1,0 +1,46 @@
+.triangle-down {
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid #fff;
+    float: right;
+    position: relative;
+    top: -29px;
+    right: 15px;
+    cursor: pointer;
+}
+
+.triangle-up {
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 6px solid #fff;
+    float: right;
+    position: relative;
+    top: -29px;
+    right: 15px;
+    cursor: pointer;
+}
+
+.sub-menu {
+    margin: 0 !important;
+    padding: 0 0 10px 40px !important;
+    color: lightgrey;
+    display: block;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-size: 0.7rem;
+    line-height: 1.625rem;
+    &:hover {
+        color: #ffffff;
+    }
+    &:active,
+    &:focus {
+        color: #ffffff !important;
+    }
+    .tim-icons {
+        font-size: 0.7rem !important;
+    }
+}
