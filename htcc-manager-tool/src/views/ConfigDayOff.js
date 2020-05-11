@@ -345,7 +345,7 @@ class ConfigDayOff extends Component {
                                     <div className="float-right btn-new-small">
                                         <Tooltip
                                             placement="left"
-                                            title={'Thêm thêm danh mục'}
+                                            title={'Thêm danh mục'}
                                         >
                                             <PlusSquareOutlined
                                                 onClick={() =>

@@ -103,7 +103,10 @@ export const buildColsComplaint = (funcEdit, cols = []) => {
             width: '150px',
             defaultSortOrder: 'descend',
             sorter: (a, b) => a.date.localeCompare(b.date),
-            render: (o, record) => moment(record.date).format('DD/MM/YYYY'),
+            render: (o, record) => {
+                console.log(record.date);
+                return moment(record.date).format('DD/MM/YYYY')
+            },
         },
         {
             title: 'Thời gian',

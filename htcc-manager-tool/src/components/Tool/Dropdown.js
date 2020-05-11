@@ -34,7 +34,7 @@ class Dropdown extends React.Component {
         return (
             <React.Fragment>
                 <NavLink
-                    to={prop.path}
+                    to={(items.length > 0) ? items[0].path : prop.path}
                     className="nav-link"
                     activeClassName="active"
                     onClick={this.toggle}
@@ -59,7 +59,11 @@ class Dropdown extends React.Component {
                                 onClick={this.props.toggleSidebar}
                             >
                                 <i className={ele.icon} id={ele.id} />
-                                <span className="menu-item">{ele.name}</span>
+                                <span className="menu-item"
+                                      style={{fontSize: '0.87rem'}}
+                                >
+                                    {ele.name}
+                                </span>
                             </NavLink>
                         </span>
                     );
