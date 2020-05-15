@@ -6,7 +6,8 @@ import {
     CloseCircleTwoTone,
     DeleteTwoTone,
     EditOutlined,
-    QuestionCircleOutlined,
+    ExclamationCircleTwoTone,
+    QuestionCircleOutlined
 } from '@ant-design/icons';
 import LightboxImages from '../components/Tool/LightboxImages';
 import * as _ from 'lodash';
@@ -438,7 +439,7 @@ export const buildColsBranch = (funcEdit, funcDelete, cols = []) => [
                     </Tooltip>
                     <Popconfirm
                         title="Bạn chắc chắn muốn xoá？"
-                        icon={<QuestionCircleOutlined/>}
+                        icon={<ExclamationCircleTwoTone twoToneColor="#d9534f"/>}
                         okText="Đồng ý"
                         cancelText="Huỷ"
                         onConfirm={() => funcDelete(record)}
@@ -511,7 +512,7 @@ export const buildColsCategoryDayOff = (funcEdit, funcDelete, cols = []) => [
                     </Tooltip>
                     <Popconfirm
                         title="Bạn chắc chắn muốn xoá？"
-                        icon={<QuestionCircleOutlined/>}
+                        icon={<ExclamationCircleTwoTone twoToneColor="#d9534f"/>}
                         okText="Đồng ý"
                         cancelText="Huỷ"
                         onConfirm={() => funcDelete(record)}
@@ -566,7 +567,7 @@ export const buildColsDayOffLevel = (funcEdit, funcDelete, cols = []) => [
                     </Tooltip>
                     <Popconfirm
                         title="Bạn chắc chắn muốn xoá？"
-                        icon={<QuestionCircleOutlined/>}
+                        icon={<ExclamationCircleTwoTone twoToneColor="#d9534f"/>}
                         okText="Đồng ý"
                         cancelText="Huỷ"
                         onConfirm={() => funcDelete(record)}
@@ -622,7 +623,7 @@ export const buildColsDepartment = (funcEdit, funcDelete, cols = []) => [
                     />
                     <Popconfirm
                         title="Bạn chắc chắn muốn xoá？"
-                        icon={<QuestionCircleOutlined/>}
+                        icon={<ExclamationCircleTwoTone twoToneColor="#d9534f"/>}
                         okText="Đồng ý"
                         cancelText="Huỷ"
                         onConfirm={() => funcDelete(record)}
@@ -704,7 +705,7 @@ export const buildColsShift = (funcEdit, funcDelete, cols = []) => [
         title: () => {
             return (
                 <div style={{display: 'flex', flexDirection: 'row'}}>
-                    <span>Cho phép điểm danh khác giờ</span>
+                    <span>Điểm danh không ràng buộc</span>
                     <Tooltip placement="top"
                              title={'Ví dụ : Ca lúc 8h30 - 17h30, điểm danh lúc 8h - 17h vẫn tính đủ ca'}>
                         <QuestionCircleOutlined style={{margin: 'auto', marginLeft: '5px'}}/>
@@ -712,7 +713,7 @@ export const buildColsShift = (funcEdit, funcDelete, cols = []) => [
                 </div>
             )
         },
-        width: '190px',
+        width: '180px',
         dataIndex: 'allowDiffTime',
         render: (o, record) => {
             if (record.allowDiffTime) {
@@ -741,8 +742,11 @@ export const buildColsShift = (funcEdit, funcDelete, cols = []) => [
                         />
                     </Tooltip>
                     <Popconfirm
-                        title="Xóa ca làm việc sẽ xóa cả lịch xếp ca tương ứng.Bạn chắc chắn muốn xoá？"
-                        icon={<QuestionCircleOutlined/>}
+                        title={<>
+                            <div>Xóa ca làm việc sẽ xóa cả lịch xếp ca tương ứng</div>
+                            <div>Bạn chắc chắn muốn xoá ？</div>
+                        </>}
+                        icon={<ExclamationCircleTwoTone twoToneColor="#d9534f"/>}
                         okText="Đồng ý"
                         cancelText="Huỷ"
                         onConfirm={() => funcDelete(record)}
@@ -797,7 +801,7 @@ export const buildColsConfigDay = (funcEdit, funcDelete, cols = []) => [
                     </Tooltip>
                     <Popconfirm
                         title="Bạn chắc chắn muốn xoá？"
-                        icon={<QuestionCircleOutlined/>}
+                        icon={<ExclamationCircleTwoTone twoToneColor="#d9534f"/>}
                         okText="Đồng ý"
                         cancelText="Huỷ"
                         onConfirm={() => funcDelete(record)}

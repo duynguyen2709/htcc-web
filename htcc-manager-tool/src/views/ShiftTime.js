@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Col, Input, Popconfirm, Row, Table, Tooltip} from 'antd';
-import {PlusSquareOutlined, QuestionCircleOutlined, SettingOutlined,} from '@ant-design/icons';
+import {ExclamationCircleTwoTone, PlusSquareOutlined, SettingOutlined} from '@ant-design/icons';
 import {workScheduleApi} from '../api';
 import {store} from 'react-notifications-component';
 import {createNotify} from '../utils/notifier';
@@ -22,13 +22,19 @@ class ShiftTime extends Component {
             showFormEdit: false,
             curRecordEdit: null,
             officeId: null,
-            isLoading: true,
+            isLoading: false,
             dataTable: null,
             mode: 'new',
             showModal: false,
         };
         this.dataTable = [];
     }
+
+    toggleLoading = () => {
+        this.setState({
+            isLoading: !this.state.isLoading
+        })
+    };
 
     toggle = (submit = false) => {
         const {dataTable, officeId} = this.state;
@@ -71,28 +77,41 @@ class ShiftTime extends Component {
         this.setState({
             dataTable: null,
         });
-        this.dataTable = [];
+        this.dataTable = null;
+
+        this.toggleLoading();
 
         workScheduleApi
             .getListShiftTime(officeId)
             .then((res) => {
                 if (res.returnCode === 1) {
-                    console.log(res.data);
                     this.setState({
                         dataTable: res.data,
                     });
                     this.dataTable = res.data;
                 } else {
+                    this.setState({
+                        dataTable: [],
+                    });
+                    this.dataTable = [];
+
                     store.addNotification(
                         createNotify('danger', res.returnMessage)
                     );
                 }
             })
             .catch((err) => {
+                this.setState({
+                    dataTable: [],
+                });
+                this.dataTable = [];
+
                 store.addNotification(
                     createNotify('danger', JSON.stringify(err))
                 );
-            });
+            }).finally(() => {
+            this.toggleLoading();
+        });
     };
 
     componentWillReceiveProps(nextProps, nextContext) {
@@ -118,10 +137,7 @@ class ShiftTime extends Component {
             return;
         }
 
-        this.setState({
-            dataTable: [],
-        });
-        this.dataTable = [];
+        this.toggleLoading();
 
         workScheduleApi
             .configLikeHeadquarter(officeId)
@@ -142,7 +158,9 @@ class ShiftTime extends Component {
                 store.addNotification(
                     createNotify('danger', JSON.stringify(err))
                 );
-            });
+            }).finally(() => {
+            this.toggleLoading();
+        });
     };
 
     onSearch = (e) => {
@@ -189,10 +207,7 @@ class ShiftTime extends Component {
             return;
         }
 
-        this.setState({
-            dataTable: [],
-        });
-        this.dataTable = [];
+        this.toggleLoading();
 
         workScheduleApi
             .deleteShiftTime(officeId, record.shiftId)
@@ -213,7 +228,9 @@ class ShiftTime extends Component {
                 store.addNotification(
                     createNotify('danger', JSON.stringify(err))
                 );
-            });
+            }).finally(() => {
+            this.toggleLoading();
+        });
     };
 
     render() {
@@ -223,6 +240,7 @@ class ShiftTime extends Component {
             showModal,
             mode,
             officeId,
+            isLoading
         } = this.state;
 
         const {data = {}} = this.props;
@@ -251,8 +269,11 @@ class ShiftTime extends Component {
                                 <div style={{display: 'flex', flexDirection: 'row'}}>
                                     <CardFooter className="text-right info">
                                         <Popconfirm
-                                            title="Bạn chắc chắn về thiết lập này ？"
-                                            icon={<QuestionCircleOutlined/>}
+                                            title={<>
+                                                <div>Thiết lập này sẽ xóa cả lịch xếp ca tương ứng</div>
+                                                <div>Bạn chắc chắn thực hiện ？</div>
+                                            </>}
+                                            icon={<ExclamationCircleTwoTone twoToneColor="#d9534f"/>}
                                             okText="Đồng ý"
                                             cancelText="Huỷ"
                                             onConfirm={this.submitConfigLikeHeadquarter}
@@ -294,9 +315,10 @@ class ShiftTime extends Component {
                             )}
                             dataSource={this.mapData(dataTable)}
                             scroll={{
+                                x: 1300,
                                 y: 'calc(100vh - 355px)',
                             }}
-                            loading={dataTable === null}
+                            loading={dataTable === null || isLoading}
                             pagination={false}
                         />
                     </div>
@@ -312,7 +334,7 @@ class ShiftTime extends Component {
                             visible={showModal}
                             toggle={(submit) => this.toggle(submit)}
                             title={
-                                mode === 'new' ? 'Thêm ca mới' : 'Chỉnh sửa ca'
+                                mode === 'new' ? 'Thêm ca làm việc mới' : 'Chỉnh sửa thông tin ca'
                             }
                             data={curRecordEdit}
                             mode={mode}
