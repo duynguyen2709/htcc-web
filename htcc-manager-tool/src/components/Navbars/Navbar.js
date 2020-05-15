@@ -108,7 +108,7 @@ class AdminNavbar extends React.Component {
                         ? 'icon-bullet-list-67 tim-icons'
                         : 'icon-align-center tim-icons'
                     }
-                  ></i>
+                  />
                 </button>
               </div>
               <div
