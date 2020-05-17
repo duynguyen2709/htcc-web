@@ -8,6 +8,7 @@ import {store} from "react-notifications-component";
 import {createNotify} from "../utils/notifier";
 import ShiftByDateArrangement from "../components/ShiftArrangement/ShiftByDateArrangement";
 import ReactLoading from "react-loading";
+import FixedShiftArrangement from "../components/ShiftArrangement/FixedShiftArrangement";
 
 const {TabPane} = Tabs;
 
@@ -126,6 +127,21 @@ class ShiftArrangement extends Component {
                 shiftByDateList: shiftByDateList
             })
         }
+
+        if (type === 1) {
+            const fixedShiftList = [...this.state.fixedShiftList];
+            for (let office of fixedShiftList) {
+                for (let shift of office.shiftDetailList) {
+                    for (let d of shift.detailList) {
+                        d.employeeList = d.employeeList.filter(item => item.arrangeId !== arrangeId);
+                    }
+                }
+            }
+
+            this.setState({
+                fixedShiftList: fixedShiftList
+            })
+        }
     };
 
     render() {
@@ -162,13 +178,16 @@ class ShiftArrangement extends Component {
                                 marginTop: '10px'
                             }}>
                                 <Col span={24}>
-                                    <Tabs defaultActiveKey="day-shift">
+                                    <Tabs defaultActiveKey="fixed-shift">
                                         <TabPane
                                             style={{overflow: 'auto', marginTop: '-8px'}}
                                             tab={<span><CalendarOutlined/>Ca cố định</span>}
                                             key="fixed-shift"
                                         >
-                                            <p>Ca cố định</p>
+                                            <FixedShiftArrangement data={fixedShiftList}
+                                                                   employeeList={canManageEmployees}
+                                                                   removeShiftArrangement={this.removeShiftArrangement}
+                                            />
                                         </TabPane>
                                         <TabPane
                                             style={{overflow: 'auto', marginTop: '-8px'}}

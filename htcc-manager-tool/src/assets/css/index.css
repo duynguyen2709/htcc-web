@@ -55,15 +55,16 @@ html {
 article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   display: block; }
 
-body {
-  margin: 0;
-  font-family: "Open Sans", sans-serif;
-  font-size: 0.875rem;
-  font-weight: 400;
-  line-height: 1.5;
-  color: #525f7f;
-  text-align: left;
-  background-color: #e8f5e9; }
+/*body {*/
+/*  margin: 0;*/
+/*  font-family: "Open Sans", sans-serif;*/
+/*  font-size: 0.875rem;*/
+/*  font-weight: 400;*/
+/*  line-height: 1.5;*/
+/*  color: #525f7f;*/
+/*  text-align: left;*/
+/*  background-color: #e8f5e9; */
+/*}*/
 
 [tabindex="-1"]:focus {
   outline: 0 !important; }
@@ -4249,7 +4250,7 @@ button.close {
   z-index: 1070;
   display: block;
   margin: 0;
-  font-family: "Open Sans", sans-serif;
+  /*font-family: "Open Sans", sans-serif;*/
   font-style: normal;
   font-weight: 400;
   line-height: 1.5;
@@ -4334,7 +4335,7 @@ button.close {
   z-index: 1060;
   display: block;
   max-width: 276px;
-  font-family: "Open Sans", sans-serif;
+  /*font-family: "Open Sans", sans-serif;*/
   font-style: normal;
   font-weight: 400;
   line-height: 1.5;
@@ -4379,7 +4380,7 @@ button.close {
   .bs-popover-top .arrow::before, .bs-popover-auto[x-placement^="top"] .arrow::before {
     bottom: 0;
     border-top-color: transparent; }
-  
+
   .bs-popover-top .arrow::after,
   .bs-popover-auto[x-placement^="top"] .arrow::after {
     bottom: 1px;
@@ -4399,7 +4400,7 @@ button.close {
   .bs-popover-right .arrow::before, .bs-popover-auto[x-placement^="right"] .arrow::before {
     left: 0;
     border-right-color: transparent; }
-  
+
   .bs-popover-right .arrow::after,
   .bs-popover-auto[x-placement^="right"] .arrow::after {
     left: 1px;
@@ -4416,7 +4417,7 @@ button.close {
   .bs-popover-bottom .arrow::before, .bs-popover-auto[x-placement^="bottom"] .arrow::before {
     top: 0;
     border-bottom-color: transparent; }
-  
+
   .bs-popover-bottom .arrow::after,
   .bs-popover-auto[x-placement^="bottom"] .arrow::after {
     top: 1px;
@@ -4445,7 +4446,7 @@ button.close {
   .bs-popover-left .arrow::before, .bs-popover-auto[x-placement^="left"] .arrow::before {
     right: 0;
     border-left-color: transparent; }
-  
+
   .bs-popover-left .arrow::after,
   .bs-popover-auto[x-placement^="left"] .arrow::after {
     right: 1px;
@@ -10014,19 +10015,19 @@ h1, h2, h3, h4, h5, h6,
 p {
   font-weight: 300; }
 
-button,
-input,
-optgroup,
-select,
-textarea {
-  font-family: "Open Sans", sans-serif; }
+/*button,*/
+/*input,*/
+/*optgroup,*/
+/*select,*/
+/*textarea {*/
+/*  font-family: "Open Sans", sans-serif; }*/
 
 .card h1, .card h2, .card h3, .card h4, .card h5, .card h6, .card p {
-  color: rgba(255, 255, 255, 0.8); }
+  color: rgba(0, 0, 0, 0.8); }
 
 h1, h2, h3, h4, h5, h6 {
-  font-weight: 400;
-  color: rgba(255, 255, 255, 0.8); }
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.8); }
 
 a {
   color: #66bb6a;
