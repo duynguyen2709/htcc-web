@@ -159,3 +159,7 @@
     height: calc(100vh - 350px);
     overflow: auto;
 }
+
+.ant-input-search-icon::before {
+    border-left: none;
+}

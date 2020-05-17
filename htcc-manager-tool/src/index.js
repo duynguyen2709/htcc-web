@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './assets/scss/index.scss';
+import './assets/css/index.css';
 import './assets/css/nucleo-icons.css';
+import './App.css';
 import ReactNotification from 'react-notifications-component';
 import App from './App';
 import 'react-notifications-component/dist/theme.css';
