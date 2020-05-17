@@ -145,3 +145,7 @@
     max-height: calc(100vh - 250px);
     overflow: scroll;
 }
+
+.ant-input-search-icon::before {
+    border-left: none;
+}
