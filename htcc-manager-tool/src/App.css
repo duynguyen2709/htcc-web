@@ -145,3 +145,17 @@
     max-height: calc(100vh - 250px);
     overflow: scroll;
 }
+
+.shift-employee-card {
+    padding: 10px;
+}
+
+.flex-row {
+    display: flex;
+    flex-direction: row;
+}
+
+.shift-list-employee {
+    height: calc(100vh - 350px);
+    overflow: auto;
+}

@@ -7,6 +7,7 @@ import LeaveRequest from './views/LeaveRequest';
 import ConfigDayOff from './views/ConfigDayOff';
 import ShiftTime from './views/containers/ShiftTimeContainer';
 import WorkingDay from './views/containers/WorkingDayContainer';
+import ShiftArrangement from "./views/ShiftArrangement";
 
 const routes = [
     {
@@ -78,13 +79,23 @@ const routes = [
                 layout: '/',
             },
             {
-                name: 'Ca',
+                name: 'Danh sách ca',
                 icon: 'tim-icons icon-time-alarm',
                 class: 'sub-menu canManageOffices',
                 path: '/lich-lam/ca',
                 key: '/lich-lam/ca',
                 brand: 'Lịch Làm / Ca',
                 component: ShiftTime,
+                layout: '/',
+            },
+            {
+                name: 'Xếp ca',
+                icon: 'tim-icons icon-calendar-60',
+                class: 'sub-menu',
+                path: '/lich-lam/xep-ca',
+                key: '/lich-lam/xep-ca',
+                brand: 'Lịch Làm / Xếp Ca',
+                component: ShiftArrangement,
                 layout: '/',
             },
         ],

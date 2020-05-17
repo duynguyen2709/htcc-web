@@ -6,3 +6,4 @@ export { default as leaveRequestApi } from './leaveRequest';
 export { default as companyApi } from './company';
 export { default as configDayOffApi } from './configDayoff';
 export { default as workScheduleApi } from './workSchedule';
+export { default as shiftArrangement } from './shiftArrangement';
