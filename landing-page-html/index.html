@@ -42,9 +42,10 @@
                         <nav class="navbar navbar-expand-lg navbar-light">
                             <!-- Logo -->
                             <a class="navbar-brand" href="#">HTCC</a>
-                            <button id="btn-nav" class="navbar-toggler  my-btn-nav" type="button" data-toggle="collapse" data-target="#ca-navbar"
-                                aria-controls="ca-navbar" aria-expanded="false" aria-label="Toggle navigation"><span
-                                    id="span-nav" class="navbar-toggler-icon span-nav"></span></button>
+                            <button id="btn-nav" class="navbar-toggler  my-btn-nav" type="button" data-toggle="collapse"
+                                data-target="#ca-navbar" aria-controls="ca-navbar" aria-expanded="false"
+                                aria-label="Toggle navigation"><span id="span-nav"
+                                    class="navbar-toggler-icon span-nav"></span></button>
                             <!-- Menu Area -->
                             <div class="collapse navbar-collapse " id="ca-navbar">
                                 <ul class="navbar-nav m-auto my-nav" id="nav">
@@ -261,8 +262,10 @@
                     <img style="max-height: 580px;" src="http://vue.pixelstrap.com/tovo/static/img/222.5eea2b2.png" />
                 </div>
                 <div class="col">
-                    <h2 langg="vn" style="padding-bottom: 40px; color: #444444;">Các tính năng <b class="logo">HTCC</b></h2>
-                    <h2 langg="en" style="padding-bottom: 40px; color: #444444;">Features of <b class="logo">HTCC</b></h2>
+                    <h2 langg="vn" style="padding-bottom: 40px; color: #444444;">Các tính năng <b class="logo">HTCC</b>
+                    </h2>
+                    <h2 langg="en" style="padding-bottom: 40px; color: #444444;">Features of <b class="logo">HTCC</b>
+                    </h2>
                     <div class="row">
 
                         <div class="col">
@@ -289,7 +292,8 @@
                                             suất cao
                                         </div>
                                         <div langg="en" class="header__item">
-                                            <i class="fas fa-chart-line fa-lg plan__icon" aria-hidden="true"></i>High Performance
+                                            <i class="fas fa-chart-line fa-lg plan__icon" aria-hidden="true"></i>High
+                                            Performance
                                         </div>
                                         <p class="describe-feature">Lorem Ipsum Is Simply Dummy Text Of The Printing And
                                             Typesetting Industry.</p>
@@ -302,7 +306,8 @@
                                             năng
                                         </div>
                                         <div langg="en" class="header__item">
-                                            <i class="fa fa-cogs fa-lg plan__icon" aria-hidden="true"></i>Unlimited Features
+                                            <i class="fa fa-cogs fa-lg plan__icon" aria-hidden="true"></i>Unlimited
+                                            Features
                                         </div>
                                         <p class="describe-feature">Lorem Ipsum Is Simply Dummy Text Of The Printing And
                                             Typesetting Industry.</p>
@@ -316,7 +321,8 @@
                                 <li class="plan__item">
 
                                     <div langg="vn" class="header__item">
-                                        <i class="fa fa-wrench fa-lg plan__icon" aria-hidden="true"></i>Cập nhập nhanh chóng
+                                        <i class="fa fa-wrench fa-lg plan__icon" aria-hidden="true"></i>Cập nhập nhanh
+                                        chóng
                                     </div>
                                     <div langg="en" class="header__item">
                                         <i class="fa fa-wrench fa-lg plan__icon" aria-hidden="true"></i>Quick Update
@@ -346,7 +352,8 @@
                                         <i class="fa fa-headphones fa-lg plan__icon" aria-hidden="true"></i>Hỗ trợ 24x7
                                     </div>
                                     <div langg="en" class="header__item">
-                                        <i class="fa fa-headphones fa-lg plan__icon" aria-hidden="true"></i>24 X 7 Support
+                                        <i class="fa fa-headphones fa-lg plan__icon" aria-hidden="true"></i>24 X 7
+                                        Support
                                     </div>
                                     <p class="describe-feature">Lorem Ipsum Is Simply Dummy Text Of The Printing And
                                         Typesetting Industry.</p>
@@ -948,7 +955,7 @@
 
     <script src="js/price.js"></script>
 
-    <script src="js/owl.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
 
     <!-- <script src="js/switch-language.js"></script> -->
 
@@ -985,16 +992,102 @@
                 $('[langg="vn"]').toggle();
                 $('[langg="en"]').toggle();
             });
-       
 
-        $('.owl-carousel').owlCarousel({
-            onChanged: callback
-    });
-    function callback(event) {
-        console.log(event.target)
-    }
 
-});
+            //     $('.owl-carousel').owlCarousel({
+            //         onChanged: callback
+            // });
+            // function callback(event) {
+            //     console.log(event.target)
+            // }
+
+        });
+
+        $(document).ready(function () {
+            // setEdge();
+
+            var owl = $('.owl-carousel');
+            owl.owlCarousel({
+                // items: 5,
+                loop: true,
+                margin: 10,
+                center: true,
+                dots: false,
+                responsive: {
+                    0: {
+                        items: 1
+                    },
+                    480: {
+                        items: 3
+                    },
+                    992: {
+
+                        items: 5
+                    }
+                },
+
+                // onChanged: callback
+                onDragged: callback
+                // });
+
+            });
+
+        })
+
+
+        function callback(event) {
+            //console.log(event.target)
+            //event.target.addClass("edge-shot")
+
+            //console.log(event.target.id)
+            //console.log($(".app_screenshots_slides.center.single-shot"))
+
+            //let el = event.target.find(".center")
+
+            let el = $('.owl-item.active');
+
+            let els = document.getElementsByClassName("owl-item active");
+
+            // console.log(el);
+
+            // console.log(el[0]);
+
+            // console.log(el[0].className)
+
+            // console.log(el[4]);
+
+            setEdge();
+
+            // el[0].className += " edge-shot"
+
+            // console.log(el[1]);
+            // console.log(el[4]);
+        }
+
+        function setEdge() {
+
+            let elEdge = $('.edge-shot')
+
+            let i;
+            for(i = 0; i <elEdge.length; i++){
+                console.log(elEdge[i].className)
+                elEdge[i].className = elEdge[i].className.replace(" edge-shot", "");
+                console.log(elEdge[i].className)
+            }
+
+            // if (elEdge) {
+            //     elEdge.forEach(element => {
+            //         element.replace(" edge-shot", "");
+            //     });
+            // }
+
+            let el = $('.owl-item.active');
+
+            if(el.length > 3){
+            el[0].className += " edge-shot"
+            el[4].className += " edge-shot"
+        }
+        }
     </script>
 
 </body>

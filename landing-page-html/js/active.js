@@ -23,28 +23,28 @@
             nav: true,
             navText: ["<i class='pe-7s-angle-left'</i>", "<i class='pe-7s-angle-right'</i>"]
         });
-        $(".app_screenshots_slides").owlCarousel({
-            //loop: true,
-            mouseDrag: true,
-            // autoplay: true,
-            smartSpeed: 800,
-            margin: 30,
-            center: true,
-            dots: true,
-            responsive: {
-                0: {
-                    items: 1
-                },
-                480: {
-                    items: 3
-                },
-                992: {
-                    items: 5
-                }
-            },
+        // $(".app_screenshots_slides").owlCarousel({
+        //     loop: true,
+        //     mouseDrag: true,
+        //     // autoplay: true,
+        //     smartSpeed: 800,
+        //     margin: 30,
+        //     center: true,
+        //     dots: true,
+        //     responsive: {
+        //         0: {
+        //             items: 1
+        //         },
+        //         480: {
+        //             items: 3
+        //         },
+        //         992: {
+        //             items: 5
+        //         }
+        //     },
 
-            onChanged: callback
-        });
+        //     onChanged: callback
+        // });
 
         function callback(event) {
             //console.log(event.target)

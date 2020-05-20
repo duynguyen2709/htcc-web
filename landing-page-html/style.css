@@ -896,6 +896,7 @@ p {
 
 .app_screenshots_slides {
     padding: 0 6%;
+    
 }
 
 .app_screenshots_slides .single-shot {
@@ -903,10 +904,11 @@ p {
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
     -webkit-transform: scale(0.85);
     -ms-transform: scale(0.85);
-    transform: scale(0.85)
+    transform: scale(0.85);
+    transition: all 0.5s ease-in;
 }
 
-.app_screenshots_slides .edge-shot {
+.app_screenshots_slides .edge-shot .single-shot {
     opacity: 0.5;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
     -webkit-transform: scale(0.65);
