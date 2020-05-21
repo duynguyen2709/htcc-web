@@ -1,19 +1,23 @@
-import React, {Component} from 'react';
-import {Col, Input, Popconfirm, Row, Table, Tooltip} from 'antd';
-import {ExclamationCircleTwoTone, PlusSquareOutlined, SettingOutlined} from '@ant-design/icons';
-import {workScheduleApi} from '../api';
-import {store} from 'react-notifications-component';
-import {createNotify} from '../utils/notifier';
+import React, { Component } from 'react';
+import { Col, Input, Popconfirm, Row, Table, Tooltip } from 'antd';
+import {
+    ExclamationCircleTwoTone,
+    PlusSquareOutlined,
+    SettingOutlined,
+} from '@ant-design/icons';
+import { workScheduleApi } from '../api';
+import { store } from 'react-notifications-component';
+import { createNotify } from '../utils/notifier';
 import * as _ from 'lodash';
-import {buildColsShift} from '../constant/colTable';
+import { buildColsShift } from '../constant/colTable';
 import SelectBox from '../components/Tool/SelectBox';
 import FormNewShiftTime from '../components/Form/FormNewShiftTime';
 import FormEditShiftTime from '../components/Form/FormEditShiftTime';
 import AsyncModal from '../components/Modal/AsyncModal';
-import {connect} from 'react-redux';
-import {Button, CardFooter} from 'reactstrap';
+import { connect } from 'react-redux';
+import { Button, CardFooter } from 'reactstrap';
 
-const {Search} = Input;
+const { Search } = Input;
 
 class ShiftTime extends Component {
     constructor(props) {
@@ -32,12 +36,12 @@ class ShiftTime extends Component {
 
     toggleLoading = () => {
         this.setState({
-            isLoading: !this.state.isLoading
-        })
+            isLoading: !this.state.isLoading,
+        });
     };
 
     toggle = (submit = false) => {
-        const {dataTable, officeId} = this.state;
+        const { dataTable, officeId } = this.state;
         this.setState({
             showModal: !this.state.showModal,
             curRecordEdit: null,
@@ -109,9 +113,10 @@ class ShiftTime extends Component {
                 store.addNotification(
                     createNotify('danger', JSON.stringify(err))
                 );
-            }).finally(() => {
-            this.toggleLoading();
-        });
+            })
+            .finally(() => {
+                this.toggleLoading();
+            });
     };
 
     componentWillReceiveProps(nextProps, nextContext) {
@@ -131,7 +136,7 @@ class ShiftTime extends Component {
     }
 
     submitConfigLikeHeadquarter = () => {
-        const {officeId} = this.state;
+        const { officeId } = this.state;
 
         if (!officeId || officeId === '') {
             return;
@@ -158,9 +163,10 @@ class ShiftTime extends Component {
                 store.addNotification(
                     createNotify('danger', JSON.stringify(err))
                 );
-            }).finally(() => {
-            this.toggleLoading();
-        });
+            })
+            .finally(() => {
+                this.toggleLoading();
+            });
     };
 
     onSearch = (e) => {
@@ -185,7 +191,7 @@ class ShiftTime extends Component {
             return;
         }
 
-        const {officeId} = this.state;
+        const { officeId } = this.state;
 
         if (_.isEqual(officeId, id)) {
             return;
@@ -201,7 +207,7 @@ class ShiftTime extends Component {
     };
 
     handleDeleteShiftTime = (record) => {
-        const {officeId} = this.state;
+        const { officeId } = this.state;
 
         if (!officeId || officeId === '') {
             return;
@@ -228,9 +234,10 @@ class ShiftTime extends Component {
                 store.addNotification(
                     createNotify('danger', JSON.stringify(err))
                 );
-            }).finally(() => {
-            this.toggleLoading();
-        });
+            })
+            .finally(() => {
+                this.toggleLoading();
+            });
     };
 
     render() {
@@ -240,10 +247,10 @@ class ShiftTime extends Component {
             showModal,
             mode,
             officeId,
-            isLoading
+            isLoading,
         } = this.state;
 
-        const {data = {}} = this.props;
+        const { data = {} } = this.props;
 
         return (
             <div className="content">
@@ -251,11 +258,19 @@ class ShiftTime extends Component {
                     <div className="header-table clearfix">
                         <Row justify="space-between">
                             <Col span={8}>
-                                <div style={{display: 'flex', flexDirection: 'row'}}>
+                                <div
+                                    style={{
+                                        display: 'flex',
+                                        flexDirection: 'row',
+                                    }}
+                                >
                                     <Search
                                         className="form-control bor-radius"
                                         placeholder="Tìm kiếm nhanh"
-                                        style={{width: '300', marginRight: '20px'}}
+                                        style={{
+                                            width: '300',
+                                            marginRight: '20px',
+                                        }}
                                         onChange={this.onSearch}
                                     />
                                     <SelectBox
@@ -266,17 +281,34 @@ class ShiftTime extends Component {
                                 </div>
                             </Col>
                             <Col>
-                                <div style={{display: 'flex', flexDirection: 'row'}}>
+                                <div
+                                    style={{
+                                        display: 'flex',
+                                        flexDirection: 'row',
+                                    }}
+                                >
                                     <CardFooter className="text-right info">
                                         <Popconfirm
-                                            title={<>
-                                                <div>Thiết lập này sẽ xóa cả lịch xếp ca tương ứng</div>
-                                                <div>Bạn chắc chắn thực hiện ？</div>
-                                            </>}
-                                            icon={<ExclamationCircleTwoTone twoToneColor="#d9534f"/>}
+                                            title={
+                                                <>
+                                                    <div>
+                                                        Thiết lập này sẽ xóa cả
+                                                        lịch xếp ca tương ứng
+                                                    </div>
+                                                    <div>
+                                                        Bạn chắc chắn thực hiện
+                                                        ？
+                                                    </div>
+                                                </>
+                                            }
+                                            icon={
+                                                <ExclamationCircleTwoTone twoToneColor="#d9534f" />
+                                            }
                                             okText="Đồng ý"
                                             cancelText="Huỷ"
-                                            onConfirm={this.submitConfigLikeHeadquarter}
+                                            onConfirm={
+                                                this.submitConfigLikeHeadquarter
+                                            }
                                         >
                                             <Button
                                                 className="btn-custom"
@@ -295,11 +327,22 @@ class ShiftTime extends Component {
                                             </Button>
                                         </Popconfirm>
                                     </CardFooter>
-                                    <div className="btn-new"
-                                         style={{margin: 'auto', marginLeft: '30px', marginRight: '20px'}}>
-                                        <Tooltip placement="bottomLeft" title={'Thêm ca'}>
+                                    <div
+                                        className="btn-new"
+                                        style={{
+                                            margin: 'auto',
+                                            marginLeft: '30px',
+                                            marginRight: '20px',
+                                        }}
+                                    >
+                                        <Tooltip
+                                            placement="bottomLeft"
+                                            title={'Thêm ca'}
+                                        >
                                             <PlusSquareOutlined
-                                                onClick={() => this.toggle(false)}
+                                                onClick={() =>
+                                                    this.toggle(false)
+                                                }
                                             />
                                         </Tooltip>
                                     </div>
@@ -334,11 +377,13 @@ class ShiftTime extends Component {
                             visible={showModal}
                             toggle={(submit) => this.toggle(submit)}
                             title={
-                                mode === 'new' ? 'Thêm ca làm việc mới' : 'Chỉnh sửa thông tin ca'
+                                mode === 'new'
+                                    ? 'Thêm ca làm việc mới'
+                                    : 'Chỉnh sửa thông tin ca'
                             }
                             data={curRecordEdit}
                             mode={mode}
-                            prop={{officeId: officeId}}
+                            prop={{ officeId: officeId }}
                         />
                     </div>
                 </div>
