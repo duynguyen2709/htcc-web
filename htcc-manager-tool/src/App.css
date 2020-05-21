@@ -146,6 +146,20 @@
     overflow: scroll;
 }
 
+.shift-employee-card {
+    padding: 8px;
+}
+
+.flex-row {
+    display: flex;
+    flex-direction: row;
+}
+
+.shift-list-employee {
+    height: calc(100vh - 350px);
+    overflow: auto;
+}
+
 .ant-input-search-icon::before {
     border-left: none;
 }

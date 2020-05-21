@@ -7,7 +7,7 @@ class Dropdown extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            show: false,
+            show: true,
         };
     }
 
@@ -34,7 +34,7 @@ class Dropdown extends React.Component {
         return (
             <React.Fragment>
                 <NavLink
-                    to={(items.length > 0) ? items[0].path : prop.path}
+                    to={prop.path}
                     className="nav-link"
                     activeClassName="active"
                     onClick={this.toggle}

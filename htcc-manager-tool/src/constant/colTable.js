@@ -6,7 +6,8 @@ import {
     CloseCircleTwoTone,
     DeleteTwoTone,
     EditOutlined,
-    QuestionCircleOutlined,
+    ExclamationCircleTwoTone,
+    QuestionCircleOutlined
 } from '@ant-design/icons';
 import LightboxImages from '../components/Tool/LightboxImages';
 import * as _ from 'lodash';
@@ -438,7 +439,7 @@ export const buildColsBranch = (funcEdit, funcDelete, cols = []) => [
                     </Tooltip>
                     <Popconfirm
                         title="Bạn chắc chắn muốn xoá？"
-                        icon={<QuestionCircleOutlined/>}
+                        icon={<ExclamationCircleTwoTone twoToneColor="#d9534f"/>}
                         okText="Đồng ý"
                         cancelText="Huỷ"
                         onConfirm={() => funcDelete(record)}
@@ -511,7 +512,7 @@ export const buildColsCategoryDayOff = (funcEdit, funcDelete, cols = []) => [
                     </Tooltip>
                     <Popconfirm
                         title="Bạn chắc chắn muốn xoá？"
-                        icon={<QuestionCircleOutlined/>}
+                        icon={<ExclamationCircleTwoTone twoToneColor="#d9534f"/>}
                         okText="Đồng ý"
                         cancelText="Huỷ"
                         onConfirm={() => funcDelete(record)}
@@ -566,7 +567,7 @@ export const buildColsDayOffLevel = (funcEdit, funcDelete, cols = []) => [
                     </Tooltip>
                     <Popconfirm
                         title="Bạn chắc chắn muốn xoá？"
-                        icon={<QuestionCircleOutlined/>}
+                        icon={<ExclamationCircleTwoTone twoToneColor="#d9534f"/>}
                         okText="Đồng ý"
                         cancelText="Huỷ"
                         onConfirm={() => funcDelete(record)}
@@ -622,7 +623,7 @@ export const buildColsDepartment = (funcEdit, funcDelete, cols = []) => [
                     />
                     <Popconfirm
                         title="Bạn chắc chắn muốn xoá？"
-                        icon={<QuestionCircleOutlined/>}
+                        icon={<ExclamationCircleTwoTone twoToneColor="#d9534f"/>}
                         okText="Đồng ý"
                         cancelText="Huỷ"
                         onConfirm={() => funcDelete(record)}
@@ -643,36 +644,93 @@ export const buildColsDepartment = (funcEdit, funcDelete, cols = []) => [
 
 export const buildColsShift = (funcEdit, funcDelete, cols = []) => [
     {
-        title: 'ID',
+        title: 'Mã ca',
         dataIndex: 'shiftId',
-        width: '70px',
+        width: '130px',
         fixed: 'left',
-        defaultSortOrder: 'descend',
-        sorter: (a, b) => a.shiftId < b.shiftId,
+        sorter: (a, b) => a.shiftId.localeCompare(b.shiftId),
     },
     {
-        title: 'Bắt đầu',
+        title: 'Tên ca',
+        dataIndex: 'shiftName',
+        fixed: 'left',
+        sorter: (a, b) => a.shiftName.localeCompare(b.shiftName),
+    },
+    {
+        title: 'Giờ bắt đầu',
         dataIndex: 'startTime',
-        width: '150px',
+        width: '130px',
+        sorter: (a, b) => a.startTime.localeCompare(b.startTime),
     },
     {
-        title: 'Kết thúc',
+        title: 'Giờ kết thúc',
         dataIndex: 'endTime',
-        width: '150px',
+        width: '130px',
+        sorter: (a, b) => a.endTime.localeCompare(b.endTime),
     },
     {
-        title: 'Thời gian trễ',
+        title: () => {
+            return (
+                <div style={{display: 'flex', flexDirection: 'row'}}>
+                    <span>Số ngày công</span>
+                    <Tooltip placement="top"
+                             title={'Hệ số tính công của ca làm'}>
+                        <QuestionCircleOutlined
+                            style={{margin: 'auto', marginLeft: '5px'}}/>
+                    </Tooltip>
+                </div>
+            )
+        },
+        dataIndex: 'dayCount',
+        width: '170px',
+        sorter: (a, b) => a.dayCount - b.dayCount
+    },
+    {
+        title: () => {
+            return (
+                <div style={{display: 'flex', flexDirection: 'row'}}>
+                    <span>Thời gian cho phép điểm danh trễ</span>
+                    <Tooltip placement="top"
+                             title={'Nhân viên có thể diểm danh trễ / sớm bao nhiêu phút so với giờ bắt đầu / kết thúc ca'}>
+                        <QuestionCircleOutlined style={{margin: 'auto'}}/>
+                    </Tooltip>
+                </div>
+            )
+        },
         dataIndex: 'allowLateMinutes',
         width: '150px',
         render: (o, record) => record.allowLateMinutes + ' phút',
     },
     {
+        title: () => {
+            return (
+                <div style={{display: 'flex', flexDirection: 'row'}}>
+                    <span>Điểm danh không ràng buộc</span>
+                    <Tooltip placement="top"
+                             title={'Ví dụ : Ca lúc 8h30 - 17h30, điểm danh lúc 8h - 17h vẫn tính đủ ca'}>
+                        <QuestionCircleOutlined style={{margin: 'auto', marginLeft: '5px'}}/>
+                    </Tooltip>
+                </div>
+            )
+        },
+        width: '180px',
+        dataIndex: 'allowDiffTime',
+        render: (o, record) => {
+            if (record.allowDiffTime) {
+                return <CheckCircleTwoTone twoToneColor="#52c41a"/>;
+            }
+
+            return <CloseCircleTwoTone twoToneColor="#ff7875"/>;
+        },
+        sorter: (a, b) => String(a.allowDiffTime).localeCompare(b.allowDiffTime)
+    },
+    {
         title: 'Hành động',
-        width: '70px',
+        width: '110px',
         fixed: 'right',
         render: (o, record) => {
             return (
-                <React.Fragment>
+                <>
                     <Tooltip placement="left" title={'Chỉnh sửa'}>
                         <EditOutlined
                             style={{
@@ -684,8 +742,11 @@ export const buildColsShift = (funcEdit, funcDelete, cols = []) => [
                         />
                     </Tooltip>
                     <Popconfirm
-                        title="Bạn chắc chắn muốn xoá？"
-                        icon={<QuestionCircleOutlined/>}
+                        title={<>
+                            <div>Xóa ca làm việc sẽ xóa cả lịch xếp ca tương ứng</div>
+                            <div>Bạn chắc chắn muốn xoá ？</div>
+                        </>}
+                        icon={<ExclamationCircleTwoTone twoToneColor="#d9534f"/>}
                         okText="Đồng ý"
                         cancelText="Huỷ"
                         onConfirm={() => funcDelete(record)}
@@ -700,21 +761,13 @@ export const buildColsShift = (funcEdit, funcDelete, cols = []) => [
                             />
                         </Tooltip>
                     </Popconfirm>
-                </React.Fragment>
+                </>
             );
         },
     },
 ];
 
 export const buildColsConfigDay = (funcEdit, funcDelete, cols = []) => [
-    // {
-    //     title: 'ID',
-    //     dataIndex: 'id',
-    //     width: '50px',
-    //     fixed: 'left',
-    //     defaultSortOrder: 'descend',
-    //     sorter: (a, b) => a.id - b.id,
-    // },
     ...cols,
     {
         title: 'Đi làm',
@@ -748,7 +801,7 @@ export const buildColsConfigDay = (funcEdit, funcDelete, cols = []) => [
                     </Tooltip>
                     <Popconfirm
                         title="Bạn chắc chắn muốn xoá？"
-                        icon={<QuestionCircleOutlined/>}
+                        icon={<ExclamationCircleTwoTone twoToneColor="#d9534f"/>}
                         okText="Đồng ý"
                         cancelText="Huỷ"
                         onConfirm={() => funcDelete(record)}
