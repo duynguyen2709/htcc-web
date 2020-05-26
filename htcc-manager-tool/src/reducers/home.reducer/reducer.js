@@ -10,6 +10,9 @@ const applyGetDataHome = (state, action) => ({
         canManageOffices: action.payload.canManageOffices,
         pendingComplaint: action.payload.pendingComplaint,
         pendingLeavingRequest: action.payload.pendingLeavingRequest,
+        canManageEmployees: action.payload.canManageEmployees,
+        iconList: action.payload.iconList,
+        isSuperAdmin: action.payload.isSuperAdmin,
     },
 });
 
