@@ -22,7 +22,11 @@ class SelectBox extends React.Component {
         const { options = [], currentOffices } = this.props;
         this.setState(
             {
-                value: _.isEmpty(currentOffices) ? options[0] : currentOffices,
+                value: _.isEmpty(currentOffices)
+                    ? typeof options[0] === 'object'
+                        ? options[0].key
+                        : options[0]
+                    : currentOffices,
             },
             () => {
                 this.props.returnValue(this.state.value);
@@ -31,30 +35,35 @@ class SelectBox extends React.Component {
     }
 
     onChange = (value) => {
-        if (!_.isEmpty(value)) {
-            this.setState({
-                value,
-            });
-            this.props.returnValue(value);
-        }
+        this.setState({
+            value,
+        });
+        this.props.returnValue(value);
     };
 
     render() {
-        const { options = [] } = this.props;
+        const { options = [], placeholder = 'Chọn mã chi nhánh' } = this.props;
+        let { value } = this.state;
+
+        if (!_.isEmpty(value) && typeof value === 'object') value = value.key;
 
         return (
             <Select
                 style={{ width: '100%' }}
                 className="bor-radius"
-                value={this.state.value}
+                value={value}
                 onChange={(val) => this.onChange(val)}
                 onCancel={() => this.clear()}
-                placeholder={'Chọn mã chi nhánh'}
+                placeholder={placeholder}
             >
-                {_.map(options, (o) => {
+                {_.map(options, (o, i) => {
                     return (
-                        <Option key={o} className=" bor-radius" value={o}>
-                            {o}
+                        <Option
+                            key={i}
+                            className=" bor-radius"
+                            value={o.key ? o.key : o}
+                        >
+                            {o.value ? o.value : o}
                         </Option>
                     );
                 })}

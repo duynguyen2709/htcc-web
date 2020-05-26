@@ -12,6 +12,9 @@ const doGetDataHome = (data) => ({
         canManageOffices: data.canManageOffices,
         pendingComplaint: data.pendingComplaint,
         pendingLeavingRequest: data.pendingLeavingRequest,
+        canManageEmployees: data.canManageEmployees,
+        iconList: data.iconList,
+        isSuperAdmin: data.isSuperAdmin,
     },
 });
 
