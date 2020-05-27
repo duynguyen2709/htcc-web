@@ -22,8 +22,7 @@ class ShiftArrangement extends Component {
             canManageEmployees: [],
 
             isLoading: false,
-            currentWeek: new moment("20200518", "YYYYMMDD")
-            // currentWeek: new moment(new Date())
+            currentWeek: new moment(new Date())
         };
 
         this.removeShiftArrangement = this.removeShiftArrangement.bind(this);
@@ -162,18 +161,20 @@ class ShiftArrangement extends Component {
                             width={'10%'}
                         />
                         : <>
-                            <Row>
-                                <h4 style={{margin: 'auto 10px'}}>Tuần : </h4>
-                                <Col span={4}>
-                                    <DatePicker onChange={this.onChangeWeek}
-                                                format={"WW-YYYY"}
-                                                value={currentWeek}
-                                                disabledDate={this.disableDate}
-                                                allowClear={false}
-                                                style={{width: '100%'}}
-                                                picker="week"/>
-                                </Col>
-                            </Row>
+                            <div className="header-table clearfix">
+                                <Row>
+                                    <h4 style={{margin: 'auto 10px'}}>Tuần : </h4>
+                                    <Col span={4} style={{margin: 'auto 0px'}}>
+                                        <DatePicker onChange={this.onChangeWeek}
+                                                    format={"WW-YYYY"}
+                                                    value={currentWeek}
+                                                    disabledDate={this.disableDate}
+                                                    allowClear={false}
+                                                    style={{width: '100%', margin: 'auto 0px'}}
+                                                    picker="week"/>
+                                    </Col>
+                                </Row>
+                            </div>
                             <Row style={{
                                 marginTop: '10px'
                             }}>
@@ -186,6 +187,7 @@ class ShiftArrangement extends Component {
                                         >
                                             <FixedShiftArrangement data={fixedShiftList}
                                                                    employeeList={canManageEmployees}
+                                                                   reload={this.getShiftArrangement}
                                                                    removeShiftArrangement={this.removeShiftArrangement}
                                             />
                                         </TabPane>
@@ -196,6 +198,7 @@ class ShiftArrangement extends Component {
                                         >
                                             <ShiftByDateArrangement data={shiftByDateList}
                                                                     employeeList={canManageEmployees}
+                                                                    reload={this.getShiftArrangement}
                                                                     removeShiftArrangement={this.removeShiftArrangement}
                                             />
                                         </TabPane>

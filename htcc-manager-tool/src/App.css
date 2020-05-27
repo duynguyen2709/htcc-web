@@ -156,7 +156,6 @@
 }
 
 .shift-list-employee {
-    height: calc(100vh - 350px);
     overflow: auto;
 }
 

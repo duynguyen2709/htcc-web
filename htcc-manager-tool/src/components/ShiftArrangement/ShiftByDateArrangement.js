@@ -130,7 +130,8 @@ class ShiftByDateArrangement extends Component {
                             <Collapse defaultActiveKey={[user.username]}>
                                 <Panel key={user.username}
                                        showArrow={false}
-                                       extra={this.renderButtonDelete(item.arrangeId, user.fullName)}
+                                       extra={this.employeeMap.has(user.username) ?
+                                           this.renderButtonDelete(item.arrangeId, user.fullName) : null}
                                        header={
                                            <>
                                                <Avatar src={user.avatar}/>

@@ -1326,7 +1326,7 @@ pre {
     color: #adb5bd;
     opacity: 1; }
   .form-control:disabled, .form-control[readonly] {
-    background-color: #e9ecef;
+    background-color: #e9ecef !important;
     opacity: 1; }
 
 select.form-control:focus::-ms-value {
@@ -7443,7 +7443,7 @@ a.text-darker:hover, a.text-darker:focus {
   font-size: 11px;
   font-weight: 700;
   position: relative;
-  left: 120px;
+  left: 125px;
   bottom: 42px; }
 
 .number-notify:before {
