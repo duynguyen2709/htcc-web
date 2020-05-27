@@ -2,14 +2,14 @@ import axios from 'axios';
 import { API_URL_EMPLOYEE } from '../constant/url';
 import { TOKEN, USER } from '../constant/localStorageKey';
 
-const getNotifications = (date) => {
+const getNotifications = (date, index) => {
     const token = localStorage.getItem(TOKEN);
     const user = JSON.parse(localStorage.getItem(USER));
 
     return new Promise((resolve, reject) => {
         axios
             .get(
-                `${API_URL_EMPLOYEE}/notifications/manager/${user.companyId}/${user.username}/${date}`,
+                `${API_URL_EMPLOYEE}/notifications/manager/${user.companyId}/${user.username}/${date}?index=${index}&size=20`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,

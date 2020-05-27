@@ -21,9 +21,10 @@ class CalendarTool extends React.Component {
     };
 
     render() {
-        const { picker = 'month', format = 'MM-YYYY' } = this.props;
+        const { picker = 'month', format = 'MM-YYYY', disabledDate } = this.props;
         return (
             <DatePicker
+                disabledDate={disabledDate}
                 className="form-control bor-radius"
                 onChange={this.onChange}
                 value={this.state.value}

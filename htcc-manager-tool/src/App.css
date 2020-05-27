@@ -89,6 +89,7 @@
 }
 
 .center-div {
+    z-index: 1000;
     position: fixed;
     left: 50%;
     top: 50%;
@@ -161,4 +162,11 @@
 
 .ant-input-search-icon::before {
     border-left: none;
+}
+
+.loading-spinner {
+    position: absolute;
+    bottom: 40px;
+    width: 100%;
+    text-align: center;
 }

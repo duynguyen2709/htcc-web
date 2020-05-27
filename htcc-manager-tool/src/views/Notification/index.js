@@ -1,10 +1,9 @@
-import React, { Component } from 'react';
-import { Tabs } from 'antd';
-import { SendOutlined, BellOutlined } from '@ant-design/icons';
+import React, {Component} from 'react';
+import {Tabs} from 'antd';
+import {BellOutlined} from '@ant-design/icons';
 import Notifications from './Notifications';
-import SendNotification from './SendNotification';
 
-const { TabPane } = Tabs;
+const {TabPane} = Tabs;
 
 class Notification extends Component {
     constructor(props) {
@@ -31,9 +30,10 @@ class Notification extends Component {
                         onChange={this.onChangeTab}
                     >
                         <TabPane
+                            style={{overflow: 'auto'}}
                             tab={
                                 <span>
-                                    <BellOutlined />
+                                    <BellOutlined/>
                                     Danh sách thông báo
                                 </span>
                             }
@@ -42,19 +42,6 @@ class Notification extends Component {
                         >
                             <Notifications
                                 key={`listNoti-${this.state.currentTab}`}
-                            />
-                        </TabPane>
-                        <TabPane
-                            tab={
-                                <span>
-                                    <SendOutlined />
-                                    Gửi thông báo
-                                </span>
-                            }
-                            key={`sendNoti`}
-                        >
-                            <SendNotification
-                                key={`sendNoti-${this.state.currentTab}`}
                             />
                         </TabPane>
                     </Tabs>

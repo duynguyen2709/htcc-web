@@ -7,8 +7,8 @@ import LeaveRequest from './views/LeaveRequest';
 import ConfigDayOff from './views/ConfigDayOff';
 import ShiftTime from './views/containers/ShiftTimeContainer';
 import WorkingDay from './views/containers/WorkingDayContainer';
+import Notification from './views/Notification/index';
 import ShiftArrangement from './views/ShiftArrangement';
-import Notification from './views/Notification';
 
 const routes = [
     {
