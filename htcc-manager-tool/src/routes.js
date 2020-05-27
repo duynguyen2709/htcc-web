@@ -7,9 +7,18 @@ import LeaveRequest from './views/LeaveRequest';
 import ConfigDayOff from './views/ConfigDayOff';
 import ShiftTime from './views/containers/ShiftTimeContainer';
 import WorkingDay from './views/containers/WorkingDayContainer';
-import ShiftArrangement from "./views/ShiftArrangement";
+import ShiftArrangement from './views/ShiftArrangement';
+import Notification from './views/Notification';
 
 const routes = [
+    {
+        path: '/thong-bao',
+        key: '/thong-bao',
+        name: 'Thông Báo',
+        icon: 'tim-icons icon-bell-55',
+        component: Notification,
+        layout: '/',
+    },
     {
         path: '/thong-ke',
         key: '/thong-ke',

@@ -59,8 +59,9 @@ class Dropdown extends React.Component {
                                 onClick={this.props.toggleSidebar}
                             >
                                 <i className={ele.icon} id={ele.id} />
-                                <span className="menu-item"
-                                      style={{fontSize: '0.87rem'}}
+                                <span
+                                    className="menu-item"
+                                    //   style={{fontSize: '0.87rem'}}
                                 >
                                     {ele.name}
                                 </span>
