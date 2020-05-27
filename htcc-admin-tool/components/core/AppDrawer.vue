@@ -56,10 +56,10 @@
         <v-divider />
 
         <v-list>
-          
 
-          <v-list-item active-class="primary white--text" to="/user-profile">
-            <v-list-item-action style="margin-left: 0px; !important">
+
+          <v-list-item class="icon-wrapper" active-class="primary white--text" to="/user-profile">
+            <v-list-item-action class="icon-menu">
               <v-icon>mdi-account</v-icon>
             </v-list-item-action>
             <v-list-item-content>
@@ -67,55 +67,46 @@
             </v-list-item-content>
           </v-list-item>
 
-          <v-list-group no-action  value="true" v-show="this.$onlyVisibleTo([this.$ROLE.ADMIN])">
-          <!-- <template v-slot:activator>
-            <v-list-item>
-            <v-list-item-content>
-              <v-list-item-title v-text="'Quản lý khách hàng'"></v-list-item-title>
-            </v-list-item-content>
+          <v-list-group class="no-padding" no-action value="true" v-show="this.$onlyVisibleTo([this.$ROLE.ADMIN])">
+            <template v-slot:activator>
+              <v-list-item class="icon-wrapper">
+                <v-list-item-action class="icon-menu">
+                  <v-icon>mdi-account</v-icon>
+                </v-list-item-action>
+                <v-list-item-content>
+                  <v-list-item-title>Quản lý khách hàng</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </template>
+
+            <v-list-item active-class="primary white--text" to="/companies">
+              <v-list-item-content>
+                <v-list-item-title v-text="'Quản lý công ty'" class=""></v-list-item-title>
+              </v-list-item-content>
             </v-list-item>
-          </template> -->
+          </v-list-group>
 
-          <template v-slot:activator>
-            <v-list-item style="padding-right: 0px !important;
-    margin-right: 11px !important;">
-            <v-list-item-content >
-              <v-list-item-title>Quản lý khách hàng</v-list-item-title>
-            </v-list-item-content>
+          <v-list-group class="no-padding" no-action value="true" v-show="this.$onlyVisibleTo([this.$ROLE.ADMIN, this.$ROLE.SUBADMIN])">
+            <template v-slot:activator>
+              <v-list-item class="icon-wrapper">
+                <v-list-item-action class="icon-menu">
+                  <v-icon>mdi-account</v-icon>
+                </v-list-item-action>
+                <v-list-item-content>
+                  <v-list-item-title class="title-with-arrow">Quản lý hệ thống</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </template>
+
+            <v-list-item active-class="primary white--text" to="/admins">
+              <v-list-item-content>
+                <v-list-item-title v-text="'Quản lý quản trị viên'" class=""></v-list-item-title>
+              </v-list-item-content>
             </v-list-item>
-          </template>
+          </v-list-group>
 
-          <v-list-item active-class="primary white--text" to="/companies" >
-          <!-- <v-list-item-action style="margin-left: 0px; !important">
-              <v-icon>mdi-account</v-icon>
-            </v-list-item-action> -->
-          <v-list-item-content>
-            <v-list-item-title v-text="'Quản lý công ty'" class=""></v-list-item-title>
-          </v-list-item-content>
-          </v-list-item>
-        </v-list-group>
-
-        <v-list-group no-action value="true" v-show="this.$onlyVisibleTo([this.$ROLE.ADMIN, this.$ROLE.SUBADMIN])">
-          <template v-slot:activator>
-            <v-list-item>
-            <v-list-item-content>
-              <v-list-item-title>Quản lý hệ thống</v-list-item-title>
-            </v-list-item-content>
-            </v-list-item>
-          </template>
-
-          <v-list-item active-class="primary white--text" to="/admins">
-          <!-- <v-list-item-action style="margin-left: 0px; !important">
-              <v-icon>mdi-account</v-icon>
-            </v-list-item-action> -->
-          <v-list-item-content>
-            <v-list-item-title v-text="'Quản lý quản trị viên'" class=""></v-list-item-title>
-          </v-list-item-content>
-          </v-list-item>
-        </v-list-group>
-
-        <v-list-item :active-class="color" to="/">
-            <v-list-item-action style="margin-left: 0px; !important">
+          <v-list-item style="margin-top: 6px !important;" class="icon-wrapper" :active-class="color" to="/">
+            <v-list-item-action class="icon-menu" style="margin-left: 0px;">
               <v-icon>mdi-chat-alert</v-icon>
             </v-list-item-action>
             <v-badge color="red" :content="amountComplaint" v-if="amountComplaint !== 0">
@@ -124,6 +115,15 @@
 
               </v-list-item-content>
             </v-badge>
+          </v-list-item>
+
+          <v-list-item class="icon-wrapper" :active-class="color" to="/icons">
+            <v-list-item-action class="icon-menu" >
+              <v-icon>mdi-chat-alert</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title v-text="'Quản lý icon'" class="pr-1"></v-list-item-title>
+            </v-list-item-content>
           </v-list-item>
 
         </v-list>
@@ -145,11 +145,6 @@
         PendingNotification: 0,
         logo: "/vuetifylogo.png",
         links: [
-          // {
-          //   to: '/dashboard',
-          //   icon: 'mdi-view-dashboard',
-          //   text: 'Dashboard'
-          // },
           {
             to: "/",
             icon: "mdi-account",
@@ -233,6 +228,10 @@
 </script>
 
 <style lang="scss">
+  .v-application--is-ltr .v-list-item__icon:last-of-type:not(:only-child) {
+      margin-left: -10px !important;
+    }
+
   #app-drawer {
     &.v-navigation-drawer .v-list {
       background: rgba(27, 27, 27, 0.4);
@@ -265,6 +264,20 @@
       margin-bottom: 30px !important;
       padding-left: 15px;
       padding-right: 15px;
+    }
+
+    .icon-wrapper {
+      padding-right: 0px !important;
+      margin-right: 11px !important;
+    }    
+
+    .no-padding {
+      padding: 0px !important;
+      margin-left: -16px !important;
+    }
+
+    .title-with-arrow {
+      margin-right: -20px !important;
     }
   }
 

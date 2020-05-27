@@ -42,12 +42,11 @@
                 <v-btn color="green" class="mx-auto d-block white--text" v-on="on">Đổi ảnh đại diện</v-btn>
               </template>
 
-              <material-card color="primary" elevation="12" title="Đổi mật khẩu">
+              <material-card color="primary" elevation="12" title="Đổi ảnh đại diện">
                 <!-- <v-card> -->
                 <v-form ref="form" @submit.prevent>
                   <v-card-text>
                     <v-avatar slot="offset" class="mx-auto d-block" size="130">
-                      <!-- <img :src="thisUser.avatar" /> -->
 
                       <v-img :src="thisUser.avatar" lazy-src="/vuetifylogo.png">
                         <template v-slot:placeholder>
@@ -56,11 +55,6 @@
                           </v-row>
                         </template>
 
-                        <!-- <template v-if="isLoading" v-slot:default>
-                          <v-row class="fill-height ma-0" align="center" justify="center">
-                            <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
-                          </v-row>
-                        </template>-->
                       </v-img>
                     </v-avatar>
                     <v-file-input
@@ -508,17 +502,20 @@ export default {
         .then(res => {
           if(res.data.returnCode != 1){
             this.TriggerNotiError(res.data.returnMessage);
+            this.isLoadingBtnSave = false;
+      this.dialog = false;
           }
           else{
           //this.is_loading = false;
           this.TriggerNoti(res.data.returnMessage);
+          this.isLoadingBtnSave = false;
+      this.dialog = false;
           
           //$this.goBack();
           }
         })
 
-      this.isLoadingBtnSave = false;
-      this.dialog = false;
+      
     //     console.log("error push")
     
     },
