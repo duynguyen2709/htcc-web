@@ -294,10 +294,10 @@ class FixedShiftArrangement extends Component {
                 store.addNotification(
                     createNotify('danger', JSON.stringify(err))
                 );
-            }).finally(() => {
-
-            this.toggleLoading();
-        })
+            })
+            .finally(() => {
+                this.toggleLoading();
+            });
     };
 
     onChangeOffice = (officeId) => {

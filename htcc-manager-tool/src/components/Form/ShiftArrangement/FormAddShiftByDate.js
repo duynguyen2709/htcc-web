@@ -6,40 +6,30 @@ import {createNotify} from '../../../utils/notifier';
 import {CheckCircleOutlined, QuestionCircleOutlined} from '@ant-design/icons';
 import {Popconfirm, Select} from 'antd';
 import {shiftArrangement} from '../../../api';
+import moment from 'moment';
 
 const RESET_TOUCH = {
     officeId: false,
     shiftId: false,
-    weekDay: false,
+    arrangeDate: false,
     username: false,
     type: false,
 };
 
-const WEEK_DAYS = {
-    0: '',
-    1: "Chủ nhật",
-    2: "Thứ hai",
-    3: "Thứ ba",
-    4: "Thứ tư",
-    5: "Thứ năm",
-    6: "Thứ sáu",
-    7: "Thứ bảy",
-};
-
-class FormAddFixedShiftArrangement extends React.Component {
+class FormAddShiftByDate extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             value: {
                 officeId: '',
                 shiftId: '',
-                weekDay: 0,
+                arrangeDate: '',
                 username: this.props.employeeList[0].username,
                 type: 0
             },
             messageInvalid: {
                 officeId: 'Vui lòng nhập mã văn phòng',
-                weekDay: 'Vui lòng nhập thứ',
+                arrangeDate: 'Vui lòng nhập ngày',
                 shiftId: 'Vui lòng nhập mã ca',
                 username: 'Vui lòng nhập tên nhân viên',
                 type: 'Vui lòng chọn loại ca',
@@ -80,8 +70,8 @@ class FormAddFixedShiftArrangement extends React.Component {
             !_.isEmpty(value.username) &&
             !_.isEmpty(value.officeId) &&
             !_.isEmpty(value.shiftId) &&
-            (value.type === 1 || value.type === 2) &&
-            (WEEK_DAYS[value.weekDay] !== null)
+            !_.isEmpty(value.arrangeDate) &&
+            (value.type === 1 || value.type === 2)
         );
     };
 
@@ -90,7 +80,7 @@ class FormAddFixedShiftArrangement extends React.Component {
             value: {
                 officeId: '',
                 shiftId: '',
-                weekDay: 0,
+                arrangeDate: '',
                 username: this.props.employeeList[0].username,
                 type: 0
             },
@@ -127,7 +117,7 @@ class FormAddFixedShiftArrangement extends React.Component {
                 touch: {
                     officeId: true,
                     shiftId: true,
-                    weekDay: true,
+                    arrangeDate: true,
                     username: true,
                     type: true,
                 },
@@ -147,9 +137,17 @@ class FormAddFixedShiftArrangement extends React.Component {
         });
     };
 
+    isBeforeToday = () => {
+        const arrangeDateNum = parseInt(this.state.value.arrangeDate);
+        const current = new Date().getTime();
+        const todayNum = parseInt(String(moment(current).format("YYYYMMDD")));
+        return arrangeDateNum < todayNum;
+    };
+
     render() {
         const {value, messageInvalid, touch} = this.state;
         const {employeeList} = this.props;
+        const isBeforeToday = this.isBeforeToday();
 
         return (
             <Form>
@@ -211,19 +209,20 @@ class FormAddFixedShiftArrangement extends React.Component {
                     </Col>
                     <Col md="6">
                         <FormGroup>
-                            <label>Thứ</label>
+                            <label>Ngày</label>
                             <Input
                                 className="bor-gray text-dark"
                                 name="weekDay"
                                 type="text"
-                                value={WEEK_DAYS[value.weekDay]}
+                                value={String(moment(value.arrangeDate, 'YYYYMMDD').format('DD-MM-YYYY'))}
                                 disabled
                                 invalid={
-                                    touch.weekDay && (value.weekDay < 1 || value.weekDay > 7)
+                                    touch.arrangeDate &&
+                                    _.isEmpty(value.arrangeDate)
                                 }
                             />
                             <FormFeedback invalid={'true'}>
-                                {messageInvalid.weekDay}
+                                {messageInvalid.arrangeDate}
                             </FormFeedback>
                         </FormGroup>
                     </Col>
@@ -253,32 +252,39 @@ class FormAddFixedShiftArrangement extends React.Component {
                     </Col>
                 </Row>
                 <CardFooter className="text-right info">
-                    <Popconfirm
-                        title="Bạn chắc chắn xếp ca？"
-                        icon={<QuestionCircleOutlined/>}
-                        okText="Đồng ý"
-                        cancelText="Huỷ"
-                        onConfirm={() => this.handleSubmit()}
-                    >
-                        <Button
-                            className="btn-custom"
-                            color="primary"
-                            type="button"
+                    {isBeforeToday ?
+                        <h4 style={{marginTop: '10px'}}>
+                            <i style={{color: '#d9534f'}}>
+                                Không thể xếp ca trước ngày hôm nay
+                            </i>
+                        </h4> :
+                        <Popconfirm
+                            title="Bạn chắc chắn xếp ca？"
+                            icon={<QuestionCircleOutlined/>}
+                            okText="Đồng ý"
+                            cancelText="Huỷ"
+                            onConfirm={() => this.handleSubmit()}
                         >
-                            <CheckCircleOutlined
-                                style={{
-                                    display: 'inline',
-                                    margin: '5px 10px 0 0',
-                                }}
-                            />{' '}
-                            {'  '}
-                            <span className="btn-save-text"> LƯU</span>
-                        </Button>
-                    </Popconfirm>
+                            <Button
+                                className="btn-custom"
+                                color="primary"
+                                type="button"
+                            >
+                                <CheckCircleOutlined
+                                    style={{
+                                        display: 'inline',
+                                        margin: '5px 10px 0 0',
+                                    }}
+                                />{' '}
+                                {'  '}
+                                <span className="btn-save-text"> LƯU</span>
+                            </Button>
+                        </Popconfirm>
+                    }
                 </CardFooter>
             </Form>
         );
     }
 }
 
-export default FormAddFixedShiftArrangement;
+export default FormAddShiftByDate;
