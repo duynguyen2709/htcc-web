@@ -82,13 +82,13 @@ class FixedShiftArrangement extends Component {
         }, () => console.log(this.state))
     };
 
-    toggle = (submit = false) => {
+    toggle = (submit = false, data) => {
         this.setState({
             showModal: !this.state.showModal
         });
 
         if (submit) {
-            this.props.reload();
+            this.props.addShiftArrangement(data);
         }
     };
 
@@ -215,15 +215,15 @@ class FixedShiftArrangement extends Component {
             <Row className={"shift-list-employee"}
                  style={overFlowHeightStyle}
             >
-                {_.map(employeeList, (item) => {
+                {_.map(employeeList, (item, index) => {
                         const user = this.employeeMap.get(item.username);
                         return (
                             <Col span={6}
-                                 key={user.username}
+                                 key={`col_${user.username}_${index}`}
                                  className={"shift-employee-card"}
                             >
                                 <Collapse defaultActiveKey={[user.username]}>
-                                    <Panel key={user.username}
+                                    <Panel key={`panel_${user.username}_${index}`}
                                            showArrow={false}
                                            extra={this.employeeMap.has(user.username) ?
                                                this.renderButtonDelete(item.arrangeId, user.fullName) : null}
@@ -344,7 +344,7 @@ class FixedShiftArrangement extends Component {
                     reload={false}
                     CompomentContent={FormAddFixedShiftArrangement}
                     visible={showModal}
-                    toggle={(submit) => this.toggle(submit)}
+                    toggle={this.toggle}
                     title={'Xếp ca làm việc'}
                     data={addShiftData}
                     mode={'new'}

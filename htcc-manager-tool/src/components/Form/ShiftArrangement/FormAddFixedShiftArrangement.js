@@ -108,7 +108,8 @@ class FormAddFixedShiftArrangement extends React.Component {
                 .then((res) => {
                     if (res.returnCode === 1) {
                         this.clear();
-                        this.props.onSubmit(true);
+                        value.arrangeId = res.data;
+                        this.props.onSubmit(true, value);
                     } else {
                         this.props.stopLoading();
                         store.addNotification(

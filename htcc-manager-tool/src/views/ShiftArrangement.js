@@ -25,6 +25,7 @@ class ShiftArrangement extends Component {
             currentWeek: new moment(new Date())
         };
 
+        this.addShiftArrangement = this.addShiftArrangement.bind(this);
         this.removeShiftArrangement = this.removeShiftArrangement.bind(this);
     }
 
@@ -97,6 +98,65 @@ class ShiftArrangement extends Component {
 
     disableDate = (current) => {
         return current && current.month() - (new moment(new Date())).month() > 1
+    };
+
+    addShiftArrangement = (data) => {
+        const {officeId, shiftId, type, username, arrangeId} = data;
+        if (type === 2) {
+            const date = data.arrangeDate;
+            const shiftByDateList = [...this.state.shiftByDateList];
+            for (let office of shiftByDateList) {
+                if (_.isEqual(office.officeId, officeId)) {
+                    for (let shift of office.shiftDetailList) {
+                        if (_.isEqual(shift.shiftId, shiftId)) {
+                            for (let d of shift.detailList) {
+                                if (_.isEqual(d.date, date)) {
+                                    const obj = {
+                                        type: type,
+                                        username: username,
+                                        arrangeId: arrangeId
+                                    };
+                                    d.employeeList = d.employeeList.concat(obj);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            this.setState({
+                shiftByDateList: shiftByDateList
+            })
+        }
+
+        if (type === 1) {
+            const weekDay = parseInt(data.weekDay);
+            const fixedShiftList = [...this.state.fixedShiftList];
+            for (let office of fixedShiftList) {
+                if (_.isEqual(office.officeId, officeId)) {
+                    for (let shift of office.shiftDetailList) {
+                        if (_.isEqual(shift.shiftId, shiftId)) {
+                            for (let d of shift.detailList) {
+                                if (_.isEqual(d.weekDay, weekDay)) {
+                                    const obj = {
+                                        type: type,
+                                        username: username,
+                                        arrangeId: arrangeId
+                                    };
+                                    d.employeeList = d.employeeList.concat(obj);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            this.setState({
+                fixedShiftList: fixedShiftList
+            })
+        }
     };
 
     removeShiftArrangement = (type, arrangeId) => {
@@ -188,6 +248,7 @@ class ShiftArrangement extends Component {
                                             <FixedShiftArrangement data={fixedShiftList}
                                                                    employeeList={canManageEmployees}
                                                                    reload={this.getShiftArrangement}
+                                                                   addShiftArrangement={this.addShiftArrangement}
                                                                    removeShiftArrangement={this.removeShiftArrangement}
                                             />
                                         </TabPane>
@@ -199,6 +260,7 @@ class ShiftArrangement extends Component {
                                             <ShiftByDateArrangement data={shiftByDateList}
                                                                     employeeList={canManageEmployees}
                                                                     reload={this.getShiftArrangement}
+                                                                    addShiftArrangement={this.addShiftArrangement}
                                                                     removeShiftArrangement={this.removeShiftArrangement}
                                             />
                                         </TabPane>

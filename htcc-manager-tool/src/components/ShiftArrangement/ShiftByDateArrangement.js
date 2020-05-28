@@ -82,13 +82,13 @@ class ShiftByDateArrangement extends Component {
         }, () => console.log(this.state))
     };
 
-    toggle = (submit = false) => {
+    toggle = (submit = false, data) => {
         this.setState({
             showModal: !this.state.showModal
         });
 
         if (submit) {
-            this.props.reload();
+            this.props.addShiftArrangement(data);
         }
     };
 
@@ -180,14 +180,14 @@ class ShiftByDateArrangement extends Component {
                         key={item.date}
                         size={"small"}
                     >
-                        {this.renderEmployeeList(item.employeeList)}
+                        {this.renderEmployeeList(item.employeeList, item.date)}
                     </TabPane>
                 ))}
             </Tabs>
         </>);
     };
 
-    renderEmployeeList = (employeeList) => {
+    renderEmployeeList = (employeeList, date) => {
         if (this.state.isLoading) {
             return <ReactLoading
                 type={'spinningBubbles'}
@@ -225,7 +225,7 @@ class ShiftByDateArrangement extends Component {
                                 <Collapse defaultActiveKey={[user.username]}>
                                     <Panel key={user.username}
                                            showArrow={false}
-                                           extra={this.employeeMap.has(user.username) ?
+                                           extra={this.employeeMap.has(user.username) && !this.isBeforeToday(date) ?
                                                this.renderButtonDelete(item.arrangeId, user.fullName) : null}
                                            header={
                                                <>
@@ -244,6 +244,13 @@ class ShiftByDateArrangement extends Component {
                 )}
             </Row>
         </>);
+    };
+
+    isBeforeToday = (date) => {
+        const arrangeDateNum = parseInt(date);
+        const current = new Date().getTime();
+        const todayNum = parseInt(String(moment(current).format("YYYYMMDD")));
+        return arrangeDateNum < todayNum;
     };
 
     renderButtonDelete = (arrangeId, fullName) => {
@@ -344,7 +351,7 @@ class ShiftByDateArrangement extends Component {
                     reload={false}
                     CompomentContent={FormAddShiftByDate}
                     visible={showModal}
-                    toggle={(submit) => this.toggle(submit)}
+                    toggle={this.toggle}
                     title={'Xếp ca làm việc'}
                     data={addShiftData}
                     mode={'new'}
