@@ -59,35 +59,36 @@
                     :items="ListNoti"
                     :search="searchNoti"
                     hide-default-footer
-                    :page.sync="pageConfirmed"
+                    :page.sync="pageNoti"
                     :items-per-page="itemsPerPage"
-                    @page-count="pageCountConfirmed = $event"
+                    @page-count="pageCountNoti = $event"
                   >
                     <template v-slot:no-data>Không có thông báo trong ngày này</template>
 
                     <template v-if="ListNoti.length !== 0" v-slot:body="{ items }">
                       <tbody>
                         <tr v-for="item in items" :key="item.notiId">
-                          <td>{{ item.targetClientId }}</td>
-                          <td>{{ item.companyId  }}</td>
+                          <td>{{ getTypeSystem(item.targetClientId) }}</td>
+                          <td>{{ getReceiveType(item.receiverType)  }}</td>
+                          <td>{{ item.companyId   }}</td>
                           <td>{{ item.username  }}</td>
-                          <td>{{ item.sendTime  }}</td>
-                          <td>{{ item.title  }}</td>
-                          <td>{{ item.content  }}</td>
-                          <td>{{ item.iconURL  }}</td>
-                          <td>{{ item.status  }}</td>
+                          <td>{{ item.sendTime   }}</td>
+                          <td>{{ item.title   }}</td>
+                          <td>{{ item.content   }}</td>
+                          <td>{{ item.iconUrl   }}</td>
+                          <td>{{ getStatus(item.status)    }}</td>
                           
                         </tr>
                       </tbody>
                     </template>
                   </v-data-table>
-                  <v-pagination v-model="pageConfirmed" :length="pageCountConfirmed"></v-pagination>
+                  <v-pagination v-model="pageNoti" :length="pageCountNoti"></v-pagination>
                 </div>
               </v-container>
             </v-tab-item>
           </v-tabs-items>
 
-          <v-dialog width="530" v-model="EditDialog">
+          <!-- <v-dialog width="530" v-model="EditDialog">
             <material-card color="success" elevation="12" title="Đổi mật khẩu">
               <v-form ref="form">
                 <v-card-text v-if="ChoosenItem !== null">
@@ -113,9 +114,9 @@
                 </v-card-actions>
               </v-form>
             </material-card>
-          </v-dialog>
+          </v-dialog> -->
 
-          <v-dialog v-model="ConfirmDialog" max-width="290">
+          <!-- <v-dialog v-model="ConfirmDialog" max-width="290">
             <v-card>
               <v-card-title class="green white--text">Cập nhập khiếu nại</v-card-title>
 
@@ -157,7 +158,7 @@
                 </template>
               </v-data-table>
             </material-card>
-          </v-dialog>
+          </v-dialog> -->
 
           <!-- <v-card-title>
             <v-text-field
@@ -222,32 +223,16 @@ export default {
 
     searchNoti: "",
 
-    /*edit*/
-
-    EditDialog: false,
-    loadingEditDialog: false,
-    ChoosenItem: null,
-    response: "",
-    status: 1,
-
-    ConfirmDialog: false,
-    loadingConfirmEditDialog: false,
-
     /*complaint*/
     ListComplaint: [],
 
     searchNoti: "",
 
-    pagePending: 1,
-    pageCountPending: 0,
-
-    pageConfirmed: 1,
-    pageCountConfirmed: 0,
+    pageNoti: 1,
+    pageCountNoti: 0,
 
     itemsPerPage: 5,
-    dialog: false,
-    btnLock: true,
-    search: "",
+    
     headersNoti: [
       {
         text: "Hệ thống nhận",
@@ -272,10 +257,6 @@ export default {
         text: "Người nhận",
         value: "username",
         align: "center"
-      },
-      {
-        text: "Mã công ty",
-        value: "companyId"
       },
       {
         text: "Thời gian gửi",
@@ -313,7 +294,6 @@ export default {
         width: 300
       }
     ],
-    PendingItems: [],
     ListNoti: [],
     ChoosenItems: []
   }),
@@ -345,7 +325,30 @@ export default {
       console.log(this.date);
       await this.getListComplaint(this.date);
     },
-
+    getTypeSystem(id){
+      if(id == 1)
+        return "Mobile"
+      else if (id == 2)
+        return "Web quản lý"
+      
+      return "Web admin"
+    },
+    getReceiveType(id){
+      if(id == 0)
+        return "Toàn bộ hệ thống"
+      else if(id == 1)
+        return "Công ty"
+      
+      return "Người dùng"
+    },
+    getStatus(id){
+      if(id == 0)
+        return "Thất bại"
+      else if(id == 1)
+        return "Thành công"
+      else
+        return "Đang xử lý"
+    },
     async getListNoti(date) {
       let $this = this;
 
@@ -353,7 +356,9 @@ export default {
 
       console.log("date: ", date)
 
-      date = date.replace("-", "");
+      date = date.split('-').join('');
+
+      console.log("date after: ", date)
 
       $this.ListNoti = [];
 
@@ -361,10 +366,14 @@ export default {
         .get("/api/admin/notifications/" + date)
         .then(function(response) {
           if (response.data.returnCode == 1) {
-            response.data.data.forEach(element => {
-              if (element.status == 2) $this.PendingItems.push(element);
-              else $this.ConfirmedItems.push(element);
-            });
+            // response.data.data.forEach(element => {
+            //   if (element.status == 2) $this.PendingItems.push(element);
+            //   else $this.ConfirmedItems.push(element);
+            // });
+
+            console.log(response.data)
+
+             $this.ListNoti = response.data.data;
 
             console.log("done data pending complaint");
             $this.isLoadingDataDone = true;
@@ -396,6 +405,7 @@ export default {
 
   },
   created: async function() {
+    this.date = '2020-04-30'
     this.getListNoti(this.date);
   }
 };
