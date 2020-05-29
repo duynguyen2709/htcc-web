@@ -23,12 +23,11 @@ class ShiftByDateArrangement extends Component {
             employeeList: this.props.employeeList,
             isLoading: false,
 
-            addShiftData: {
-                officeId: null,
-                shiftId: null,
-                arrangeDate: null,
-                type: 2,
-            },
+            lastClickArr: [],
+            officeShiftMap: new Map(),
+            currentOfficeId: '',
+
+            firstDate: '',
         };
     }
 
@@ -42,44 +41,40 @@ class ShiftByDateArrangement extends Component {
         const data = nextProps.data;
         if (!_.isEqual(this.props.data, data)) {
             if (!_.isEmpty(data)) {
-                this.setAddShiftData(data);
+                this.initData(data);
             }
         }
     }
 
     componentWillMount() {
         this.convertEmployeeListToMap();
-        this.setAddShiftData(this.props.data);
+        this.initData(this.props.data);
     }
 
-    setAddShiftData = (data) => {
-        if (this.state.addShiftData.officeId !== null) {
-            return;
-        }
-
+    initData = (data) => {
         if (_.isEmpty(data)) {
             return;
         }
 
-        let officeId = data[0].officeId;
-        let shiftId = null;
-        let arrangeDate = '';
+        let {lastClickArr, officeShiftMap, currentOfficeId, firstDate} = this.state;
+        currentOfficeId = data[0].officeId;
+        officeShiftMap.set(currentOfficeId, data[0].shiftDetailList[0].shiftId);
+        lastClickArr.push({
+            officeId: currentOfficeId,
+            shiftId: officeShiftMap.get(currentOfficeId),
+            arrangeDate: data[0].shiftDetailList[0].detailList[0].date
+        });
 
-        if (this.state.addShiftData.shiftId === null) {
-            if (!_.isEmpty(data[0].shiftDetailList)) {
-                shiftId = data[0].shiftDetailList[0].shiftId;
-                arrangeDate = data[0].shiftDetailList[0].detailList[0].date;
-            }
+        if (_.isEmpty(firstDate)) {
+            firstDate = data[0].shiftDetailList[0].detailList[0].date;
         }
 
         this.setState({
-            addShiftData: {
-                ...this.state.addShiftData,
-                officeId: officeId,
-                shiftId: shiftId,
-                arrangeDate: arrangeDate
-            },
-        }, () => console.log(this.state))
+            lastClickArr: lastClickArr,
+            officeShiftMap: officeShiftMap,
+            currentOfficeId: currentOfficeId,
+            firstDate: firstDate,
+        })
     };
 
     toggle = (submit = false, data) => {
@@ -308,35 +303,100 @@ class ShiftByDateArrangement extends Component {
     };
 
     onChangeOffice = (officeId) => {
+        const {officeShiftMap} = this.state;
+        if (!officeShiftMap.has(officeId)) {
+            const {data} = this.props;
+            let shiftId = '';
+            if (!_.isEmpty(data[0].shiftDetailList)) {
+                shiftId = data[0].shiftDetailList[0].shiftId;
+            }
+
+            officeShiftMap.set(officeId, shiftId);
+            this.setState({
+                officeShiftMap: officeShiftMap
+            })
+        }
+
         this.setState({
-            addShiftData: {
-                ...this.state.addShiftData,
-                officeId: officeId,
-            },
-        }, () => console.log(this.state))
+            currentOfficeId: officeId
+        })
     };
 
     onChangeShift = (shiftId) => {
-        this.setState({
-            addShiftData: {
-                ...this.state.addShiftData,
+        const {currentOfficeId, officeShiftMap} = this.state;
+        let {lastClickArr} = this.state;
+        let obj = null;
+        let index = -1;
+
+        for (index = lastClickArr.length - 1; index >= -1; index--) {
+            if (index === -1) {
+                break;
+            }
+
+            const element = lastClickArr[index];
+            if (_.isEqual(currentOfficeId, element.officeId) && _.isEqual(shiftId, element.shiftId)) {
+                obj = {...element};
+                break;
+            }
+        }
+
+        if (index === -1) {
+            obj = {
+                officeId: currentOfficeId,
                 shiftId: shiftId,
-            },
-        }, () => console.log(this.state))
+                arrangeDate: this.state.firstDate
+            }
+        }
+
+        lastClickArr.push(obj);
+        officeShiftMap.set(currentOfficeId, shiftId);
+
+        this.setState({
+            lastClickArr: lastClickArr,
+            officeShiftMap: officeShiftMap,
+        })
     };
 
     onChangeArrangeDate = (arrangeDate) => {
+        const {lastClickArr} = this.state;
+
+        const lastClick = lastClickArr[lastClickArr.length - 1];
+        lastClick.arrangeDate = arrangeDate;
+        lastClickArr.pop();
+        lastClickArr.push(lastClick);
+
         this.setState({
-            addShiftData: {
-                ...this.state.addShiftData,
-                arrangeDate: arrangeDate,
+            lastClickArr: lastClickArr
+        })
+    };
+
+    buildAddShiftData = () => {
+        const {currentOfficeId, officeShiftMap, lastClickArr} = this.state;
+        const shiftId = officeShiftMap.get(currentOfficeId);
+        let arrangeDate = this.state.firstDate;
+
+        if (!_.isEmpty(shiftId)) {
+            for (let index = lastClickArr.length - 1; index >= 0; index--) {
+                if (_.isEqual(currentOfficeId, lastClickArr[index].officeId) && _.isEqual(shiftId, lastClickArr[index].shiftId)) {
+                    arrangeDate = lastClickArr[index].arrangeDate;
+                    break;
+                }
             }
-        }, () => console.log(this.state))
+        }
+
+        return {
+            officeId: currentOfficeId,
+            shiftId: shiftId,
+            arrangeDate: arrangeDate,
+            type: 2,
+        }
     };
 
     render() {
         const {data, employeeList} = this.props;
-        const {addShiftData, showModal} = this.state;
+        const {showModal} = this.state;
+
+        const addShiftData = this.buildAddShiftData();
 
         return (
             <>
