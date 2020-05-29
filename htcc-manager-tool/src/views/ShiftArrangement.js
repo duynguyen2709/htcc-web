@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Col, DatePicker, Row, Tabs} from 'antd';
+import {Col, DatePicker, Row, Select, Tabs} from 'antd';
 import {CalendarOutlined, CarryOutOutlined} from '@ant-design/icons';
 import moment from 'moment';
 import * as _ from 'lodash';
@@ -25,6 +25,10 @@ class ShiftArrangement extends Component {
             currentWeek: new moment(new Date())
         };
 
+        this.copyFixedShiftList = [];
+        this.copyShiftByDateList = [];
+
+        this.handleOnFilterUsername = this.handleOnFilterUsername.bind(this);
         this.addShiftArrangement = this.addShiftArrangement.bind(this);
         this.removeShiftArrangement = this.removeShiftArrangement.bind(this);
     }
@@ -37,6 +41,40 @@ class ShiftArrangement extends Component {
         this.setState({
             isLoading: !this.state.isLoading
         })
+    };
+
+    handleOnFilterUsername = (username) => {
+        if (username === null || _.isEmpty(username)) {
+            this.setState({
+                fixedShiftList: this.copyFixedShiftList,
+                shiftByDateList: this.copyShiftByDateList
+            });
+            return;
+        }
+
+        let fixedShiftList = _.cloneDeep(this.copyFixedShiftList);
+        let shiftByDateList = _.cloneDeep(this.copyShiftByDateList);
+
+        for (let office of fixedShiftList) {
+            for (let shift of office.shiftDetailList) {
+                for (let d of shift.detailList) {
+                    d.employeeList = d.employeeList.filter(item => _.isEqual(item.username, username));
+                }
+            }
+        }
+
+        for (let office of shiftByDateList) {
+            for (let shift of office.shiftDetailList) {
+                for (let d of shift.detailList) {
+                    d.employeeList = d.employeeList.filter(item => _.isEqual(item.username, username));
+                }
+            }
+        }
+
+        this.setState({
+            fixedShiftList: fixedShiftList,
+            shiftByDateList: shiftByDateList
+        });
     };
 
     getShiftArrangement = () => {
@@ -67,15 +105,19 @@ class ShiftArrangement extends Component {
                 store.addNotification(
                     createNotify('danger', JSON.stringify(err))
                 );
-            }).finally(() => {
-            this.setState({
-                fixedShiftList: fixedShiftList,
-                shiftByDateList: shiftByDateList,
-                canManageEmployees: canManageEmployees,
-            });
+            })
+            .finally(() => {
+                this.setState({
+                    fixedShiftList: fixedShiftList,
+                    shiftByDateList: shiftByDateList,
+                    canManageEmployees: canManageEmployees,
+                });
 
-            this.toggleLoading();
-        })
+                this.copyFixedShiftList = fixedShiftList;
+                this.copyShiftByDateList = shiftByDateList;
+
+                this.toggleLoading();
+            })
     };
 
     onChangeWeek = (date, dateString) => {
@@ -127,7 +169,9 @@ class ShiftArrangement extends Component {
 
             this.setState({
                 shiftByDateList: shiftByDateList
-            })
+            });
+
+            this.copyShiftByDateList = shiftByDateList;
         }
 
         if (type === 1) {
@@ -155,7 +199,9 @@ class ShiftArrangement extends Component {
 
             this.setState({
                 fixedShiftList: fixedShiftList
-            })
+            });
+
+            this.copyFixedShiftList = fixedShiftList;
         }
     };
 
@@ -184,7 +230,9 @@ class ShiftArrangement extends Component {
 
             this.setState({
                 shiftByDateList: shiftByDateList
-            })
+            });
+
+            this.copyShiftByDateList = shiftByDateList;
         }
 
         if (type === 1) {
@@ -199,7 +247,9 @@ class ShiftArrangement extends Component {
 
             this.setState({
                 fixedShiftList: fixedShiftList
-            })
+            });
+
+            this.copyFixedShiftList = fixedShiftList;
         }
     };
 
@@ -222,16 +272,41 @@ class ShiftArrangement extends Component {
                         />
                         : <>
                             <div className="header-table clearfix">
-                                <Row>
-                                    <h4 style={{margin: 'auto 10px'}}>Tuần : </h4>
-                                    <Col span={4} style={{margin: 'auto 0px'}}>
+                                <Row className={"shift-arrangement-header"}>
+                                    <h3 style={{
+                                        margin: 'auto 10px',
+                                        color: 'rgba(0, 0, 0, 0.75)'
+                                    }}>
+                                        Tuần :
+                                    </h3>
+                                    <Col span={4} style={{margin: '0px 10px'}}>
                                         <DatePicker onChange={this.onChangeWeek}
+                                                    className=" bor-radius"
                                                     format={"WW-YYYY"}
                                                     value={currentWeek}
                                                     disabledDate={this.disableDate}
                                                     allowClear={false}
-                                                    style={{width: '100%', margin: 'auto 0px'}}
+                                                    style={{width: '100%', margin: '5px 0px'}}
                                                     picker="week"/>
+                                    </Col>
+                                    <Col offset={1} span={5}>
+                                        <Select
+                                            allowClear={true}
+                                            autoFocus
+                                            placeholder={"Tìm theo nhân viên..."}
+                                            style={{width: '100%', display: 'flex'}}
+                                            className="bor-radius"
+                                            onChange={(username) => this.handleOnFilterUsername(username)}
+                                        >
+                                            {_.map(canManageEmployees, (item) => (
+                                                <Select.Option className=" bor-radius"
+                                                               value={item.username}
+                                                               key={item.username}
+                                                >
+                                                    {item.fullName} ({item.username})
+                                                </Select.Option>
+                                            ))}
+                                        </Select>
                                     </Col>
                                 </Row>
                             </div>

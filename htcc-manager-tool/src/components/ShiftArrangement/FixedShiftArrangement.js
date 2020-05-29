@@ -210,7 +210,7 @@ class FixedShiftArrangement extends Component {
                                  key={`col_${user.username}_${index}`}
                                  className={"shift-employee-card"}
                             >
-                                <Collapse defaultActiveKey={[user.username]}>
+                                <Collapse defaultActiveKey={this.getPanelDefaultActiveKeys(employeeList)}>
                                     <Panel key={`panel_${user.username}_${index}`}
                                            showArrow={false}
                                            extra={this.employeeMap.has(user.username) ?
@@ -376,6 +376,14 @@ class FixedShiftArrangement extends Component {
             weekDay: weekDay,
             type: 1,
         }
+    };
+
+    getPanelDefaultActiveKeys = (employeeList) => {
+        const result = [];
+        for (let index = 0; index < employeeList.length; index++) {
+            result.push(`panel_${employeeList[index].username}_${index}`);
+        }
+        return result;
     };
 
     render() {

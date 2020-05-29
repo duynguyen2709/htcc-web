@@ -8,6 +8,7 @@
 .ant-tabs-nav .ant-tabs-tab:hover {
     color: #388e3c;
 }
+
 .ant-tabs-ink-bar {
     background-color: #388e3c;
 }
@@ -100,16 +101,20 @@
 .ant-select:not(.ant-select-disabled):hover .ant-select-selector {
     border-color: #59885b;
 }
+
 .ant-select-single:not(.ant-select-customize-input) .ant-select-selector {
     height: 39px;
 }
+
 .ant-select-arrow {
     left: calc(100% - 18px);
     bottom: 37px;
 }
+
 .ant-select-arrow .anticon svg {
     font-size: 13px;
 }
+
 .ant-picker-calendar-date-content .events {
     padding: 0;
 }
@@ -119,18 +124,18 @@
 }
 
 .ant-picker-cell-selected:hover
-    .ant-picker-calendar-date
-    .ant-picker-calendar-date-value,
+.ant-picker-calendar-date
+.ant-picker-calendar-date-value,
 .ant-picker-calendar-full
-    .ant-picker-panel
-    .ant-picker-cell-selected
-    .ant-picker-calendar-date-today
-    .ant-picker-calendar-date-value,
+.ant-picker-panel
+.ant-picker-cell-selected
+.ant-picker-calendar-date-today
+.ant-picker-calendar-date-value,
 .ant-picker-calendar-full
-    .ant-picker-panel
-    .ant-picker-cell-selected:hover
-    .ant-picker-calendar-date-today
-    .ant-picker-calendar-date-value {
+.ant-picker-panel
+.ant-picker-cell-selected:hover
+.ant-picker-calendar-date-today
+.ant-picker-calendar-date-value {
     color: #237804;
 }
 
@@ -169,4 +174,18 @@
     bottom: 40px;
     width: 100%;
     text-align: center;
+}
+
+.ant-select-clear {
+    top: 35%;
+    right: 20px;
+}
+
+.shift-arrangement-header {
+    display: flex;
+    align-items: center;
+    background: #65e06b33;
+    border: solid 0.1px #65e06b33;
+    border-radius: 10px;
+    height: 60px;
 }

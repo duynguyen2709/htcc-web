@@ -210,15 +210,15 @@ class ShiftByDateArrangement extends Component {
             <Row className={"shift-list-employee"}
                  style={overFlowHeightStyle}
             >
-                {_.map(employeeList, (item) => {
+                {_.map(employeeList, (item, index) => {
                         const user = this.employeeMap.get(item.username);
                         return (
                             <Col span={6}
-                                 key={user.username}
+                                 key={`col_${user.username}_${index}`}
                                  className={"shift-employee-card"}
                             >
-                                <Collapse defaultActiveKey={[user.username]}>
-                                    <Panel key={user.username}
+                                <Collapse defaultActiveKey={this.getPanelDefaultActiveKeys(employeeList)}>
+                                    <Panel key={`panel_${user.username}_${index}`}
                                            showArrow={false}
                                            extra={this.employeeMap.has(user.username) && !this.isBeforeToday(date) ?
                                                this.renderButtonDelete(item.arrangeId, user.fullName) : null}
@@ -390,6 +390,14 @@ class ShiftByDateArrangement extends Component {
             arrangeDate: arrangeDate,
             type: 2,
         }
+    };
+
+    getPanelDefaultActiveKeys = (employeeList) => {
+        const result = [];
+        for (let index = 0; index < employeeList.length; index++) {
+            result.push(`panel_${employeeList[index].username}_${index}`);
+        }
+        return result;
     };
 
     render() {
