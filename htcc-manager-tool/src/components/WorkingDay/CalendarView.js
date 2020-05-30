@@ -158,7 +158,7 @@ class CalendarView extends Component {
 
         if (
             !_.isEqual(nextProps.refresh, this.props.refresh) &&
-            nextProps.refresh !== null
+            nextProps.refresh != null
         ) {
             const {currentOffices, year} = this.state;
             this.getListDay(currentOffices, year);

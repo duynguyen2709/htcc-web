@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { API_URL_EMPLOYEE } from '../constant/url';
-import { TOKEN, USER } from '../constant/localStorageKey';
+import {API_URL_EMPLOYEE} from '../constant/url';
+import {TOKEN, USER} from '../constant/localStorageKey';
 
 const getListShiftTime = (officeId) => {
     const token = localStorage.getItem(TOKEN);
@@ -14,14 +14,15 @@ const getListShiftTime = (officeId) => {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
-                    timeout: 20000,
+                    timeout: 30000,
                 }
             )
             .then((res) => {
                 resolve(res.data);
             })
-            .catch((err) => {
-                reject(err);
+            .catch(err => {
+                console.error(err);
+                reject('Hệ thống có lỗi. Vui lòng thử lại sau.');
             });
     });
 };
@@ -45,8 +46,9 @@ const configLikeHeadquarter = (officeId) => {
             .then((res) => {
                 resolve(res.data);
             })
-            .catch((err) => {
-                reject(err);
+            .catch(err => {
+                console.error(err);
+                reject('Hệ thống có lỗi. Vui lòng thử lại sau.');
             });
     });
 };
@@ -67,8 +69,9 @@ const updateShiftTime = (data) => {
             .then((res) => {
                 resolve(res.data);
             })
-            .catch((err) => {
-                reject(err);
+            .catch(err => {
+                console.error(err);
+                reject('Hệ thống có lỗi. Vui lòng thử lại sau.');
             });
     });
 };
@@ -90,8 +93,9 @@ const createShiftTime = (data) => {
             .then((res) => {
                 resolve(res.data);
             })
-            .catch((err) => {
-                reject(err);
+            .catch(err => {
+                console.error(err);
+                reject('Hệ thống có lỗi. Vui lòng thử lại sau.');
             });
     });
 };
@@ -112,8 +116,9 @@ const deleteShiftTime = (officeId, shiftId) => {
             .then((res) => {
                 resolve(res.data);
             })
-            .catch((err) => {
-                reject(err);
+            .catch(err => {
+                console.error(err);
+                reject('Hệ thống có lỗi. Vui lòng thử lại sau.');
             });
     });
 };
@@ -130,14 +135,15 @@ const getListWorkingDay = (officeId, year) => {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
-                    timeout: 20000,
+                    timeout: 30000,
                 }
             )
             .then((res) => {
                 resolve(res.data);
             })
-            .catch((err) => {
-                reject(err);
+            .catch(err => {
+                console.error(err);
+                reject('Hệ thống có lỗi. Vui lòng thử lại sau.');
             });
     });
 };
@@ -157,8 +163,9 @@ const deleteWorkingDay = (id) => {
             .then((res) => {
                 resolve(res.data);
             })
-            .catch((err) => {
-                reject(err);
+            .catch(err => {
+                console.error(err);
+                reject('Hệ thống có lỗi. Vui lòng thử lại sau.');
             });
     });
 };
@@ -182,8 +189,9 @@ const configWorkingDayLikeHeadquarter = (officeId) => {
             .then((res) => {
                 resolve(res.data);
             })
-            .catch((err) => {
-                reject(err);
+            .catch(err => {
+                console.error(err);
+                reject('Hệ thống có lỗi. Vui lòng thử lại sau.');
             });
     });
 };
@@ -205,8 +213,9 @@ const createWorkingDay = (data) => {
             .then((res) => {
                 resolve(res.data);
             })
-            .catch((err) => {
-                reject(err);
+            .catch(err => {
+                console.error(err);
+                reject('Hệ thống có lỗi. Vui lòng thử lại sau.');
             });
     });
 };
@@ -228,8 +237,9 @@ const updateWorkingDay = (data) => {
             .then((res) => {
                 resolve(res.data);
             })
-            .catch((err) => {
-                reject(err);
+            .catch(err => {
+                console.error(err);
+                reject('Hệ thống có lỗi. Vui lòng thử lại sau.');
             });
     });
 };

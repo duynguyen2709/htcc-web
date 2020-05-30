@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Col, DatePicker, Row, Select, Tabs} from 'antd';
+import {Button, Col, DatePicker, Row, Select, Tabs} from 'antd';
 import {CalendarOutlined, CarryOutOutlined} from '@ant-design/icons';
 import moment from 'moment';
 import * as _ from 'lodash';
@@ -9,6 +9,7 @@ import {createNotify} from "../utils/notifier";
 import ShiftByDateArrangement from "../components/ShiftArrangement/ShiftByDateArrangement";
 import ReactLoading from "react-loading";
 import FixedShiftArrangement from "../components/ShiftArrangement/FixedShiftArrangement";
+import ShiftDetailModal from "../components/Modal/ShiftDetailModal";
 
 const {TabPane} = Tabs;
 
@@ -20,9 +21,13 @@ class ShiftArrangement extends Component {
             fixedShiftList: [],
             shiftByDateList: [],
             canManageEmployees: [],
+            employeeShiftDetailMap: {},
 
             isLoading: false,
-            currentWeek: new moment(new Date())
+            currentWeek: new moment(new Date()),
+
+            modalShiftDetailVisible: false,
+            currentUsernameFilter: '',
         };
 
         this.copyFixedShiftList = [];
@@ -37,6 +42,12 @@ class ShiftArrangement extends Component {
         this.getShiftArrangement();
     }
 
+    toggleModalShiftDetail = () => {
+        this.setState({
+            modalShiftDetailVisible: !this.state.modalShiftDetailVisible
+        })
+    };
+
     toggleLoading = () => {
         this.setState({
             isLoading: !this.state.isLoading
@@ -46,6 +57,7 @@ class ShiftArrangement extends Component {
     handleOnFilterUsername = (username) => {
         if (username === null || _.isEmpty(username)) {
             this.setState({
+                currentUsernameFilter: '',
                 fixedShiftList: this.copyFixedShiftList,
                 shiftByDateList: this.copyShiftByDateList
             });
@@ -72,6 +84,7 @@ class ShiftArrangement extends Component {
         }
 
         this.setState({
+            currentUsernameFilter: username,
             fixedShiftList: fixedShiftList,
             shiftByDateList: shiftByDateList
         });
@@ -85,6 +98,7 @@ class ShiftArrangement extends Component {
         let fixedShiftList = [];
         let shiftByDateList = [];
         let canManageEmployees = [];
+        let employeeShiftDetailMap = {};
 
         this.toggleLoading();
 
@@ -95,6 +109,7 @@ class ShiftArrangement extends Component {
                     fixedShiftList = res.data.fixedShiftList;
                     shiftByDateList = res.data.shiftByDateList;
                     canManageEmployees = res.data.canManageEmployees;
+                    employeeShiftDetailMap = res.data.employeeShiftDetailMap;
                 } else {
                     store.addNotification(
                         createNotify('danger', res.returnMessage)
@@ -111,6 +126,7 @@ class ShiftArrangement extends Component {
                     fixedShiftList: fixedShiftList,
                     shiftByDateList: shiftByDateList,
                     canManageEmployees: canManageEmployees,
+                    employeeShiftDetailMap: employeeShiftDetailMap,
                 });
 
                 this.copyFixedShiftList = fixedShiftList;
@@ -253,15 +269,33 @@ class ShiftArrangement extends Component {
         }
     };
 
+    getModalTitle = (canManageEmployees, currentUsernameFilter) => {
+        for (let employee of canManageEmployees) {
+            if (_.isEqual(employee.username, currentUsernameFilter)) {
+                return `Nhân viên: ${employee.fullName} (${currentUsernameFilter})`;
+            }
+        }
+        return `Nhân viên: ${currentUsernameFilter}`;
+    };
+
     render() {
         const {
             currentWeek, fixedShiftList, shiftByDateList,
-            canManageEmployees, isLoading
+            canManageEmployees, isLoading, modalShiftDetailVisible,
+            currentUsernameFilter, employeeShiftDetailMap
         } = this.state;
+
+        const modalTitle = this.getModalTitle(canManageEmployees, currentUsernameFilter);
 
         return (
             <div className="content">
                 <div className="table-wrapper tabs-big">
+                    {employeeShiftDetailMap[currentUsernameFilter] != null ?
+                        <ShiftDetailModal data={employeeShiftDetailMap[currentUsernameFilter]}
+                                          toggle={this.toggleModalShiftDetail}
+                                          visible={modalShiftDetailVisible}
+                                          title={modalTitle}
+                        /> : null}
                     {isLoading ?
                         <ReactLoading
                             type={'spinningBubbles'}
@@ -289,7 +323,7 @@ class ShiftArrangement extends Component {
                                                     style={{width: '100%', margin: '5px 0px'}}
                                                     picker="week"/>
                                     </Col>
-                                    <Col offset={1} span={5}>
+                                    <Col offset={1} span={6}>
                                         <Select
                                             allowClear={true}
                                             autoFocus
@@ -307,6 +341,16 @@ class ShiftArrangement extends Component {
                                                 </Select.Option>
                                             ))}
                                         </Select>
+                                    </Col>
+                                    <Col span={2}>
+                                        <Button type={"primary"}
+                                                className={"bor-radius"}
+                                                style={{marginLeft: '10px'}}
+                                                onClick={this.toggleModalShiftDetail}
+                                                disabled={this.state.currentUsernameFilter === ''}
+                                        >
+                                            Xem chi tiết
+                                        </Button>
                                     </Col>
                                 </Row>
                             </div>

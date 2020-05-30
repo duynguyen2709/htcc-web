@@ -6,6 +6,7 @@ import {createNotify} from '../../../utils/notifier';
 import {CheckCircleOutlined, QuestionCircleOutlined} from '@ant-design/icons';
 import {Popconfirm, Select} from 'antd';
 import {shiftArrangement} from '../../../api';
+import {WEEK_DAYS} from '../../../constant/constant';
 
 const RESET_TOUCH = {
     officeId: false,
@@ -13,17 +14,6 @@ const RESET_TOUCH = {
     weekDay: false,
     username: false,
     type: false,
-};
-
-const WEEK_DAYS = {
-    0: '',
-    1: "Chủ nhật",
-    2: "Thứ hai",
-    3: "Thứ ba",
-    4: "Thứ tư",
-    5: "Thứ năm",
-    6: "Thứ sáu",
-    7: "Thứ bảy",
 };
 
 class FormAddFixedShiftArrangement extends React.Component {
@@ -81,7 +71,7 @@ class FormAddFixedShiftArrangement extends React.Component {
             !_.isEmpty(value.officeId) &&
             !_.isEmpty(value.shiftId) &&
             (value.type === 1 || value.type === 2) &&
-            (WEEK_DAYS[value.weekDay] !== null)
+            (WEEK_DAYS[value.weekDay] != null)
         );
     };
 

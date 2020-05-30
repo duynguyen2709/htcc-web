@@ -14,14 +14,15 @@ const getShiftArrangement = (year, week) => {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
-                    timeout: 20000,
+                    timeout: 30000,
                 }
             )
             .then((res) => {
                 resolve(res.data);
             })
-            .catch((err) => {
-                reject(err);
+            .catch(err => {
+                console.error(err);
+                reject('Hệ thống có lỗi. Vui lòng thử lại sau.');
             });
     });
 };
@@ -41,59 +42,13 @@ const deleteShiftArrangement = (type, arrangeId) => {
             .then((res) => {
                 resolve(res.data);
             })
-            .catch((err) => {
-                reject(err);
+            .catch(err => {
+                console.error(err);
+                reject('Hệ thống có lỗi. Vui lòng thử lại sau.');
             });
     });
 };
-//
-// const configLikeHeadquarter = (officeId) => {
-//     const token = localStorage.getItem(TOKEN);
-//     const user = JSON.parse(localStorage.getItem(USER));
-//
-//     return new Promise((resolve, reject) => {
-//         axios
-//             .post(
-//                 `${API_URL_EMPLOYEE}/shifttime/default/${user.companyId}/${officeId}`,
-//                 {},
-//                 {
-//                     headers: {
-//                         Authorization: `Bearer ${token}`,
-//                     },
-//                     timeout: 30000,
-//                 }
-//             )
-//             .then((res) => {
-//                 resolve(res.data);
-//             })
-//             .catch((err) => {
-//                 reject(err);
-//             });
-//     });
-// };
-//
-// const updateShiftTime = (data) => {
-//     const token = localStorage.getItem(TOKEN);
-//     const user = JSON.parse(localStorage.getItem(USER));
-//
-//     return new Promise((resolve, reject) => {
-//         axios({
-//             method: 'put',
-//             url: `${API_URL_EMPLOYEE}/shifttime/${user.companyId}/${data.officeId}/${data.shiftId}`,
-//             data: data,
-//             headers: {
-//                 Authorization: `Bearer ${token}`,
-//             },
-//         })
-//             .then((res) => {
-//                 resolve(res.data);
-//             })
-//             .catch((err) => {
-//                 reject(err);
-//             });
-//     });
-// };
-//
+
 const createShiftArrangement = (data) => {
     const token = localStorage.getItem(TOKEN);
     const user = JSON.parse(localStorage.getItem(USER));
@@ -118,8 +73,9 @@ const createShiftArrangement = (data) => {
             .then((res) => {
                 resolve(res.data);
             })
-            .catch((err) => {
-                reject(err);
+            .catch(err => {
+                console.error(err);
+                reject('Hệ thống có lỗi. Vui lòng thử lại sau.');
             });
     });
 };
