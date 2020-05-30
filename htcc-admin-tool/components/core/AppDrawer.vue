@@ -126,6 +126,15 @@
             </v-list-item-content>
           </v-list-item>
 
+          <v-list-item class="icon-wrapper" :active-class="color" to="/noti">
+            <v-list-item-action class="icon-menu" >
+              <v-icon>mdi-chat-alert</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title v-text="'Quản lý thông báo'" class="pr-1"></v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+
         </v-list>
       </v-layout>
     </v-img>

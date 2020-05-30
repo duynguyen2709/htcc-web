@@ -25,7 +25,86 @@
           </v-tabs>
           <v-tabs-items v-model="tab">
             <v-tab-item key="SendNoti">
-              
+              <material-card color="primary" title="Gửi thông báo">
+                <v-form ref="form" v-model="isValid">
+                  <v-container py-0>
+                    <v-layout wrap>
+                      <v-flex xs12 md12>
+                        <v-select
+                          :items="ListCompanyId"
+                          v-model="CompanyId"
+                          label="Mã công ty"
+                          :rules="[rules.required]"
+                        ></v-select>
+                      </v-flex>
+                      <v-flex xs12 md12>
+                        <v-text-field
+                          label="Tiêu đề"
+                          class="green-input"
+                          v-model="title"
+                          :rules="[rules.required]"
+                        />
+                      </v-flex>
+                      <v-flex xs12 md12>
+                        <v-text-field
+                          label="Nội dung"
+                          class="green-input"
+                          v-model="content"
+                          :rules="[rules.required]"
+                        />
+                      </v-flex>
+                      <v-flex xs12 md12 style="display: flex;">
+                        <img class="img-icon" :src="getIcon(IconId)" />
+
+                        <v-select
+                          :items="ListIconId"
+                          v-model="IconId"
+                          item-text="iconId"
+                          item-value="iconId"
+                          label="Icon"
+                          :rules="[rules.required]"
+                          style="margin-left: 30px;"
+                        ></v-select>
+                      </v-flex>
+                      <v-flex xs12 md12>
+                        <v-select
+                          :items="ListReceiverType"
+                          v-model="ReceiverType"
+                          item-text="name"
+                          item-value="id"
+                          label="Người nhận"
+                          :rules="[rules.required]"
+                        ></v-select>
+                      </v-flex>
+                      <v-flex xs12 md12 v-if="ReceiverType == 3">
+                        <v-text-field
+                          label="Tên người nhận"
+                          class="green-input"
+                          v-model="username"
+                          :rules="[rules.required]"
+                        />
+                      </v-flex>
+                      <v-flex xs12 md12>
+                        <v-select
+                          :items="ListTargetClientId"
+                          v-model="TargetClientId"
+                          item-text="name"
+                          item-value="id"
+                          label="Hệ thống nhận"
+                          :rules="[rules.required]"
+                        ></v-select>
+                      </v-flex>
+
+                      <v-btn
+                        :disabled="!isValid"
+                        class="mx-0 font-weight-light"
+                        color="success"
+                        @click="ConfirmDialog = true"
+                      >Gửi thông báo</v-btn>
+                    </v-layout>
+                  </v-container>
+                </v-form>
+              </material-card>
             </v-tab-item>
             <v-tab-item key="ListNoti">
               <v-container>
@@ -41,7 +120,7 @@
                         @click.stop="datePicker=true"
                       ></v-text-field>
                     </v-col>
-                    <v-col class="d-flex" cols="12" sm="9">
+                    <v-col cols="12" sm="9">
                       <v-text-field
                         v-model="searchNoti"
                         append-icon="search"
@@ -49,14 +128,59 @@
                         single-line
                         hide-details
                       ></v-text-field>
+
+                      <div class="filters">
+                        <v-select
+                          :items="ListCompanyId"
+                          v-model="FilterCompanyId"
+                          label="Mã công ty"
+                        ></v-select>
+
+                        <v-select
+                          :items="ListReceiverType"
+                          v-model="FilterReceiverType"
+                          item-text="name"
+                          item-value="id"
+                          label="Người nhận"
+                        ></v-select>
+
+                        <v-select
+                          :items="ListTargetClientId"
+                          v-model="FilterTargetClientId"
+                          item-text="name"
+                          item-value="id"
+                          label="Hệ thống nhận"
+                        ></v-select>
+
+                      
+
+                      </div>
+
+                      <div class="pair-btn">
+                        <v-btn
+                        class="mx-0 font-weight-light"
+                        color="success"
+                        @click="doTheFilter()"
+                      >Lọc</v-btn>
+                      <v-btn
+                        class="mx-0 font-weight-light"
+                        color="error"
+                        @click="clearTheFilter()"
+                      >Xóa bộ lọc</v-btn>
+                      </div>
                     </v-col>
                   </v-row>
                 </v-card-title>
 
                 <div>
+                  <div v-if="!isLoadingDataDone" class="text-center">
+                    <v-progress-circular :size="70" :width="7" color="primary" indeterminate></v-progress-circular>
+                  </div>
+
                   <v-data-table
+                    v-if="isLoadingDataDone"
                     :headers="headersNoti"
-                    :items="ListNoti"
+                    :items="ListChoosenNoti"
                     :search="searchNoti"
                     hide-default-footer
                     :page.sync="pageNoti"
@@ -65,19 +189,21 @@
                   >
                     <template v-slot:no-data>Không có thông báo trong ngày này</template>
 
-                    <template v-if="ListNoti.length !== 0" v-slot:body="{ items }">
+                    <template v-if="ListChoosenNoti.length !== 0" v-slot:body="{ items }">
                       <tbody>
                         <tr v-for="item in items" :key="item.notiId">
+                          <td>
+                            <img class="img-icon" :src="item.iconUrl" />
+                          </td>
                           <td>{{ getTypeSystem(item.targetClientId) }}</td>
-                          <td>{{ getReceiveType(item.receiverType)  }}</td>
-                          <td>{{ item.companyId   }}</td>
-                          <td>{{ item.username  }}</td>
-                          <td>{{ item.sendTime   }}</td>
-                          <td>{{ item.title   }}</td>
-                          <td>{{ item.content   }}</td>
-                          <td>{{ item.iconUrl   }}</td>
-                          <td>{{ getStatus(item.status)    }}</td>
-                          
+                          <td>{{ getReceiveType(item.receiverType) }}</td>
+                          <td>{{ item.companyId }}</td>
+                          <td>{{ item.username }}</td>
+                          <td>{{ getDate(item.sendTime) }}</td>
+                          <td>{{ item.title }}</td>
+                          <td>{{ item.content }}</td>
+
+                          <td>{{ getStatus(item.status) }}</td>
                         </tr>
                       </tbody>
                     </template>
@@ -87,105 +213,22 @@
               </v-container>
             </v-tab-item>
           </v-tabs-items>
-
-          <!-- <v-dialog width="530" v-model="EditDialog">
-            <material-card color="success" elevation="12" title="Đổi mật khẩu">
-              <v-form ref="form">
-                <v-card-text v-if="ChoosenItem !== null">
-                  <v-text-field v-model="ChoosenItem.category" label="Category" :readonly="true" />
-                  <v-text-field
-                    v-model="ChoosenItem.complaintId"
-                    label="Complaint Id"
-                    :readonly="true"
-                  />
-                  <v-text-field v-model="ChoosenItem.content" label="Content" :readonly="true" />
-                  <v-text-field v-model="ChoosenItem.date" label="Date" :readonly="true" />
-                  <v-textarea v-model="ChoosenItem.response" label="Ghi chú"></v-textarea>
-
-                  <v-radio-group v-model="ChoosenItem.status">
-                    <v-radio label="Từ chối" value="0"></v-radio>
-                    <v-radio label="Xử lý" value="1"></v-radio>
-                  </v-radio-group>
-                </v-card-text>
-                <v-card-actions>
-                  <v-btn color="green darken-1" text @click="ConfirmDialog = true">Đồng ý</v-btn>
-
-                  <v-btn color="red darken-1" text @click="EditDialog = false">Hủy</v-btn>
-                </v-card-actions>
-              </v-form>
-            </material-card>
-          </v-dialog> -->
-
-          <!-- <v-dialog v-model="ConfirmDialog" max-width="290">
-            <v-card>
-              <v-card-title class="green white--text">Cập nhập khiếu nại</v-card-title>
-
-              <v-card-text class="mt-2">Bạn có chắc muốn cập nhập đơn khiếu nại này?</v-card-text>
-
-              <v-card-actions>
-                <v-btn
-                  color="green darken-1"
-                  text
-                  @click="editStatus"
-                  :loading="loadingConfirmEditDialog"
-                >Đồng ý</v-btn>
-
-                <v-btn color="red darken-1" text @click="()=>{ConfirmDialog = false;}">Hủy</v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-
-          <v-dialog v-model="ImgDialog" max-width="500">
-            <v-img :src="ChoosenImage" :lazy-src="LazyImg2">
-              <template v-slot:placeholder>
-                <v-row class="fill-height ma-0" align="center" justify="center">
-                  <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
-                </v-row>
-              </template>
-            </v-img>
-          </v-dialog>
-
-          <v-dialog width="700" v-model="ListContentDialog">
-            <material-card color="success" elevation="12" title="Danh sách lịch sử khiếu nại">
-              <v-data-table :headers="headersContent" :items="ChoosenContents" hide-default-footer>
-                <template v-slot:body="{ items }">
-                  <tbody>
-                    <tr v-for="item in items" :key="item.Content">
-                      <td style="max-width: 300px;">{{ item.content }}</td>
-                      <td style="max-width: 300px;">{{ item.response }}</td>
-                    </tr>
-                  </tbody>
-                </template>
-              </v-data-table>
-            </material-card>
-          </v-dialog> -->
-
-          <!-- <v-card-title>
-            <v-text-field
-              v-model="searchConfirmed"
-              append-icon="search"
-              label="Search"
-              single-line
-              hide-details
-            ></v-text-field>
-          </v-card-title>
-
-          <div>
-            <v-data-table
-              :headers="headers"
-              :items="ConfirmedItems"
-              :search="search"
-              hide-default-footer
-              :page.sync="page"
-              :items-per-page="itemsPerPage"
-              @page-count="pageCount = $event"
-            >
-             
-            </v-data-table>
-            <v-pagination v-model="page" :length="pageCount"></v-pagination>
-          </div>-->
         </material-card>
       </v-flex>
+
+      <v-dialog v-model="ConfirmDialog" max-width="290">
+        <v-card>
+          <v-card-title class="green white--text">Gửi thông báo</v-card-title>
+
+          <v-card-text class="mt-2">Bạn có chắc muốn gửi thông báo này?</v-card-text>
+
+          <v-card-actions>
+            <v-btn color="green darken-1" text @click="sendNoti" :loading="loadingBtnConfirm">Đồng ý</v-btn>
+
+            <v-btn color="red darken-1" text @click="ConfirmDialog = false">Hủy</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-layout>
   </v-container>
 </template>
@@ -203,7 +246,61 @@ export default {
     editForm
   },
   data: () => ({
+    isValid: false,
     isLoadingDataDone: false,
+    ConfirmDialog: false,
+    loadingBtnConfirm: false,
+
+    /*add noti*/
+    ListIconId: [],
+    IconId: null,
+    ListCompanyId: [],
+    CompanyId: null,
+
+    ListReceiverType: [
+      {
+        id: 1,
+        name: "Toàn hệ thống"
+      },
+      {
+        id: 2,
+        name: "Công ty"
+      },
+      {
+        id: 3,
+        name: "Người dùng cụ thể"
+      }
+    ],
+    ReceiverType: null,
+    ListTargetClientId: [
+      {
+        id: 1,
+        name: "Mobile"
+      },
+      {
+        id: 2,
+        name: "Web quản lý"
+      },
+      {
+        id: 3,
+        name: "Web admin"
+      }
+    ],
+    TargetClientId: null,
+
+    title: "",
+    content: "",
+    username: "",
+
+    rules: {
+      required: value => !!value || "Không được để trống"
+    },
+
+    /*filter*/
+    FilterTargetClientId: "",
+    FilterReceiverType: "",
+    FilterCompanyId: "",
+
 
     /*content dialog*/
     ListContentDialog: false,
@@ -232,50 +329,54 @@ export default {
     pageCountNoti: 0,
 
     itemsPerPage: 5,
-    
+
     headersNoti: [
-      {
-        text: "Hệ thống nhận",
-        value: "targetClientId",
-        class: "stickyCollumn",
-        fixed: true
-      },
-      {
-        sortable: false,
-        text: "Đối tượng nhận",
-        value: "receiverType",
-        class: "stickyCollumn",
-        fixed: true
-      },
-      {
-        sortable: false,
-        text: "Mã công ty",
-        value: "companyId"
-      },
-      {
-        sortable: false,
-        text: "Người nhận",
-        value: "username",
-        align: "center"
-      },
-      {
-        text: "Thời gian gửi",
-        value: "sendTime"
-      },
-      {
-        text: "Tiêu đề",
-        value: "title"
-      },
-      {
-        text: "Nội dung",
-        value: "content"
-      },
       {
         text: "icon",
         value: "iconURL"
       },
       {
+        text: "Hệ thống nhận",
+        value: "TargetClientId",
+        width: 170,
+        align: "center"
+      },
+      {
+        text: "Đối tượng nhận",
+        value: "receiverType",
+        width: 170,
+        align: "center"
+      },
+      {
+        text: "Mã công ty",
+        value: "companyId",
+        width: 150,
+        align: "center"
+      },
+      {
+        text: "Người nhận",
+        value: "username",
+        width: 150,
+        align: "center"
+      },
+      {
+        text: "Thời gian gửi",
+        width: 170,
+        value: "sendTime"
+      },
+      {
+        text: "Tiêu đề",
+        width: 140,
+        value: "title"
+      },
+      {
+        text: "Nội dung",
+        width: 170,
+        value: "content"
+      },
+      {
         text: "Trạng thái",
+        width: 150,
         value: "status"
       }
     ],
@@ -295,6 +396,7 @@ export default {
       }
     ],
     ListNoti: [],
+    ListChoosenNoti: [],
     ChoosenItems: []
   }),
   computed: {
@@ -323,42 +425,48 @@ export default {
       this.datePicker = false;
       this.$refs.dialog.save(this.date);
       console.log(this.date);
-      await this.getListComplaint(this.date);
+      await this.getListNoti(this.date);
     },
-    getTypeSystem(id){
-      if(id == 1)
-        return "Mobile"
-      else if (id == 2)
-        return "Web quản lý"
-      
-      return "Web admin"
+    getTypeSystem(id) {
+      if (id == 1) return "Mobile";
+      else if (id == 2) return "Web quản lý";
+
+      return "Web admin";
     },
-    getReceiveType(id){
-      if(id == 0)
-        return "Toàn bộ hệ thống"
-      else if(id == 1)
-        return "Công ty"
-      
-      return "Người dùng"
+    getReceiveType(id) {
+      if (id == 0) return "Toàn bộ hệ thống";
+      else if (id == 1) return "Công ty";
+
+      return "Người dùng";
     },
-    getStatus(id){
-      if(id == 0)
-        return "Thất bại"
-      else if(id == 1)
-        return "Thành công"
-      else
-        return "Đang xử lý"
+    getStatus(id) {
+      if (id == 0) return "Thất bại";
+      else if (id == 1) return "Thành công";
+      else return "Đang xử lý";
+    },
+    getDate(time){
+      var todayTime = new Date(time);
+    var month = todayTime .getMonth() + 1;
+    var day = todayTime .getDate();
+    var year = todayTime .getFullYear();
+
+    var hour = todayTime.getHours();
+    var minute = todayTime.getMinutes();
+
+    return day + "/" + month + "/" + year + " " + hour + ":" + minute;
+
+      //return new Date(time*1000);
     },
     async getListNoti(date) {
       let $this = this;
 
       $this.isLoadingDataDone = false;
 
-      console.log("date: ", date)
+      console.log("date: ", date);
 
-      date = date.split('-').join('');
+      date = date.split("-").join("");
 
-      console.log("date after: ", date)
+      console.log("date after: ", date);
 
       $this.ListNoti = [];
 
@@ -371,15 +479,78 @@ export default {
             //   else $this.ConfirmedItems.push(element);
             // });
 
-            console.log(response.data)
+            console.log(response.data);
 
-             $this.ListNoti = response.data.data;
+            $this.ListNoti = response.data.data;
+
+            $this.ListChoosenNoti = $this.ListNoti;
 
             console.log("done data pending complaint");
             $this.isLoadingDataDone = true;
           } else {
             console.log(
               "this error message complaint: " + response.data.returnMessage
+            );
+          }
+        })
+        .catch(function(error) {
+          console.log("Error get list complaint:");
+          console.log(error);
+        });
+    },
+    async getListCompanyId(date) {
+      let $this = this;
+
+      await $this.$axios
+        .get("/api/admin/companies")
+        .then(function(response) {
+          if (response.data.returnCode == 1) {
+            // response.data.data.forEach(element => {
+            //   if (element.status == 2) $this.PendingItems.push(element);
+            //   else $this.ConfirmedItems.push(element);
+            // });
+
+            //console.log(response.data);
+
+            response.data.data.forEach(element => {
+              $this.ListCompanyId.push(element.companyId);
+            });
+            //$this.List = response.data.data;
+
+            console.log("done data companyId");
+          } else {
+            console.log(
+              "this error message companyId noti: " +
+                response.data.returnMessage
+            );
+          }
+        })
+        .catch(function(error) {
+          console.log("Error get list complaint:");
+          console.log(error);
+        });
+    },
+    async getListIcon(date) {
+      let $this = this;
+
+      await $this.$axios
+        .get("/api/admin/icons")
+        .then(function(response) {
+          if (response.data.returnCode == 1) {
+            // response.data.data.forEach(element => {
+            //   if (element.status == 2) $this.PendingItems.push(element);
+            //   else $this.ConfirmedItems.push(element);
+            // });
+
+            //console.log(response.data);
+
+            $this.ListIconId = response.data.data.iconList;
+
+            console.log("done data companyId");
+          } else {
+            console.log(
+              "this error message companyId noti: " +
+                response.data.returnMessage
             );
           }
         })
@@ -403,10 +574,89 @@ export default {
       });
     },
 
+    getIcon(id) {
+      console.log("icon id change: ", id);
+
+      let icon = this.ListIconId.find(element => element.iconId === id);
+      if (!icon) return "/vuetifylogo.png";
+      console.log("icon: ", icon);
+      return icon["iconURL"];
+    },
+
+    sendNoti() {
+      this.loadingBtnConfirm = true;
+      // this.isLoadingBtnSave = true;
+      this.$axios
+        .post("/api/admin/notifications", {
+          companyId: this.CompanyId,
+          content:
+            this.content,
+          iconId: this.IconId,
+          receiverType: this.ReceiverType - 1,
+          sender: this.$auth.user.username,
+          targetClientId: this.TargetClientId,
+          title: this.title,
+          username: this.username
+        })
+        .then(res => {
+          this.isLoadingBtnSave = false;
+          this.loadingBtnConfirm = false;
+          this.ConfirmDialog = false;
+          if (res.data.returnCode != 1) {
+            this.TriggerNotiError(res.data.returnMessage);
+          } else {
+            //this.is_loading = false;
+            this.TriggerNoti(res.data.returnMessage);
+            //$this.goBack();
+          }
+        });
+
+      //     console.log("error push")
+    },
+
+    doTheFilter(){
+      // this.ListChoosenNoti = this.ListNoti.find(element=>(element.targetClientId == this.FilterTargetClientId)
+      //                                                   && (element.receiverType == this.FilterReceiverType) 
+      //                                                   && (element.companyId == this.FilterCompanyId))
+
+      this.ListChoosenNoti = []
+      this.ListNoti.forEach(el => {
+        let flagTarget = true;
+        let flagReceiver = true;
+        let flagCompany = true;
+
+        if(this.FilterTargetClientId){
+          if(el.targetClientId != this.FilterTargetClientId)
+            flagTarget = false;
+        }
+
+        if(this.FilterReceiverType){
+          if(el.receiverType != (this.FilterReceiverType - 1))
+            flagReceiver = false;
+        }
+
+        if(this.FilterCompanyId){
+          if(el.companyId != this.FilterCompanyId)
+            flagTarget = false;
+        }
+
+        if(flagTarget && flagReceiver && flagCompany)
+            this.ListChoosenNoti.push(el)                                          
+      })
+    },
+    clearTheFilter() {
+      this.FilterCompanyId = ""
+      this.FilterReceiverType = ""
+      this.companyId = ""
+
+      this.ListChoosenNoti = this.ListNoti
+    }
   },
   created: async function() {
-    this.date = '2020-04-30'
+    this.date = "2020-04-30";
     this.getListNoti(this.date);
+    this.getListCompanyId();
+    this.getListIcon();
   }
 };
 </script>
@@ -419,5 +669,31 @@ export default {
 .stickyCollumn {
   position: sticky;
   color: red !important;
+}
+
+.img-icon {
+  width: 50px;
+}
+
+.filters {
+  display: flex;
+  align-items: baseline;
+}
+
+.filters div {
+  margin: 10px;
+}
+
+.filters button {
+  margin-bottom: 0px;
+}
+
+.pair-btn {
+  display: flex;
+  justify-content: center;
+}
+
+.pair-btn button{
+  margin: 20px !important;
 }
 </style>
