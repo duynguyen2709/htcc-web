@@ -46,6 +46,7 @@
 }
 
 .ant-modal-body {
+    min-height: 150px;
     max-height: 550px;
     overflow: auto;
 }

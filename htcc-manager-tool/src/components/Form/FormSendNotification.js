@@ -336,8 +336,12 @@ class FormSendNotification extends React.Component {
 
         return (
             <Form>
-                <div
-                    style={{position: 'absolute', left: '50%', top: '50%', display: sending ? 'inline-block' : 'none'}}>
+                <div style={{
+                    position: 'absolute',
+                    left: '50%',
+                    top: '50%',
+                    display: sending ? 'inline-block' : 'none'
+                }}>
                     <Spin size={"large"}/>
                 </div>
                 <div style={{opacity: sending ? '0.5' : '1'}}>

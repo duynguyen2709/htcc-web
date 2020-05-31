@@ -1,15 +1,17 @@
 import React, {Component} from 'react';
 import {Button, Col, DatePicker, Row, Select, Tabs} from 'antd';
-import {CalendarOutlined, CarryOutOutlined} from '@ant-design/icons';
+import {CalendarOutlined, CarryOutOutlined, MenuUnfoldOutlined} from '@ant-design/icons';
+import {Button as ReactStrapButton, CardFooter} from "reactstrap";
 import moment from 'moment';
 import * as _ from 'lodash';
-import {shiftArrangement} from '../api';
+import {shiftArrangement, shiftTemplate} from '../api';
 import {store} from "react-notifications-component";
 import {createNotify} from "../utils/notifier";
 import ShiftByDateArrangement from "../components/ShiftArrangement/ShiftByDateArrangement";
 import ReactLoading from "react-loading";
 import FixedShiftArrangement from "../components/ShiftArrangement/FixedShiftArrangement";
 import ShiftDetailModal from "../components/Modal/ShiftDetailModal";
+import CopyShiftModal from "../components/Modal/CopyShiftModal";
 
 const {TabPane} = Tabs;
 
@@ -28,6 +30,9 @@ class ShiftArrangement extends Component {
 
             modalShiftDetailVisible: false,
             currentUsernameFilter: '',
+
+            modalCopyShiftVisible: false,
+            shiftTemplateList: [],
         };
 
         this.copyFixedShiftList = [];
@@ -40,7 +45,14 @@ class ShiftArrangement extends Component {
 
     componentDidMount() {
         this.getShiftArrangement();
+        this.getShiftTemplate();
     }
+
+    toggleModalCopyShift = () => {
+        this.setState({
+            modalCopyShiftVisible: !this.state.modalCopyShiftVisible
+        })
+    };
 
     toggleModalShiftDetail = () => {
         this.setState({
@@ -88,6 +100,27 @@ class ShiftArrangement extends Component {
             fixedShiftList: fixedShiftList,
             shiftByDateList: shiftByDateList
         });
+    };
+
+    getShiftTemplate = () => {
+        shiftTemplate
+            .getShiftTemplate()
+            .then((res) => {
+                if (res.returnCode === 1) {
+                    this.setState({
+                        shiftTemplateList: res.data
+                    })
+                } else {
+                    store.addNotification(
+                        createNotify('danger', res.returnMessage)
+                    );
+                }
+            })
+            .catch((err) => {
+                store.addNotification(
+                    createNotify('danger', JSON.stringify(err))
+                );
+            });
     };
 
     getShiftArrangement = () => {
@@ -278,11 +311,28 @@ class ShiftArrangement extends Component {
         return `Nhân viên: ${currentUsernameFilter}`;
     };
 
+    renderCopyShiftButton = () => {
+        return (<>
+            <CardFooter className="text-right info" style={{marginRight: '10px'}}>
+                <ReactStrapButton
+                    className="btn-custom"
+                    color="primary"
+                    type="button"
+                    onClick={this.toggleModalCopyShift}
+                >
+                    <MenuUnfoldOutlined style={{display: 'inline', margin: '5px 10px 0 0',}}/>
+                    <span className="btn-save-text"> Sao chép ca </span>
+                </ReactStrapButton>
+            </CardFooter>
+        </>)
+    };
+
     render() {
         const {
             currentWeek, fixedShiftList, shiftByDateList,
             canManageEmployees, isLoading, modalShiftDetailVisible,
-            currentUsernameFilter, employeeShiftDetailMap
+            currentUsernameFilter, employeeShiftDetailMap,
+            modalCopyShiftVisible, shiftTemplateList
         } = this.state;
 
         const modalTitle = this.getModalTitle(canManageEmployees, currentUsernameFilter);
@@ -290,6 +340,13 @@ class ShiftArrangement extends Component {
         return (
             <div className="content">
                 <div className="table-wrapper tabs-big">
+                    <CopyShiftModal employeeList={canManageEmployees}
+                                    templateList={shiftTemplateList}
+                                    toggle={this.toggleModalCopyShift}
+                                    visible={modalCopyShiftVisible}
+                                    title={'Sao chép ca'}
+                    />
+
                     {employeeShiftDetailMap[currentUsernameFilter] != null ?
                         <ShiftDetailModal data={employeeShiftDetailMap[currentUsernameFilter]}
                                           toggle={this.toggleModalShiftDetail}
@@ -351,6 +408,9 @@ class ShiftArrangement extends Component {
                                         >
                                             Xem chi tiết
                                         </Button>
+                                    </Col>
+                                    <Col span={4} push={4}>
+                                        {this.renderCopyShiftButton()}
                                     </Col>
                                 </Row>
                             </div>
