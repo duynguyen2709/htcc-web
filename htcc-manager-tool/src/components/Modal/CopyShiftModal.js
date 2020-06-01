@@ -301,9 +301,48 @@ class CopyShiftModal extends React.Component {
             })
     };
 
+    renderCardShiftDetail = () => {
+        const {expandedKeys, checkedKeys, templateId} = this.state;
+
+        if (_.isEqual(templateId, '')) {
+            return null;
+        }
+
+        return (
+            <Row justify="space-around" align="middle">
+                <Col span={11}>
+                    <Card>
+                        <Tree
+                            blockNode
+                            selectable={false}
+                            checkable={false}
+                            expandedKeys={expandedKeys}
+                            checkedKeys={checkedKeys}
+                            treeData={this.buildTreeData(false)}/>
+                    </Card>
+                </Col>
+                <Col span={1}>
+                    <ArrowRightOutlined style={{paddingLeft: '10px'}}/>
+                </Col>
+                <Col span={12}>
+                    <Card>
+                        <Tree
+                            blockNode
+                            selectable={false}
+                            checkable={true}
+                            expandedKeys={expandedKeys}
+                            checkedKeys={checkedKeys}
+                            onCheck={this.onCheck}
+                            treeData={this.buildTreeData(true)}/>
+                    </Card>
+                </Col>
+            </Row>
+        );
+    };
+
     render() {
         const {visible, title, templateList, employeeList} = this.props;
-        const {expandedKeys, checkedKeys, isLoading} = this.state;
+        const {isLoading} = this.state;
 
         const isEmpty = (_.isEmpty(templateList) || _.isEmpty(employeeList));
 
@@ -339,34 +378,7 @@ class CopyShiftModal extends React.Component {
 
                                 {this.renderEmployeeSelect()}
                             </Row>
-                            <Row justify="space-around" align="middle">
-                                <Col span={11}>
-                                    <Card>
-                                        <Tree
-                                            blockNode
-                                            selectable={false}
-                                            checkable={false}
-                                            expandedKeys={expandedKeys}
-                                            checkedKeys={checkedKeys}
-                                            treeData={this.buildTreeData(false)}/>
-                                    </Card>
-                                </Col>
-                                <Col span={1}>
-                                    <ArrowRightOutlined style={{paddingLeft: '10px'}}/>
-                                </Col>
-                                <Col span={12}>
-                                    <Card>
-                                        <Tree
-                                            blockNode
-                                            selectable={false}
-                                            checkable={true}
-                                            expandedKeys={expandedKeys}
-                                            checkedKeys={checkedKeys}
-                                            onCheck={this.onCheck}
-                                            treeData={this.buildTreeData(true)}/>
-                                    </Card>
-                                </Col>
-                            </Row>
+                            {this.renderCardShiftDetail()}
                             <CardFooter className="text-right info">
                                 {this.renderButton()}
                             </CardFooter>

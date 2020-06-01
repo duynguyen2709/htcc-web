@@ -9,6 +9,7 @@ import ShiftTime from './views/containers/ShiftTimeContainer';
 import WorkingDay from './views/containers/WorkingDayContainer';
 import Notification from './views/Notification/index';
 import ShiftArrangement from './views/ShiftArrangement';
+import ShiftTemplate from "./views/ShiftTemplate";
 
 const routes = [
     {
@@ -105,6 +106,16 @@ const routes = [
                 key: '/lich-lam/xep-ca',
                 brand: 'Xếp Ca Làm Việc',
                 component: ShiftArrangement,
+                layout: '/',
+            },
+            {
+                name: 'Ca mẫu',
+                icon: 'tim-icons icon-calendar-60',
+                class: 'sub-menu',
+                path: '/lich-lam/ca-mau',
+                key: '/lich-lam/ca-mau',
+                brand: 'Ca Làm Việc Mẫu',
+                component: ShiftTemplate,
                 layout: '/',
             },
         ],

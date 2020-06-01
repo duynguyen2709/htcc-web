@@ -190,3 +190,21 @@
     border-radius: 10px;
     height: 60px;
 }
+
+.slick-slider {
+    padding: 0 30px !important;
+}
+
+.slick-prev:before, .slick-next:before {
+    font-size: 30px !important;
+    color: black !important;
+}
+
+.card-shift-template {
+    min-height: calc(100vh - 350px);
+    padding: 5px;
+    border: solid 1px #c3c3c3;
+    border-radius: 15px;
+    margin: 5px;
+    width: 95% !important;
+}
