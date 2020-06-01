@@ -1,9 +1,13 @@
 import React from 'react';
-import {Card, Col, Empty, Modal, Row, Select, Tree} from 'antd';
+import {Card, Col, Empty, Modal, Popconfirm, Row, Select, Spin, Tree} from 'antd';
 import * as _ from 'lodash';
-import {ArrowRightOutlined} from '@ant-design/icons';
+import {ArrowRightOutlined, QuestionCircleOutlined} from '@ant-design/icons';
+import {createNotify} from '../../utils/notifier';
+import {store} from 'react-notifications-component';
+import {shiftArrangement} from '../../api';
 
 import {WEEK_DAYS} from "../../constant/constant";
+import {Button, CardFooter} from "reactstrap";
 
 class CopyShiftModal extends React.Component {
     constructor(props) {
@@ -12,9 +16,10 @@ class CopyShiftModal extends React.Component {
         this.state = {
             username: '',
             templateId: '',
+            templateName: '',
             expandedKeys: [],
-            data: {},
-            templateList: props.templateList,
+            checkedKeys: [],
+            isLoading: false
         };
 
         this.onChangeTemplate = this.onChangeTemplate.bind(this);
@@ -24,22 +29,27 @@ class CopyShiftModal extends React.Component {
         const {templateList} = this.props;
         for (let template of templateList) {
             if (_.isEqual(template.templateId, templateId)) {
-                const keys = [];
+                const expandedKeys = [];
+                const checkedKeys = [];
                 _.forOwn(template.shiftTimeMap, (value, key) => {
-                    keys.push(`weekDay_${key}`);
+                    expandedKeys.push(`weekDay_${key}`);
 
-                    if (value.length === 0) {
-                        keys.push(`leaf_${key}_0`);
+                    if (value.length > 0) {
+                        checkedKeys.push(`weekDay_${key}`);
+                    }
 
-                        _.forEach(value, (shift, index) => {
-                            keys.push(`leaf_${key}_${index}`);
-                        });
-                    }});
+                    _.forEach(value, (shift, index) => {
+                        shift.weekDay = key;
+                        expandedKeys.push(`${JSON.stringify(shift)}`);
+                        checkedKeys.push(`${JSON.stringify(shift)}`);
+                    });
+                });
 
                 this.setState({
                     templateId: templateId,
-                    data: template.shiftTimeMap,
-                    expandedKeys: keys
+                    templateName: template.templateName,
+                    expandedKeys: expandedKeys,
+                    checkedKeys: checkedKeys,
                 })
             }
         }
@@ -126,9 +136,10 @@ class CopyShiftModal extends React.Component {
             }
 
             _.forEach(value, (shift, index) => {
+                shift.weekDay = key;
                 const leafNode = {
                     title: `- Chi nhánh: ${shift.officeId} - Ca: ${shift.shiftName} (${shift.shiftId}) - Giờ: ${shift.shiftTime}`,
-                    key: `leaf_${key}_${index}`,
+                    key: `${JSON.stringify(shift)}`,
                     isLeaf: true,
                     checkable: checkable,
                     selectable: false,
@@ -157,21 +168,151 @@ class CopyShiftModal extends React.Component {
         return null;
     };
 
+    onCheck = checkedKeys => {
+        checkedKeys = _.filter(checkedKeys, (ele) => !ele.startsWith('weekDay_'));
+        this.setState({
+            checkedKeys: checkedKeys
+        })
+    };
 
+    renderButton = () => {
+        let fullName = '';
+        for (let employee of this.props.employeeList) {
+            if (_.isEqual(employee.username, this.state.username)) {
+                fullName = employee.fullName;
+                break;
+            }
+        }
+
+        const {username, templateId, checkedKeys} = this.state;
+        if ((_.isEqual(templateId, '')) || (_.isEmpty(username)) || (_.isEmpty(checkedKeys))) {
+            return <Button
+                id="save"
+                className="btn-custom"
+                color="primary"
+                type="button"
+                style={{margin: '10px'}}
+                onClick={this.validateData}
+            >
+                <span className="btn-save-text"> SAO CHÉP</span>
+            </Button>
+        }
+
+        const title = `Xác nhận sao chép ca "${this.state.templateName}" cho nhân viên ${fullName} ?`;
+        return (
+            <Popconfirm
+                title={title}
+                icon={<QuestionCircleOutlined/>}
+                okText="Đồng ý"
+                cancelText="Huỷ"
+                onConfirm={this.handleSubmit}
+            >
+                <Button
+                    id="save"
+                    className="btn-custom"
+                    color="primary"
+                    type="button"
+                    style={{margin: '10px'}}
+                    disabled={this.state.isLoading}
+                >
+                    <span className="btn-save-text"> SAO CHÉP</span>
+                </Button>
+            </Popconfirm>
+        );
+    };
+
+    validateData = () => {
+        const {username, templateId, checkedKeys} = this.state;
+
+        if (_.isEqual(templateId, '')) {
+            store.addNotification(
+                createNotify('danger', "Vui lòng chọn ca mẫu")
+            );
+            return;
+        }
+
+        if (_.isEmpty(username)) {
+            store.addNotification(
+                createNotify('danger', "Vui lòng chọn nhân viên")
+            );
+            return;
+        }
+
+        if (_.isEmpty(checkedKeys)) {
+            store.addNotification(
+                createNotify('danger', "Danh sách ca không được rỗng")
+            );
+            return;
+        }
+    };
+
+    handleSubmit = () => {
+        const {username, checkedKeys} = this.state;
+        const keys = _.filter(checkedKeys, (ele) => !ele.startsWith('weekDay_'));
+        const data = {};
+
+        _.forEach(keys, (value, index) => {
+            const obj = JSON.parse(value);
+            const weekDay = parseInt(obj.weekDay);
+            if (data[weekDay] == null) {
+                data[weekDay] = [];
+            }
+
+            data[weekDay].push({
+                shiftId: obj.shiftId,
+                officeId: obj.officeId
+            })
+        });
+
+        this.setState({
+            isLoading: true
+        });
+
+        shiftArrangement.copyShiftFromTemplate(username, data)
+            .then((res) => {
+                if (res.returnCode === 1) {
+                    store.addNotification(
+                        createNotify(
+                            'default',
+                            res.returnMessage
+                        )
+                    );
+                    this.props.toggle(true);
+                } else {
+                    store.addNotification(
+                        createNotify(
+                            'danger',
+                            res.returnMessage
+                        )
+                    );
+                }
+            })
+            .catch((err) => {
+                console.error(err);
+                store.addNotification(
+                    createNotify('danger', 'Hệ thống có lỗi. Vui lòng thử lại sau.')
+                );
+
+            })
+            .finally(() => {
+                this.setState({
+                    isLoading: false,
+                });
+            })
+    };
 
     render() {
-        const {visible, title, toggle, templateList, employeeList} = this.props;
-        const {expandedKeys} = this.state;
+        const {visible, title, templateList, employeeList} = this.props;
+        const {expandedKeys, checkedKeys, isLoading} = this.state;
 
         const isEmpty = (_.isEmpty(templateList) || _.isEmpty(employeeList));
 
-        console.log(expandedKeys);
         return (
             <Modal
-                width={isEmpty ? "520px" : "70%"}
+                width={isEmpty || isLoading ? "520px" : "70%"}
                 visible={visible}
                 title={title ? title : ''}
-                onCancel={toggle}
+                onCancel={() => this.props.toggle(false)}
                 footer={null}
             >
                 {isEmpty ?
@@ -181,38 +322,55 @@ class CopyShiftModal extends React.Component {
                            }
                     />
                     :
-                    <>
-                        <Row justify="space-around" align="middle">
-                            {this.renderTemplateSelect()}
+                    isLoading ?
+                        <>
+                            <div style={{
+                                position: 'absolute',
+                                left: '50%',
+                                top: '50%',
+                            }}>
+                                <Spin size={"large"}/>
+                            </div>
+                        </>
+                        :
+                        <>
+                            <Row justify="space-around" align="middle">
+                                {this.renderTemplateSelect()}
 
-                            {this.renderEmployeeSelect()}
-                        </Row>
-                        <Row justify="space-around" align="middle">
-                            <Col span={11}>
-                                <Card>
-                                    <Tree
-                                        blockNode
-                                        selectable={false}
-                                        checkable={false}
-                                        expandedKeys={expandedKeys}
-                                        treeData={this.buildTreeData(false)}/>
-                                </Card>
-                            </Col>
-                            <Col span={1}>
-                                <ArrowRightOutlined style={{paddingLeft: '10px'}}/>
-                            </Col>
-                            <Col span={12}>
-                                <Card>
-                                    <Tree
-                                        blockNode
-                                        selectable={false}
-                                        checkable={true}
-                                        expandedKeys={expandedKeys}
-                                        treeData={this.buildTreeData(true)}/>
-                                </Card>
-                            </Col>
-                        </Row>
-                    </>
+                                {this.renderEmployeeSelect()}
+                            </Row>
+                            <Row justify="space-around" align="middle">
+                                <Col span={11}>
+                                    <Card>
+                                        <Tree
+                                            blockNode
+                                            selectable={false}
+                                            checkable={false}
+                                            expandedKeys={expandedKeys}
+                                            checkedKeys={checkedKeys}
+                                            treeData={this.buildTreeData(false)}/>
+                                    </Card>
+                                </Col>
+                                <Col span={1}>
+                                    <ArrowRightOutlined style={{paddingLeft: '10px'}}/>
+                                </Col>
+                                <Col span={12}>
+                                    <Card>
+                                        <Tree
+                                            blockNode
+                                            selectable={false}
+                                            checkable={true}
+                                            expandedKeys={expandedKeys}
+                                            checkedKeys={checkedKeys}
+                                            onCheck={this.onCheck}
+                                            treeData={this.buildTreeData(true)}/>
+                                    </Card>
+                                </Col>
+                            </Row>
+                            <CardFooter className="text-right info">
+                                {this.renderButton()}
+                            </CardFooter>
+                        </>
                 }
             </Modal>
         );

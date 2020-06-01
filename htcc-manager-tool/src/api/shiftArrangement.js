@@ -80,8 +80,37 @@ const createShiftArrangement = (data) => {
     });
 };
 
+const copyShiftFromTemplate = (username, shiftMap) => {
+    const token = localStorage.getItem(TOKEN);
+    const user = JSON.parse(localStorage.getItem(USER));
+
+    const data = {};
+    data.companyId = user.companyId;
+    data.actor = user.username;
+    data.username = username;
+    data.data = shiftMap;
+
+    return new Promise((resolve, reject) => {
+        axios
+            .post(`${API_URL_EMPLOYEE}/shifts/copy`, data, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+                timeout: 30000,
+            })
+            .then((res) => {
+                resolve(res.data);
+            })
+            .catch(err => {
+                console.error(err);
+                reject('Hệ thống có lỗi. Vui lòng thử lại sau.');
+            });
+    });
+};
+
 export default {
     getShiftArrangement,
     createShiftArrangement,
-    deleteShiftArrangement
+    deleteShiftArrangement,
+    copyShiftFromTemplate
 };

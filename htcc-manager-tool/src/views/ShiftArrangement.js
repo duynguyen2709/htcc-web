@@ -48,10 +48,14 @@ class ShiftArrangement extends Component {
         this.getShiftTemplate();
     }
 
-    toggleModalCopyShift = () => {
+    toggleModalCopyShift = (reload) => {
         this.setState({
             modalCopyShiftVisible: !this.state.modalCopyShiftVisible
-        })
+        });
+
+        if (reload) {
+            this.getShiftArrangement();
+        }
     };
 
     toggleModalShiftDetail = () => {
@@ -318,7 +322,7 @@ class ShiftArrangement extends Component {
                     className="btn-custom"
                     color="primary"
                     type="button"
-                    onClick={this.toggleModalCopyShift}
+                    onClick={() => this.toggleModalCopyShift(false)}
                 >
                     <MenuUnfoldOutlined style={{display: 'inline', margin: '5px 10px 0 0',}}/>
                     <span className="btn-save-text"> Sao chép ca </span>
@@ -342,7 +346,7 @@ class ShiftArrangement extends Component {
                 <div className="table-wrapper tabs-big">
                     <CopyShiftModal employeeList={canManageEmployees}
                                     templateList={shiftTemplateList}
-                                    toggle={this.toggleModalCopyShift}
+                                    toggle={(reload) => this.toggleModalCopyShift(reload)}
                                     visible={modalCopyShiftVisible}
                                     title={'Sao chép ca'}
                     />
