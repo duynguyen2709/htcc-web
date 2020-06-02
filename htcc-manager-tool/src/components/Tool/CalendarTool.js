@@ -1,5 +1,5 @@
 import React from 'react';
-import { DatePicker } from 'antd';
+import {DatePicker} from 'antd';
 import moment from 'moment';
 import * as _ from 'lodash';
 
@@ -21,7 +21,7 @@ class CalendarTool extends React.Component {
     };
 
     render() {
-        const { picker = 'month', format = 'MM-YYYY', disabledDate } = this.props;
+        const {picker = 'month', format = 'MM-YYYY', disabledDate} = this.props;
         return (
             <DatePicker
                 disabledDate={disabledDate}

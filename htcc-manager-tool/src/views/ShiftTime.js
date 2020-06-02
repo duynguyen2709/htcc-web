@@ -171,7 +171,7 @@ class ShiftTime extends Component {
 
     onSearch = (e) => {
         const data = _.filter(this.dataTable, (ele) =>
-            JSON.stringify(ele).includes(e.target.value)
+            JSON.stringify(ele).toLowerCase().includes(e.target.value.toLowerCase())
         );
 
         this.setState({

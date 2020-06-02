@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import {Card, Carousel, Col, Collapse, Input, Row, Tooltip, Tree} from 'antd';
-import {PlusSquareOutlined,} from '@ant-design/icons';
+import {Button, Card, Col, Collapse, Empty, Input, Popconfirm, Row, Tooltip, Tree} from 'antd';
+import {DeleteOutlined, PlusSquareOutlined, QuestionCircleOutlined} from '@ant-design/icons';
 import {shiftTemplate} from '../api';
 import {store} from 'react-notifications-component';
 import {createNotify} from '../utils/notifier';
@@ -19,7 +19,7 @@ class ShiftTemplate extends Component {
         super(props);
         this.state = {
             isLoading: false,
-            data: null,
+            data: [],
             showModal: false,
         };
         this.data = [];
@@ -49,9 +49,9 @@ class ShiftTemplate extends Component {
 
     getListShiftTemplate = () => {
         this.setState({
-            data: null,
+            data: [],
         });
-        this.data = null;
+        this.data = [];
 
         this.toggleLoading();
 
@@ -93,7 +93,7 @@ class ShiftTemplate extends Component {
 
     onSearch = (e) => {
         const data = _.filter(this.data, (ele) =>
-            JSON.stringify(ele).includes(e.target.value)
+            JSON.stringify(ele).toLowerCase().includes(e.target.value.toLowerCase())
         );
 
         this.setState({
@@ -101,39 +101,38 @@ class ShiftTemplate extends Component {
         });
     };
 
-    // handleDeleteShiftTemplate = (record) => {
-    //     const { officeId } = this.state;
-    //
-    //     if (!officeId || officeId === '') {
-    //         return;
-    //     }
-    //
-    //     this.toggleLoading();
-    //
-    //     workScheduleApi
-    //         .deleteShiftTime(officeId, record.shiftId)
-    //         .then((res) => {
-    //             if (res.returnCode === 1) {
-    //                 this.getListShiftTime(officeId);
-    //
-    //                 store.addNotification(
-    //                     createNotify('default', 'Xoá thành công !')
-    //                 );
-    //             } else {
-    //                 store.addNotification(
-    //                     createNotify('danger', res.returnMessage)
-    //                 );
-    //             }
-    //         })
-    //         .catch((err) => {
-    //             store.addNotification(
-    //                 createNotify('danger', JSON.stringify(err))
-    //             );
-    //         })
-    //         .finally(() => {
-    //             this.toggleLoading();
-    //         });
-    // };
+    handleDeleteShiftTemplate = (templateId) => {
+        const data = _.filter(this.data, (ele) => !_.isEqual(ele.templateId, templateId));
+
+        this.setState({
+            data: data
+        });
+        this.data = data;
+        // this.toggleLoading();
+        //
+        // shiftTemplate
+        //     .deleteShiftTemplate(templateId)
+        //     .then((res) => {
+        //         if (res.returnCode === 1) {
+        //             store.addNotification(
+        //                 createNotify('default', res.returnMessage)
+        //             );
+        //         } else {
+        //             store.addNotification(
+        //                 createNotify('danger', res.returnMessage)
+        //             );
+        //         }
+        //     })
+        //     .catch((err) => {
+        //         console.error(err);
+        //         store.addNotification(
+        //             createNotify('danger', 'Hệ thống có lỗi. Vui lòng thử lại sau.')
+        //         );
+        //     })
+        //     .finally(() => {
+        //         this.toggleLoading();
+        //     });
+    };
 
     buildTreeData = (fixedShiftMap) => {
 
@@ -177,6 +176,26 @@ class ShiftTemplate extends Component {
         return fixedShiftList;
     };
 
+    renderButtonDelete = (templateId) => {
+        const message = `Bạn có chắc chắn xóa ?`;
+        return (<>
+            <Popconfirm
+                title={message}
+                icon={<QuestionCircleOutlined/>}
+                okText="Đồng ý"
+                cancelText="Huỷ"
+                onConfirm={(event) => {
+                    event.stopPropagation();
+                    this.handleDeleteShiftTemplate(templateId);
+                }}
+            >
+                <Button type="primary" danger
+                        icon={<DeleteOutlined/>}
+                />
+            </Popconfirm>
+        </>)
+    };
+
     render() {
         const {
             data,
@@ -184,7 +203,7 @@ class ShiftTemplate extends Component {
             isLoading,
         } = this.state;
 
-        if (isLoading || _.isEmpty(data)) {
+        if (isLoading) {
             return <ReactLoading
                 type={'spinningBubbles'}
                 color={'#4caf50'}
@@ -251,39 +270,48 @@ class ShiftTemplate extends Component {
                             </Col>
                         </Row>
                     </div>
-                    <div style={{padding: '50px'}}>
-                    <Slider {...settings}>
-                        {_.map(data, (item, index) => {
-                            const treeData = this.buildTreeData(item.shiftTimeMap);
-                            return <>
-                                <Card title={item.templateName}
-                                      className={"card-shift-template"}
-                                      headStyle={{background: '#efefef', borderRadius: '10px'}}
-                                      hoverable
-                                >
-                                    <Tree
-                                        blockNode
-                                        selectable={false}
-                                        checkable={false}
-                                        defaultExpandAll
-                                        treeData={treeData}/>
-                                </Card>
-                            </>
-                        })}
-                    </Slider>
-                    </div>
-                    </div>
-                    {/*<div>*/}
-                    {/*    <AsyncModal*/}
-                    {/*        key={{}}*/}
-                    {/*        reload={false}*/}
-                    {/*        CompomentContent={{}}*/}
-                    {/*        visible={showModal}*/}
-                    {/*        toggle={(submit) => this.toggle(submit)}*/}
-                    {/*        title={'Thêm ca mẫu mới'}*/}
-                    {/*        data={{}}*/}
-                    {/*    />*/}
-                    {/*</div>*/}
+                    {_.isEmpty(data) ?
+                        <Empty style={{marginTop: '50px'}}
+                               description={
+                                   <span style={{color: 'rgba(0, 0, 0, 0.65)'}}>Không có ca mẫu</span>
+                               }
+                        />
+                        :
+                        <div style={{padding: '50px'}}>
+                            <Slider {...settings}>
+                                {_.map(data, (item, index) => {
+                                    const treeData = this.buildTreeData(item.shiftTimeMap);
+                                    return (
+                                        <Card title={item.templateName}
+                                              className={"card-shift-template"}
+                                              headStyle={{background: '#efefef', borderRadius: '10px'}}
+                                              hoverable
+                                              key={item.templateId}
+                                              extra={this.renderButtonDelete(item.templateId)}
+                                        >
+                                            <Tree
+                                                blockNode
+                                                selectable={false}
+                                                checkable={false}
+                                                defaultExpandAll
+                                                treeData={treeData}/>
+                                        </Card>
+                                    )
+                                })}
+                            </Slider>
+                        </div>}
+                </div>
+                {/*<div>*/}
+                {/*    <AsyncModal*/}
+                {/*        key={{}}*/}
+                {/*        reload={false}*/}
+                {/*        CompomentContent={{}}*/}
+                {/*        visible={showModal}*/}
+                {/*        toggle={(submit) => this.toggle(submit)}*/}
+                {/*        title={'Thêm ca mẫu mới'}*/}
+                {/*        data={{}}*/}
+                {/*    />*/}
+                {/*</div>*/}
                 {/*</div>*/}
             </div>
         );

@@ -1,8 +1,8 @@
 import React from 'react';
-import { Select } from 'antd';
+import {Select} from 'antd';
 import * as _ from 'lodash';
 
-const { Option } = Select;
+const {Option} = Select;
 
 class SelectBox extends React.Component {
     constructor(props) {
@@ -19,7 +19,7 @@ class SelectBox extends React.Component {
     };
 
     componentDidMount() {
-        const { options = [], currentOffices } = this.props;
+        const {options = [], currentOffices} = this.props;
         this.setState(
             {
                 value: _.isEmpty(currentOffices)
@@ -42,14 +42,14 @@ class SelectBox extends React.Component {
     };
 
     render() {
-        const { options = [], placeholder = 'Chọn mã chi nhánh' } = this.props;
-        let { value } = this.state;
+        const {options = [], placeholder = 'Chọn mã chi nhánh'} = this.props;
+        let {value} = this.state;
 
         if (!_.isEmpty(value) && typeof value === 'object') value = value.key;
 
         return (
             <Select
-                style={{ width: '100%' }}
+                style={{width: '100%'}}
                 className="bor-radius"
                 value={value}
                 onChange={(val) => this.onChange(val)}

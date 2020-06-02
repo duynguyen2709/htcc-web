@@ -1,22 +1,14 @@
 import React from 'react';
-import {
-    Button,
-    CardFooter,
-    Col,
-    Form,
-    FormGroup,
-    Input,
-    Row,
-} from 'reactstrap';
+import {Button, CardFooter, Col, Form, FormGroup, Input, Row,} from 'reactstrap';
 import * as _ from 'lodash';
-import { store } from 'react-notifications-component';
-import { createNotify } from '../../utils/notifier';
-import { CheckCircleOutlined, QuestionCircleOutlined } from '@ant-design/icons';
-import { Popconfirm, Select } from 'antd';
-import { workScheduleApi } from '../../api';
-import { checkValidNumber } from '../../utils/validate';
+import {store} from 'react-notifications-component';
+import {createNotify} from '../../utils/notifier';
+import {CheckCircleOutlined, QuestionCircleOutlined} from '@ant-design/icons';
+import {Popconfirm, Select} from 'antd';
+import {workScheduleApi} from '../../api';
+import {checkValidNumber} from '../../utils/validate';
 
-const { Option } = Select;
+const {Option} = Select;
 const INITFORM = {
     session: 0,
     id: '',
@@ -30,12 +22,12 @@ class FormEditNormalDay extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            value: { ...INITFORM },
+            value: {...INITFORM},
         };
     }
 
     componentDidMount() {
-        const { data } = this.props;
+        const {data} = this.props;
         if (!_.isEmpty(data)) {
             this.setState({
                 value: {
@@ -47,33 +39,33 @@ class FormEditNormalDay extends React.Component {
     }
 
     checkValidDataInput = () => {
-        const { value } = this.state;
+        const {value} = this.state;
 
         return checkValidNumber(value.id);
     };
 
     handleOnChange = (e) => {
-        const { value: valueInput, name, type } = e.target;
-        let { value, touch } = this.state;
+        const {value: valueInput, name, type} = e.target;
+        let {value, touch} = this.state;
 
         value[name] = type === 'number' ? parseInt(valueInput) : valueInput;
         touch[name] = true;
 
         this.setState({
-            value: { ...value },
-            touch: { ...touch },
+            value: {...value},
+            touch: {...touch},
         });
     };
 
     clear = () => {
         this.setState({
-            value: { ...INITFORM },
+            value: {...INITFORM},
         });
     };
 
     handleSubmit = (e) => {
         if (this.checkValidDataInput()) {
-            const { value } = this.state;
+            const {value} = this.state;
             value['officeId'] = this.props.officeId;
 
             this.props.loading();
@@ -125,7 +117,7 @@ class FormEditNormalDay extends React.Component {
     };
 
     render() {
-        const { value } = this.state;
+        const {value} = this.state;
 
         return (
             <Form>
@@ -147,7 +139,7 @@ class FormEditNormalDay extends React.Component {
                         <FormGroup>
                             <label>Buổi làm</label>
                             <Select
-                                style={{ width: '100%' }}
+                                style={{width: '100%'}}
                                 className="bor-radius"
                                 value={value.session}
                                 onChange={(val) =>
@@ -171,7 +163,7 @@ class FormEditNormalDay extends React.Component {
                         <FormGroup>
                             <label>Có đi làm không ?</label>
                             <Select
-                                style={{ width: '100%' }}
+                                style={{width: '100%'}}
                                 className="bor-radius"
                                 value={value.isWorking}
                                 onChange={(val) =>
@@ -192,7 +184,7 @@ class FormEditNormalDay extends React.Component {
                         <FormGroup>
                             <label>Loại ngày</label>
                             <Select
-                                style={{ width: '100%' }}
+                                style={{width: '100%'}}
                                 className="bor-radius"
                                 value={value.type}
                                 onChange={(val) => this.handleChangeType(val)}
@@ -227,7 +219,7 @@ class FormEditNormalDay extends React.Component {
                 <CardFooter className="text-right info">
                     <Popconfirm
                         title="Bạn chắc chắn thay đổi？"
-                        icon={<QuestionCircleOutlined />}
+                        icon={<QuestionCircleOutlined/>}
                         okText="Đồng ý"
                         cancelText="Huỷ"
                         onConfirm={() => this.handleSubmit()}

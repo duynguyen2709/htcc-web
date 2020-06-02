@@ -26,28 +26,29 @@ const getShiftTemplate = () => {
             });
     });
 };
-//
-// const deleteShiftArrangement = (type, arrangeId) => {
-//     const token = localStorage.getItem(TOKEN);
-//
-//     return new Promise((resolve, reject) => {
-//         axios({
-//             method: 'delete',
-//             url: `${API_URL_EMPLOYEE}/shifts/${type}/${arrangeId}`,
-//             data: {},
-//             headers: {
-//                 Authorization: `Bearer ${token}`,
-//             },
-//         })
-//             .then((res) => {
-//                 resolve(res.data);
-//             })
-//             .catch(err => {
-//                 console.error(err);
-//                 reject('Hệ thống có lỗi. Vui lòng thử lại sau.');
-//             });
-//     });
-// };
+
+const deleteShiftTemplate = (templateId) => {
+    const token = localStorage.getItem(TOKEN);
+
+    return new Promise((resolve, reject) => {
+        axios({
+            method: 'delete',
+            url: `${API_URL_EMPLOYEE}/shifttemplates/${templateId}`,
+            data: {},
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+            timeout: 30000,
+        })
+            .then((res) => {
+                resolve(res.data);
+            })
+            .catch(err => {
+                console.error(err);
+                reject('Hệ thống có lỗi. Vui lòng thử lại sau.');
+            });
+    });
+};
 //
 // const createShiftArrangement = (data) => {
 //     const token = localStorage.getItem(TOKEN);
@@ -82,6 +83,7 @@ const getShiftTemplate = () => {
 
 export default {
     getShiftTemplate ,
+    deleteShiftTemplate
     // createShiftArrangement,
     // deleteShiftArrangement
 };

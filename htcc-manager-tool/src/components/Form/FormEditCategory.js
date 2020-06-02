@@ -1,17 +1,9 @@
 import React from 'react';
-import {
-    Button,
-    CardFooter,
-    Col,
-    Form,
-    FormGroup,
-    Input,
-    Row,
-} from 'reactstrap';
-import { CheckCircleOutlined, QuestionCircleOutlined } from '@ant-design/icons';
-import { Popconfirm, Select } from 'antd';
+import {Button, CardFooter, Col, Form, FormGroup, Input, Row,} from 'reactstrap';
+import {CheckCircleOutlined, QuestionCircleOutlined} from '@ant-design/icons';
+import {Popconfirm, Select} from 'antd';
 
-const { Option } = Select;
+const {Option} = Select;
 
 const INITFORM = {
     category: '',
@@ -27,7 +19,7 @@ class FormEditCategory extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            value: { ...INITFORM },
+            value: {...INITFORM},
             messageInvalid: {
                 category: 'Tên danh mục không được rỗng',
             },
@@ -38,7 +30,7 @@ class FormEditCategory extends React.Component {
     }
 
     componentDidMount() {
-        const { data } = this.props;
+        const {data} = this.props;
 
         this.setState({
             value: {
@@ -48,26 +40,26 @@ class FormEditCategory extends React.Component {
     }
 
     handleOnChange = (e) => {
-        const { value: valueInput, name } = e.target;
-        let { value, touch } = this.state;
+        const {value: valueInput, name} = e.target;
+        let {value, touch} = this.state;
 
         value[name] = valueInput;
         touch[name] = true;
         this.setState({
-            value: { ...value },
-            touch: { ...touch },
+            value: {...value},
+            touch: {...touch},
         });
     };
 
     clear = () => {
         this.setState({
-            value: { ...INITFORM },
-            touch: { ...RESET_TOUCH },
+            value: {...INITFORM},
+            touch: {...RESET_TOUCH},
         });
     };
 
     handleSubmit = (e) => {
-        const { value } = this.state;
+        const {value} = this.state;
         this.props.loading();
         this.props.onSubmit(true, value);
     };
@@ -91,7 +83,7 @@ class FormEditCategory extends React.Component {
     };
 
     render() {
-        const { value } = this.state;
+        const {value} = this.state;
 
         return (
             <Form>
@@ -115,7 +107,7 @@ class FormEditCategory extends React.Component {
                         <FormGroup>
                             <label>Được hưởng lương không ?</label>
                             <Select
-                                style={{ width: '100%' }}
+                                style={{width: '100%'}}
                                 className="bor-radius"
                                 defaultValue={false}
                                 onChange={(val) =>
@@ -137,7 +129,7 @@ class FormEditCategory extends React.Component {
                         <FormGroup>
                             <label>Trừ ngày phép không ?</label>
                             <Select
-                                style={{ width: '100%' }}
+                                style={{width: '100%'}}
                                 className="bor-radius"
                                 defaultValue={false}
                                 onChange={(val) =>
@@ -159,7 +151,7 @@ class FormEditCategory extends React.Component {
                 <CardFooter className="text-right info">
                     <Popconfirm
                         title="Bạn chắc chắn thay đổi？"
-                        icon={<QuestionCircleOutlined />}
+                        icon={<QuestionCircleOutlined/>}
                         okText="Đồng ý"
                         cancelText="Huỷ"
                         onConfirm={() => this.handleSubmit()}

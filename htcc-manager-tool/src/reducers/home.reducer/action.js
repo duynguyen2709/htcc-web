@@ -23,4 +23,4 @@ const doClearData = () => ({
     payload: {},
 });
 
-export { doGetDataHome, doClearData };
+export {doGetDataHome, doClearData};

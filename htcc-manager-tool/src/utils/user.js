@@ -1,13 +1,13 @@
-import { TOKEN } from '../constant/localStorageKey';
+import {TOKEN} from '../constant/localStorageKey';
 
 export const getTokenFromLocalStorage = () => {
-  return localStorage.getItem(TOKEN);
+    return localStorage.getItem(TOKEN);
 };
 
 export const setTokenToLocalStorage = token => {
-  localStorage.setItem(TOKEN, JSON.stringify(token));
+    localStorage.setItem(TOKEN, JSON.stringify(token));
 };
 
 export const removeTokenFromLocalStorage = () => {
-  localStorage.removeItem(TOKEN);
+    localStorage.removeItem(TOKEN);
 };

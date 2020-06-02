@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import {Route, Switch} from 'react-router-dom';
 import PerfectScrollbar from 'perfect-scrollbar';
 import * as _ from 'lodash';
 import Navbar from '../components/Navbars/Navbar';
@@ -19,6 +19,7 @@ class Admin extends React.Component {
                 document.documentElement.className.indexOf('nav-open') !== -1,
         };
     }
+
     componentDidMount() {
         if (navigator.platform.indexOf('Win') > -1) {
             document.documentElement.className += ' perfect-scrollbar-on';
@@ -67,7 +68,7 @@ class Admin extends React.Component {
     // this function opens and closes the sidebar on small devices
     toggleSidebar = () => {
         document.documentElement.classList.toggle('nav-open');
-        this.setState({ sidebarOpened: !this.state.sidebarOpened });
+        this.setState({sidebarOpened: !this.state.sidebarOpened});
     };
 
     getRoutes = (listRoutes) => {
@@ -90,7 +91,7 @@ class Admin extends React.Component {
     };
 
     handleBgClick = (color) => {
-        this.setState({ backgroundColor: color });
+        this.setState({backgroundColor: color});
     };
 
     getBrandText = (path, routes = []) => {

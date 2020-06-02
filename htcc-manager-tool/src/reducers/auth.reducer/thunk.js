@@ -1,7 +1,7 @@
-import { authApi } from '../../api';
-import { doLogin, doLoginFail, doLoginSuccess, doLogout } from './action';
-import { doClearData } from '../home.reducer/action';
-import { TOKEN, USER } from '../../constant/localStorageKey';
+import {authApi} from '../../api';
+import {doLogin, doLoginFail, doLoginSuccess, doLogout} from './action';
+import {doClearData} from '../home.reducer/action';
+import {TOKEN, USER} from '../../constant/localStorageKey';
 
 export const login = (companyId, username, password) => (dispatch) =>
     new Promise(async (resolve, reject) => {

@@ -1,7 +1,7 @@
 import React from 'react';
 import * as _ from 'lodash';
-import { connect } from 'react-redux';
-import { NavLink } from 'react-router-dom';
+import {connect} from 'react-redux';
+import {NavLink} from 'react-router-dom';
 
 class Dropdown extends React.Component {
     constructor(props) {
@@ -20,7 +20,7 @@ class Dropdown extends React.Component {
     }
 
     toggle = () => {
-        const { show } = this.state;
+        const {show} = this.state;
 
         this.setState({
             show: !show,
@@ -28,8 +28,8 @@ class Dropdown extends React.Component {
     };
 
     render() {
-        const { show } = this.state;
-        const { items, prop } = this.props;
+        const {show} = this.state;
+        const {items, prop} = this.props;
 
         return (
             <React.Fragment>
@@ -39,7 +39,7 @@ class Dropdown extends React.Component {
                     activeClassName="active"
                     onClick={this.toggle}
                 >
-                    <i className={prop.icon} id={prop.id} />
+                    <i className={prop.icon} id={prop.id}/>
                     <p className="menu-item">{prop.name}</p>
                 </NavLink>
                 <div
@@ -58,7 +58,7 @@ class Dropdown extends React.Component {
                                 activeClassName="active"
                                 onClick={this.props.toggleSidebar}
                             >
-                                <i className={ele.icon} id={ele.id} />
+                                <i className={ele.icon} id={ele.id}/>
                                 <span
                                     className="menu-item"
                                     //   style={{fontSize: '0.87rem'}}

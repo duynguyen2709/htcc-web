@@ -1,21 +1,12 @@
 import React from 'react';
-import {
-    Button,
-    CardFooter,
-    Col,
-    Form,
-    FormFeedback,
-    FormGroup,
-    Input,
-    Row,
-} from 'reactstrap';
+import {Button, CardFooter, Col, Form, FormFeedback, FormGroup, Input, Row,} from 'reactstrap';
 import * as _ from 'lodash';
-import { store } from 'react-notifications-component';
-import { createNotify } from '../../utils/notifier';
-import { CheckCircleOutlined, QuestionCircleOutlined } from '@ant-design/icons';
-import { Popconfirm, Select } from 'antd';
+import {store} from 'react-notifications-component';
+import {createNotify} from '../../utils/notifier';
+import {CheckCircleOutlined, QuestionCircleOutlined} from '@ant-design/icons';
+import {Popconfirm, Select} from 'antd';
 
-const { Option } = Select;
+const {Option} = Select;
 
 const INITFORM = {
     category: '',
@@ -31,7 +22,7 @@ class FormNewCategory extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            value: { ...INITFORM },
+            value: {...INITFORM},
             messageInvalid: {
                 category: 'Tên danh mục không được rỗng',
             },
@@ -42,8 +33,8 @@ class FormNewCategory extends React.Component {
     }
 
     checkValidDataInput = () => {
-        const { category } = this.state.value;
-        const { listData } = this.props;
+        const {category} = this.state.value;
+        const {listData} = this.props;
 
         if (_.isEmpty(category)) {
             store.addNotification(
@@ -70,27 +61,27 @@ class FormNewCategory extends React.Component {
     };
 
     handleOnChange = (e) => {
-        const { value: valueInput, name } = e.target;
-        let { value, touch } = this.state;
+        const {value: valueInput, name} = e.target;
+        let {value, touch} = this.state;
 
         value[name] = valueInput;
         touch[name] = true;
         this.setState({
-            value: { ...value },
-            touch: { ...touch },
+            value: {...value},
+            touch: {...touch},
         });
     };
 
     clear = () => {
         this.setState({
-            value: { ...INITFORM },
-            touch: { ...RESET_TOUCH },
+            value: {...INITFORM},
+            touch: {...RESET_TOUCH},
         });
     };
 
     handleSubmit = (e) => {
         if (this.checkValidDataInput()) {
-            const { value } = this.state;
+            const {value} = this.state;
 
             this.props.loading();
             this.props.onSubmit(true, value);
@@ -116,7 +107,7 @@ class FormNewCategory extends React.Component {
     };
 
     render() {
-        const { value, messageInvalid, touch } = this.state;
+        const {value, messageInvalid, touch} = this.state;
 
         return (
             <Form>
@@ -146,7 +137,7 @@ class FormNewCategory extends React.Component {
                         <FormGroup>
                             <label>Được hưởng lương ?</label>
                             <Select
-                                style={{ width: '100%' }}
+                                style={{width: '100%'}}
                                 className="bor-radius"
                                 defaultValue={false}
                                 onChange={(val) =>
@@ -168,7 +159,7 @@ class FormNewCategory extends React.Component {
                         <FormGroup>
                             <label>Trừ ngày phép ?</label>
                             <Select
-                                style={{ width: '100%' }}
+                                style={{width: '100%'}}
                                 className="bor-radius"
                                 defaultValue={false}
                                 onChange={(val) =>
@@ -190,7 +181,7 @@ class FormNewCategory extends React.Component {
                 <CardFooter className="text-right info">
                     <Popconfirm
                         title="Bạn chắc chắn thay đổi？"
-                        icon={<QuestionCircleOutlined />}
+                        icon={<QuestionCircleOutlined/>}
                         okText="Đồng ý"
                         cancelText="Huỷ"
                         onConfirm={() => this.handleSubmit()}

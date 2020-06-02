@@ -1,23 +1,14 @@
 import React from 'react';
-import {
-    Button,
-    CardFooter,
-    Col,
-    Form,
-    FormFeedback,
-    FormGroup,
-    Input,
-    Row,
-} from 'reactstrap';
+import {Button, CardFooter, Col, Form, FormFeedback, FormGroup, Input, Row,} from 'reactstrap';
 import * as _ from 'lodash';
-import { store } from 'react-notifications-component';
-import { createNotify } from '../../utils/notifier';
-import { CheckCircleOutlined, QuestionCircleOutlined } from '@ant-design/icons';
+import {store} from 'react-notifications-component';
+import {createNotify} from '../../utils/notifier';
+import {CheckCircleOutlined, QuestionCircleOutlined} from '@ant-design/icons';
 import {Popconfirm, Select, TimePicker} from 'antd';
-import { workScheduleApi } from '../../api';
-import { checkValidNumber } from '../../utils/validate';
+import {workScheduleApi} from '../../api';
+import {checkValidNumber} from '../../utils/validate';
 
-const { RangePicker } = TimePicker;
+const {RangePicker} = TimePicker;
 
 const INITFORM = {
     allowLateMinutes: 0,
@@ -45,7 +36,7 @@ class FormNewShiftTime extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            value: { ...INITFORM },
+            value: {...INITFORM},
             messageInvalid: {
                 allowLateMinutes: 'Vui lòng nhập số phút',
                 allowDiffTime: 'Vui lòng nhập cho phép điểm danh khác giờ hay không',
@@ -62,7 +53,7 @@ class FormNewShiftTime extends React.Component {
     }
 
     checkValidDataInput = () => {
-        const { value, timeRange } = this.state;
+        const {value, timeRange} = this.state;
 
         return (
             !_.isEmpty(value.shiftId) &&
@@ -74,15 +65,15 @@ class FormNewShiftTime extends React.Component {
     };
 
     handleOnChange = (e) => {
-        const { value: valueInput, name, type } = e.target;
-        let { value, touch } = this.state;
+        const {value: valueInput, name, type} = e.target;
+        let {value, touch} = this.state;
 
         value[name] = type === 'number' ? parseFloat(valueInput) : valueInput;
         touch[name] = true;
 
         this.setState({
-            value: { ...value },
-            touch: { ...touch },
+            value: {...value},
+            touch: {...touch},
         });
     };
 
@@ -97,15 +88,15 @@ class FormNewShiftTime extends React.Component {
 
     clear = () => {
         this.setState({
-            value: { ...INITFORM },
-            touch: { ...RESET_TOUCH },
+            value: {...INITFORM},
+            touch: {...RESET_TOUCH},
             timeRange: [null, null],
         });
     };
 
     handleSubmit = (e) => {
         if (this.checkValidDataInput()) {
-            const { value } = this.state;
+            const {value} = this.state;
             value['officeId'] = this.props.officeId;
 
             this.props.loading();
@@ -171,7 +162,7 @@ class FormNewShiftTime extends React.Component {
     };
 
     render() {
-        const { value, messageInvalid, touch, timeRange } = this.state;
+        const {value, messageInvalid, touch, timeRange} = this.state;
 
         return (
             <Form>
@@ -186,7 +177,7 @@ class FormNewShiftTime extends React.Component {
                                 type="text"
                                 value={value.shiftId}
                                 onChange={this.handleOnChange}
-                                invalid={touch.shiftId &&  _.isEmpty(value.shiftId)}
+                                invalid={touch.shiftId && _.isEmpty(value.shiftId)}
                             />
                             <FormFeedback invalid={'true'}>
                                 {messageInvalid.shiftId}
@@ -205,7 +196,7 @@ class FormNewShiftTime extends React.Component {
                                 type="text"
                                 value={value.shiftName}
                                 onChange={this.handleOnChange}
-                                invalid={touch.shiftName &&  _.isEmpty(value.shiftName)}
+                                invalid={touch.shiftName && _.isEmpty(value.shiftName)}
                             />
                             <FormFeedback invalid={'true'}>
                                 {messageInvalid.shiftName}
@@ -227,16 +218,16 @@ class FormNewShiftTime extends React.Component {
                                 minuteStep={5}
                             />
                             {touch.timeRange &&
-                                !this.checkTimeRange(timeRange) && (
-                                    <div
-                                        style={{
-                                            color: '#EF5350',
-                                            fontSize: 11,
-                                        }}
-                                    >
-                                        {messageInvalid.timeRange}
-                                    </div>
-                                )}
+                            !this.checkTimeRange(timeRange) && (
+                                <div
+                                    style={{
+                                        color: '#EF5350',
+                                        fontSize: 11,
+                                    }}
+                                >
+                                    {messageInvalid.timeRange}
+                                </div>
+                            )}
                         </FormGroup>
                     </Col>
                 </Row>
@@ -309,7 +300,7 @@ class FormNewShiftTime extends React.Component {
                 <CardFooter className="text-right info">
                     <Popconfirm
                         title="Bạn chắc chắn thay đổi？"
-                        icon={<QuestionCircleOutlined />}
+                        icon={<QuestionCircleOutlined/>}
                         okText="Đồng ý"
                         cancelText="Huỷ"
                         onConfirm={() => this.handleSubmit()}

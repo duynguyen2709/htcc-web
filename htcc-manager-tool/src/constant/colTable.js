@@ -1,5 +1,5 @@
 import React from 'react';
-import { Popconfirm, Popover, Tag, Tooltip } from 'antd';
+import {Popconfirm, Popover, Tag, Tooltip} from 'antd';
 import {
     BarsOutlined,
     CheckCircleTwoTone,
@@ -125,7 +125,7 @@ export const buildColsComplaint = (funcEdit, cols = []) => {
                         title={`Danh sách nội dung đã khiếu nại`}
                         trigger="hover"
                     >
-                        <BarsOutlined style={{ color: '#40a9ff' }} />
+                        <BarsOutlined style={{color: '#40a9ff'}}/>
                     </Popover>
                 );
             },
@@ -137,7 +137,7 @@ export const buildColsComplaint = (funcEdit, cols = []) => {
             render: (o, record) => {
                 return (
                     <React.Fragment>
-                        <LightboxImages imageSource={record.images} />
+                        <LightboxImages imageSource={record.images}/>
                     </React.Fragment>
                 );
             },
@@ -152,7 +152,7 @@ export const buildColsComplaint = (funcEdit, cols = []) => {
                     return (
                         <Tooltip placement="top" title={'Xem chi tiết'}>
                             <BarsOutlined
-                                style={{ color: '#40a9ff' }}
+                                style={{color: '#40a9ff'}}
                                 onClick={() => funcEdit(record, true)}
                             />
                         </Tooltip>
@@ -257,14 +257,14 @@ export const buildColsLeaveRequest = (funcEdit, cols = []) => {
                 if (record.useDayOff) {
                     return (
                         <Tooltip placement="top" title={'Dùng phép'}>
-                            <CheckCircleTwoTone twoToneColor="#52c41a" />
+                            <CheckCircleTwoTone twoToneColor="#52c41a"/>
                         </Tooltip>
                     );
                 }
 
                 return (
                     <Tooltip placement="top" title={'Không dùng phép'}>
-                        <CloseCircleTwoTone twoToneColor="#ff7875" />
+                        <CloseCircleTwoTone twoToneColor="#ff7875"/>
                     </Tooltip>
                 );
             },
@@ -280,7 +280,7 @@ export const buildColsLeaveRequest = (funcEdit, cols = []) => {
                         title={`Chi tiết ngày nghỉ`}
                         trigger="hover"
                     >
-                        <BarsOutlined style={{ color: '#40a9ff' }} />
+                        <BarsOutlined style={{color: '#40a9ff'}}/>
                     </Popover>
                 );
             },
@@ -336,21 +336,21 @@ const renderListDetail = (list = []) => {
         );
     });
 
-    return <ul style={{ padding: 15 }}>{listDetail}</ul>;
+    return <ul style={{padding: 15}}>{listDetail}</ul>;
 };
 
 const renderListContent = (list = []) => {
     const listContent = _.map(list, (item, index) => {
         return (
             <li
-                style={{ maxWidth: 200 }}
+                style={{maxWidth: 200}}
                 className="text-dark"
                 key={index}
             >{`${item}`}</li>
         );
     });
 
-    return <ul style={{ padding: 15 }}>{listContent}</ul>;
+    return <ul style={{padding: 15}}>{listContent}</ul>;
 };
 
 export const buildColsBranch = (funcEdit, funcDelete, cols = []) => [
@@ -381,10 +381,10 @@ export const buildColsBranch = (funcEdit, funcDelete, cols = []) => [
         width: '150px',
         render: (o, record) => {
             if (record.isHeadquarter) {
-                return <CheckCircleTwoTone twoToneColor="#52c41a" />;
+                return <CheckCircleTwoTone twoToneColor="#52c41a"/>;
             }
 
-            return <CloseCircleTwoTone twoToneColor="#ff7875" />;
+            return <CloseCircleTwoTone twoToneColor="#ff7875"/>;
         },
     },
     {
@@ -409,10 +409,10 @@ export const buildColsBranch = (funcEdit, funcDelete, cols = []) => [
         width: '100px',
         render: (o, record) => {
             if (record.forceUseWifi) {
-                return <CheckCircleTwoTone twoToneColor="#52c41a" />;
+                return <CheckCircleTwoTone twoToneColor="#52c41a"/>;
             }
 
-            return <CloseCircleTwoTone twoToneColor="#ff7875" />;
+            return <CloseCircleTwoTone twoToneColor="#ff7875"/>;
         },
     },
     {
@@ -440,7 +440,7 @@ export const buildColsBranch = (funcEdit, funcDelete, cols = []) => [
                     <Popconfirm
                         title="Bạn chắc chắn muốn xoá？"
                         icon={
-                            <ExclamationCircleTwoTone twoToneColor="#d9534f" />
+                            <ExclamationCircleTwoTone twoToneColor="#d9534f"/>
                         }
                         okText="Đồng ý"
                         cancelText="Huỷ"
@@ -477,10 +477,10 @@ export const buildColsCategoryDayOff = (funcEdit, funcDelete, cols = []) => [
         width: '70px',
         render: (o, record) => {
             if (record.hasSalary) {
-                return <CheckCircleTwoTone twoToneColor="#52c41a" />;
+                return <CheckCircleTwoTone twoToneColor="#52c41a"/>;
             }
 
-            return <CloseCircleTwoTone twoToneColor="#ff7875" />;
+            return <CloseCircleTwoTone twoToneColor="#ff7875"/>;
         },
     },
     {
@@ -489,10 +489,10 @@ export const buildColsCategoryDayOff = (funcEdit, funcDelete, cols = []) => [
         width: '70px',
         render: (o, record) => {
             if (record.useDayOff) {
-                return <CheckCircleTwoTone twoToneColor="#52c41a" />;
+                return <CheckCircleTwoTone twoToneColor="#52c41a"/>;
             }
 
-            return <CloseCircleTwoTone twoToneColor="#ff7875" />;
+            return <CloseCircleTwoTone twoToneColor="#ff7875"/>;
         },
     },
     {
@@ -515,7 +515,7 @@ export const buildColsCategoryDayOff = (funcEdit, funcDelete, cols = []) => [
                     <Popconfirm
                         title="Bạn chắc chắn muốn xoá？"
                         icon={
-                            <ExclamationCircleTwoTone twoToneColor="#d9534f" />
+                            <ExclamationCircleTwoTone twoToneColor="#d9534f"/>
                         }
                         okText="Đồng ý"
                         cancelText="Huỷ"
@@ -572,7 +572,7 @@ export const buildColsDayOffLevel = (funcEdit, funcDelete, cols = []) => [
                     <Popconfirm
                         title="Bạn chắc chắn muốn xoá？"
                         icon={
-                            <ExclamationCircleTwoTone twoToneColor="#d9534f" />
+                            <ExclamationCircleTwoTone twoToneColor="#d9534f"/>
                         }
                         okText="Đồng ý"
                         cancelText="Huỷ"
@@ -630,7 +630,7 @@ export const buildColsDepartment = (funcEdit, funcDelete, cols = []) => [
                     <Popconfirm
                         title="Bạn chắc chắn muốn xoá？"
                         icon={
-                            <ExclamationCircleTwoTone twoToneColor="#d9534f" />
+                            <ExclamationCircleTwoTone twoToneColor="#d9534f"/>
                         }
                         okText="Đồng ý"
                         cancelText="Huỷ"
@@ -680,14 +680,14 @@ export const buildColsShift = (funcEdit, funcDelete, cols = []) => [
     {
         title: () => {
             return (
-                <div style={{ display: 'flex', flexDirection: 'row' }}>
+                <div style={{display: 'flex', flexDirection: 'row'}}>
                     <span>Số ngày công</span>
                     <Tooltip
                         placement="top"
                         title={'Hệ số tính công của ca làm'}
                     >
                         <QuestionCircleOutlined
-                            style={{ margin: 'auto', marginLeft: '5px' }}
+                            style={{margin: 'auto', marginLeft: '5px'}}
                         />
                     </Tooltip>
                 </div>
@@ -700,7 +700,7 @@ export const buildColsShift = (funcEdit, funcDelete, cols = []) => [
     {
         title: () => {
             return (
-                <div style={{ display: 'flex', flexDirection: 'row' }}>
+                <div style={{display: 'flex', flexDirection: 'row'}}>
                     <span>Thời gian cho phép điểm danh trễ</span>
                     <Tooltip
                         placement="top"
@@ -708,7 +708,7 @@ export const buildColsShift = (funcEdit, funcDelete, cols = []) => [
                             'Nhân viên có thể diểm danh trễ / sớm bao nhiêu phút so với giờ bắt đầu / kết thúc ca'
                         }
                     >
-                        <QuestionCircleOutlined style={{ margin: 'auto' }} />
+                        <QuestionCircleOutlined style={{margin: 'auto'}}/>
                     </Tooltip>
                 </div>
             );
@@ -720,7 +720,7 @@ export const buildColsShift = (funcEdit, funcDelete, cols = []) => [
     {
         title: () => {
             return (
-                <div style={{ display: 'flex', flexDirection: 'row' }}>
+                <div style={{display: 'flex', flexDirection: 'row'}}>
                     <span>Điểm danh không ràng buộc</span>
                     <Tooltip
                         placement="top"
@@ -729,7 +729,7 @@ export const buildColsShift = (funcEdit, funcDelete, cols = []) => [
                         }
                     >
                         <QuestionCircleOutlined
-                            style={{ margin: 'auto', marginLeft: '5px' }}
+                            style={{margin: 'auto', marginLeft: '5px'}}
                         />
                     </Tooltip>
                 </div>
@@ -739,10 +739,10 @@ export const buildColsShift = (funcEdit, funcDelete, cols = []) => [
         dataIndex: 'allowDiffTime',
         render: (o, record) => {
             if (record.allowDiffTime) {
-                return <CheckCircleTwoTone twoToneColor="#52c41a" />;
+                return <CheckCircleTwoTone twoToneColor="#52c41a"/>;
             }
 
-            return <CloseCircleTwoTone twoToneColor="#ff7875" />;
+            return <CloseCircleTwoTone twoToneColor="#ff7875"/>;
         },
         sorter: (a, b) =>
             String(a.allowDiffTime).localeCompare(b.allowDiffTime),
@@ -775,7 +775,7 @@ export const buildColsShift = (funcEdit, funcDelete, cols = []) => [
                             </>
                         }
                         icon={
-                            <ExclamationCircleTwoTone twoToneColor="#d9534f" />
+                            <ExclamationCircleTwoTone twoToneColor="#d9534f"/>
                         }
                         okText="Đồng ý"
                         cancelText="Huỷ"
@@ -805,10 +805,10 @@ export const buildColsConfigDay = (funcEdit, funcDelete, cols = []) => [
         width: '150px',
         render: (o, record) => {
             if (record.isWorking) {
-                return <CheckCircleTwoTone twoToneColor="#52c41a" />;
+                return <CheckCircleTwoTone twoToneColor="#52c41a"/>;
             }
 
-            return <CloseCircleTwoTone twoToneColor="#ff7875" />;
+            return <CloseCircleTwoTone twoToneColor="#ff7875"/>;
         },
         sorter: (a, b) =>
             String(a.isWorking).localeCompare(String(b.isWorking)),
@@ -833,7 +833,7 @@ export const buildColsConfigDay = (funcEdit, funcDelete, cols = []) => [
                     <Popconfirm
                         title="Bạn chắc chắn muốn xoá？"
                         icon={
-                            <ExclamationCircleTwoTone twoToneColor="#d9534f" />
+                            <ExclamationCircleTwoTone twoToneColor="#d9534f"/>
                         }
                         okText="Đồng ý"
                         cancelText="Huỷ"
