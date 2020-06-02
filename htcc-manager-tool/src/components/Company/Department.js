@@ -7,8 +7,8 @@ import {PlusSquareOutlined} from '@ant-design/icons';
 import {buildColsDepartment} from '../../constant/colTable';
 import {Input, Table, Tooltip} from 'antd';
 import AsyncModal from '../Modal/AsyncModal';
-import FormNewDepartment from "../Form/FormNewDepartment";
-import FormEditDepartment from "../Form/FormEditDepartment";
+import FormNewDepartment from '../Form/FormNewDepartment';
+import FormEditDepartment from '../Form/FormEditDepartment';
 
 const {Search} = Input;
 
@@ -22,7 +22,7 @@ class Department extends React.Component {
             curRecordEdit: null,
             isSubmit: false,
             loading: false,
-            headManagerList: []
+            headManagerList: [],
         };
         this.data = [];
     }
@@ -31,17 +31,17 @@ class Department extends React.Component {
         this.getData();
     }
 
-    componentDidUpdate(prevProps, prevState) {
+    componentDidUpdate(prevProps, prevState, snapShot) {
         if (this.state.data === null && this.state.loading === false) {
             this.getData();
         }
     }
 
-    toggleLoading(){
+    toggleLoading() {
         const {loading} = this.state;
         this.setState({
-            loading: !loading
-        })
+            loading: !loading,
+        });
     }
 
     getData = () => {
@@ -49,53 +49,64 @@ class Department extends React.Component {
 
         companyApi
             .getAllDepartment()
-            .then(res => {
+            .then((res) => {
                 if (res.returnCode === 1) {
                     this.setState({
                         data: res.data.departmentList,
-                        headManagerList: res.data.headManagerList
+                        headManagerList: res.data.headManagerList,
                     });
                     this.data = res.data.departmentList;
                 } else {
-                    store.addNotification(createNotify('danger', res.returnMessage));
+                    store.addNotification(
+                        createNotify('danger', res.returnMessage)
+                    );
                 }
             })
-            .catch(err => {
-                store.addNotification(createNotify('danger', JSON.stringify(err)));
-            }).finally(() => {
+            .catch((err) => {
+                store.addNotification(
+                    createNotify('danger', JSON.stringify(err))
+                );
+            })
+            .finally(() => {
                 this.toggleLoading();
-        })
+            });
     };
 
-
-    handleEdit = record => {
+    handleEdit = (record) => {
         this.setState({
             showModal: true,
             curRecordEdit: record,
-            mode: 'edit'
+            mode: 'edit',
         });
     };
 
-    handleDelete = record => {
+    handleDelete = (record) => {
         this.toggleLoading();
 
         companyApi
             .deleteDepartment(record)
-            .then(res => {
+            .then((res) => {
                 if (res.returnCode === 1) {
                     this.setState({
                         data: res.data,
                     });
 
                     this.data = res.data;
-                    store.addNotification(createNotify('default', 'Xoá thành công !'));
+                    store.addNotification(
+                        createNotify('default', 'Xoá thành công !')
+                    );
                 } else {
-                    store.addNotification(createNotify('danger', res.returnMessage));
+                    store.addNotification(
+                        createNotify('danger', res.returnMessage)
+                    );
                 }
             })
-            .catch(err => {
-                store.addNotification(createNotify('danger', JSON.stringify(err)));
-            }).finally(() => this.toggleLoading());
+            .catch((err) => {
+                store.addNotification(
+                    createNotify('danger', JSON.stringify(err))
+                );
+            })
+            .finally(() => this.toggleLoading());
     };
 
     toggle = (submit = false) => {
@@ -104,29 +115,38 @@ class Department extends React.Component {
             showModal: !this.state.showModal,
             curRecordEdit: null,
             data: submit ? null : data,
-            isSubmit: submit
+            isSubmit: submit,
         });
     };
 
-    mapData = data => {
-        return _.map(data, item => ({
+    mapData = (data) => {
+        return _.map(data, (item) => ({
             key: item.department.toString(),
-            ...item
+            ...item,
         }));
     };
 
-    onSearch = e => {
-        const data = _.filter(this.data, ele =>
-            JSON.stringify(ele).toLowerCase().includes(e.target.value.toLowerCase())
+    onSearch = (e) => {
+        const data = _.filter(this.data, (ele) =>
+            JSON.stringify(ele)
+                .toLowerCase()
+                .includes(e.target.value.toLowerCase())
         );
 
         this.setState({
-            data: data
+            data: data,
         });
     };
 
     render() {
-        const {data, showModal, curRecordEdit, mode, loading, headManagerList} = this.state;
+        const {
+            data,
+            showModal,
+            curRecordEdit,
+            mode,
+            loading,
+            headManagerList,
+        } = this.state;
         return (
             <React.Fragment>
                 <div className="header-table clearfix">
@@ -140,20 +160,25 @@ class Department extends React.Component {
                     </div>
                     <div className="float-right btn-new">
                         <Tooltip placement="left" title={'Thêm phòng ban'}>
-                            <PlusSquareOutlined onClick={() => this.toggle(false)}/>
+                            <PlusSquareOutlined
+                                onClick={() => this.toggle(false)}
+                            />
                         </Tooltip>
                     </div>
                 </div>
                 <div className="table-edit">
                     <div className="table-small table-branch">
                         <Table
-                            columns={buildColsDepartment(this.handleEdit, this.handleDelete)}
+                            columns={buildColsDepartment(
+                                this.handleEdit,
+                                this.handleDelete
+                            )}
                             dataSource={this.mapData(data)}
-                            scroll={{x: 1300, y: 'calc(100vh - 355px)'}}
+                            scroll={{y: 'calc(100vh - 355px)'}}
                             loading={loading || data === null}
                             pagination={{
                                 hideOnSinglePage: true,
-                                pageSize: 6
+                                pageSize: 6,
                             }}
                             bordered={true}
                         />
@@ -164,16 +189,20 @@ class Department extends React.Component {
                         key={curRecordEdit}
                         reload={false}
                         CompomentContent={
-                            this.state.mode === 'new' ? FormNewDepartment : FormEditDepartment
+                            this.state.mode === 'new'
+                                ? FormNewDepartment
+                                : FormEditDepartment
                         }
                         visible={showModal}
-                        toggle={submit => this.toggle(submit)}
+                        toggle={(submit) => this.toggle(submit)}
                         title={
-                            mode === 'new' ? 'Thêm phòng ban mới' : 'Chỉnh sửa phòng ban'
+                            mode === 'new'
+                                ? 'Thêm phòng ban mới'
+                                : 'Chỉnh sửa phòng ban'
                         }
                         data={{
                             ...curRecordEdit,
-                            headManagerList: headManagerList
+                            headManagerList: headManagerList,
                         }}
                         mode={mode}
                     />
