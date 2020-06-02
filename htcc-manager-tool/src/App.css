@@ -201,7 +201,7 @@
 }
 
 .card-shift-template {
-    min-height: calc(100vh - 350px);
+    min-height: calc(100vh - 270px);
     padding: 5px;
     border: solid 1px #c3c3c3;
     border-radius: 15px;
@@ -210,3 +210,10 @@
     box-shadow: 0 19px 38px rgba(0,0,0,0.20), 0 15px 12px rgba(0,0,0,0.15);
 }
 
+.card-add-shift-template {
+    border: 1px solid #d6d6d6;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    margin-top: 10px;
+}

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import {Button, Card, Col, Collapse, Empty, Input, Popconfirm, Row, Tooltip, Tree} from 'antd';
+import {Button, Card, Col, Empty, Input, Popconfirm, Row, Tooltip, Tree} from 'antd';
 import {DeleteOutlined, PlusSquareOutlined, QuestionCircleOutlined} from '@ant-design/icons';
-import {shiftTemplate} from '../api';
+import {shiftTemplate, workScheduleApi} from '../api';
 import {store} from 'react-notifications-component';
 import {createNotify} from '../utils/notifier';
 import * as _ from 'lodash';
@@ -10,9 +10,11 @@ import {WEEK_DAYS} from "../constant/constant";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import AsyncModal from "../components/Modal/AsyncModal";
+import FormNewShiftTemplate from "../components/Form/FormNewShiftTemplate";
 
+const {Meta} = Card;
 const {Search} = Input;
-const {Panel} = Collapse;
 
 class ShiftTemplate extends Component {
     constructor(props) {
@@ -32,10 +34,8 @@ class ShiftTemplate extends Component {
     };
 
     toggle = (submit = false) => {
-        const {data} = this.state;
         this.setState({
             showModal: !this.state.showModal,
-            data: submit ? null : data,
         });
 
         if (submit) {
@@ -45,7 +45,31 @@ class ShiftTemplate extends Component {
 
     componentDidMount() {
         this.getListShiftTemplate();
+        this.getOfficeShiftTimeMap();
     }
+
+    getOfficeShiftTimeMap = () => {
+        workScheduleApi
+            .getOfficeShiftTimeMap()
+            .then((res) => {
+                if (res.returnCode === 1) {
+                    this.setState({
+                        officeShiftTimeMap: res.data,
+                    });
+                } else {
+                    console.error(res.returnMessage);
+                    this.setState({
+                        officeShiftTimeMap: {},
+                    });
+                }
+            })
+            .catch((err) => {
+                console.error(err);
+                this.setState({
+                    officeShiftTimeMap: {},
+                });
+            })
+    };
 
     getListShiftTemplate = () => {
         this.setState({
@@ -59,7 +83,6 @@ class ShiftTemplate extends Component {
             .getShiftTemplate()
             .then((res) => {
                 if (res.returnCode === 1) {
-                    console.log(res.data);
                     this.setState({
                         data: res.data,
                     });
@@ -102,36 +125,37 @@ class ShiftTemplate extends Component {
     };
 
     handleDeleteShiftTemplate = (templateId) => {
-        const data = _.filter(this.data, (ele) => !_.isEqual(ele.templateId, templateId));
+        this.toggleLoading();
 
-        this.setState({
-            data: data
-        });
-        this.data = data;
-        // this.toggleLoading();
-        //
-        // shiftTemplate
-        //     .deleteShiftTemplate(templateId)
-        //     .then((res) => {
-        //         if (res.returnCode === 1) {
-        //             store.addNotification(
-        //                 createNotify('default', res.returnMessage)
-        //             );
-        //         } else {
-        //             store.addNotification(
-        //                 createNotify('danger', res.returnMessage)
-        //             );
-        //         }
-        //     })
-        //     .catch((err) => {
-        //         console.error(err);
-        //         store.addNotification(
-        //             createNotify('danger', 'Hệ thống có lỗi. Vui lòng thử lại sau.')
-        //         );
-        //     })
-        //     .finally(() => {
-        //         this.toggleLoading();
-        //     });
+        shiftTemplate
+            .deleteShiftTemplate(templateId)
+            .then((res) => {
+                if (res.returnCode === 1) {
+                    store.addNotification(
+                        createNotify('default', res.returnMessage)
+                    );
+
+                    const data = _.filter(this.data, (ele) => !_.isEqual(ele.templateId, templateId));
+
+                    this.setState({
+                        data: data
+                    });
+                    this.data = data;
+                } else {
+                    store.addNotification(
+                        createNotify('danger', res.returnMessage)
+                    );
+                }
+            })
+            .catch((err) => {
+                console.error(err);
+                store.addNotification(
+                    createNotify('danger', 'Hệ thống có lỗi. Vui lòng thử lại sau.')
+                );
+            })
+            .finally(() => {
+                this.toggleLoading();
+            });
     };
 
     buildTreeData = (fixedShiftMap) => {
@@ -191,6 +215,7 @@ class ShiftTemplate extends Component {
             >
                 <Button type="primary" danger
                         icon={<DeleteOutlined/>}
+                        onClick={(event) => event.stopPropagation()}
                 />
             </Popconfirm>
         </>)
@@ -216,12 +241,12 @@ class ShiftTemplate extends Component {
 
         const settings = {
             dots: true,
-            centerMode: true,
+            centerMode: false,
+            infinite: false,
             focusOnSelect: true,
             speed: 500,
             slidesToShow: length,
-            slidesToScroll: 1,
-            className: 'test-class'
+            slidesToScroll: 1
         };
 
         return (
@@ -277,12 +302,18 @@ class ShiftTemplate extends Component {
                                }
                         />
                         :
-                        <div style={{padding: '50px'}}>
+                        <div style={{padding: '50px', overflow: 'auto', height: 'calc(100vh - 150px)'}}>
                             <Slider {...settings}>
                                 {_.map(data, (item, index) => {
                                     const treeData = this.buildTreeData(item.shiftTimeMap);
                                     return (
-                                        <Card title={item.templateName}
+                                        <Card title={
+                                            <>
+                                                <h3>{item.templateName}</h3>
+                                                <span
+                                                    style={{color: 'rgba(0, 0, 0, 0.8)'}}>Người tạo : {item.actor}</span>
+                                            </>
+                                        }
                                               className={"card-shift-template"}
                                               headStyle={{background: '#efefef', borderRadius: '10px'}}
                                               hoverable
@@ -301,18 +332,18 @@ class ShiftTemplate extends Component {
                             </Slider>
                         </div>}
                 </div>
-                {/*<div>*/}
-                {/*    <AsyncModal*/}
-                {/*        key={{}}*/}
-                {/*        reload={false}*/}
-                {/*        CompomentContent={{}}*/}
-                {/*        visible={showModal}*/}
-                {/*        toggle={(submit) => this.toggle(submit)}*/}
-                {/*        title={'Thêm ca mẫu mới'}*/}
-                {/*        data={{}}*/}
-                {/*    />*/}
-                {/*</div>*/}
-                {/*</div>*/}
+                <AsyncModal
+                    width={"50%"}
+                    key={"shift-template-modal"}
+                    reload={false}
+                    CompomentContent={FormNewShiftTemplate}
+                    visible={showModal}
+                    toggle={(submit) => this.toggle(submit)}
+                    title={'Thêm ca mẫu mới'}
+                    data={{
+                        officeShiftTimeMap: this.state.officeShiftTimeMap
+                    }}
+                />
             </div>
         );
     }

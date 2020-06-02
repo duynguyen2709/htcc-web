@@ -27,6 +27,31 @@ const getListShiftTime = (officeId) => {
     });
 };
 
+const getOfficeShiftTimeMap = () => {
+    const token = localStorage.getItem(TOKEN);
+    const user = JSON.parse(localStorage.getItem(USER));
+
+    return new Promise((resolve, reject) => {
+        axios
+            .get(
+                `${API_URL_EMPLOYEE}/shifttime/${user.companyId}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                    timeout: 30000,
+                }
+            )
+            .then((res) => {
+                resolve(res.data);
+            })
+            .catch(err => {
+                console.error(err);
+                reject('Hệ thống có lỗi. Vui lòng thử lại sau.');
+            });
+    });
+};
+
 const configLikeHeadquarter = (officeId) => {
     const token = localStorage.getItem(TOKEN);
     const user = JSON.parse(localStorage.getItem(USER));
@@ -246,6 +271,7 @@ const updateWorkingDay = (data) => {
 
 export default {
     getListShiftTime,
+    getOfficeShiftTimeMap,
     configLikeHeadquarter,
     createShiftTime,
     deleteShiftTime,

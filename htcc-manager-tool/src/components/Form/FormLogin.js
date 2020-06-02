@@ -56,7 +56,7 @@ class FormLogin extends React.Component {
         this.props
             .login(companyId, username, password)
             .then(res => {
-                this.props.toggleLoader();
+                //this.props.toggleLoader();
             })
             .catch(err => {
                 store.addNotification(createNotify('danger', err.payload.message));
