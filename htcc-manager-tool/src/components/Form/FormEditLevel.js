@@ -1,19 +1,10 @@
 import React from 'react';
-import {
-    Button,
-    CardFooter,
-    Col,
-    Form,
-    FormFeedback,
-    FormGroup,
-    Input,
-    Row,
-} from 'reactstrap';
+import {Button, CardFooter, Col, Form, FormFeedback, FormGroup, Input, Row,} from 'reactstrap';
 import * as _ from 'lodash';
-import { store } from 'react-notifications-component';
-import { createNotify } from '../../utils/notifier';
-import { CheckCircleOutlined, QuestionCircleOutlined } from '@ant-design/icons';
-import { Popconfirm } from 'antd';
+import {store} from 'react-notifications-component';
+import {createNotify} from '../../utils/notifier';
+import {CheckCircleOutlined, QuestionCircleOutlined} from '@ant-design/icons';
+import {Popconfirm} from 'antd';
 
 const INITFORM = {
     level: '',
@@ -29,7 +20,7 @@ class FormEditLevel extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            value: { ...INITFORM },
+            value: {...INITFORM},
             messageInvalid: {
                 level: 'Cấp bậc là số',
                 totalDayOff: 'Ngày nghỉ là số',
@@ -41,7 +32,7 @@ class FormEditLevel extends React.Component {
     }
 
     componentDidMount() {
-        const { data } = this.props;
+        const {data} = this.props;
 
         this.setState({
             value: {
@@ -51,8 +42,8 @@ class FormEditLevel extends React.Component {
     }
 
     checkValidDataInput = () => {
-        const { level, totalDayOff } = this.state.value;
-        const { listData } = this.props;
+        const {level, totalDayOff} = this.state.value;
+        const {listData} = this.props;
 
         if (_.isEmpty(level) && _.isEmpty(totalDayOff)) {
             store.addNotification(
@@ -79,27 +70,27 @@ class FormEditLevel extends React.Component {
     };
 
     handleOnChange = (e) => {
-        const { value: valueInput, name } = e.target;
-        let { value, touch } = this.state;
+        const {value: valueInput, name} = e.target;
+        let {value, touch} = this.state;
 
         value[name] = valueInput;
         touch[name] = true;
         this.setState({
-            value: { ...value },
-            touch: { ...touch },
+            value: {...value},
+            touch: {...touch},
         });
     };
 
     clear = () => {
         this.setState({
-            value: { ...INITFORM },
-            touch: { ...RESET_TOUCH },
+            value: {...INITFORM},
+            touch: {...RESET_TOUCH},
         });
     };
 
     handleSubmit = (e) => {
         if (this.checkValidDataInput()) {
-            const { value } = this.state;
+            const {value} = this.state;
             value.level = parseFloat(value.level);
             value.totalDayOff = parseFloat(value.totalDayOff);
 
@@ -109,7 +100,7 @@ class FormEditLevel extends React.Component {
     };
 
     render() {
-        const { value, messageInvalid, touch } = this.state;
+        const {value, messageInvalid, touch} = this.state;
 
         return (
             <Form>
@@ -155,7 +146,7 @@ class FormEditLevel extends React.Component {
                 <CardFooter className="text-right info">
                     <Popconfirm
                         title="Bạn chắc chắn thay đổi？"
-                        icon={<QuestionCircleOutlined />}
+                        icon={<QuestionCircleOutlined/>}
                         okText="Đồng ý"
                         cancelText="Huỷ"
                         onConfirm={() => this.handleSubmit()}

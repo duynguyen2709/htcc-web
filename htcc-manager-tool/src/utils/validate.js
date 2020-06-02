@@ -1,9 +1,4 @@
-import {
-    PATTERN_EMAIL,
-    PATTERN_PHONE_NUMBER,
-    PATTERN_PASSWORD,
-    PATTERN_INT_FLOAT,
-} from '../constant/pattern';
+import {PATTERN_EMAIL, PATTERN_INT_FLOAT, PATTERN_PASSWORD, PATTERN_PHONE_NUMBER,} from '../constant/pattern';
 
 export const checkValidEmail = (input) => {
     return PATTERN_EMAIL.test(input);

@@ -55,16 +55,15 @@ html {
 article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   display: block; }
 
-/*body {*/
-/*  margin: 0;*/
-/*  font-family: "Open Sans", sans-serif;*/
-/*  font-size: 0.875rem;*/
-/*  font-weight: 400;*/
-/*  line-height: 1.5;*/
-/*  color: #525f7f;*/
-/*  text-align: left;*/
-/*  background-color: #e8f5e9; */
-/*}*/
+body {
+  margin: 0;
+  font-family: "Open Sans", sans-serif;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #525f7f;
+  text-align: left;
+  background-color: #e8f5e9; }
 
 [tabindex="-1"]:focus {
   outline: 0 !important; }
@@ -1326,7 +1325,7 @@ pre {
     color: #adb5bd;
     opacity: 1; }
   .form-control:disabled, .form-control[readonly] {
-    background-color: #e9ecef;
+    background-color: #e9ecef !important;
     opacity: 1; }
 
 select.form-control:focus::-ms-value {
@@ -4250,7 +4249,7 @@ button.close {
   z-index: 1070;
   display: block;
   margin: 0;
-  /*font-family: "Open Sans", sans-serif;*/
+  font-family: "Open Sans", sans-serif;
   font-style: normal;
   font-weight: 400;
   line-height: 1.5;
@@ -4335,7 +4334,7 @@ button.close {
   z-index: 1060;
   display: block;
   max-width: 276px;
-  /*font-family: "Open Sans", sans-serif;*/
+  font-family: "Open Sans", sans-serif;
   font-style: normal;
   font-weight: 400;
   line-height: 1.5;
@@ -7443,7 +7442,7 @@ a.text-darker:hover, a.text-darker:focus {
   font-size: 11px;
   font-weight: 700;
   position: relative;
-  left: 120px;
+  left: 125px;
   bottom: 42px; }
 
 .number-notify:before {
@@ -10015,19 +10014,19 @@ h1, h2, h3, h4, h5, h6,
 p {
   font-weight: 300; }
 
-/*button,*/
-/*input,*/
-/*optgroup,*/
-/*select,*/
-/*textarea {*/
-/*  font-family: "Open Sans", sans-serif; }*/
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: "Open Sans", sans-serif; }
 
 .card h1, .card h2, .card h3, .card h4, .card h5, .card h6, .card p {
-  color: rgba(0, 0, 0, 0.8); }
+  color: rgba(255, 255, 255, 0.8); }
 
 h1, h2, h3, h4, h5, h6 {
-  font-weight: 500;
-  color: rgba(0, 0, 0, 0.8); }
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.8); }
 
 a {
   color: #66bb6a;
@@ -10916,7 +10915,7 @@ h6 {
     .off-canvas-sidebar .nav i {
       font-size: 20px;
       float: left;
-      margin-right: 12px;
+      margin-right: 5px;
       line-height: 30px;
       width: 34px;
       text-align: center;
@@ -11917,7 +11916,7 @@ textarea.form-control {
   display: block;
   text-transform: uppercase;
   cursor: pointer;
-  font-size: 0.7rem;
+  font-size: 0.85rem;
   line-height: 1.625rem; }
   .sub-menu:hover {
     color: #ffffff; }
@@ -12856,3 +12855,24 @@ textarea.form-control {
       margin-left: -5px;
       margin-top: -5px;
       background-color: #cf1322; }
+
+.noti-wrapper .ant-tabs-content {
+  height: calc(100vh - 195px); }
+
+.noti-wrapper .list-noti {
+  padding: 0 20px 0 20px; }
+  .noti-wrapper .list-noti .ant-list-items {
+    height: calc(100vh - 270px);
+    overflow: auto !important;
+    padding: 10px; }
+  .noti-wrapper .list-noti .ant-list-item {
+    border-radius: 10px/10px;
+    margin-bottom: 15px;
+    box-shadow: 0px 0px 5px 0px #c6c6c6; }
+    .noti-wrapper .list-noti .ant-list-item .ant-list-item-main {
+      margin: 5px; }
+    .noti-wrapper .list-noti .ant-list-item:hover {
+      border-radius: 10px/10px;
+      transform: scale(1.01); }
+  .noti-wrapper .list-noti .ant-avatar {
+    border-radius: 0; }

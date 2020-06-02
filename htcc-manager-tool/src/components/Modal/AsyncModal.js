@@ -30,6 +30,7 @@ class AsyncModal extends React.Component {
     render() {
         const {loading} = this.state;
         const {
+            width,
             CompomentContent,
             visible,
             title,
@@ -43,6 +44,7 @@ class AsyncModal extends React.Component {
 
         return (
             <Modal
+                width={width ? width : "520px"}
                 visible={visible}
                 title={title ? title : ''}
                 onOk={this.handleOk}

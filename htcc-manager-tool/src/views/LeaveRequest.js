@@ -113,7 +113,7 @@ class LeaveRequest extends Component {
         const { currTab } = this.state;
 
         const data = _.filter(this[`data${currTab}`], (ele) =>
-            JSON.stringify(ele).includes(e.target.value)
+            JSON.stringify(ele).toLowerCase().includes(e.target.value.toLowerCase())
         );
 
         this.setState({

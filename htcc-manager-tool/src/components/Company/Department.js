@@ -1,16 +1,16 @@
 import React from 'react';
 import * as _ from 'lodash';
-import { companyApi } from '../../api';
-import { store } from 'react-notifications-component';
-import { createNotify } from '../../utils/notifier';
-import { PlusSquareOutlined } from '@ant-design/icons';
-import { buildColsDepartment } from '../../constant/colTable';
-import { Input, Table, Tooltip } from 'antd';
+import {companyApi} from '../../api';
+import {store} from 'react-notifications-component';
+import {createNotify} from '../../utils/notifier';
+import {PlusSquareOutlined} from '@ant-design/icons';
+import {buildColsDepartment} from '../../constant/colTable';
+import {Input, Table, Tooltip} from 'antd';
 import AsyncModal from '../Modal/AsyncModal';
 import FormNewDepartment from '../Form/FormNewDepartment';
 import FormEditDepartment from '../Form/FormEditDepartment';
 
-const { Search } = Input;
+const {Search} = Input;
 
 class Department extends React.Component {
     constructor(props) {
@@ -31,14 +31,14 @@ class Department extends React.Component {
         this.getData();
     }
 
-    componentDidUpdate(prevProps, prevState) {
+    componentDidUpdate(prevProps, prevState, snapShot) {
         if (this.state.data === null && this.state.loading === false) {
             this.getData();
         }
     }
 
     toggleLoading() {
-        const { loading } = this.state;
+        const {loading} = this.state;
         this.setState({
             loading: !loading,
         });
@@ -110,7 +110,7 @@ class Department extends React.Component {
     };
 
     toggle = (submit = false) => {
-        const { data } = this.state;
+        const {data} = this.state;
         this.setState({
             showModal: !this.state.showModal,
             curRecordEdit: null,
@@ -154,7 +154,7 @@ class Department extends React.Component {
                         <Search
                             className="form-control bor-radius"
                             placeholder="Tìm kiếm nhanh"
-                            style={{ width: 300 }}
+                            style={{width: 300}}
                             onChange={this.onSearch}
                         />
                     </div>
@@ -174,7 +174,7 @@ class Department extends React.Component {
                                 this.handleDelete
                             )}
                             dataSource={this.mapData(data)}
-                            scroll={{ y: 'calc(100vh - 355px)' }}
+                            scroll={{y: 'calc(100vh - 355px)'}}
                             loading={loading || data === null}
                             pagination={{
                                 hideOnSinglePage: true,

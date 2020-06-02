@@ -5,43 +5,43 @@ const CLEAR_RESULT = 'CLEAR_RESULT';
 const LOGOUT = 'LOGOUT';
 
 export default {
-  LOGIN,
-  LOGIN_FAIL,
-  LOGIN_SUCCESS,
-  CLEAR_RESULT,
-  LOGOUT
+    LOGIN,
+    LOGIN_FAIL,
+    LOGIN_SUCCESS,
+    CLEAR_RESULT,
+    LOGOUT
 };
 
 const doClearResult = () => ({
-  type: CLEAR_RESULT
+    type: CLEAR_RESULT
 });
 
 const doLogout = () => ({
-  type: LOGOUT,
-  payload: {}
+    type: LOGOUT,
+    payload: {}
 });
 
 const doLogin = (companyCode, userCode, password) => ({
-  type: LOGIN,
-  payload: {
-    companyCode,
-    password,
-    userCode
-  }
+    type: LOGIN,
+    payload: {
+        companyCode,
+        password,
+        userCode
+    }
 });
 
 const doLoginSuccess = user => ({
-  type: LOGIN_SUCCESS,
-  payload: {
-    user
-  }
+    type: LOGIN_SUCCESS,
+    payload: {
+        user
+    }
 });
 
 const doLoginFail = message => ({
-  type: LOGIN_FAIL,
-  payload: {
-    message
-  }
+    type: LOGIN_FAIL,
+    payload: {
+        message
+    }
 });
 
-export { doClearResult, doLogin, doLoginFail, doLoginSuccess, doLogout };
+export {doClearResult, doLogin, doLoginFail, doLoginSuccess, doLogout};
