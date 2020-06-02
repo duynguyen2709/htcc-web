@@ -13,7 +13,6 @@ import "slick-carousel/slick/slick-theme.css";
 import AsyncModal from "../components/Modal/AsyncModal";
 import FormNewShiftTemplate from "../components/Form/FormNewShiftTemplate";
 
-const {Meta} = Card;
 const {Search} = Input;
 
 class ShiftTemplate extends Component {
@@ -315,7 +314,7 @@ class ShiftTemplate extends Component {
                                             </>
                                         }
                                               className={"card-shift-template"}
-                                              headStyle={{background: '#efefef', borderRadius: '10px'}}
+                                              headStyle={{background: 'rgba(87, 170, 92, 0.2)', borderRadius: '10px'}}
                                               hoverable
                                               key={item.templateId}
                                               extra={this.renderButtonDelete(item.templateId)}
