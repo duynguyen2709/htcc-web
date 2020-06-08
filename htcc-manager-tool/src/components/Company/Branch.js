@@ -142,7 +142,12 @@ class Branch extends React.Component {
                     <div className="float-right btn-new">
                         <Tooltip placement="left" title={'Thêm chi nhánh'}>
                             <PlusSquareOutlined
-                                onClick={() => this.toggle(false)}
+                                onClick={() => {
+                                    this.setState({
+                                        mode: 'new'
+                                    });
+                                    this.toggle(false)
+                                }}
                             />
                         </Tooltip>
                     </div>
@@ -170,7 +175,7 @@ class Branch extends React.Component {
                         key={curRecordEdit}
                         reload={false}
                         CompomentContent={
-                            this.state.mode === 'new'
+                            mode === 'new'
                                 ? FormNewBranch
                                 : FormEditBranch
                         }

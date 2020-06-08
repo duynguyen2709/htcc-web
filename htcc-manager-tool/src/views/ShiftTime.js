@@ -340,9 +340,12 @@ class ShiftTime extends Component {
                                             title={'Thêm ca'}
                                         >
                                             <PlusSquareOutlined
-                                                onClick={() =>
+                                                onClick={() => {
+                                                    this.setState({
+                                                        mode: 'new'
+                                                    });
                                                     this.toggle(false)
-                                                }
+                                                }}
                                             />
                                         </Tooltip>
                                     </div>
@@ -370,7 +373,7 @@ class ShiftTime extends Component {
                             key={curRecordEdit}
                             reload={false}
                             CompomentContent={
-                                this.state.mode === 'new'
+                                mode === 'new'
                                     ? FormNewShiftTime
                                     : FormEditShiftTime
                             }

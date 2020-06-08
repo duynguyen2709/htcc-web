@@ -161,7 +161,12 @@ class Department extends React.Component {
                     <div className="float-right btn-new">
                         <Tooltip placement="left" title={'Thêm phòng ban'}>
                             <PlusSquareOutlined
-                                onClick={() => this.toggle(false)}
+                                onClick={() => {
+                                    this.setState({
+                                        mode: 'new'
+                                    });
+                                    this.toggle(false)
+                                }}
                             />
                         </Tooltip>
                     </div>
@@ -189,7 +194,7 @@ class Department extends React.Component {
                         key={curRecordEdit}
                         reload={false}
                         CompomentContent={
-                            this.state.mode === 'new'
+                            mode === 'new'
                                 ? FormNewDepartment
                                 : FormEditDepartment
                         }

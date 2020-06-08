@@ -26,6 +26,8 @@ const getList = month => {
 
 const updateStatus = data => {
     const token = localStorage.getItem(TOKEN);
+    const user = JSON.parse(localStorage.getItem(USER));
+    data.approver = `${user.fullName} (${user.username})`;
 
     return new Promise((resolve, reject) => {
         axios({
