@@ -111,6 +111,16 @@ class ShiftByDateArrangement extends Component {
     };
 
     renderListOffice = (data) => {
+        if (_.isEmpty(data)) {
+            return <Empty
+                style={{marginTop: '50px'}}
+                description={
+                    <span style={{color: 'rgba(0, 0, 0, 0.65)'}}>
+                        Chưa cài đặt danh sách chi nhánh
+                    </span>
+                }/>
+        }
+
         return (_.map(data, (item) => (
             <TabPane
                 className={"shift-office"}
@@ -148,6 +158,16 @@ class ShiftByDateArrangement extends Component {
     };
 
     renderListShiftDetail = (shiftDetailList) => {
+        if (_.isEmpty(shiftDetailList)) {
+            return <Empty
+                style={{marginTop: '50px'}}
+                description={
+                    <span style={{color: 'rgba(0, 0, 0, 0.65)'}}>
+                        Chưa cài đặt ca làm việc
+                    </span>
+                }/>
+        }
+
         return (_.map(shiftDetailList, (item) => (
             <TabPane
                 className={"shift-detail"}

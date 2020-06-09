@@ -200,6 +200,11 @@
     color: #4a9c51 !important;
 }
 
+.slick-list {
+    height: calc(100vh - 250px);
+    overflow-y: auto;
+}
+
 .card-shift-template {
     min-height: calc(100vh - 270px);
     padding: 5px;
