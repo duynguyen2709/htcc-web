@@ -9,7 +9,7 @@ import ShiftTime from './views/containers/ShiftTimeContainer';
 import WorkingDay from './views/containers/WorkingDayContainer';
 import Notification from './views/Notification/index';
 import ShiftArrangement from './views/ShiftArrangement';
-import ShiftTemplate from "./views/ShiftTemplate";
+import ShiftTemplate from './views/ShiftTemplate';
 
 const routes = [
     {
@@ -70,7 +70,7 @@ const routes = [
         layout: '/',
     },
     {
-        path: '/lich-lam',
+        path: '/lich-lam/ngay',
         key: '/lich-lam',
         name: 'Lịch Làm',
         icon: 'tim-icons icon-calendar-60',

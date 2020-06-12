@@ -10820,7 +10820,7 @@ h6 {
         padding: 8px 8px; }
     .sidebar .nav li > a,
     .off-canvas-sidebar .nav li > a {
-      margin: 10px 15px 0;
+      margin-left: 10px;
       border-radius: 30px;
       color: #ffffff;
       display: block;
