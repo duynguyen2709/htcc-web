@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch, Redirect } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import PerfectScrollbar from 'perfect-scrollbar';
 import * as _ from 'lodash';
 import Navbar from '../components/Navbars/Navbar';
