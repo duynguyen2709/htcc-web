@@ -299,6 +299,14 @@ template {
 [hidden] {
   display: none !important; }
 
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+  margin-bottom: 0.5rem;
+  font-family: inherit;
+  font-weight: 400;
+  line-height: 1.2;
+  color: #32325d; }
+
 h1, .h1 {
   font-size: 2.0625rem; }
 
@@ -1317,7 +1325,7 @@ pre {
     color: #adb5bd;
     opacity: 1; }
   .form-control:disabled, .form-control[readonly] {
-    background-color: #e9ecef !important;
+    background-color: #e9ecef;
     opacity: 1; }
 
 select.form-control:focus::-ms-value {
@@ -4371,7 +4379,7 @@ button.close {
   .bs-popover-top .arrow::before, .bs-popover-auto[x-placement^="top"] .arrow::before {
     bottom: 0;
     border-top-color: transparent; }
-
+  
   .bs-popover-top .arrow::after,
   .bs-popover-auto[x-placement^="top"] .arrow::after {
     bottom: 1px;
@@ -4391,7 +4399,7 @@ button.close {
   .bs-popover-right .arrow::before, .bs-popover-auto[x-placement^="right"] .arrow::before {
     left: 0;
     border-right-color: transparent; }
-
+  
   .bs-popover-right .arrow::after,
   .bs-popover-auto[x-placement^="right"] .arrow::after {
     left: 1px;
@@ -4408,7 +4416,7 @@ button.close {
   .bs-popover-bottom .arrow::before, .bs-popover-auto[x-placement^="bottom"] .arrow::before {
     top: 0;
     border-bottom-color: transparent; }
-
+  
   .bs-popover-bottom .arrow::after,
   .bs-popover-auto[x-placement^="bottom"] .arrow::after {
     top: 1px;
@@ -4437,7 +4445,7 @@ button.close {
   .bs-popover-left .arrow::before, .bs-popover-auto[x-placement^="left"] .arrow::before {
     right: 0;
     border-left-color: transparent; }
-
+  
   .bs-popover-left .arrow::after,
   .bs-popover-auto[x-placement^="left"] .arrow::after {
     right: 1px;
@@ -7434,7 +7442,7 @@ a.text-darker:hover, a.text-darker:focus {
   font-size: 11px;
   font-weight: 700;
   position: relative;
-  left: 125px;
+  left: 120px;
   bottom: 42px; }
 
 .number-notify:before {
@@ -10013,6 +10021,13 @@ select,
 textarea {
   font-family: "Open Sans", sans-serif; }
 
+.card h1, .card h2, .card h3, .card h4, .card h5, .card h6, .card p {
+  color: rgba(255, 255, 255, 0.8); }
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.8); }
+
 a {
   color: #66bb6a;
   font-weight: 300; }
@@ -10020,34 +10035,40 @@ a {
     color: #1b5e20; }
 
 h1, .h1 {
-  line-height: 1.05;}
+  line-height: 1.05;
+  margin-bottom: 30px; }
   h1 small, .h1 small {
     font-weight: 600;
     text-transform: uppercase;
     opacity: .8; }
 
 h2, .h2 {
+  margin-bottom: 30px;
   line-height: 1.2; }
 
 h3, .h3 {
+  margin-bottom: 30px;
   line-height: 1.4em; }
 
 h4, .h4 {
-  line-height: 1.45em; }
+  line-height: 1.45em;
+  margin-bottom: 15px; }
   h4 + .category,
   h4.title + .category, .h4 + .category,
   .h4.title + .category {
     margin-top: -10px; }
 
 h5, .h5 {
-  line-height: 1.4em; }
+  line-height: 1.4em;
+  margin-bottom: 15px; }
 
 h6, .h6 {
   text-transform: uppercase;
   font-weight: 600; }
 
 p {
-  color: rgba(255, 255, 255, 0.8); }
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 5px; }
   p.description {
     font-size: 1.14em; }
 
@@ -12855,3 +12876,12 @@ textarea.form-control {
       transform: scale(1.01); }
   .noti-wrapper .list-noti .ant-avatar {
     border-radius: 0; }
+
+.shift-template .wrap-slider {
+  padding: 15px 35px;
+  overflow: auto;
+  height: calc(100vh - 150px); }
+  .shift-template .wrap-slider .ant-card-body {
+    padding: 5px;
+    overflow: auto;
+    height: calc(100vh - 325px); }

@@ -47,8 +47,12 @@
 
 .ant-modal-body {
     min-height: 150px;
-    max-height: 610px;
+    max-height: 600px;
     overflow: auto;
+}
+
+.ant-modal {
+    padding-bottom: 0;
 }
 
 .ant-select-single .ant-select-selector {
@@ -125,18 +129,18 @@
 }
 
 .ant-picker-cell-selected:hover
-.ant-picker-calendar-date
-.ant-picker-calendar-date-value,
+    .ant-picker-calendar-date
+    .ant-picker-calendar-date-value,
 .ant-picker-calendar-full
-.ant-picker-panel
-.ant-picker-cell-selected
-.ant-picker-calendar-date-today
-.ant-picker-calendar-date-value,
+    .ant-picker-panel
+    .ant-picker-cell-selected
+    .ant-picker-calendar-date-today
+    .ant-picker-calendar-date-value,
 .ant-picker-calendar-full
-.ant-picker-panel
-.ant-picker-cell-selected:hover
-.ant-picker-calendar-date-today
-.ant-picker-calendar-date-value {
+    .ant-picker-panel
+    .ant-picker-cell-selected:hover
+    .ant-picker-calendar-date-today
+    .ant-picker-calendar-date-value {
     color: #237804;
 }
 
@@ -192,17 +196,18 @@
 }
 
 .slick-slider {
-    padding: 0 30px !important;
+    padding: 0 10px !important;
 }
 
-.slick-prev:before, .slick-next:before {
+.slick-prev:before,
+.slick-next:before {
     font-size: 30px !important;
     color: #4a9c51 !important;
 }
 
 .slick-list {
-    height: calc(100vh - 250px);
-    overflow-y: auto;
+    height: calc(100vh - 190px);
+    /* overflow-y: auto !important; */
 }
 
 .card-shift-template {
@@ -212,7 +217,8 @@
     border-radius: 15px;
     margin: 5px;
     width: 95% !important;
-    box-shadow: 0 15px 30px rgba(25, 125, 22, 0.15), 0 15px 12px rgba(25, 125, 22, 0.1);
+    box-shadow: 0 15px 30px rgba(25, 125, 22, 0.15),
+        0 15px 12px rgba(25, 125, 22, 0.1);
 }
 
 .card-add-shift-template {
