@@ -1,19 +1,32 @@
-import React, {Component} from 'react';
-import {Avatar, Button, Col, Collapse, Empty, Popconfirm, Row, Tabs} from 'antd';
-import {Button as ReactStrapButton, CardFooter} from "reactstrap";
-import {DeleteOutlined, PlusOutlined, QuestionCircleOutlined} from '@ant-design/icons';
-import {shiftArrangement} from '../../api';
+import React, { Component } from 'react';
+import {
+    Avatar,
+    Button,
+    Col,
+    Collapse,
+    Empty,
+    Popconfirm,
+    Row,
+    Tabs,
+    Tooltip,
+} from 'antd';
+import {
+    DeleteOutlined,
+    PlusSquareOutlined,
+    QuestionCircleOutlined,
+} from '@ant-design/icons';
+import { shiftArrangement } from '../../api';
 import * as _ from 'lodash';
 import moment from 'moment';
-import EmployeeInfoCard from "./EmployeeInfoCard";
-import {store} from "react-notifications-component";
-import {createNotify} from "../../utils/notifier";
-import ReactLoading from "react-loading";
-import AsyncModal from "../Modal/AsyncModal";
-import FormAddShiftByDate from "../Form/ShiftArrangement/FormAddShiftByDate";
+import EmployeeInfoCard from './EmployeeInfoCard';
+import { store } from 'react-notifications-component';
+import { createNotify } from '../../utils/notifier';
+import ReactLoading from 'react-loading';
+import AsyncModal from '../Modal/AsyncModal';
+import FormAddShiftByDate from '../Form/ShiftArrangement/FormAddShiftByDate';
 
-const {TabPane} = Tabs;
-const {Panel} = Collapse;
+const { TabPane } = Tabs;
+const { Panel } = Collapse;
 
 class ShiftByDateArrangement extends Component {
     constructor(props) {
@@ -33,9 +46,12 @@ class ShiftByDateArrangement extends Component {
 
     componentWillReceiveProps(nextProps, nextContext) {
         if (!_.isEqual(this.props.employeeList, nextProps.employeeList)) {
-            this.setState({
-                employeeList: nextProps.employeeList
-            }, () => this.convertEmployeeListToMap())
+            this.setState(
+                {
+                    employeeList: nextProps.employeeList,
+                },
+                () => this.convertEmployeeListToMap()
+            );
         }
 
         const data = nextProps.data;
@@ -56,13 +72,18 @@ class ShiftByDateArrangement extends Component {
             return;
         }
 
-        let {lastClickArr, officeShiftMap, currentOfficeId, firstDate} = this.state;
+        let {
+            lastClickArr,
+            officeShiftMap,
+            currentOfficeId,
+            firstDate,
+        } = this.state;
         currentOfficeId = data[0].officeId;
         officeShiftMap.set(currentOfficeId, data[0].shiftDetailList[0].shiftId);
         lastClickArr.push({
             officeId: currentOfficeId,
             shiftId: officeShiftMap.get(currentOfficeId),
-            arrangeDate: data[0].shiftDetailList[0].detailList[0].date
+            arrangeDate: data[0].shiftDetailList[0].detailList[0].date,
         });
 
         if (_.isEmpty(firstDate)) {
@@ -74,12 +95,12 @@ class ShiftByDateArrangement extends Component {
             officeShiftMap: officeShiftMap,
             currentOfficeId: currentOfficeId,
             firstDate: firstDate,
-        })
+        });
     };
 
     toggle = (submit = false, data) => {
         this.setState({
-            showModal: !this.state.showModal
+            showModal: !this.state.showModal,
         });
 
         if (submit) {
@@ -90,17 +111,17 @@ class ShiftByDateArrangement extends Component {
     openModal = () => {
         this.setState({
             showModal: true,
-        })
+        });
     };
 
     toggleLoading = () => {
         this.setState({
-            isLoading: !this.state.isLoading
-        })
+            isLoading: !this.state.isLoading,
+        });
     };
 
     convertEmployeeListToMap = () => {
-        const {employeeList} = this.state;
+        const { employeeList } = this.state;
 
         const employeeMap = new Map();
         for (let employee of employeeList) {
@@ -112,184 +133,229 @@ class ShiftByDateArrangement extends Component {
 
     renderListOffice = (data) => {
         if (_.isEmpty(data)) {
-            return <Empty
-                style={{marginTop: '50px'}}
-                description={
-                    <span style={{color: 'rgba(0, 0, 0, 0.65)'}}>
-                        Chưa cài đặt danh sách chi nhánh
-                    </span>
-                }/>
+            return (
+                <Empty
+                    style={{ marginTop: '50px' }}
+                    description={
+                        <span style={{ color: 'rgba(0, 0, 0, 0.65)' }}>
+                            Chưa cài đặt danh sách chi nhánh
+                        </span>
+                    }
+                />
+            );
         }
 
-        return (_.map(data, (item) => (
+        return _.map(data, (item) => (
             <TabPane
-                className={"shift-office"}
-                style={{overflow: 'auto'}}
-                tab={
-                    <span>{item.officeId}</span>
-                }
+                className={'shift-office'}
+                style={{ overflow: 'auto' }}
+                tab={<span>{item.officeId}</span>}
                 key={item.officeId}
-                size={"small"}
+                size={'small'}
             >
-                <Tabs type={"card"}
-                      tabBarExtraContent={this.renderAddShiftButton()}
-                      onChange={(shiftId) => this.onChangeShift(shiftId)}
+                <Tabs
+                    type={'card'}
+                    tabBarExtraContent={this.renderAddShiftButton()}
+                    onChange={(shiftId) => this.onChangeShift(shiftId)}
                 >
                     {this.renderListShiftDetail(item.shiftDetailList)}
                 </Tabs>
             </TabPane>
-        )));
+        ));
     };
 
     renderAddShiftButton = () => {
-        return (<>
-            <CardFooter className="text-right info" style={{marginRight: '20px'}}>
-                <ReactStrapButton
-                    className="btn-custom"
-                    color="primary"
-                    type="button"
-                    onClick={this.openModal}
-                >
-                    <PlusOutlined style={{display: 'inline', margin: '5px 10px 0 0',}}/>
-                    <span className="btn-save-text"> Xếp ca </span>
-                </ReactStrapButton>
-            </CardFooter>
-        </>)
+        return (
+            <div className="btn-new-small">
+                <Tooltip placement="left" title={'Xếp ca'}>
+                    <PlusSquareOutlined onClick={this.openModal} />
+                </Tooltip>
+            </div>
+        );
     };
 
     renderListShiftDetail = (shiftDetailList) => {
         if (_.isEmpty(shiftDetailList)) {
-            return <Empty
-                style={{marginTop: '50px'}}
-                description={
-                    <span style={{color: 'rgba(0, 0, 0, 0.65)'}}>
-                        Chưa cài đặt ca làm việc
-                    </span>
-                }/>
+            return (
+                <Empty
+                    style={{ marginTop: '50px' }}
+                    description={
+                        <span style={{ color: 'rgba(0, 0, 0, 0.65)' }}>
+                            Chưa cài đặt ca làm việc
+                        </span>
+                    }
+                />
+            );
         }
 
-        return (_.map(shiftDetailList, (item) => (
+        return _.map(shiftDetailList, (item) => (
             <TabPane
-                className={"shift-detail"}
-                style={{overflow: 'auto'}}
+                className={'shift-detail'}
+                style={{ overflow: 'auto' }}
                 tab={`${item.shiftName} (${item.shiftTime})`}
                 key={item.shiftId}
-                size={"small"}
+                size={'small'}
             >
                 {this.renderDetailList(item.detailList)}
             </TabPane>
-        )));
+        ));
     };
 
     renderDetailList = (detailList) => {
-        return (<>
-            <Tabs tabPosition={"left"}
-                  className={"shift-list-date-detail"}
-                  onChange={(date) => this.onChangeArrangeDate(date)}
-            >
-                {_.map(detailList, (item) => (
-                    <TabPane
-                        className={"shift-date-detail"}
-                        style={{overflow: 'auto'}}
-                        tab={_.upperFirst(moment(item.date, "YYYYMMDD").format('dddd, DD/MM/YYYY'))}
-                        key={item.date}
-                        size={"small"}
-                    >
-                        {this.renderEmployeeList(item.employeeList, item.date)}
-                    </TabPane>
-                ))}
-            </Tabs>
-        </>);
+        return (
+            <>
+                <Tabs
+                    tabPosition={'left'}
+                    className={'shift-list-date-detail'}
+                    onChange={(date) => this.onChangeArrangeDate(date)}
+                >
+                    {_.map(detailList, (item) => (
+                        <TabPane
+                            className={'shift-date-detail'}
+                            style={{ overflow: 'auto' }}
+                            tab={_.upperFirst(
+                                moment(item.date, 'YYYYMMDD').format(
+                                    'dddd, DD/MM/YYYY'
+                                )
+                            )}
+                            key={item.date}
+                            size={'small'}
+                        >
+                            {this.renderEmployeeList(
+                                item.employeeList,
+                                item.date
+                            )}
+                        </TabPane>
+                    ))}
+                </Tabs>
+            </>
+        );
     };
 
     renderEmployeeList = (employeeList, date) => {
         if (this.state.isLoading) {
-            return <ReactLoading
-                type={'spinningBubbles'}
-                color={'#4caf50'}
-                className={"center-div"}
-                height={'10%'}
-                width={'10%'}/>
+            return (
+                <ReactLoading
+                    type={'spinningBubbles'}
+                    color={'#4caf50'}
+                    className={'center-div'}
+                    height={'10%'}
+                    width={'10%'}
+                />
+            );
         }
 
         if (_.isEmpty(employeeList)) {
-            return <Empty
-                style={{marginTop: '50px'}}
-                description={
-                    <span style={{color: 'rgba(0, 0, 0, 0.65)'}}>
-                        Không có ca làm việc hôm nay
-                    </span>
-                }/>
+            return (
+                <Empty
+                    style={{ marginTop: '50px' }}
+                    description={
+                        <span style={{ color: 'rgba(0, 0, 0, 0.65)' }}>
+                            Không có ca làm việc hôm nay
+                        </span>
+                    }
+                />
+            );
         }
 
-        const overFlowHeightStyle = employeeList.length > 8 ? {
-            height: 'calc(100vh - 350px)'
-        } : null;
+        const overFlowHeightStyle =
+            employeeList.length > 8
+                ? {
+                      height: 'calc(100vh - 350px)',
+                  }
+                : null;
 
-        return (<>
-            <Row className={"shift-list-employee"}
-                 style={overFlowHeightStyle}
-            >
-                {_.map(employeeList, (item, index) => {
+        return (
+            <>
+                <Row
+                    className={'shift-list-employee'}
+                    style={overFlowHeightStyle}
+                >
+                    {_.map(employeeList, (item, index) => {
                         const user = this.employeeMap.get(item.username);
                         return (
-                            <Col span={6}
-                                 key={`col_${user.username}_${index}`}
-                                 className={"shift-employee-card"}
+                            <Col
+                                span={6}
+                                key={`col_${user.username}_${index}`}
+                                className={'shift-employee-card'}
                             >
-                                <Collapse defaultActiveKey={this.getPanelDefaultActiveKeys(employeeList)}>
-                                    <Panel key={`panel_${user.username}_${index}`}
-                                           showArrow={false}
-                                           extra={this.employeeMap.has(user.username) && !this.isBeforeToday(date) ?
-                                               this.renderButtonDelete(item.arrangeId, user.fullName) : null}
-                                           header={
-                                               <>
-                                                   <Avatar src={user.avatar}/>
-                                                   <span style={{color: 'rgba(0, 0, 0, 0.75)', marginLeft: '5px'}}>
-                                            {user.fullName}
-                                        </span>
-                                               </>
-                                           }>
-                                        <EmployeeInfoCard info={user}/>
+                                <Collapse
+                                    defaultActiveKey={this.getPanelDefaultActiveKeys(
+                                        employeeList
+                                    )}
+                                >
+                                    <Panel
+                                        key={`panel_${user.username}_${index}`}
+                                        showArrow={false}
+                                        extra={
+                                            this.employeeMap.has(
+                                                user.username
+                                            ) && !this.isBeforeToday(date)
+                                                ? this.renderButtonDelete(
+                                                      item.arrangeId,
+                                                      user.fullName
+                                                  )
+                                                : null
+                                        }
+                                        header={
+                                            <>
+                                                <Avatar src={user.avatar} />
+                                                <span
+                                                    style={{
+                                                        color:
+                                                            'rgba(0, 0, 0, 0.75)',
+                                                        marginLeft: '5px',
+                                                    }}
+                                                >
+                                                    {user.fullName}
+                                                </span>
+                                            </>
+                                        }
+                                    >
+                                        <EmployeeInfoCard info={user} />
                                     </Panel>
                                 </Collapse>
                             </Col>
                         );
-                    }
-                )}
-            </Row>
-        </>);
+                    })}
+                </Row>
+            </>
+        );
     };
 
     isBeforeToday = (date) => {
         const arrangeDateNum = parseInt(date);
         const current = new Date().getTime();
-        const todayNum = parseInt(String(moment(current).format("YYYYMMDD")));
+        const todayNum = parseInt(String(moment(current).format('YYYYMMDD')));
         return arrangeDateNum < todayNum;
     };
 
     renderButtonDelete = (arrangeId, fullName) => {
         const message = `Bạn có chắc xóa nhân viên ${fullName} khỏi ca ?`;
-        return (<>
-            <Popconfirm
-                title={message}
-                icon={<QuestionCircleOutlined/>}
-                okText="Đồng ý"
-                cancelText="Huỷ"
-                onConfirm={(event) => {
-                    event.stopPropagation();
-                    this.deleteShiftArrangement(arrangeId);
-                }}
-            >
-                <Button type="primary" danger
+        return (
+            <>
+                <Popconfirm
+                    title={message}
+                    icon={<QuestionCircleOutlined />}
+                    okText="Đồng ý"
+                    cancelText="Huỷ"
+                    onConfirm={(event) => {
+                        event.stopPropagation();
+                        this.deleteShiftArrangement(arrangeId);
+                    }}
+                >
+                    <Button
+                        type="primary"
+                        danger
                         onClick={(event) => {
                             event.stopPropagation();
                         }}
-                        icon={<DeleteOutlined/>}
-                        size={"small"}
-                />
-            </Popconfirm>
-        </>)
+                        icon={<DeleteOutlined />}
+                        size={'small'}
+                    />
+                </Popconfirm>
+            </>
+        );
     };
 
     deleteShiftArrangement = (arrangeId) => {
@@ -323,9 +389,9 @@ class ShiftByDateArrangement extends Component {
     };
 
     onChangeOffice = (officeId) => {
-        const {officeShiftMap} = this.state;
+        const { officeShiftMap } = this.state;
         if (!officeShiftMap.has(officeId)) {
-            const {data} = this.props;
+            const { data } = this.props;
             let shiftId = '';
             if (!_.isEmpty(data[0].shiftDetailList)) {
                 shiftId = data[0].shiftDetailList[0].shiftId;
@@ -333,18 +399,18 @@ class ShiftByDateArrangement extends Component {
 
             officeShiftMap.set(officeId, shiftId);
             this.setState({
-                officeShiftMap: officeShiftMap
-            })
+                officeShiftMap: officeShiftMap,
+            });
         }
 
         this.setState({
-            currentOfficeId: officeId
-        })
+            currentOfficeId: officeId,
+        });
     };
 
     onChangeShift = (shiftId) => {
-        const {currentOfficeId, officeShiftMap} = this.state;
-        let {lastClickArr} = this.state;
+        const { currentOfficeId, officeShiftMap } = this.state;
+        let { lastClickArr } = this.state;
         let obj = null;
         let index = -1;
 
@@ -354,8 +420,11 @@ class ShiftByDateArrangement extends Component {
             }
 
             const element = lastClickArr[index];
-            if (_.isEqual(currentOfficeId, element.officeId) && _.isEqual(shiftId, element.shiftId)) {
-                obj = {...element};
+            if (
+                _.isEqual(currentOfficeId, element.officeId) &&
+                _.isEqual(shiftId, element.shiftId)
+            ) {
+                obj = { ...element };
                 break;
             }
         }
@@ -364,8 +433,8 @@ class ShiftByDateArrangement extends Component {
             obj = {
                 officeId: currentOfficeId,
                 shiftId: shiftId,
-                arrangeDate: this.state.firstDate
-            }
+                arrangeDate: this.state.firstDate,
+            };
         }
 
         lastClickArr.push(obj);
@@ -374,11 +443,11 @@ class ShiftByDateArrangement extends Component {
         this.setState({
             lastClickArr: lastClickArr,
             officeShiftMap: officeShiftMap,
-        })
+        });
     };
 
     onChangeArrangeDate = (arrangeDate) => {
-        const {lastClickArr} = this.state;
+        const { lastClickArr } = this.state;
 
         const lastClick = lastClickArr[lastClickArr.length - 1];
         lastClick.arrangeDate = arrangeDate;
@@ -386,18 +455,21 @@ class ShiftByDateArrangement extends Component {
         lastClickArr.push(lastClick);
 
         this.setState({
-            lastClickArr: lastClickArr
-        })
+            lastClickArr: lastClickArr,
+        });
     };
 
     buildAddShiftData = () => {
-        const {currentOfficeId, officeShiftMap, lastClickArr} = this.state;
+        const { currentOfficeId, officeShiftMap, lastClickArr } = this.state;
         const shiftId = officeShiftMap.get(currentOfficeId);
         let arrangeDate = this.state.firstDate;
 
         if (!_.isEmpty(shiftId)) {
             for (let index = lastClickArr.length - 1; index >= 0; index--) {
-                if (_.isEqual(currentOfficeId, lastClickArr[index].officeId) && _.isEqual(shiftId, lastClickArr[index].shiftId)) {
+                if (
+                    _.isEqual(currentOfficeId, lastClickArr[index].officeId) &&
+                    _.isEqual(shiftId, lastClickArr[index].shiftId)
+                ) {
                     arrangeDate = lastClickArr[index].arrangeDate;
                     break;
                 }
@@ -409,7 +481,7 @@ class ShiftByDateArrangement extends Component {
             shiftId: shiftId,
             arrangeDate: arrangeDate,
             type: 2,
-        }
+        };
     };
 
     getPanelDefaultActiveKeys = (employeeList) => {
@@ -421,16 +493,17 @@ class ShiftByDateArrangement extends Component {
     };
 
     render() {
-        const {data, employeeList} = this.props;
-        const {showModal} = this.state;
+        const { data, employeeList } = this.props;
+        const { showModal } = this.state;
 
         const addShiftData = this.buildAddShiftData();
 
         return (
             <>
-                <Tabs type={"card"}
-                      className={"shift-office-list"}
-                      onChange={(officeId) => this.onChangeOffice(officeId)}
+                <Tabs
+                    type={'card'}
+                    className={'shift-office-list'}
+                    onChange={(officeId) => this.onChangeOffice(officeId)}
                 >
                     {this.renderListOffice(data)}
                 </Tabs>
@@ -443,7 +516,7 @@ class ShiftByDateArrangement extends Component {
                     title={'Xếp ca làm việc'}
                     data={addShiftData}
                     mode={'new'}
-                    prop={{employeeList: employeeList}}
+                    prop={{ employeeList: employeeList }}
                 />
             </>
         );
