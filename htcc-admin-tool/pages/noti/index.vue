@@ -187,7 +187,12 @@
                     :items-per-page="itemsPerPage"
                     @page-count="pageCountNoti = $event"
                   >
-                    <template v-slot:no-data>Không có thông báo trong ngày này</template>
+                    <template v-slot:no-data>
+                      <div class="no-data">
+                        <v-icon size="90">mdi-bell-off</v-icon>
+                        <p>Không có thông báo trong ngày này</p>
+                      </div>
+                    </template>
 
                     <template v-if="ListChoosenNoti.length !== 0" v-slot:body="{ items }">
                       <tbody>

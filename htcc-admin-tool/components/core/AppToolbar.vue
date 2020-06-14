@@ -20,13 +20,8 @@
           hide-details
           color="purple"
         /> -->
-        <v-menu bottom left content-class="dropdown-menu" offset-y transition="slide-y-transition">
-          <!-- <router-link v-ripple slot="activator" class="toolbar-items" to="/notifications">
-            <v-badge color="error" overlap>
-              <template slot="badge">{{ notifications.length }}</template>
-              <v-icon color="tertiary">mdi-bell</v-icon>
-            </v-badge>
-          </router-link> -->
+        <!-- <v-menu bottom left content-class="dropdown-menu" offset-y transition="slide-y-transition">
+          
           <v-card>
             <v-list dense>
               <v-list-item
@@ -38,7 +33,7 @@
               </v-list-item>
             </v-list>
           </v-card>
-        </v-menu>
+        </v-menu> -->
         <!-- <nuxt-link
           v-ripple
           class="toolbar-items"
@@ -50,21 +45,14 @@
 
         <!-- <v-icon color="tertiary" @click="dialog = true">mdi-account</v-icon> -->
 
-        <v-icon color="tertiary" @click="onClickUserProfile">mdi-account</v-icon>
-        <v-dialog width="530" v-model="dialog">
-          <!-- <v-card>
-            <v-card-title class="headline grey lighten-2" primary-title>Privacy Policy</v-card-title>
+        <!-- <v-icon color="tertiary" @click="onClickUserProfile">mdi-account</v-icon> -->
 
-            <v-card-text>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</v-card-text>
+        <div class="avatar-wrapper" @click="onClickUserProfile">
+          <img :src="$auth.user.avatar"/>
+          {{$auth.user.username}}
+        </div>
 
-            <v-divider></v-divider>
-
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="primary" text @click="dialog = false">I accept</v-btn>
-            </v-card-actions>
-          </v-card>-->
-
+        <!-- <v-dialog width="530" v-model="dialog">
           <material-card class="v-card-profile pt-2">
             <v-avatar slot="offset" class="mx-auto d-block" size="130">
               <img
@@ -82,16 +70,17 @@
               </v-card>
             </v-card-text>
           </material-card>
-        </v-dialog>
+        </v-dialog> -->
       </v-flex>
       <nuxt-link
         v-ripple
-        class="toolbar-items"
+        id="logout"
+        class="toolbar-items primary"
         to="/"
         title="Logout"
         @click.native="$auth.logout()"
       >
-        <v-icon color="tertiary">mdi-logout</v-icon>
+        <v-icon color="white">mdi-logout</v-icon>
       </nuxt-link>
     </v-toolbar-items>
   </v-toolbar>
@@ -106,6 +95,8 @@ export default {
     materialCard
   },
   data: () => ({
+    // user: Object.assign({}, this.$auth.user),
+    
     notifications: [
       "Mike, John responded to your email",
       "You have 5 new tasks",
@@ -192,13 +183,67 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
 #core-toolbar a {
   text-decoration: none;
 }
 
 .d-toolbar {
   height: 64px !important;
+}
+
+.avatar-wrapper{
+  font-size: 20px;
+  font-weight: bold;
+
+  display: flex;
+  justify-content: center;
+
+  margin-right: 30px;
+
+  border-radius: 10px;
+  background-color: #4caf50;
+  color: #fff;
+
+  padding: 10px;
+
+  cursor: pointer;
+}
+
+.avatar-wrapper img{
+  max-width: 30px;
+  max-height: 30px;
+
+  background-color: #fff;
+  border-radius: 50%;
+
+  margin-right: 5px;
+  padding: 1px;
+}
+
+.v-toolbar {
+  height: 96px !important;
+  box-shadow: none !important;
+  flex: none;
+}
+
+#logout {
+  //color: #fff;
+  border-radius: 10px;
+
+  height: 51px;
+}
+
+.v-toolbar__content {
+  display: flex;
+      align-items: center !important;
+
+  height: 96px !important;
+}
+
+.v-toolbar__items{
+  display: flex;
+      align-items: center !important;
 }
 
 .d-title-toolbar {

@@ -42,7 +42,13 @@
                   <span class="subheading font-weight-light text--darken-3" v-text="headers.text" />
                 </thead>
               </template>
-              <template v-slot:no-data>Không có quản trị viên nào thuộc công ty này</template>
+
+              <template v-slot:no-data>
+                      <div class="no-data">
+                        <v-icon size="90">mdi-account-off-outline</v-icon>
+                        <p>Không có quản trị viên nào thuộc công ty này</p>
+                      </div>
+                    </template>
               <!-- <template slot="items" slot-scope="{ item }"> -->
               <template v-if="items.length != 0" v-slot:body="{ items }">
                 <tbody>

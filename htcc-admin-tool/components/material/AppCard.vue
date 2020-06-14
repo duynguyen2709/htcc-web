@@ -2,6 +2,7 @@
   <v-card v-bind="$attrs" :style="styles" v-on="$listeners">
     <helper-offset v-if="hasOffset" :inline="inline" :full-width="fullWidth" :offset="offset">
       <v-card
+      
         v-if="!$slots.offset"
         :color="color"
         :class="`elevation-${elevation}`"
@@ -93,5 +94,10 @@
         border-radius: 4px;
       }
     }
+  }
+
+  .v-application .elevation-10,
+  .v-application .elevation-12 {
+    box-shadow: none !important;
   }
 </style>

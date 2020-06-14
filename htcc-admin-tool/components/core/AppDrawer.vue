@@ -9,7 +9,7 @@
     mobile-break-point="991"
     width="260"
   >
-    <v-img :src="image" height="100%">
+    <v-img class="wrapper-drawer" height="100%">
       <v-layout class="fill-height" tag="v-list" column>
         <v-list dense>
           <v-list-item avatar to="/admins">
@@ -41,7 +41,7 @@
             <template v-slot:activator>
               <v-list-item class="icon-wrapper">
                 <v-list-item-action class="icon-menu">
-                  <v-icon>mdi-account</v-icon>
+                  <v-icon>mdi-account-multiple</v-icon>
                 </v-list-item-action>
                 <v-list-item-content>
                   <v-list-item-title>Quản lý khách hàng</v-list-item-title>
@@ -65,7 +65,7 @@
             <template v-slot:activator>
               <v-list-item class="icon-wrapper">
                 <v-list-item-action class="icon-menu">
-                  <v-icon>mdi-account</v-icon>
+                  <v-icon>mdi-cog</v-icon>
                 </v-list-item-action>
                 <v-list-item-content>
                   <v-list-item-title class="title-with-arrow">Quản lý hệ thống</v-list-item-title>
@@ -98,7 +98,7 @@
 
           <v-list-item class="icon-wrapper" :active-class="color" to="/icons">
             <v-list-item-action class="icon-menu">
-              <v-icon>mdi-chat-alert</v-icon>
+              <v-icon>mdi-emoticon</v-icon>
             </v-list-item-action>
             <v-list-item-content>
               <v-list-item-title v-text="'Quản lý icon'" class="pr-1"></v-list-item-title>
@@ -107,7 +107,7 @@
 
           <v-list-item class="icon-wrapper" :active-class="color" to="/noti">
             <v-list-item-action class="icon-menu">
-              <v-icon>mdi-chat-alert</v-icon>
+              <v-icon>mdi-bell</v-icon>
             </v-list-item-action>
             <v-list-item-content>
               <v-list-item-title v-text="'Quản lý thông báo'" class="pr-1"></v-list-item-title>
@@ -136,7 +136,7 @@ export default {
         },
         {
           to: "/admins",
-          icon: "mdi-account",
+          icon: "mdi-account-multiple",
           text: "Admins"
         },
         {
@@ -217,8 +217,12 @@ export default {
 
 #app-drawer {
   &.v-navigation-drawer .v-list {
-    background: rgba(27, 27, 27, 0.4);
+    // background: rgba(27, 27, 27, 0.4);
     padding: 0;
+  }
+
+  .wrapper-drawer {
+     background: linear-gradient(to bottom right,#1b5e20,#66bb6a);
   }
 
   .v-divider {
