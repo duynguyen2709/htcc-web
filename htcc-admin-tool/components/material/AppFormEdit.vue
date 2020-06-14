@@ -383,7 +383,7 @@ export default {
           return pattern.test(value) || "Số điện thoại không hợp lệ.";
         },
         password: value => {
-          const pattern = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{7,}$/;
+          const pattern = /(?=.*[0-9])(?=.*[!@#$%^&*()])[a-zA-Z0-9!@#$%^&*()]{7,}$/;
           return (
             pattern.test(value) ||
             "Mật khẩu chưa hợp lệ, phải dài ít nhất 7  kí tự và chứa ít nhất 1 chữ số và kí tự đặc biệt !@#$%^&*"
