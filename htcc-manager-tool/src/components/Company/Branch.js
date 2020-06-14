@@ -1,16 +1,16 @@
 import React from 'react';
 import * as _ from 'lodash';
-import { companyApi } from '../../api';
-import { store } from 'react-notifications-component';
-import { createNotify } from '../../utils/notifier';
-import { PlusSquareOutlined } from '@ant-design/icons';
-import { buildColsBranch } from '../../constant/colTable';
-import { Input, Table, Tooltip } from 'antd';
+import {companyApi} from '../../api';
+import {store} from 'react-notifications-component';
+import {createNotify} from '../../utils/notifier';
+import {PlusSquareOutlined} from '@ant-design/icons';
+import {buildColsBranch} from '../../constant/colTable';
+import {Input, Table, Tooltip} from 'antd';
 import AsyncModal from '../Modal/AsyncModal';
 import FormEditBranch from '../Form/FormEditBranch';
 import FormNewBranch from '../Form/FormNewBranch';
 
-const { Search } = Input;
+const {Search} = Input;
 
 class Branch extends React.Component {
     constructor(props) {
@@ -98,7 +98,7 @@ class Branch extends React.Component {
     };
 
     toggle = (submit = false) => {
-        const { data } = this.state;
+        const {data} = this.state;
         this.setState({
             showModal: !this.state.showModal,
             curRecordEdit: null,
@@ -127,7 +127,7 @@ class Branch extends React.Component {
     };
 
     render() {
-        const { data, showModal, curRecordEdit, mode, loading } = this.state;
+        const {data, showModal, curRecordEdit, mode, loading} = this.state;
         return (
             <React.Fragment>
                 <div className="header-table clearfix">
@@ -135,7 +135,7 @@ class Branch extends React.Component {
                         <Search
                             className="form-control bor-radius"
                             placeholder="Tìm kiếm nhanh"
-                            style={{ width: 300 }}
+                            style={{width: 300}}
                             onChange={this.onSearch}
                         />
                     </div>
@@ -155,7 +155,7 @@ class Branch extends React.Component {
                                 this.handleDelete
                             )}
                             dataSource={this.mapData(data)}
-                            scroll={{ x: 1300, y: 'calc(100vh - 355px)' }}
+                            scroll={{x: 1300, y: 'calc(100vh - 355px)'}}
                             loading={loading || data === null}
                             pagination={{
                                 hideOnSinglePage: true,

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { Table, Input, Popconfirm, Tooltip } from 'antd';
+import { Col, Input, Popconfirm, Row, Table, Tooltip } from 'antd';
 import {
-    QuestionCircleOutlined,
-    SettingOutlined,
+    ExclamationCircleTwoTone,
     PlusSquareOutlined,
+    SettingOutlined,
 } from '@ant-design/icons';
 import { workScheduleApi } from '../api';
 import { store } from 'react-notifications-component';
@@ -26,13 +26,19 @@ class ShiftTime extends Component {
             showFormEdit: false,
             curRecordEdit: null,
             officeId: null,
-            isLoading: true,
+            isLoading: false,
             dataTable: null,
             mode: 'new',
             showModal: false,
         };
         this.dataTable = [];
     }
+
+    toggleLoading = () => {
+        this.setState({
+            isLoading: !this.state.isLoading,
+        });
+    };
 
     toggle = (submit = false) => {
         const { dataTable, officeId } = this.state;
@@ -68,6 +74,17 @@ class ShiftTime extends Component {
     }
 
     getListShiftTime = (officeId) => {
+        if (!officeId || officeId === '') {
+            return;
+        }
+
+        this.setState({
+            dataTable: null,
+        });
+        this.dataTable = null;
+
+        this.toggleLoading();
+
         workScheduleApi
             .getListShiftTime(officeId)
             .then((res) => {
@@ -77,19 +94,32 @@ class ShiftTime extends Component {
                     });
                     this.dataTable = res.data;
                 } else {
+                    this.setState({
+                        dataTable: [],
+                    });
+                    this.dataTable = [];
+
                     store.addNotification(
                         createNotify('danger', res.returnMessage)
                     );
                 }
             })
             .catch((err) => {
+                this.setState({
+                    dataTable: [],
+                });
+                this.dataTable = [];
+
                 store.addNotification(
                     createNotify('danger', JSON.stringify(err))
                 );
+            })
+            .finally(() => {
+                this.toggleLoading();
             });
     };
 
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps, nextContext) {
         if (
             !_.isEmpty(nextProps.data) &&
             !_.isEqual(nextProps.data, this.props.data)
@@ -106,11 +136,13 @@ class ShiftTime extends Component {
     }
 
     submitConfigLikeHeadquarter = () => {
-        const { officeId, dataTable } = this.state;
+        const { officeId } = this.state;
 
-        this.setState({
-            dataTable: null,
-        });
+        if (!officeId || officeId === '') {
+            return;
+        }
+
+        this.toggleLoading();
 
         workScheduleApi
             .configLikeHeadquarter(officeId)
@@ -122,28 +154,24 @@ class ShiftTime extends Component {
                         createNotify('default', 'Thiết lập thành công')
                     );
                 } else {
-                    this.setState({
-                        dataTable: dataTable,
-                    });
-
                     store.addNotification(
                         createNotify('danger', res.returnMessage)
                     );
                 }
             })
             .catch((err) => {
-                this.setState({
-                    dataTable: dataTable,
-                });
                 store.addNotification(
                     createNotify('danger', JSON.stringify(err))
                 );
+            })
+            .finally(() => {
+                this.toggleLoading();
             });
     };
 
     onSearch = (e) => {
         const data = _.filter(this.dataTable, (ele) =>
-            JSON.stringify(ele).includes(e.target.value)
+            JSON.stringify(ele).toLowerCase().includes(e.target.value.toLowerCase())
         );
 
         this.setState({
@@ -159,10 +187,21 @@ class ShiftTime extends Component {
     };
 
     getOfficeId = (id) => {
+        if (!id) {
+            return;
+        }
+
+        const { officeId } = this.state;
+
+        if (_.isEqual(officeId, id)) {
+            return;
+        }
+
         this.setState({
             officeId: id,
             dataTable: null,
         });
+        this.dataTable = null;
 
         this.getListShiftTime(id);
     };
@@ -170,9 +209,11 @@ class ShiftTime extends Component {
     handleDeleteShiftTime = (record) => {
         const { officeId } = this.state;
 
-        this.setState({
-            dataTable: null,
-        });
+        if (!officeId || officeId === '') {
+            return;
+        }
+
+        this.toggleLoading();
 
         workScheduleApi
             .deleteShiftTime(officeId, record.shiftId)
@@ -193,6 +234,9 @@ class ShiftTime extends Component {
                 store.addNotification(
                     createNotify('danger', JSON.stringify(err))
                 );
+            })
+            .finally(() => {
+                this.toggleLoading();
             });
     };
 
@@ -203,6 +247,7 @@ class ShiftTime extends Component {
             showModal,
             mode,
             officeId,
+            isLoading,
         } = this.state;
 
         const { data = {} } = this.props;
@@ -211,28 +256,99 @@ class ShiftTime extends Component {
             <div className="content">
                 <div className="table-wrapper tabs-small">
                     <div className="header-table clearfix">
-                        <div className="float-left">
-                            <Search
-                                className="form-control bor-radius"
-                                placeholder="Tìm kiếm nhanh"
-                                style={{ width: 300 }}
-                                onChange={this.onSearch}
-                            />
-                        </div>
-                        <div className="float-right btn-new">
-                            <Tooltip placement="left" title={'Thêm ca'}>
-                                <PlusSquareOutlined
-                                    onClick={() => this.toggle(false)}
-                                />
-                            </Tooltip>
-                        </div>
-                        <div className="tool-calendar float-right col-3">
-                            <SelectBox
-                                key={data.canManageOffices}
-                                options={data.canManageOffices}
-                                returnValue={this.getOfficeId}
-                            />
-                        </div>
+                        <Row justify="space-between">
+                            <Col span={8}>
+                                <div
+                                    style={{
+                                        display: 'flex',
+                                        flexDirection: 'row',
+                                    }}
+                                >
+                                    <Search
+                                        className="form-control bor-radius"
+                                        placeholder="Tìm kiếm nhanh"
+                                        style={{
+                                            width: '300',
+                                            marginRight: '20px',
+                                        }}
+                                        onChange={this.onSearch}
+                                    />
+                                    <SelectBox
+                                        key={data.canManageOffices}
+                                        options={data.canManageOffices}
+                                        returnValue={this.getOfficeId}
+                                    />
+                                </div>
+                            </Col>
+                            <Col>
+                                <div
+                                    style={{
+                                        display: 'flex',
+                                        flexDirection: 'row',
+                                    }}
+                                >
+                                    <CardFooter className="text-right info">
+                                        <Popconfirm
+                                            title={
+                                                <>
+                                                    <div>
+                                                        Thiết lập này sẽ xóa cả
+                                                        lịch xếp ca tương ứng
+                                                    </div>
+                                                    <div>
+                                                        Bạn chắc chắn thực hiện
+                                                        ？
+                                                    </div>
+                                                </>
+                                            }
+                                            icon={
+                                                <ExclamationCircleTwoTone twoToneColor="#d9534f" />
+                                            }
+                                            okText="Đồng ý"
+                                            cancelText="Huỷ"
+                                            onConfirm={
+                                                this.submitConfigLikeHeadquarter
+                                            }
+                                        >
+                                            <Button
+                                                className="btn-custom"
+                                                color="primary"
+                                                type="button"
+                                            >
+                                                <SettingOutlined
+                                                    style={{
+                                                        display: 'inline',
+                                                        margin: '5px 10px 0 0',
+                                                    }}
+                                                />
+                                                <span className="btn-save-text">
+                                                    Thiết lập giống trụ sở chính
+                                                </span>
+                                            </Button>
+                                        </Popconfirm>
+                                    </CardFooter>
+                                    <div
+                                        className="btn-new"
+                                        style={{
+                                            margin: 'auto',
+                                            marginLeft: '30px',
+                                            marginRight: '20px',
+                                        }}
+                                    >
+                                        <Tooltip
+                                            placement="bottomLeft"
+                                            title={'Thêm ca'}
+                                        >
+                                            <PlusSquareOutlined
+                                                onClick={() =>
+                                                    this.toggle(false)
+                                                }
+                                            />
+                                        </Tooltip>
+                                    </div>
+                                </div>
+                            </Col>
+                        </Row>
                     </div>
                     <div className="table-edit">
                         <Table
@@ -242,40 +358,13 @@ class ShiftTime extends Component {
                             )}
                             dataSource={this.mapData(dataTable)}
                             scroll={{
+                                x: 1300,
                                 y: 'calc(100vh - 355px)',
                             }}
-                            loading={dataTable === null}
+                            loading={dataTable === null || isLoading}
                             pagination={false}
                         />
                     </div>
-                    <hr />
-                    <CardFooter className="text-right info">
-                        <Popconfirm
-                            title="Bạn chắc chắn về thiết lập này ？"
-                            icon={<QuestionCircleOutlined />}
-                            okText="Đồng ý"
-                            cancelText="Huỷ"
-                            onConfirm={() => this.submitConfigLikeHeadquarter()}
-                        >
-                            <Button
-                                className="btn-custom"
-                                color="primary"
-                                type="button"
-                            >
-                                <SettingOutlined
-                                    style={{
-                                        display: 'inline',
-                                        margin: '5px 10px 0 0',
-                                    }}
-                                />{' '}
-                                {'  '}
-                                <span className="btn-save-text">
-                                    {' '}
-                                    Thiết lập giống trụ sở chính
-                                </span>
-                            </Button>
-                        </Popconfirm>
-                    </CardFooter>
                     <div>
                         <AsyncModal
                             key={curRecordEdit}
@@ -288,7 +377,9 @@ class ShiftTime extends Component {
                             visible={showModal}
                             toggle={(submit) => this.toggle(submit)}
                             title={
-                                mode === 'new' ? 'Thêm ca mới' : 'Chỉnh sửa ca'
+                                mode === 'new'
+                                    ? 'Thêm ca làm việc mới'
+                                    : 'Chỉnh sửa thông tin ca'
                             }
                             data={curRecordEdit}
                             mode={mode}
