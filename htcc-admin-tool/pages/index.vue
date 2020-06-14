@@ -374,7 +374,7 @@
           value: "category",
           class: "stickyCollumn",
           fixed: true,
-          width: 60
+          width: 120
         },
         {
           sortable: false,

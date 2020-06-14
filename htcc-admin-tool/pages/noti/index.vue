@@ -446,14 +446,14 @@ export default {
     },
     getDate(time){
       var todayTime = new Date(time);
-    var month = todayTime .getMonth() + 1;
-    var day = todayTime .getDate();
-    var year = todayTime .getFullYear();
+    // var month = todayTime .getMonth() + 1;
+    // var day = todayTime .getDate();
+    // var year = todayTime .getFullYear();
 
     var hour = todayTime.getHours();
     var minute = todayTime.getMinutes();
 
-    return day + "/" + month + "/" + year + " " + hour + ":" + minute;
+    return hour + ":" + minute;
 
       //return new Date(time*1000);
     },

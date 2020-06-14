@@ -13,13 +13,13 @@
     <v-spacer />
     <v-toolbar-items class="d-toolbar">
       <v-flex align-center layout py-2>
-        <v-text-fieldtoolbar-items
+        <!-- <v-text-fieldtoolbar-items
           v-if="responsiveInput"
           class="mr-4 mt-2 purple-input"
           label="Search..."
           hide-details
           color="purple"
-        />
+        /> -->
         <v-menu bottom left content-class="dropdown-menu" offset-y transition="slide-y-transition">
           <!-- <router-link v-ripple slot="activator" class="toolbar-items" to="/notifications">
             <v-badge color="error" overlap>
