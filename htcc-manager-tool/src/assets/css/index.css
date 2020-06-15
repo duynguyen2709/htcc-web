@@ -299,30 +299,45 @@ template {
 [hidden] {
   display: none !important; }
 
-h1, h2, h3, h4, h5, h6,
-.h1, .h2, .h3, .h4, .h5, .h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
   margin-bottom: 0.5rem;
   font-family: inherit;
   font-weight: 400;
-  line-height: 1.2;
-  color: #32325d; }
+  line-height: 1.2; }
 
-h1, .h1 {
+h1,
+.h1 {
   font-size: 2.0625rem; }
 
-h2, .h2 {
+h2,
+.h2 {
   font-size: 1.6875rem; }
 
-h3, .h3 {
+h3,
+.h3 {
   font-size: 1.4375rem; }
 
-h4, .h4 {
+h4,
+.h4 {
   font-size: 1.0625rem; }
 
-h5, .h5 {
+h5,
+.h5 {
   font-size: 0.8125rem; }
 
-h6, .h6 {
+h6,
+.h6 {
   font-size: 0.75rem; }
 
 .lead {
@@ -391,7 +406,7 @@ mark,
   font-size: 80%;
   color: #6c757d; }
   .blockquote-footer::before {
-    content: "\2014 \00A0"; }
+    content: '\2014 \00A0'; }
 
 .img-fluid {
   max-width: 100%;
@@ -1303,7 +1318,6 @@ pre {
   font-size: 0.875rem;
   line-height: 1.42857;
   color: rgba(255, 255, 255, 0.8);
-  background-color: transparent;
   background-clip: padding-box;
   border: 1px solid #cad1d7;
   border-radius: 0.25rem;
@@ -10007,8 +10021,18 @@ body {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased; }
 
-h1, h2, h3, h4, h5, h6,
-.h1, .h2, .h3, .h4, .h5, .h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
   line-height: 1.2; }
 
 p {
@@ -10034,7 +10058,8 @@ a {
   a:hover, a:focus {
     color: #1b5e20; }
 
-h1, .h1 {
+h1,
+.h1 {
   line-height: 1.05;
   margin-bottom: 30px; }
   h1 small, .h1 small {
@@ -10042,15 +10067,18 @@ h1, .h1 {
     text-transform: uppercase;
     opacity: .8; }
 
-h2, .h2 {
+h2,
+.h2 {
   margin-bottom: 30px;
   line-height: 1.2; }
 
-h3, .h3 {
+h3,
+.h3 {
   margin-bottom: 30px;
   line-height: 1.4em; }
 
-h4, .h4 {
+h4,
+.h4 {
   line-height: 1.45em;
   margin-bottom: 15px; }
   h4 + .category,
@@ -10058,11 +10086,13 @@ h4, .h4 {
   .h4.title + .category {
     margin-top: -10px; }
 
-h5, .h5 {
+h5,
+.h5 {
   line-height: 1.4em;
   margin-bottom: 15px; }
 
-h6, .h6 {
+h6,
+.h6 {
   text-transform: uppercase;
   font-weight: 600; }
 
@@ -11344,7 +11374,7 @@ h6 {
 .sidebar .user .info > a > span,
 .off-canvas-sidebar .user .info > a > span,
 .tag,
-.tag [data-role="remove"],
+.tag [data-role='remove'],
 .animation-transition-general,
 .sidebar .nav p,
 .off-canvas-sidebar .nav p,
@@ -11372,10 +11402,10 @@ h6 {
   -ms-transition: all 150ms ease 0s;
   transition: all 150ms ease 0s; }
 
-.dropdown-toggle[aria-expanded="true"]:after,
-a[data-toggle="collapse"][aria-expanded="true"] .caret,
-.card-collapse .card a[data-toggle="collapse"][aria-expanded="true"] i,
-.card-collapse .card a[data-toggle="collapse"].expanded i {
+.dropdown-toggle[aria-expanded='true']:after,
+a[data-toggle='collapse'][aria-expanded='true'] .caret,
+.card-collapse .card a[data-toggle='collapse'][aria-expanded='true'] i,
+.card-collapse .card a[data-toggle='collapse'].expanded i {
   filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2);
   -webkit-transform: rotate(180deg);
   -ms-transform: rotate(180deg);
@@ -11409,13 +11439,23 @@ a[data-toggle="collapse"][aria-expanded="true"] .caret,
 .card.card-chart .gm-style-cc {
   display: none !important; }
 
-.bd-docs h1, .bd-docs h2, .bd-docs h3, .bd-docs h4, .bd-docs h5, .bd-docs h6, .bd-docs p, .bd-docs ul li, .bd-docs ol li {
+.bd-docs h1,
+.bd-docs h2,
+.bd-docs h3,
+.bd-docs h4,
+.bd-docs h5,
+.bd-docs h6,
+.bd-docs p,
+.bd-docs ul li,
+.bd-docs ol li {
   color: #2c2c2c; }
 
 .bd-docs .bd-content > table > thead > tr > th {
   color: #222a42; }
 
-.bd-docs .blockquote, .bd-docs .blockquote p, .bd-docs .card p {
+.bd-docs .blockquote,
+.bd-docs .blockquote p,
+.bd-docs .card p {
   color: rgba(255, 255, 255, 0.8); }
 
 .bd-docs .bd-example {
@@ -11459,23 +11499,9 @@ a[data-toggle="collapse"][aria-expanded="true"] .caret,
 .bd-docs table thead th {
   color: rgba(255, 255, 255, 0.8); }
 
-.bd-docs .bd-example h1, .bd-docs .bd-example h2, .bd-docs .bd-example h3, .bd-docs .bd-example h4, .bd-docs .bd-example h5, .bd-docs .bd-example h6,
-.bd-docs .bd-example .h1, .bd-docs .bd-example .h2, .bd-docs .bd-example .h3, .bd-docs .bd-example .h4, .bd-docs .bd-example .h5, .bd-docs .bd-example .h6,
-.bd-docs table h1,
-.bd-docs table h2,
-.bd-docs table h3,
-.bd-docs table h4,
-.bd-docs table h5,
-.bd-docs table h6,
-.bd-docs table .h1,
-.bd-docs table .h2,
-.bd-docs table .h3,
-.bd-docs table .h4,
-.bd-docs table .h5,
-.bd-docs table .h6 {
-  color: rgba(255, 255, 255, 0.8); }
-
-.bd-docs .bd-example .datepicker thead th, .bd-docs .bd-example .datepicker table thead th, .bd-docs .bd-example .datepicker .tim-icons,
+.bd-docs .bd-example .datepicker thead th,
+.bd-docs .bd-example .datepicker table thead th,
+.bd-docs .bd-example .datepicker .tim-icons,
 .bd-docs table .datepicker thead th,
 .bd-docs table .datepicker table thead th,
 .bd-docs table .datepicker .tim-icons {
@@ -11513,10 +11539,12 @@ code {
 @media screen and (max-width: 576px) {
   .page-header .container h6.category-absolute {
     width: 90%; }
-  .form-horizontal .col-form-label, .form-horizontal .label-on-right {
+  .form-horizontal .col-form-label,
+  .form-horizontal .label-on-right {
     text-align: inherit;
     padding-top: 0; }
-    .form-horizontal .col-form-label code, .form-horizontal .label-on-right code {
+    .form-horizontal .col-form-label code,
+    .form-horizontal .label-on-right code {
       padding: 0 10px; } }
 
 .form-group.has-danger .error,
@@ -11801,7 +11829,8 @@ textarea.form-control {
   .form-control-lg .form-control {
     height: calc(2.875rem + 2px); }
 
-.form-horizontal .col-form-label, .form-horizontal .label-on-right {
+.form-horizontal .col-form-label,
+.form-horizontal .label-on-right {
   padding: 10px 5px 0 15px;
   text-align: right;
   max-width: 180px; }
