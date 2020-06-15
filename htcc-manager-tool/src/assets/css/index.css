@@ -11495,10 +11495,6 @@ a[data-toggle='collapse'][aria-expanded='true'] .caret,
 .bd-docs .form-check + .btn {
   margin-top: 20px; }
 
-.bd-docs .bd-example thead th,
-.bd-docs table thead th {
-  color: rgba(255, 255, 255, 0.8); }
-
 .bd-docs .bd-example .datepicker thead th,
 .bd-docs .bd-example .datepicker table thead th,
 .bd-docs .bd-example .datepicker .tim-icons,
@@ -12085,7 +12081,16 @@ textarea.form-control {
       color: rgba(255, 255, 255, 0.8); }
   .white-content .main-panel {
     background: #f5f6fa; }
-  .white-content h1, .white-content h2, .white-content h3, .white-content h4, .white-content h5, .white-content h6, .white-content p, .white-content ol li, .white-content ul li, .white-content pre {
+  .white-content h1,
+  .white-content h2,
+  .white-content h3,
+  .white-content h4,
+  .white-content h5,
+  .white-content h6,
+  .white-content p,
+  .white-content ol li,
+  .white-content ul li,
+  .white-content pre {
     color: #fff; }
   .white-content .font-icon-detail i {
     color: #222a42; }
@@ -12109,7 +12114,8 @@ textarea.form-control {
     color: rgba(34, 42, 66, 0.4);
     opacity: 1;
     filter: alpha(opacity=100); }
-  .white-content .has-danger .form-control, .white-content .has-danger .input-group-prepend .input-group-text {
+  .white-content .has-danger .form-control,
+  .white-content .has-danger .input-group-prepend .input-group-text {
     border-color: #ec250d; }
   .white-content .input-group-prepend .input-group-text {
     border-color: rgba(255, 255, 255, 0.5);
@@ -12167,7 +12173,9 @@ textarea.form-control {
   .white-content .input-group[disabled] .input-group-prepend .input-group-text,
   .white-content .input-group[disabled] .input-group-append .input-group-text {
     background-color: #222a42; }
-  .white-content .form-control[disabled], .white-content .form-control[readonly], .white-content fieldset[disabled] .form-control {
+  .white-content .form-control[disabled],
+  .white-content .form-control[readonly],
+  .white-content fieldset[disabled] .form-control {
     background: #e3e3e3;
     border-color: rgba(255, 255, 255, 0.3); }
   .white-content .input-group-focus .input-group-prepend .input-group-text,
@@ -12181,9 +12189,13 @@ textarea.form-control {
     border-right: none; }
   .white-content .input-group-append .input-group-text {
     border-left: none; }
-  .white-content .has-danger .form-control:focus, .white-content .has-success.input-group-focus .input-group-append .input-group-text, .white-content .has-success.input-group-focus .input-group-prepend .input-group-text {
+  .white-content .has-danger .form-control:focus,
+  .white-content .has-success.input-group-focus .input-group-append .input-group-text,
+  .white-content .has-success.input-group-focus .input-group-prepend .input-group-text {
     border-color: #ec250d; }
-  .white-content .has-success .form-control:focus, .white-content .has-success.input-group-focus .input-group-append .input-group-text, .white-content .has-success.input-group-focus .input-group-prepend .input-group-text {
+  .white-content .has-success .form-control:focus,
+  .white-content .has-success.input-group-focus .input-group-append .input-group-text,
+  .white-content .has-success.input-group-focus .input-group-prepend .input-group-text {
     border-color: #00bf9a; }
   .white-content .btn.btn-link:hover, .white-content .btn.btn-link:active, .white-content .btn.btn-link:focus {
     color: #9a9a9a !important; }
@@ -12194,11 +12206,13 @@ textarea.form-control {
     box-shadow: 0 1px 15px 0 rgba(123, 123, 123, 0.05); }
     .white-content .card:not(.card-white) .card-header {
       color: #222a42; }
-      .white-content .card:not(.card-white) .card-header a[data-toggle="collapse"] {
+      .white-content .card:not(.card-white) .card-header a[data-toggle='collapse'] {
         color: #222a42; }
-    .white-content .card:not(.card-white) .card-header .card-title, .white-content .card:not(.card-white) .card-body .card-title {
+    .white-content .card:not(.card-white) .card-header .card-title,
+    .white-content .card:not(.card-white) .card-body .card-title {
       color: #fff; }
-    .white-content .card:not(.card-white) .card-body .card-category, .white-content .card:not(.card-white) .card-body .card-description {
+    .white-content .card:not(.card-white) .card-body .card-category,
+    .white-content .card:not(.card-white) .card-body .card-description {
       color: #fff; }
     .white-content .card:not(.card-white) label:not(.btn) {
       color: #344675; }
@@ -12231,22 +12245,35 @@ textarea.form-control {
     border-color: rgba(34, 42, 66, 0.2);
     padding: 12px 7px;
     vertical-align: middle; }
-  .white-content .table > thead > tr > th, .white-content .table button.btn-neutral.btn-link {
+  .white-content .table > thead > tr > th,
+  .white-content .table button.btn-neutral.btn-link {
     color: rgba(34, 42, 66, 0.7); }
   .white-content .footer ul li a {
     color: #fff; }
   .white-content .footer .copyright {
     color: #fff; }
-  .white-content .progress-container .progress, .white-content .progress-container.progress.sm .progress {
+  .white-content .progress-container .progress,
+  .white-content .progress-container.progress.sm .progress {
     background: rgba(34, 42, 66, 0.1);
     box-shadow: 0 0 0 3px rgba(34, 42, 66, 0.1); }
-    .white-content .progress-container .progress .progress-value, .white-content .progress-container.progress.sm .progress .progress-value {
+    .white-content .progress-container .progress .progress-value,
+    .white-content .progress-container.progress.sm .progress .progress-value {
       color: #344675; }
-  .white-content .progress-container .progress-badge, .white-content .progress-container.progress.sm .progress-badge {
+  .white-content .progress-container .progress-badge,
+  .white-content .progress-container.progress.sm .progress-badge {
     color: #fff; }
   .white-content .full-page {
     background: #f5f6fa; }
-    .white-content .full-page h1, .white-content .full-page h2, .white-content .full-page h3, .white-content .full-page h4, .white-content .full-page h5, .white-content .full-page h6, .white-content .full-page p, .white-content .full-page ol li, .white-content .full-page ul li, .white-content .full-page pre {
+    .white-content .full-page h1,
+    .white-content .full-page h2,
+    .white-content .full-page h3,
+    .white-content .full-page h4,
+    .white-content .full-page h5,
+    .white-content .full-page h6,
+    .white-content .full-page p,
+    .white-content .full-page ol li,
+    .white-content .full-page ul li,
+    .white-content .full-page pre {
       color: #fff; }
     .white-content .full-page .description {
       color: #9a9a9a; }
