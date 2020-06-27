@@ -16,7 +16,7 @@
             <v-list-item-avatar color="white">
               <v-img :src="logo" height="34" contain />
             </v-list-item-avatar>
-            <v-list-item-title class="title">HTCC</v-list-item-title>
+            <v-list-item-title class="title">HTCC - ADMIN</v-list-item-title>
           </v-list-item>
         </v-list>
 

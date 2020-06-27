@@ -290,18 +290,35 @@
           </v-tabs-items>
 
           <v-dialog width="530" v-model="EditDialog">
-            <material-card color="success" elevation="12" title="Đổi mật khẩu">
+            <material-card color="success" elevation="12" title="Cập nhập khiếu nại">
               <v-form ref="form">
                 <v-card-text v-if="ChoosenItem !== null">
-                  <v-text-field v-model="ChoosenItem.category" label="Category" :readonly="true" />
-                  <v-text-field
-                    v-model="ChoosenItem.complaintId"
-                    label="Complaint Id"
-                    :readonly="true"
-                  />
-                  <v-text-field v-model="ChoosenItem.content" label="Content" :readonly="true" />
-                  <v-text-field v-model="ChoosenItem.date" label="Date" :readonly="true" />
-                  <v-textarea v-model="ChoosenItem.response" label="Ghi chú"></v-textarea>
+                  <v-row>
+                    <v-col cols="6">
+                      <v-text-field
+                        v-model="ChoosenItem.category"
+                        label="Danh mục"
+                        :readonly="true"
+                      />
+                    </v-col>
+                    <v-col cols="6">
+                      <v-text-field
+                        v-model="ChoosenItem.complaintId"
+                        label="Mã khiếu nại"
+                        :readonly="true"
+                      />
+                    </v-col>
+                  </v-row>
+
+                  <v-row>
+                    <v-col cols = "6">
+                  <v-text-field v-model="ChoosenItem.content" label="Nội dung" :readonly="true" />
+                    </v-col>
+                    <v-col cols = "6">
+                  <v-text-field v-model="ChoosenItem.date" label="Ngày" :readonly="true" />
+                    </v-col>
+                  </v-row>
+                  <v-textarea rows="3" v-model="ChoosenItem.response" label="Ghi chú"></v-textarea>
 
                   <v-radio-group v-model="ChoosenItem.status">
                     <v-radio label="Từ chối" value="0"></v-radio>
@@ -764,5 +781,17 @@ export default {
 .stickyCollumn {
   position: sticky;
   color: red !important;
+}
+
+.two-text-field {
+  display: flex;
+}
+
+.v-card__text{
+  padding: 0px !important;
+}
+
+.v-messages {
+  min-height: 0px !important;
 }
 </style>
