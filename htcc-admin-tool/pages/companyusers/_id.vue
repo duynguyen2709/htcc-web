@@ -26,7 +26,15 @@
             <div v-if="!isLoadingDataDone" class="text-center">
                     <v-progress-circular :size="70" :width="7" color="primary" indeterminate></v-progress-circular>
                   </div>
+
+            <template v-if="isLoadingDataDone && items.length === 0">
+                    <div class="no-data">
+                        <v-icon size="90">mdi-bell-off</v-icon>
+                        <p>Không có thông báo trong ngày này</p>
+                      </div>
+                  </template>
             
+            <template v-if="items.length != 0">
             <v-data-table v-if="isLoadingDataDone"
               :headers="headers"
               :items="items"
@@ -36,21 +44,13 @@
               :items-per-page="itemsPerPage"
               @page-count="pageCount = $event"
             >
-              <!-- <template slot="headers" slot-scope="{ header }"> -->
               <template v-slot:header="{ props: { headers } }">
                 <thead>
                   <span class="subheading font-weight-light text--darken-3" v-text="headers.text" />
                 </thead>
               </template>
-
-              <template v-slot:no-data>
-                      <div class="no-data">
-                        <v-icon size="90">mdi-account-off-outline</v-icon>
-                        <p>Không có quản trị viên nào thuộc công ty này</p>
-                      </div>
-                    </template>
-              <!-- <template slot="items" slot-scope="{ item }"> -->
-              <template v-if="items.length != 0" v-slot:body="{ items }">
+              
+              <template v-slot:body="{ items }">
                 <tbody>
                   <tr v-for="item in items" :key="item.username">
                     <td>
@@ -146,6 +146,7 @@
               </template>
             </v-data-table>
             <v-pagination v-model="page" :length="pageCount"></v-pagination>
+            </template>
           </div>
         </material-card>
       </v-flex>

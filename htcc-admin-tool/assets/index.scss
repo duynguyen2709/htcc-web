@@ -16,11 +16,11 @@
 @import "material-dashboard/fixed-plugin";
 @import "material-dashboard/dropdown";
 
-.no-data {
-    padding: 20px 0px;
-    display: flex;
-    flex-direction: column;
-}
+// .no-data {
+//     padding: 20px 0px;
+//     display: flex;
+//     flex-direction: column;
+// }
 
 
 .no-data p {
@@ -31,3 +31,9 @@
 .v-dialog {
     box-shadow: none !important;
 }
+
+.no-data {
+    padding: 20px 0px;
+    text-align: center;
+    /* height: ; */
+  }

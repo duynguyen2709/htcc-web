@@ -68,6 +68,14 @@
                     <v-progress-circular :size="70" :width="7" color="primary" indeterminate></v-progress-circular>
                   </div>
 
+                  <template v-if="isLoadingDataDone && PendingItems.length === 0">
+                    <div class="no-data">
+                      <v-icon size="90">mdi-bell-off</v-icon>
+                      <p>Không có khiếu nại chưa giải quyết của tháng này</p>
+                    </div>
+                  </template>
+
+                  <template  v-if=" PendingItems.length !== 0">
                   <v-data-table
                     v-if="isLoadingDataDone"
                     :headers="headersPending"
@@ -78,14 +86,7 @@
                     :items-per-page="itemsPerPage"
                     @page-count="pageCountPending = $event"
                   >
-                    <template v-slot:no-data>
-                      <div class="no-data">
-                        <v-icon size="90">mdi-bell-off</v-icon>
-                        <p>Không có khiếu nại chưa giải quyết của tháng này</p>
-                      </div>
-                    </template>
-
-                    <template v-if=" PendingItems.length !== 0" v-slot:body="{ items }">
+                    <template v-slot:body="{ items }">
                       <tbody>
                         <tr v-for="item in items" :key="item.ComplaintId">
                           <td>{{ item.category }}</td>
@@ -144,13 +145,10 @@
                         </tr>
                       </tbody>
                     </template>
-
-                    <!-- <template v-slot:item.actions="{ item }">
-                      <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
-                    </template>-->
                   </v-data-table>
                   <v-pagination v-model="pagePending" :length="pageCountPending"></v-pagination>
-                </div>
+                  </template>
+              </div>
               </v-container>
             </v-tab-item>
             <v-tab-item key="Confirmed">
@@ -180,6 +178,14 @@
                 </v-card-title>
 
                 <div>
+                  <template v-if=" PendingItems.length === 0">
+                    <div class="no-data">
+                      <v-icon size="90">mdi-bell-off</v-icon>
+                      <p>Không có khiếu nại chưa giải quyết của tháng này</p>
+                    </div>
+                  </template>
+
+                  <template v-if="ConfirmedItems.length !== 0">
                   <v-data-table
                     :headers="headersConfirmed"
                     :items="ConfirmedItems"
@@ -189,13 +195,13 @@
                     :items-per-page="itemsPerPage"
                     @page-count="pageCountConfirmed = $event"
                   >
-                    <template v-slot:no-data>
+                    <!-- <template v-slot:no-data>
                       <div class="no-data">
                         <v-icon size="90">mdi-bell-off</v-icon>
                         <p>Không có khiếu nại đã giải quyết của tháng này</p>
                       </div>
-                    </template>
-                    <template v-if="ConfirmedItems.length !== 0" v-slot:body="{ items }">
+                    </template> -->
+                    <template  v-slot:body="{ items }">
                       <tbody>
                         <tr v-for="item in items" :key="item.ComplaintId">
                           <td>{{ item.category }}</td>
@@ -284,6 +290,7 @@
                     </template>
                   </v-data-table>
                   <v-pagination v-model="pageConfirmed" :length="pageCountConfirmed"></v-pagination>
+                  </template>
                 </div>
               </v-container>
             </v-tab-item>
@@ -311,11 +318,15 @@
                   </v-row>
 
                   <v-row>
-                    <v-col cols = "6">
-                  <v-text-field v-model="ChoosenItem.content" label="Nội dung" :readonly="true" />
+                    <v-col cols="6">
+                      <v-text-field
+                        v-model="ChoosenItem.content"
+                        label="Nội dung"
+                        :readonly="true"
+                      />
                     </v-col>
-                    <v-col cols = "6">
-                  <v-text-field v-model="ChoosenItem.date" label="Ngày" :readonly="true" />
+                    <v-col cols="6">
+                      <v-text-field v-model="ChoosenItem.date" label="Ngày" :readonly="true" />
                     </v-col>
                   </v-row>
                   <v-textarea rows="3" v-model="ChoosenItem.response" label="Ghi chú"></v-textarea>
@@ -787,7 +798,7 @@ export default {
   display: flex;
 }
 
-.v-card__text{
+.v-card__text {
   padding: 0px !important;
 }
 

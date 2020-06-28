@@ -176,6 +176,14 @@
                     <v-progress-circular :size="70" :width="7" color="primary" indeterminate></v-progress-circular>
                   </div>
 
+                  <template v-if="isLoadingDataDone && ListChoosenNoti.length === 0">
+                    <div class="no-data">
+                        <v-icon size="90">mdi-bell-off</v-icon>
+                        <p>Không có thông báo trong ngày này</p>
+                      </div>
+                  </template>
+
+                  <template v-if="ListChoosenNoti.length !== 0">
                   <v-data-table
                     v-if="isLoadingDataDone"
                     :headers="headersNoti"
@@ -186,14 +194,7 @@
                     :items-per-page="itemsPerPage"
                     @page-count="pageCountNoti = $event"
                   >
-                    <template v-slot:no-data>
-                      <!-- <div class="no-data"> -->
-                        <v-icon size="90">mdi-bell-off</v-icon>
-                        <p>Không có thông báo trong ngày này</p>
-                      <!-- </div> -->
-                    </template>
-
-                    <template v-if="ListChoosenNoti.length !== 0" v-slot:body="{ items }">
+                    <template v-slot:body="{ items }">
                       <tbody>
                         <tr v-for="item in items" :key="item.notiId">
                           <td>
@@ -212,7 +213,9 @@
                       </tbody>
                     </template>
                   </v-data-table>
+                  
                   <v-pagination v-model="pageNoti" :length="pageCountNoti"></v-pagination>
+                  </template>
                 </div>
               </v-container>
             </v-tab-item>
@@ -700,4 +703,6 @@ export default {
 .pair-btn button{
   margin: 20px !important;
 }
+
+
 </style>
