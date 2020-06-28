@@ -34,7 +34,6 @@
                           :items="ListCompanyId"
                           v-model="CompanyId"
                           label="Mã công ty"
-                          :rules="[rules.required]"
                         ></v-select>
                       </v-flex>
                       <v-flex xs12 md12>
@@ -59,7 +58,7 @@
                         <v-select
                           :items="ListIconId"
                           v-model="IconId"
-                          item-text="iconId"
+                          item-text="screenDescription"
                           item-value="iconId"
                           label="Icon"
                           :rules="[rules.required]"
@@ -658,7 +657,6 @@ export default {
     }
   },
   created: async function() {
-    this.date = "2020-04-30";
     this.getListNoti(this.date);
     this.getListCompanyId();
     this.getListIcon();
