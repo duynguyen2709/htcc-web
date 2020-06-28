@@ -127,7 +127,7 @@ export default {
   data() {
     return {
       PendingNotification: 0,
-      logo: "/vuetifylogo.png",
+      logo: "/logo.png",
       links: [
         {
           to: "/",

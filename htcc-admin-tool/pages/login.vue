@@ -2,16 +2,20 @@
   <v-content>
     <v-container fluid fill-height>
       <v-layout align-center justify-center>
-        <v-flex xs12 sm8 md4>
+        <v-flex xs12 sm8 md8>
           <v-alert type="error" v-model="isFalse">{{message}}</v-alert>
+
+          <div class="wrapper-login">
           
-          <material-card color="success" elevation="12" title="Connexion">
+          <img :src="logo" />
+
+          <material-card class="input" color="success" elevation="12" title="Trang quản lí">
             <v-form @submit.prevent="logIn">
               <!-- <v-form> -->
               <v-card-text>
-                <v-text-field type="text" v-model="username" prepend-icon="person" name="username" label="Login"
+                <v-text-field type="text" v-model="username" prepend-icon="person" name="username" label="Tên đăng nhập"
                   placeholder></v-text-field>
-                <v-text-field v-model="password" prepend-icon="lock" name="password" label="Password" placeholder
+                <v-text-field v-model="password" prepend-icon="lock" name="password" label="Mật khẩu" placeholder
                   :append-icon="ShowPassword ? 'mdi-eye' : 'mdi-eye-off'" @click:append="ShowPassword = !ShowPassword"
                   :type="ShowPassword ? 'text' : 'password'"></v-text-field>
               </v-card-text>
@@ -19,9 +23,7 @@
                 <v-layout justify-center align-center>
                   <v-dialog width="530">
                     <template v-slot:activator="{ on }">
-                      <!-- <v-btn color="red lighten-2" dark v-on="on">Click Me</v-btn> -->
-                      <!-- <v-btn text small v-on="on" class="red--text" flat>Quên mật khẩu</v-btn> -->
-                      <v-btn text small v-on="on" class="red--text">Quên mật khẩu</v-btn>
+                       <v-btn text small v-on="on" class="red--text">Quên mật khẩu</v-btn>
                     </template>
 
                     <material-card color="success" elevation="12" title="Đổi mật khẩu">
@@ -33,11 +35,7 @@
                       </v-card-text>
                       <v-card-actions>
                         <v-layout justify-center align-center>
-                          <!-- <v-btn icon @click="resetForm">
-                          <v-icon>mdi-refresh</v-icon>
-                          </v-btn>-->
-                          <!-- <v-btn color="success" @click="changePassword" v-on="on">Đổi mật khẩu</v-btn> -->
-                          <v-btn color="success" @click="changePassword">Đổi mật khẩu</v-btn>
+                           <v-btn color="success" @click="changePassword">Đổi mật khẩu</v-btn>
                         </v-layout>
                       </v-card-actions>
                     </material-card>
@@ -45,11 +43,11 @@
                 </v-layout>
                 <v-layout justify-center align-center>
                   <v-btn type="submit" color="success" :loading="isLoading">Đăng nhập</v-btn>
-                  <!-- <v-btn color="success" type="submit" >Đăng nhập</v-btn> -->
-                </v-layout>
+                 </v-layout>
               </v-card-actions>
             </v-form>
           </material-card>
+          </div>
         </v-flex>
       </v-layout>
     </v-container>
@@ -69,7 +67,7 @@
     },
     data() {
       return {
-      
+        logo: "/logo.png",
 
         isFalse: false,
         message: null,
@@ -166,3 +164,35 @@
   };
 
 </script>
+
+<style>
+  .wrapper-login {
+    display: flex;
+    justify-content: space-between;
+
+    align-items: center;
+  }
+
+  .wrapper-login img {
+    width: 250px;
+    height: 250px;
+
+    animation: App-logo-float infinite 3s ease-in-out;
+  }
+
+  @keyframes App-logo-float {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(20px)
+  }
+  100% {
+    transform: translateY(0px)
+  }
+}
+
+  .wrapper-login .input {
+    width: 500px;
+  }
+</style>
