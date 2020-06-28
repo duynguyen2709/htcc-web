@@ -266,5 +266,9 @@ export default {
   .title-with-arrow {
     margin-right: -20px !important;
   }
+
+  .v-list .v-list-item--active .v-icon {
+    color: #fff !important;
+  }
 }
 </style>

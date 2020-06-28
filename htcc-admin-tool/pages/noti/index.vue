@@ -187,10 +187,10 @@
                     @page-count="pageCountNoti = $event"
                   >
                     <template v-slot:no-data>
-                      <div class="no-data">
+                      <!-- <div class="no-data"> -->
                         <v-icon size="90">mdi-bell-off</v-icon>
                         <p>Không có thông báo trong ngày này</p>
-                      </div>
+                      <!-- </div> -->
                     </template>
 
                     <template v-if="ListChoosenNoti.length !== 0" v-slot:body="{ items }">
@@ -337,7 +337,8 @@ export default {
     headersNoti: [
       {
         text: "icon",
-        value: "iconURL"
+        value: "iconURL",
+        width: 100
       },
       {
         text: "Hệ thống nhận",
