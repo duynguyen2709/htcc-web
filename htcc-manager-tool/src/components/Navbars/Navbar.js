@@ -87,7 +87,7 @@ class AdminNavbar extends React.Component {
 
     render() {
         const { openSidebarOnlyIcon } = this.state;
-        const { user } = this.props;
+        const { user = {}, data = {} } = this.props;
 
         return (
             <>
@@ -154,6 +154,53 @@ class AdminNavbar extends React.Component {
                         </button>
                         <Collapse navbar isOpen={this.state.collapseOpen}>
                             <Nav className="ml-auto" navbar>
+                                <UncontrolledDropdown nav>
+                                    <DropdownToggle
+                                        caret
+                                        color="default"
+                                        data-toggle="dropdown"
+                                        nav
+                                    >
+                                        <div className="notification d-none d-lg-block d-xl-block">
+                                            {data.unreadNotifications > 9
+                                                ? '9+'
+                                                : data.unreadNotifications}
+                                        </div>
+                                        <i className="tim-icons icon-bell-55" />
+                                    </DropdownToggle>
+                                    <DropdownMenu
+                                        className="dropdown-navbar"
+                                        right
+                                        tag="ul"
+                                    >
+                                        <NavLink tag="li">
+                                            <DropdownItem className="nav-item">
+                                                Mike John responded to your
+                                                email
+                                            </DropdownItem>
+                                        </NavLink>
+                                        <NavLink tag="li">
+                                            <DropdownItem className="nav-item">
+                                                You have 5 more tasks
+                                            </DropdownItem>
+                                        </NavLink>
+                                        <NavLink tag="li">
+                                            <DropdownItem className="nav-item">
+                                                Your friend Michael is in town
+                                            </DropdownItem>
+                                        </NavLink>
+                                        <NavLink tag="li">
+                                            <DropdownItem className="nav-item">
+                                                Another notification
+                                            </DropdownItem>
+                                        </NavLink>
+                                        <NavLink tag="li">
+                                            <DropdownItem className="nav-item">
+                                                Another one
+                                            </DropdownItem>
+                                        </NavLink>
+                                    </DropdownMenu>
+                                </UncontrolledDropdown>
                                 <UncontrolledDropdown nav>
                                     <DropdownToggle
                                         caret
@@ -242,6 +289,7 @@ class AdminNavbar extends React.Component {
 
 const mapStateToProps = (state) => ({
     user: state.authReducer.user,
+    data: state.homeReducer.data,
 });
 
 const mapDispatchToProps = (dispatch) => ({

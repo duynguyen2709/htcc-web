@@ -15,6 +15,9 @@ const doGetDataHome = (data) => ({
         canManageEmployees: data.canManageEmployees,
         iconList: data.iconList,
         isSuperAdmin: data.isSuperAdmin,
+        unreadNotifications: data.unreadNotifications,
+        pendingCheckIn: data.pendingCheckIn,
+        leavingRequestCategories: data.leavingRequestCategories,
     },
 });
 
@@ -23,4 +26,4 @@ const doClearData = () => ({
     payload: {},
 });
 
-export {doGetDataHome, doClearData};
+export { doGetDataHome, doClearData };

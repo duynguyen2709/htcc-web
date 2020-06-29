@@ -13,6 +13,9 @@ const applyGetDataHome = (state, action) => ({
         canManageEmployees: action.payload.canManageEmployees,
         iconList: action.payload.iconList,
         isSuperAdmin: action.payload.isSuperAdmin,
+        unreadNotifications: action.payload.unreadNotifications,
+        pendingCheckIn: action.payload.pendingCheckIn,
+        leavingRequestCategories: action.payload.leavingRequestCategories,
     },
 });
 
