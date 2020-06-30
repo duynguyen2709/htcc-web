@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
-import { Input, Table, Tabs } from 'antd';
-import { CheckSquareOutlined, WarningOutlined } from '@ant-design/icons';
+import { Input, Table, Tabs, Tooltip } from 'antd';
+import {
+    CheckSquareOutlined,
+    WarningOutlined,
+    PlusSquareOutlined,
+} from '@ant-design/icons';
 import { leaveRequestApi } from '../api';
 import { store } from 'react-notifications-component';
 import { createNotify } from '../utils/notifier';
@@ -9,6 +13,7 @@ import { buildColsLeaveRequest } from '../constant/colTable';
 import moment from 'moment';
 import CalendarTool from '../components/Tool/CalendarTool';
 import FormEditStatusLeaveRequest from '../components/Form/FormEditStatusLeaveRequest';
+import FormAddLeaveRequest from '../components/Form/FormAddLeaveRequest';
 import AsyncModal from '../components/Modal/AsyncModal';
 import { addKeyPropsToTable } from '../utils/dataTable';
 
@@ -21,11 +26,12 @@ class LeaveRequest extends Component {
         this.state = {
             dataResolved: null,
             dataNotResolve: null,
-            showFormEdit: false,
             curRecordEdit: null,
             currDate: moment(new Date()).format('YYYYMM'),
             isLoading: true,
             currTab: 'NotResolve',
+            showModal: false,
+            mode: 'new',
         };
         this.dataResolved = [];
         this.dataNotResolve = [];
@@ -33,7 +39,7 @@ class LeaveRequest extends Component {
 
     toggle = (isLoading = false) => {
         this.setState({
-            showFormEdit: !this.state.showFormEdit,
+            showModal: !this.state.showModal,
             isLoading,
             curRecordEdit: null,
         });
@@ -47,8 +53,9 @@ class LeaveRequest extends Component {
 
     handleEditStatus = (record) => {
         this.setState({
-            showFormEdit: true,
+            showModal: true,
             curRecordEdit: record,
+            mode: 'edit',
         });
     };
 
@@ -113,7 +120,9 @@ class LeaveRequest extends Component {
         const { currTab } = this.state;
 
         const data = _.filter(this[`data${currTab}`], (ele) =>
-            JSON.stringify(ele).toLowerCase().includes(e.target.value.toLowerCase())
+            JSON.stringify(ele)
+                .toLowerCase()
+                .includes(e.target.value.toLowerCase())
         );
 
         this.setState({
@@ -132,9 +141,10 @@ class LeaveRequest extends Component {
         const {
             dataResolved,
             dataNotResolve,
-            showFormEdit,
+            showModal,
             curRecordEdit,
             currDate,
+            mode,
         } = this.state;
 
         return (
@@ -149,8 +159,23 @@ class LeaveRequest extends Component {
                                 onChange={this.onSearch}
                             />
                         </div>
-                        <div className="tool-calendar float-left" style={{marginLeft: '20px'}}>
+                        <div
+                            className="tool-calendar float-left"
+                            style={{ marginLeft: '20px' }}
+                        >
                             <CalendarTool update={this.updateData} />
+                        </div>
+                        <div className="float-right btn-new">
+                            <Tooltip
+                                placement="left"
+                                title={'Thêm đơn nghỉ phép'}
+                            >
+                                <PlusSquareOutlined
+                                    onClick={() => {
+                                        this.toggle(false);
+                                    }}
+                                />
+                            </Tooltip>
                         </div>
                     </div>
                     <Tabs
@@ -158,7 +183,7 @@ class LeaveRequest extends Component {
                         defaultActiveKey={this.state.currTab}
                     >
                         <TabPane
-                            style={{overflow: 'auto'}}
+                            style={{ overflow: 'auto' }}
                             tab={
                                 <span>
                                     <WarningOutlined />
@@ -188,7 +213,7 @@ class LeaveRequest extends Component {
                             </div>
                         </TabPane>
                         <TabPane
-                            style={{overflow: 'auto'}}
+                            style={{ overflow: 'auto' }}
                             tab={
                                 <span>
                                     <CheckSquareOutlined />
@@ -230,16 +255,37 @@ class LeaveRequest extends Component {
                             </div>
                         </TabPane>
                     </Tabs>
-                    <div>
+                    {/* <div>
                         <AsyncModal
                             CompomentContent={FormEditStatusLeaveRequest}
-                            visible={showFormEdit}
+                            visible={showModal}
                             toggle={this.toggle}
                             title={'Xử lý đơn nghỉ phép'}
                             data={curRecordEdit}
                             mode={'edit'}
                             currDate={currDate}
                             key={curRecordEdit}
+                        />
+                    </div> */}
+                    <div>
+                        <AsyncModal
+                            key={curRecordEdit}
+                            reload={false}
+                            CompomentContent={
+                                mode === 'new'
+                                    ? FormAddLeaveRequest
+                                    : FormEditStatusLeaveRequest
+                            }
+                            visible={showModal}
+                            toggle={(submit) => this.toggle(submit)}
+                            title={
+                                mode === 'new'
+                                    ? 'Tạo đơn nghỉ phép'
+                                    : 'Xử lý đơn nghỉ phép'
+                            }
+                            data={curRecordEdit}
+                            mode={mode}
+                            currDate={currDate}
                         />
                     </div>
                 </div>

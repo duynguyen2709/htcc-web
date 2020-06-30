@@ -154,7 +154,7 @@ class Notifications extends React.Component {
 
     render() {
         const { data: dataProps = {} } = this.props;
-        console.log('unread', dataProps.unreadNotifications);
+
         return (
             <div className="demo-infinite-container text-right">
                 {dataProps.unreadNotifications > 0 && (
