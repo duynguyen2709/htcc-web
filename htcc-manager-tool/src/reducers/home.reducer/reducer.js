@@ -37,7 +37,6 @@ const reducer = (state = INITIAL_STATE, action) => {
             return applyGetDataHome(state, action);
         }
         case homeAction.UPDATE_DATA_HOME: {
-            debugger;
             return applyUpdateDataHome(state, action);
         }
         case homeAction.CLEAR_DATA: {
