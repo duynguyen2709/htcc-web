@@ -18,6 +18,7 @@ import { logout } from '../../reducers/auth.reducer';
 import { connect } from 'react-redux';
 import UserProfile from '../../views/UserProfile';
 import { ERROR_IMAGE } from '../../constant/constant';
+import Notifications from './Notifications';
 
 class AdminNavbar extends React.Component {
     constructor(props) {
@@ -87,7 +88,7 @@ class AdminNavbar extends React.Component {
 
     render() {
         const { openSidebarOnlyIcon } = this.state;
-        const { user } = this.props;
+        const { user = {}, data = {} } = this.props;
 
         return (
             <>
@@ -154,6 +155,30 @@ class AdminNavbar extends React.Component {
                         </button>
                         <Collapse navbar isOpen={this.state.collapseOpen}>
                             <Nav className="ml-auto" navbar>
+                                <UncontrolledDropdown nav>
+                                    <DropdownToggle
+                                        caret
+                                        color="default"
+                                        data-toggle="dropdown"
+                                        nav
+                                    >
+                                        {data.unreadNotifications > 0 && (
+                                            <div className="notification d-none d-lg-block d-xl-block">
+                                                {data.unreadNotifications > 9
+                                                    ? '9+'
+                                                    : data.unreadNotifications}
+                                            </div>
+                                        )}
+                                        <i className="tim-icons icon-bell-55" />
+                                    </DropdownToggle>
+                                    <DropdownMenu
+                                        className="dropdown-navbar"
+                                        right
+                                        tag="ul"
+                                    >
+                                        <Notifications data={data} />
+                                    </DropdownMenu>
+                                </UncontrolledDropdown>
                                 <UncontrolledDropdown nav>
                                     <DropdownToggle
                                         caret
@@ -242,6 +267,7 @@ class AdminNavbar extends React.Component {
 
 const mapStateToProps = (state) => ({
     user: state.authReducer.user,
+    data: state.homeReducer.data,
 });
 
 const mapDispatchToProps = (dispatch) => ({

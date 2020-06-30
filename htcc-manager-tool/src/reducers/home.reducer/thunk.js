@@ -1,5 +1,5 @@
-import {homeApi} from '../../api';
-import {doGetDataHome} from './action';
+import { homeApi } from '../../api';
+import { doGetDataHome, doUpdateDataHome } from './action';
 
 export const getDataHome = () => (dispatch) =>
     new Promise(async (resolve, reject) => {
@@ -9,6 +9,8 @@ export const getDataHome = () => (dispatch) =>
             if (res.returnCode === 1) {
                 resolve(dispatch(doGetDataHome(res.data)));
             }
-        } catch (err) {
-        }
+        } catch (err) {}
     });
+
+export const updateDataHome = (payload) => (dispatch) =>
+    dispatch(doUpdateDataHome(payload));

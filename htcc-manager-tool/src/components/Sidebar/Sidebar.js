@@ -1,13 +1,13 @@
 import React from 'react';
-import {NavLink} from 'react-router-dom';
-import {PropTypes} from 'prop-types';
+import { NavLink } from 'react-router-dom';
+import { PropTypes } from 'prop-types';
 import PerfectScrollbar from 'perfect-scrollbar';
-import {Nav} from 'reactstrap';
+import { Nav } from 'reactstrap';
 import NumberNotify from '../Tool/NumberNotify';
 import Dropdown from '../Tool/Dropdown';
 import * as _ from 'lodash';
-import {connect} from 'react-redux';
-import {getDataHome} from '../../reducers/home.reducer';
+import { connect } from 'react-redux';
+import { getDataHome } from '../../reducers/home.reducer';
 
 var ps;
 
@@ -44,23 +44,27 @@ class Sidebar extends React.Component {
     };
 
     renderNotification = (name) => {
-        const {pendingLeavingRequest, pendingComplaint} = this.props.data || {
+        const { pendingLeavingRequest, pendingComplaint, pendingCheckIn } = this
+            .props.data || {
             pendingLeavingRequest: 0,
             pendingComplaint: 0,
+            pendingCheckIn: 0,
         };
 
         switch (name) {
             case 'Khiếu Nại':
-                return <NumberNotify value={pendingComplaint}/>;
+                return <NumberNotify value={pendingComplaint} />;
             case 'Nghỉ Phép':
-                return <NumberNotify value={pendingLeavingRequest}/>;
+                return <NumberNotify value={pendingLeavingRequest} />;
+            case 'Điểm Danh':
+                return <NumberNotify value={pendingCheckIn} />;
             default:
                 return null;
         }
     };
 
     renderMenuItem = (prop, key) => {
-        const {canManageOffices} = this.props.data || [];
+        const { canManageOffices } = this.props.data || [];
         const list = {
             canManageOffices: canManageOffices,
         };
@@ -103,7 +107,7 @@ class Sidebar extends React.Component {
                     activeClassName="active"
                     onClick={this.props.toggleSidebar}
                 >
-                    <i className={prop.icon} id={prop.id}/>
+                    <i className={prop.icon} id={prop.id} />
                     <p className="menu-item">{prop.name}</p>
                     {this.renderNotification(prop.name)}
                 </NavLink>
@@ -112,11 +116,11 @@ class Sidebar extends React.Component {
     };
 
     render() {
-        const {bgColor, routes, logo, data, getDataHome} = this.props;
+        const { bgColor, routes, logo, data, getDataHome } = this.props;
         const logoImg = (
             <a href="/" className="simple-text logo-mini">
                 <div className="logo-img">
-                    <img src={logo.imgSrc} alt="tool-logo"/>
+                    <img src={logo.imgSrc} alt="tool-logo" />
                 </div>
             </a>
         );
