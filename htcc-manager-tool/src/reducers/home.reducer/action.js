@@ -1,9 +1,11 @@
 const GET_DATA_HOME = 'GET_DATA_HOME';
 const CLEAR_DATA = 'CLEAR_DATA';
+const UPDATE_DATA_HOME = 'UPDATE_DATA_HOME';
 
 export default {
     GET_DATA_HOME,
     CLEAR_DATA,
+    UPDATE_DATA_HOME,
 };
 
 const doGetDataHome = (data) => ({
@@ -21,9 +23,16 @@ const doGetDataHome = (data) => ({
     },
 });
 
+const doUpdateDataHome = (data) => ({
+    type: UPDATE_DATA_HOME,
+    payload: {
+        [data.name]: data.data,
+    },
+});
+
 const doClearData = () => ({
     type: CLEAR_DATA,
     payload: {},
 });
 
-export { doGetDataHome, doClearData };
+export { doGetDataHome, doClearData, doUpdateDataHome };

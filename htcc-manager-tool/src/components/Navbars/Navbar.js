@@ -18,6 +18,7 @@ import { logout } from '../../reducers/auth.reducer';
 import { connect } from 'react-redux';
 import UserProfile from '../../views/UserProfile';
 import { ERROR_IMAGE } from '../../constant/constant';
+import Notifications from './Notifications';
 
 class AdminNavbar extends React.Component {
     constructor(props) {
@@ -161,11 +162,13 @@ class AdminNavbar extends React.Component {
                                         data-toggle="dropdown"
                                         nav
                                     >
-                                        <div className="notification d-none d-lg-block d-xl-block">
-                                            {data.unreadNotifications > 9
-                                                ? '9+'
-                                                : data.unreadNotifications}
-                                        </div>
+                                        {data.unreadNotifications > 0 && (
+                                            <div className="notification d-none d-lg-block d-xl-block">
+                                                {data.unreadNotifications > 9
+                                                    ? '9+'
+                                                    : data.unreadNotifications}
+                                            </div>
+                                        )}
                                         <i className="tim-icons icon-bell-55" />
                                     </DropdownToggle>
                                     <DropdownMenu
@@ -173,32 +176,7 @@ class AdminNavbar extends React.Component {
                                         right
                                         tag="ul"
                                     >
-                                        <NavLink tag="li">
-                                            <DropdownItem className="nav-item">
-                                                Mike John responded to your
-                                                email
-                                            </DropdownItem>
-                                        </NavLink>
-                                        <NavLink tag="li">
-                                            <DropdownItem className="nav-item">
-                                                You have 5 more tasks
-                                            </DropdownItem>
-                                        </NavLink>
-                                        <NavLink tag="li">
-                                            <DropdownItem className="nav-item">
-                                                Your friend Michael is in town
-                                            </DropdownItem>
-                                        </NavLink>
-                                        <NavLink tag="li">
-                                            <DropdownItem className="nav-item">
-                                                Another notification
-                                            </DropdownItem>
-                                        </NavLink>
-                                        <NavLink tag="li">
-                                            <DropdownItem className="nav-item">
-                                                Another one
-                                            </DropdownItem>
-                                        </NavLink>
+                                        <Notifications data={data} />
                                     </DropdownMenu>
                                 </UncontrolledDropdown>
                                 <UncontrolledDropdown nav>

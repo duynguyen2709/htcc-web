@@ -51,8 +51,6 @@ class Sidebar extends React.Component {
             pendingCheckIn: 0,
         };
 
-        console.log('props.data', this.props.data);
-
         switch (name) {
             case 'Khiếu Nại':
                 return <NumberNotify value={pendingComplaint} />;

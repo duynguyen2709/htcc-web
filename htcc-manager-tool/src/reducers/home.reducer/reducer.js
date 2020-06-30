@@ -19,6 +19,14 @@ const applyGetDataHome = (state, action) => ({
     },
 });
 
+const applyUpdateDataHome = (state, action) => ({
+    ...state,
+    data: {
+        ...state.data,
+        ...action.payload,
+    },
+});
+
 const applyClearData = (state, action) => ({
     ...INITIAL_STATE,
 });
@@ -27,6 +35,10 @@ const reducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
         case homeAction.GET_DATA_HOME: {
             return applyGetDataHome(state, action);
+        }
+        case homeAction.UPDATE_DATA_HOME: {
+            debugger;
+            return applyUpdateDataHome(state, action);
         }
         case homeAction.CLEAR_DATA: {
             return applyClearData(state, action);

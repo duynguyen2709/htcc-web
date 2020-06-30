@@ -232,3 +232,27 @@
 .slick-list h4 {
     color: black;
 }
+
+.list-noti-bell .ant-list-item {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    min-width: 300px;
+    max-width: 550px;
+}
+
+.list-noti-bell .not-read {
+    background-color: rgba(0, 255, 89, 0.08);
+}
+
+.list-noti-bell .has-read {
+    background-color: white;
+}
+
+.list-noti-bell .description {
+    margin-bottom: 0;
+    font-size: 13px;
+}
+
+.list-noti-bell .ant-list-item-meta {
+    padding: 5px;
+}
