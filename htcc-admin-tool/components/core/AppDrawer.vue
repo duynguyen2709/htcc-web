@@ -113,6 +113,15 @@
               <v-list-item-title v-text="'Quản lý thông báo'" class="pr-1"></v-list-item-title>
             </v-list-item-content>
           </v-list-item>
+
+          <v-list-item class="icon-wrapper" :active-class="color" to="/features">
+            <v-list-item-action class="icon-menu">
+              <v-icon>mdi-clipboard-list</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title v-text="'Quản lý tính năng'" class="pr-1"></v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
         </v-list>
       </v-layout>
     </v-img>

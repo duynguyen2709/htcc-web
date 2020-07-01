@@ -3,28 +3,6 @@
     <v-form ref="form" v-model="isValid">
       <v-container py-0>
         <v-layout wrap>
-          <!-- <v-flex xs12 md4>
-            <v-text-field label="Company (disabled)" disabled />
-          </v-flex>
-          <v-flex xs12 md4>
-            <v-text-field class="green-input" label="User Name" />
-          </v-flex>
-          <v-flex xs12 md4>
-            <v-text-field
-              label="Email Address"
-              class="green-input"
-              :rules="[rules.required, rules.email]"
-              v-model="InlineEmail"
-            />
-          </v-flex>-->
-          <!-- <v-flex xs12 md6>
-            <v-text-field v-model="InlineFirstname" label="First Name" class="green-input" />
-          </v-flex>
-          <v-flex xs12 md6>
-            <v-text-field v-model="InlineLastname" label="Last Name" class="green-input" />
-          </v-flex>-->
-
-          <!-- <div style="justify-content: center !important;"> -->
           <v-avatar v-if="thisUser.avatar" slot="offset" class="mx-auto d-block" size="130">
             <!-- <img :src="thisUser.avatar" /> -->
 
@@ -78,7 +56,6 @@
               </material-card>
             </v-dialog>
           </v-flex>
-          <!-- </div> -->
           <v-flex v-if="CompanyIdNotEdit" xs12 md12>
             <v-text-field
               label="Mã công ty"
