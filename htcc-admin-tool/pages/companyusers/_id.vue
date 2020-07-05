@@ -58,16 +58,9 @@
                     </td>
                     <td>{{ item.email }}</td>
                     <td>{{ item.username }}</td>
-                    <!-- <td>{{ item.password }}</td> -->
                     <td>{{ item.phoneNumber }}</td>
                     <td class="text-xs-right">
-                      <!-- <v-btn color="success" @click="dialog=true">Chỉnh sửa</v-btn> -->
-                      
-                        <!-- <template v-slot:activator="{ on }"> -->
-                          <!-- <v-btn color="success" v-on="on">Chỉnh sửa</v-btn> -->
                           <v-icon color="tertiary" @click.stop="clickEditForm(item)">edit</v-icon>
-                        <!-- </template> -->
-                       
                     </td>
                     <td style="width: 100px;">
                       <v-row style="justify-content: space-around">
@@ -82,12 +75,6 @@
                         >{{item.status == 0 ? 'lock' : 'lock_open'}}</v-icon>
                       </v-row>
                     </td>
-                    <!-- <td>
-                      <v-icon
-                        color="tertiary"
-                        @click.stop="ShowDeleteDialog(item)"
-                      >mdi-account-remove</v-icon>
-                    </td> -->
                   </tr>
                 </tbody>
 
