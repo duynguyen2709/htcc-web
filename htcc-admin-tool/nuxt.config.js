@@ -35,7 +35,8 @@ export default {
   */
   plugins: [
     // '~/plugins/vuetify',
-    '~/plugins/acl.js'
+    '~/plugins/acl.js',
+    '~/plugins/currency.js'
   ],
   /*
   ** Nuxt.js dev-modules
