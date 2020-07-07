@@ -9,3 +9,4 @@ export { default as workScheduleApi } from './workSchedule';
 export { default as shiftArrangement } from './shiftArrangement';
 export { default as shiftTemplate } from './shiftTemplate';
 export { default as notiApi } from './notification';
+export { default as paymentApi } from './payment';
