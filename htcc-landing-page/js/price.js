@@ -81,7 +81,7 @@ let slider = document.getElementById("InputAmountUser");
             let html =
                 '<li>\
                             <div id="SingleFeature" class="featureWrapper" onclick="selectFeature(event, \'' + el.name + '\')"> \
-                                <span>';
+                                <span class="feature-select">';
                                 if(el.isDefault){
                                     html += '<i class="fa fa-check-circle fa-lg default-check" aria-hidden="true"></i>'
                                 }
