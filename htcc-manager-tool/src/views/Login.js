@@ -8,6 +8,7 @@ import {connect} from 'react-redux';
 import {fetchUser} from '../reducers/auth.reducer';
 import {TOKEN, USER} from '../constant/localStorageKey';
 import FormPayment from "../components/Form/FormPayment";
+import FormForgotPassword from "../components/Form/FormForgotPassword";
 
 class Login extends React.Component {
     constructor(props) {
@@ -18,11 +19,10 @@ class Login extends React.Component {
         };
     }
 
-    toggleMode = () => {
-      const {currentMode} = this.state;
-      this.setState({
-          currentMode: 1 - currentMode
-      })
+    toggleMode = (mode) => {
+        this.setState({
+            currentMode: mode
+        })
     };
 
     isLogged = () => {
@@ -59,15 +59,44 @@ class Login extends React.Component {
                 {isLoadingData && <Loader/>}
                 <div className="login-wrapper">
                     {currentMode === 0 ?
-                        <FormLogin toggleLoader={this.toggleLoader}/>
-                        :
-                        <FormPayment toggleLoader={this.toggleLoader}/>
+                        <>
+                            <FormLogin toggleLoader={this.toggleLoader}/>
+                            <div style={{display: 'flex', flexDirection: 'row', float: 'right'}}>
+                                <Button type="link" style={{marginRight: '200px'}}
+                                        onClick={() => this.toggleMode(1)}
+                                >
+                                    Quên mật khẩu ?
+                                </Button>
+                                <Button type="link" style={{float: 'right'}}
+                                        onClick={() => this.toggleMode(2)}
+                                >
+                                    Thanh toán hóa đơn
+                                </Button>
+                            </div>
+                        </>
+                        : null}
+                    {currentMode === 1 ?
+                        <>
+                            <FormForgotPassword toggleLoader={this.toggleLoader}/>
+                            <Button type="link" style={{float: 'right'}}
+                                    onClick={() => this.toggleMode(0)}
+                            >
+                                Đăng nhập
+                            </Button>
+                        </>
+                        : null}
+                    {currentMode === 2 ?
+                        <>
+                            <FormPayment toggleLoader={this.toggleLoader}/>
+                            <Button type="link" style={{float: 'right'}}
+                                    onClick={() => this.toggleMode(0)}
+                            >
+                                Đăng nhập
+                            </Button>
+                        </>
+                        : null}
                     }
-                    <Button type="link" style={{float: 'right'}}
-                            onClick={() => this.toggleMode()}
-                    >
-                        {currentMode === 0 ? 'Thanh toán hóa đơn' : 'Đăng nhập'}
-                    </Button>
+
                 </div>
             </div>
         );

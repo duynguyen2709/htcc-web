@@ -1,32 +1,18 @@
-import React, { Component } from 'react';
-import {
-    Avatar,
-    Button,
-    Col,
-    Collapse,
-    Empty,
-    Popconfirm,
-    Row,
-    Tabs,
-    Tooltip,
-} from 'antd';
-import {
-    DeleteOutlined,
-    PlusSquareOutlined,
-    QuestionCircleOutlined,
-} from '@ant-design/icons';
-import { shiftArrangement } from '../../api';
+import React, {Component} from 'react';
+import {Avatar, Button, Col, Collapse, Empty, Popconfirm, Row, Tabs, Tooltip,} from 'antd';
+import {DeleteOutlined, PlusSquareOutlined, QuestionCircleOutlined,} from '@ant-design/icons';
+import {shiftArrangement} from '../../api';
 import * as _ from 'lodash';
 import moment from 'moment';
 import EmployeeInfoCard from './EmployeeInfoCard';
-import { store } from 'react-notifications-component';
-import { createNotify } from '../../utils/notifier';
+import {store} from 'react-notifications-component';
+import {createNotify} from '../../utils/notifier';
 import ReactLoading from 'react-loading';
 import AsyncModal from '../Modal/AsyncModal';
 import FormAddShiftByDate from '../Form/ShiftArrangement/FormAddShiftByDate';
 
-const { TabPane } = Tabs;
-const { Panel } = Collapse;
+const {TabPane} = Tabs;
+const {Panel} = Collapse;
 
 class ShiftByDateArrangement extends Component {
     constructor(props) {
@@ -72,11 +58,23 @@ class ShiftByDateArrangement extends Component {
             return;
         }
 
+        for (let obj of data) {
+            if (!_.isEmpty(obj.shiftDetailList) && !_.isEmpty(obj.shiftDetailList[0].detailList)) {
+                this.setState({
+                    firstDate: obj.shiftDetailList[0].detailList[0].date
+                });
+                break;
+            }
+        }
+
+        if (_.isEmpty(data[0].shiftDetailList)) {
+            return;
+        }
+
         let {
             lastClickArr,
             officeShiftMap,
             currentOfficeId,
-            firstDate,
         } = this.state;
         currentOfficeId = data[0].officeId;
         officeShiftMap.set(currentOfficeId, data[0].shiftDetailList[0].shiftId);
@@ -86,15 +84,10 @@ class ShiftByDateArrangement extends Component {
             arrangeDate: data[0].shiftDetailList[0].detailList[0].date,
         });
 
-        if (_.isEmpty(firstDate)) {
-            firstDate = data[0].shiftDetailList[0].detailList[0].date;
-        }
-
         this.setState({
             lastClickArr: lastClickArr,
             officeShiftMap: officeShiftMap,
             currentOfficeId: currentOfficeId,
-            firstDate: firstDate,
         });
     };
 
@@ -121,7 +114,7 @@ class ShiftByDateArrangement extends Component {
     };
 
     convertEmployeeListToMap = () => {
-        const { employeeList } = this.state;
+        const {employeeList} = this.state;
 
         const employeeMap = new Map();
         for (let employee of employeeList) {
@@ -135,9 +128,9 @@ class ShiftByDateArrangement extends Component {
         if (_.isEmpty(data)) {
             return (
                 <Empty
-                    style={{ marginTop: '50px' }}
+                    style={{marginTop: '50px'}}
                     description={
-                        <span style={{ color: 'rgba(0, 0, 0, 0.65)' }}>
+                        <span style={{color: 'rgba(0, 0, 0, 0.65)'}}>
                             Chưa cài đặt danh sách chi nhánh
                         </span>
                     }
@@ -148,7 +141,7 @@ class ShiftByDateArrangement extends Component {
         return _.map(data, (item) => (
             <TabPane
                 className={'shift-office'}
-                style={{ overflow: 'auto' }}
+                style={{overflow: 'auto'}}
                 tab={<span>{item.officeId}</span>}
                 key={item.officeId}
                 size={'small'}
@@ -168,7 +161,7 @@ class ShiftByDateArrangement extends Component {
         return (
             <div className="btn-new-small">
                 <Tooltip placement="left" title={'Xếp ca'}>
-                    <PlusSquareOutlined onClick={this.openModal} />
+                    <PlusSquareOutlined onClick={this.openModal}/>
                 </Tooltip>
             </div>
         );
@@ -178,9 +171,9 @@ class ShiftByDateArrangement extends Component {
         if (_.isEmpty(shiftDetailList)) {
             return (
                 <Empty
-                    style={{ marginTop: '50px' }}
+                    style={{marginTop: '50px'}}
                     description={
-                        <span style={{ color: 'rgba(0, 0, 0, 0.65)' }}>
+                        <span style={{color: 'rgba(0, 0, 0, 0.65)'}}>
                             Chưa cài đặt ca làm việc
                         </span>
                     }
@@ -191,7 +184,7 @@ class ShiftByDateArrangement extends Component {
         return _.map(shiftDetailList, (item) => (
             <TabPane
                 className={'shift-detail'}
-                style={{ overflow: 'auto' }}
+                style={{overflow: 'auto'}}
                 tab={`${item.shiftName} (${item.shiftTime})`}
                 key={item.shiftId}
                 size={'small'}
@@ -212,7 +205,7 @@ class ShiftByDateArrangement extends Component {
                     {_.map(detailList, (item) => (
                         <TabPane
                             className={'shift-date-detail'}
-                            style={{ overflow: 'auto' }}
+                            style={{overflow: 'auto'}}
                             tab={_.upperFirst(
                                 moment(item.date, 'YYYYMMDD').format(
                                     'dddd, DD/MM/YYYY'
@@ -248,9 +241,9 @@ class ShiftByDateArrangement extends Component {
         if (_.isEmpty(employeeList)) {
             return (
                 <Empty
-                    style={{ marginTop: '50px' }}
+                    style={{marginTop: '50px'}}
                     description={
-                        <span style={{ color: 'rgba(0, 0, 0, 0.65)' }}>
+                        <span style={{color: 'rgba(0, 0, 0, 0.65)'}}>
                             Không có ca làm việc hôm nay
                         </span>
                     }
@@ -261,8 +254,8 @@ class ShiftByDateArrangement extends Component {
         const overFlowHeightStyle =
             employeeList.length > 8
                 ? {
-                      height: 'calc(100vh - 350px)',
-                  }
+                    height: 'calc(100vh - 350px)',
+                }
                 : null;
 
         return (
@@ -292,14 +285,14 @@ class ShiftByDateArrangement extends Component {
                                                 user.username
                                             ) && !this.isBeforeToday(date)
                                                 ? this.renderButtonDelete(
-                                                      item.arrangeId,
-                                                      user.fullName
-                                                  )
+                                                item.arrangeId,
+                                                user.fullName
+                                                )
                                                 : null
                                         }
                                         header={
                                             <>
-                                                <Avatar src={user.avatar} />
+                                                <Avatar src={user.avatar}/>
                                                 <span
                                                     style={{
                                                         color:
@@ -312,7 +305,7 @@ class ShiftByDateArrangement extends Component {
                                             </>
                                         }
                                     >
-                                        <EmployeeInfoCard info={user} />
+                                        <EmployeeInfoCard info={user}/>
                                     </Panel>
                                 </Collapse>
                             </Col>
@@ -336,7 +329,7 @@ class ShiftByDateArrangement extends Component {
             <>
                 <Popconfirm
                     title={message}
-                    icon={<QuestionCircleOutlined />}
+                    icon={<QuestionCircleOutlined/>}
                     okText="Đồng ý"
                     cancelText="Huỷ"
                     onConfirm={(event) => {
@@ -350,7 +343,7 @@ class ShiftByDateArrangement extends Component {
                         onClick={(event) => {
                             event.stopPropagation();
                         }}
-                        icon={<DeleteOutlined />}
+                        icon={<DeleteOutlined/>}
                         size={'small'}
                     />
                 </Popconfirm>
@@ -389,12 +382,18 @@ class ShiftByDateArrangement extends Component {
     };
 
     onChangeOffice = (officeId) => {
-        const { officeShiftMap } = this.state;
+        const {officeShiftMap} = this.state;
         if (!officeShiftMap.has(officeId)) {
-            const { data } = this.props;
+            const {data} = this.props;
             let shiftId = '';
-            if (!_.isEmpty(data[0].shiftDetailList)) {
-                shiftId = data[0].shiftDetailList[0].shiftId;
+
+            for (let obj of data) {
+                if (_.isEqual(obj.officeId, officeId)) {
+                    if (!_.isEmpty(obj.shiftDetailList)) {
+                        shiftId = obj.shiftDetailList[0].shiftId;
+                    }
+                    break;
+                }
             }
 
             officeShiftMap.set(officeId, shiftId);
@@ -409,8 +408,8 @@ class ShiftByDateArrangement extends Component {
     };
 
     onChangeShift = (shiftId) => {
-        const { currentOfficeId, officeShiftMap } = this.state;
-        let { lastClickArr } = this.state;
+        const {currentOfficeId, officeShiftMap} = this.state;
+        let {lastClickArr} = this.state;
         let obj = null;
         let index = -1;
 
@@ -424,7 +423,7 @@ class ShiftByDateArrangement extends Component {
                 _.isEqual(currentOfficeId, element.officeId) &&
                 _.isEqual(shiftId, element.shiftId)
             ) {
-                obj = { ...element };
+                obj = {...element};
                 break;
             }
         }
@@ -447,12 +446,21 @@ class ShiftByDateArrangement extends Component {
     };
 
     onChangeArrangeDate = (arrangeDate) => {
-        const { lastClickArr } = this.state;
-
-        const lastClick = lastClickArr[lastClickArr.length - 1];
-        lastClick.arrangeDate = arrangeDate;
-        lastClickArr.pop();
-        lastClickArr.push(lastClick);
+        const {lastClickArr} = this.state;
+        if (_.isEmpty(lastClickArr)) {
+            const officeId = this.state.currentOfficeId;
+            const shiftId = this.state.officeShiftMap.get(officeId);
+            lastClickArr.push({
+                officeId,
+                shiftId,
+                arrangeDate
+            });
+        } else {
+            const lastClick = lastClickArr[lastClickArr.length - 1];
+            lastClick.arrangeDate = arrangeDate;
+            lastClickArr.pop();
+            lastClickArr.push(lastClick);
+        }
 
         this.setState({
             lastClickArr: lastClickArr,
@@ -460,11 +468,11 @@ class ShiftByDateArrangement extends Component {
     };
 
     buildAddShiftData = () => {
-        const { currentOfficeId, officeShiftMap, lastClickArr } = this.state;
+        const {currentOfficeId, officeShiftMap, lastClickArr} = this.state;
         const shiftId = officeShiftMap.get(currentOfficeId);
         let arrangeDate = this.state.firstDate;
 
-        if (!_.isEmpty(shiftId)) {
+        if (!_.isEmpty(shiftId) && !_.isEmpty(lastClickArr)) {
             for (let index = lastClickArr.length - 1; index >= 0; index--) {
                 if (
                     _.isEqual(currentOfficeId, lastClickArr[index].officeId) &&
@@ -493,8 +501,8 @@ class ShiftByDateArrangement extends Component {
     };
 
     render() {
-        const { data, employeeList } = this.props;
-        const { showModal } = this.state;
+        const {data, employeeList} = this.props;
+        const {showModal} = this.state;
 
         const addShiftData = this.buildAddShiftData();
 
@@ -516,7 +524,7 @@ class ShiftByDateArrangement extends Component {
                     title={'Xếp ca làm việc'}
                     data={addShiftData}
                     mode={'new'}
-                    prop={{ employeeList: employeeList }}
+                    prop={{employeeList: employeeList}}
                 />
             </>
         );

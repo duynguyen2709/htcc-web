@@ -67,7 +67,7 @@ class FixedShiftArrangement extends Component {
     }
 
     initData = (data) => {
-        if (_.isEmpty(data)) {
+        if (_.isEmpty(data) || _.isEmpty(data[0].shiftDetailList)) {
             return;
         }
 
@@ -367,8 +367,14 @@ class FixedShiftArrangement extends Component {
         if (!officeShiftMap.has(officeId)) {
             const { data } = this.props;
             let shiftId = '';
-            if (!_.isEmpty(data[0].shiftDetailList)) {
-                shiftId = data[0].shiftDetailList[0].shiftId;
+
+            for (let obj of data) {
+                if (_.isEqual(obj.officeId, officeId)) {
+                    if (!_.isEmpty(obj.shiftDetailList)) {
+                        shiftId = obj.shiftDetailList[0].shiftId;
+                    }
+                    break;
+                }
             }
 
             officeShiftMap.set(officeId, shiftId);
@@ -422,11 +428,21 @@ class FixedShiftArrangement extends Component {
 
     onChangeWeekDay = (weekDay) => {
         const { lastClickArr } = this.state;
-
-        const lastClick = lastClickArr[lastClickArr.length - 1];
-        lastClick.weekDay = weekDay;
-        lastClickArr.pop();
-        lastClickArr.push(lastClick);
+        if (_.isEmpty(lastClickArr)) {
+            const officeId = this.state.currentOfficeId;
+            const shiftId = this.state.officeShiftMap.get(officeId);
+            lastClickArr.push({
+                officeId,
+                shiftId,
+                weekDay
+            })
+        }
+        else {
+            const lastClick = lastClickArr[lastClickArr.length - 1];
+            lastClick.weekDay = weekDay;
+            lastClickArr.pop();
+            lastClickArr.push(lastClick);
+        }
 
         this.setState({
             lastClickArr: lastClickArr,
@@ -438,7 +454,7 @@ class FixedShiftArrangement extends Component {
         const shiftId = officeShiftMap.get(currentOfficeId);
         let weekDay = 2;
 
-        if (!_.isEmpty(shiftId)) {
+        if (!_.isEmpty(shiftId) && !_.isEmpty(lastClickArr)) {
             for (let index = lastClickArr.length - 1; index >= 0; index--) {
                 if (
                     _.isEqual(currentOfficeId, lastClickArr[index].officeId) &&
