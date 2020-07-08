@@ -656,44 +656,15 @@
             </li>
             <li>
               <div>
-                <span><b>Giảm giá 30%</b></span>
-                <span><b>-</b><b id="sale" class="primary">7,596,000</b> <b> đ</b></span>
-              </div>
-            </li>
-            <li>
-              <div>
-                <span><b>Phí thiết lập</b></span>
-                <span><b class="primary">0</b> <b> đ</b></span>
-              </div>
-            </li>
-            <li>
-              <div>
-                <span><b>Ưu đãi</b></span>
-                <span id="voucher"><b>thêm 1 tháng</b></span>
-              </div>
-            </li>
-            <li>
-              <div>
-                <span><b>Thanh toán</b></span>
-                <span><b id="fee" class="primary">17,724,000</b> <b> đ</b></span>
-              </div>
-            </li>
-            <li>
-              <div>
                 <span><b>Mỗi tháng</b></span>
                 <span><b id="Per-month">1,477,000 đ</b></span>
               </div>
             </li>
           </ul>
 
-          <button type="button" class="btn btn-primary btn-lg btn-block">Dùng thử 1 tháng</button>
-          <button type="button" class="btn btn-secondary btn-lg btn-block">Gửi báo giá cho tôi</button>
+          <button type="button" class="btn btn-primary btn-lg btn-block">Gửi báo giá cho tôi</button>
 
           <div style=" text-align: left; ">
-            <p style="padding-top: 5px; padding-bottom: 5px;  font-size: small;">Dùng thử 1 tháng: Phí thiết
-              lập 2.000.000 đ + (tính năng sử dụng x số người dùng x 1 tháng). Hoàn trả phí khi tiếp tục
-              sử dụng.</p>
-
             <p style="text-decoration: underline; font-weight: bold;  font-size: small; margin-bottom: 0;">
               Khác:</p>
             <ul style=" font-size: small; margin-bottom: 10px;">
@@ -855,6 +826,8 @@
   <!-- Active JS -->
   <script src="js/active.js"></script>
 
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
   <script src="js/price.js"></script>
 
   <script src="js/owl.carousel.min.js"></script>
@@ -894,15 +867,6 @@
         $('[langg="vn"]').toggle();
         $('[langg="en"]').toggle();
       });
-
-
-      //     $('.owl-carousel').owlCarousel({
-      //         onChanged: callback
-      // });
-      // function callback(event) {
-      //     console.log(event.target)
-      // }
-
     });
 
     $(document).ready(function () {
