@@ -221,7 +221,7 @@ class AdminNavbar extends React.Component {
                                                 onClick={this.logout}
                                                 className="nav-item"
                                             >
-                                                Thoát
+                                                Đăng xuất
                                             </DropdownItem>
                                         </NavLink>
                                     </DropdownMenu>

@@ -5,7 +5,8 @@ const INITIAL_STATE = {
     isLogining: false,
     user: undefined,
     token: undefined,
-    error: false
+    error: false,
+    hasManagerRole: false,
 };
 
 const applyLogout = (state, action) => ({
@@ -22,7 +23,8 @@ const applyLogin = (state, action) => ({
     isLogining: true,
     user: undefined,
     token: undefined,
-    error: false
+    error: false,
+    hasManagerRole: false,
 });
 
 const applyLoginSuccess = (state, action) => ({
@@ -30,13 +32,15 @@ const applyLoginSuccess = (state, action) => ({
     isLogining: false,
     isAuthenticated: true,
     user: action.payload.user,
-    error: false
+    error: false,
+    hasManagerRole: (action.payload.user.managerRole && action.payload.user.managerRole !== ''),
 });
 
 const applyLoginFail = (state, action) => ({
     ...state,
     isLogining: false,
-    error: true
+    error: true,
+    hasManagerRole: false,
 });
 
 const reducer = (state = INITIAL_STATE, action) => {

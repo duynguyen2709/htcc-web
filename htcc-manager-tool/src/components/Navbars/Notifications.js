@@ -23,9 +23,9 @@ class Notifications extends React.Component {
         this.fetchData();
     }
 
-    fetchData = async () => {
+    fetchData = () => {
         this.setState({
-            isLoading: true,
+            loading: true,
         });
 
         notiApi
@@ -58,7 +58,7 @@ class Notifications extends React.Component {
             })
             .finally(() => {
                 this.setState({
-                    isLoading: false,
+                    loading: false,
                 });
             });
     };
