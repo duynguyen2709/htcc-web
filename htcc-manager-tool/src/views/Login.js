@@ -95,8 +95,6 @@ class Login extends React.Component {
                             </Button>
                         </>
                         : null}
-                    }
-
                 </div>
             </div>
         );

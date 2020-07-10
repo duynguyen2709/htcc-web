@@ -2,6 +2,18 @@ import homeAction from './action';
 
 const INITIAL_STATE = {
     data: undefined,
+    isLoadingHome: false,
+};
+
+const applyToggleLoading = (state, action) => {
+    if (action.payload.isLoadingHome === state.isLoadingHome) {
+        return {...state};
+    }
+
+    return {
+        ...state,
+        isLoadingHome: action.payload.isLoadingHome
+    }
 };
 
 const applyGetDataHome = (state, action) => ({
@@ -41,6 +53,9 @@ const reducer = (state = INITIAL_STATE, action) => {
         }
         case homeAction.CLEAR_DATA: {
             return applyClearData(state, action);
+        }
+        case homeAction.TOGGLE_LOADING_HOME: {
+            return applyToggleLoading(state, action);
         }
         default:
             return state;

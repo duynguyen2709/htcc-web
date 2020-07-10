@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import {Route, Switch} from 'react-router-dom';
 import PerfectScrollbar from 'perfect-scrollbar';
 import * as _ from 'lodash';
 import Navbar from '../components/Navbars/Navbar';
@@ -55,13 +55,16 @@ class Admin extends React.Component {
             this.refs.mainPanel.scrollTop = 0;
         }
 
-        const sidebarClasses = document.getElementById('sidebar').classList;
-        if (sidebarClasses.value.includes('sidebar-minimized')) {
-            const listContents = document.getElementsByClassName('content');
+        const sidebar = document.getElementById('sidebar');
+        if (sidebar) {
+            const sidebarClasses = document.getElementById('sidebar').classList;
+            if (sidebarClasses.value.includes('sidebar-minimized')) {
+                const listContents = document.getElementsByClassName('content');
 
-            _.forEach(listContents, (item) => {
-                item.classList.add('content-expand');
-            });
+                _.forEach(listContents, (item) => {
+                    item.classList.add('content-expand');
+                });
+            }
         }
     }
 
@@ -166,5 +169,4 @@ class Admin extends React.Component {
         );
     }
 }
-
 export default Admin;

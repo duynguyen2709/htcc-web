@@ -22,7 +22,7 @@ const getTotal = () => {
             })
             .catch(err => {
                 console.error(err);
-                reject('Hệ thống có lỗi. Vui lòng thử lại sau.');
+                reject('Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại');
             });
     });
 };

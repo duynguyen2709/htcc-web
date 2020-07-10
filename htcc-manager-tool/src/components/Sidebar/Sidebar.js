@@ -8,6 +8,7 @@ import Dropdown from '../Tool/Dropdown';
 import * as _ from 'lodash';
 import { connect } from 'react-redux';
 import { getDataHome } from '../../reducers/home.reducer';
+import ReactLoading from "react-loading";
 
 var ps;
 
@@ -25,6 +26,9 @@ class Sidebar extends React.Component {
     }
 
     componentDidMount() {
+        if (_.isEmpty(this.props.data) && !this.props.isLoadingHome) {
+            this.props.getDataHome();
+        }
         if (navigator.platform.indexOf('Win') > -1) {
             ps = new PerfectScrollbar(this.refs.sidebar, {
                 suppressScrollX: true,
@@ -116,7 +120,8 @@ class Sidebar extends React.Component {
     };
 
     render() {
-        const { bgColor, routes, logo, data, getDataHome } = this.props;
+        const { bgColor, routes, logo } = this.props;
+
         const logoImg = (
             <a href="/" className="simple-text logo-mini">
                 <div className="logo-img">
@@ -127,10 +132,6 @@ class Sidebar extends React.Component {
         const logoText = (
             <div className="simple-text logo-normal">HTCC - Manager</div>
         );
-
-        if (_.isEmpty(data)) {
-            getDataHome();
-        }
 
         return (
             <div id="sidebar" className="sidebar" data={bgColor}>
@@ -171,6 +172,7 @@ Sidebar.propTypes = {
 
 const mapStateToProps = (state) => ({
     data: state.homeReducer.data,
+    isLoadingHome: state.homeReducer.isLoadingHome,
 });
 
 const mapDispatchToProps = (dispatch) => ({

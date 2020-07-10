@@ -192,11 +192,7 @@ class Notifications extends React.Component {
                                             }
                                         />
                                     }
-                                    title={
-                                        <h5 className="text-dark">
-                                            {item.title}
-                                        </h5>
-                                    }
+                                    title={item.title}
                                     description={
                                         <div>
                                             <p className="text-dark description">
