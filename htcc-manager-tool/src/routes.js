@@ -10,16 +10,9 @@ import WorkingDay from './views/containers/WorkingDayContainer';
 import Notification from './views/Notification/index';
 import ShiftArrangement from './views/ShiftArrangement';
 import ShiftTemplate from './views/ShiftTemplate';
+import Role from "./views/Role";
 
 const routes = [
-    {
-        path: '/thong-bao',
-        key: '/thong-bao',
-        name: 'Thông Báo',
-        icon: 'tim-icons icon-bell-55',
-        component: Notification,
-        layout: '/',
-    },
     {
         path: '/thong-ke',
         key: '/thong-ke',
@@ -45,14 +38,6 @@ const routes = [
         layout: '/',
     },
     {
-        path: '/khieu-nai',
-        key: '/khieu-nai',
-        name: 'Khiếu Nại',
-        icon: 'tim-icons icon-chat-33',
-        component: Complaint,
-        layout: '/',
-    },
-    {
         path: '/diem-danh',
         key: '/diem-danh',
         name: 'Điểm Danh',
@@ -62,11 +47,27 @@ const routes = [
         id: 'complaint-icon',
     },
     {
+        path: '/khieu-nai',
+        key: '/khieu-nai',
+        name: 'Khiếu Nại',
+        icon: 'tim-icons icon-chat-33',
+        component: Complaint,
+        layout: '/',
+    },
+    {
         path: '/nghi-phep',
         key: '/nghi-phep',
         name: 'Nghỉ Phép',
         icon: 'tim-icons icon-send',
         component: LeaveRequest,
+        layout: '/',
+    },
+    {
+        path: '/ngay-nghi',
+        key: '/ngay-nghi',
+        name: 'Quản lý ngày phép',
+        icon: 'tim-icons icon-settings',
+        component: ConfigDayOff,
         layout: '/',
     },
     {
@@ -121,11 +122,19 @@ const routes = [
         ],
     },
     {
-        path: '/ngay-nghi',
-        key: '/ngay-nghi',
-        name: 'Quản lý ngày phép',
+        path: '/thong-bao',
+        key: '/thong-bao',
+        name: 'Thông Báo',
+        icon: 'tim-icons icon-bell-55',
+        component: Notification,
+        layout: '/',
+    },
+    {
+        path: '/phan-quyen',
+        key: '/phan-quyen',
+        name: 'Phân quyền',
         icon: 'tim-icons icon-settings',
-        component: ConfigDayOff,
+        component: Role,
         layout: '/',
     },
 ];

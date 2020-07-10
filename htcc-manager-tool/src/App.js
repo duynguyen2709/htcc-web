@@ -9,14 +9,14 @@ import {connect} from 'react-redux';
 const hist = createHashHistory();
 
 const App = (props) => {
-    const {isLoadingHome} = props;
-    if (isLoadingHome) {
-        return <ReactLoading type={"spinningBubbles"}
-                             color={"#4caf50"}
-                             className={"center-div"}
-                             height={'10%'}
-                             width={'10%'}/>
-    }
+    // const {isLoadingHome} = props;
+    // if (isLoadingHome) {
+    //     return <ReactLoading type={"spinningBubbles"}
+    //                          color={"#4caf50"}
+    //                          className={"center-div"}
+    //                          height={'10%'}
+    //                          width={'10%'}/>
+    // }
     return (
         <Router history={hist}>
             <Switch>

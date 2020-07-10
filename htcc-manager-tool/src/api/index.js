@@ -10,3 +10,4 @@ export { default as shiftArrangement } from './shiftArrangement';
 export { default as shiftTemplate } from './shiftTemplate';
 export { default as notiApi } from './notification';
 export { default as paymentApi } from './payment';
+export { default as roleApi } from './role';
