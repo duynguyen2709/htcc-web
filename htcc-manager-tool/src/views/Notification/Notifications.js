@@ -14,6 +14,8 @@ import {USER} from "../../constant/localStorageKey";
 import AsyncModal from "../../components/Modal/AsyncModal";
 import FormSendNotification from "../../components/Form/FormSendNotification";
 import {Button, CardFooter} from "reactstrap";
+import {canDoAction} from "../../utils/permission";
+import {ACTION, ROLE_GROUP_KEY} from "../../constant/constant";
 
 const {Search} = Input;
 const DATE_FORMAT = 'yyyyMMDD';
@@ -280,6 +282,8 @@ class Notifications extends React.Component {
         const {listNoti, showModal} = this.state;
         const user = JSON.parse(localStorage.getItem(USER));
 
+        const canAdd = canDoAction(this.props.data, ROLE_GROUP_KEY.NOTIFICATION, ACTION.CREATE);
+
         return (
             <>
                 <div className="header-table clearfix">
@@ -320,19 +324,20 @@ class Notifications extends React.Component {
                             update={this.updateDate}
                         />
                     </div>
-                    <div className="float-right">
-                        <CardFooter className="text-right info" style={{marginRight: '20px'}}>
-                            <Button
-                                className="btn-custom"
-                                color="primary"
-                                type="button"
-                                onClick={this.openModal}
-                            >
-                                <PlusOutlined style={{display: 'inline', margin: '5px 10px 0 0',}}/>
-                                <span className="btn-save-text"> Gửi thông báo </span>
-                            </Button>
-                        </CardFooter>
-                    </div>
+                    {canAdd ?
+                        <div className="float-right">
+                            <CardFooter className="text-right info" style={{marginRight: '20px'}}>
+                                <Button
+                                    className="btn-custom"
+                                    color="primary"
+                                    type="button"
+                                    onClick={this.openModal}
+                                >
+                                    <PlusOutlined style={{display: 'inline', margin: '5px 10px 0 0',}}/>
+                                    <span className="btn-save-text"> Gửi thông báo </span>
+                                </Button>
+                            </CardFooter>
+                        </div> : null}
                 </div>
                 {this.state.isLoading ? (
                     <ReactLoading
@@ -435,15 +440,16 @@ class Notifications extends React.Component {
                         />
                     </div>
                 )}
-                <AsyncModal
-                    key={'notification'}
-                    reload={false}
-                    CompomentContent={FormSendNotification}
-                    visible={showModal}
-                    toggle={(submit) => this.toggle(submit)}
-                    title={'Gửi thông báo mới'}
-                    mode={'new'}
-                />
+                {canAdd ?
+                    <AsyncModal
+                        key={'notification'}
+                        reload={false}
+                        CompomentContent={FormSendNotification}
+                        visible={showModal}
+                        toggle={(submit) => this.toggle(submit)}
+                        title={'Gửi thông báo mới'}
+                        mode={'new'}
+                    /> : null}
             </>
         );
     }
@@ -453,6 +459,4 @@ const mapStateToProps = (state) => ({
     data: state.homeReducer.data,
 });
 
-const mapDispatchToProps = (dispatch) => ({});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Notifications);
+export default connect(mapStateToProps, null)(Notifications);

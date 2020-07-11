@@ -6,6 +6,7 @@ import {configDayOffApi} from '../api';
 import {store} from 'react-notifications-component';
 import {createNotify} from '../utils/notifier';
 import * as _ from 'lodash';
+import {connect} from 'react-redux';
 import {buildColsCategoryDayOff, buildColsDayOffLevel,} from '../constant/colTable';
 import {removeItem, updateItem} from '../utils/config';
 import ReactLoading from 'react-loading';
@@ -14,6 +15,8 @@ import FormNewCategory from '../components/Form/FormNewCategory';
 import FormNewLevel from '../components/Form/FormNewLevel';
 import FormEditCategory from '../components/Form/FormEditCategory';
 import FormEditLevel from '../components/Form/FormEditLevel';
+import {canDoAction} from "../utils/permission";
+import {ACTION, ROLE_GROUP_KEY} from "../constant/constant";
 
 const {Option} = Select;
 const COMPONENT = {
@@ -284,6 +287,8 @@ class ConfigDayOff extends Component {
             );
         }
 
+        const canUpdate = canDoAction(this.props.data, ROLE_GROUP_KEY.DAY_OFF, ACTION.UPDATE);
+
         return (
             <div className="content">
                 <div className="table-wrapper tabs-small">
@@ -302,6 +307,7 @@ class ConfigDayOff extends Component {
                                             this.changeAllowCancelRequests(val)
                                         }
                                         onCancel={() => this.clear()}
+                                        disabled={!canUpdate}
                                     >
                                         <Option
                                             className=" bor-radius"
@@ -331,6 +337,7 @@ class ConfigDayOff extends Component {
                                             type="number"
                                             className="bor-gray text-dark"
                                             name="maxDayAllowCancel"
+                                            disabled={!canUpdate}
                                         />
                                     </FormGroup>
                                 </Col> : null}
@@ -343,28 +350,30 @@ class ConfigDayOff extends Component {
                                             Danh mục nghỉ phép
                                         </h5>
                                     </div>
-                                    <div className="float-right btn-new-small">
-                                        <Tooltip
-                                            placement="left"
-                                            title={'Thêm danh mục'}
-                                        >
-                                            <PlusSquareOutlined
-                                                onClick={() =>
-                                                    this.showForm(
-                                                        'FormNewCategory',
-                                                        'new'
-                                                    )
-                                                }
-                                            />
-                                        </Tooltip>
-                                    </div>
+                                    {canUpdate ?
+                                        <div className="float-right btn-new-small">
+                                            <Tooltip
+                                                placement="left"
+                                                title={'Thêm danh mục'}
+                                            >
+                                                <PlusSquareOutlined
+                                                    onClick={() =>
+                                                        this.showForm(
+                                                            'FormNewCategory',
+                                                            'new'
+                                                        )
+                                                    }
+                                                />
+                                            </Tooltip>
+                                        </div> : null}
                                 </div>
                                 <div className="table-config">
                                     <Table
                                         bordered
                                         columns={buildColsCategoryDayOff(
                                             this.handleEditCategory,
-                                            this.handleDeleteCategory
+                                            this.handleDeleteCategory,
+                                            canUpdate
                                         )}
                                         dataSource={this.mapData(
                                             value.categoryList,
@@ -388,28 +397,30 @@ class ConfigDayOff extends Component {
                                             Số ngày nghỉ theo cấp bậc
                                         </h5>
                                     </div>
-                                    <div className="float-right btn-new-small">
-                                        <Tooltip
-                                            placement="left"
-                                            title={'Thêm cấp bậc'}
-                                        >
-                                            <PlusSquareOutlined
-                                                onClick={() =>
-                                                    this.showForm(
-                                                        'FormNewLevel',
-                                                        'new'
-                                                    )
-                                                }
-                                            />
-                                        </Tooltip>
-                                    </div>
+                                    {canUpdate ?
+                                        <div className="float-right btn-new-small">
+                                            <Tooltip
+                                                placement="left"
+                                                title={'Thêm cấp bậc'}
+                                            >
+                                                <PlusSquareOutlined
+                                                    onClick={() =>
+                                                        this.showForm(
+                                                            'FormNewLevel',
+                                                            'new'
+                                                        )
+                                                    }
+                                                />
+                                            </Tooltip>
+                                        </div> : null}
                                 </div>
                                 <div className="table-config">
                                     <Table
                                         bordered
                                         columns={buildColsDayOffLevel(
                                             this.handleEditDayOffLevel,
-                                            this.handleDeleteDayOffLevel
+                                            this.handleDeleteDayOffLevel,
+                                            canUpdate
                                         )}
                                         dataSource={this.mapData(
                                             value.dayOffByLevel,
@@ -427,53 +438,61 @@ class ConfigDayOff extends Component {
                                 </div>
                             </Col>
                         </Row>
-                        <h5 style={{marginTop: 30}} className="text-right">
-                            <i>Nếu có thay đổi xin hãy bấm LƯU để cập nhật</i>
-                        </h5>
-                        <hr style={{marginTop: 0}}/>
-                        <CardFooter className="text-right info">
-                            <Popconfirm
-                                title="Bạn chắc chắn thay đổi？"
-                                icon={<QuestionCircleOutlined/>}
-                                okText="Đồng ý"
-                                cancelText="Huỷ"
-                                onConfirm={() => this.handleSubmit()}
-                            >
-                                <Button
-                                    className="btn-custom"
-                                    color="primary"
-                                    type="button"
-                                >
-                                    <CheckCircleOutlined
-                                        style={{
-                                            display: 'inline',
-                                            margin: '5px 10px 0 0',
-                                        }}
-                                    />{' '}
-                                    {'  '}
-                                    <span className="btn-save-text"> LƯU</span>
-                                </Button>
-                            </Popconfirm>
-                        </CardFooter>
+                        {canUpdate ?
+                            <>
+                                <h5 style={{marginTop: 30}} className="text-right">
+                                    <i>Nếu có thay đổi xin hãy bấm LƯU để cập nhật</i>
+                                </h5>
+                                <hr style={{marginTop: 0}}/>
+                                <CardFooter className="text-right info">
+                                    <Popconfirm
+                                        title="Bạn chắc chắn thay đổi？"
+                                        icon={<QuestionCircleOutlined/>}
+                                        okText="Đồng ý"
+                                        cancelText="Huỷ"
+                                        onConfirm={() => this.handleSubmit()}
+                                    >
+                                        <Button
+                                            className="btn-custom"
+                                            color="primary"
+                                            type="button"
+                                        >
+                                            <CheckCircleOutlined
+                                                style={{
+                                                    display: 'inline',
+                                                    margin: '5px 10px 0 0',
+                                                }}
+                                            />{' '}
+                                            {'  '}
+                                            <span className="btn-save-text"> LƯU</span>
+                                        </Button>
+                                    </Popconfirm>
+                                </CardFooter>
+                            </> : null}
                     </Form>
                 </div>
-                <div>
-                    <AsyncModal
-                        key={showModal}
-                        reload={false}
-                        CompomentContent={COMPONENT[form]}
-                        visible={showModal}
-                        toggle={(submit, newData) =>
-                            this.toggle(submit, newData)
-                        }
-                        title={TITLE[form]}
-                        data={dataModal}
-                        listData={this.getListDataTable()}
-                    />
-                </div>
+                {canUpdate ?
+                    <div>
+                        <AsyncModal
+                            key={showModal}
+                            reload={false}
+                            CompomentContent={COMPONENT[form]}
+                            visible={showModal}
+                            toggle={(submit, newData) =>
+                                this.toggle(submit, newData)
+                            }
+                            title={TITLE[form]}
+                            data={dataModal}
+                            listData={this.getListDataTable()}
+                        />
+                    </div> : null}
             </div>
         );
     }
 }
 
-export default ConfigDayOff;
+const mapStateToProps = (state) => ({
+    data: state.homeReducer.data
+});
+
+export default connect(mapStateToProps, null)(ConfigDayOff);

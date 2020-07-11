@@ -107,6 +107,7 @@ class NormalDayTable extends React.Component {
             officeId,
         } = this.state;
 
+        const {canUpdate, canDelete} = this.props.canAction;
         return (
             <>
                 <div className="table-edit">
@@ -115,6 +116,8 @@ class NormalDayTable extends React.Component {
                             columns={buildColsConfigDay(
                                 this.handleEdit,
                                 this.handleDelete,
+                                canUpdate,
+                                canDelete,
                                 [
                                     {
                                         title: 'Thứ',
@@ -174,19 +177,20 @@ class NormalDayTable extends React.Component {
                         />
                     </div>
                 </div>
-                <div>
-                    <AsyncModal
-                        key={curRecordEdit}
-                        reload={false}
-                        CompomentContent={FormEditNormalDay}
-                        visible={showModal}
-                        toggle={(submit) => this.toggle(submit)}
-                        title={'Chỉnh sửa ngày làm việc'}
-                        data={curRecordEdit}
-                        mode={'edit'}
-                        prop={{officeId: officeId}}
-                    />
-                </div>
+                {canUpdate ?
+                    <div>
+                        <AsyncModal
+                            key={curRecordEdit}
+                            reload={false}
+                            CompomentContent={FormEditNormalDay}
+                            visible={showModal}
+                            toggle={(submit) => this.toggle(submit)}
+                            title={'Chỉnh sửa ngày làm việc'}
+                            data={curRecordEdit}
+                            mode={'edit'}
+                            prop={{officeId: officeId}}
+                        />
+                    </div> : null}
             </>
         );
     }

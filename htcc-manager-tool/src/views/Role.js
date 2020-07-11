@@ -6,10 +6,12 @@ import {roleApi} from '../api';
 import {store} from 'react-notifications-component';
 import {createNotify} from '../utils/notifier';
 import * as _ from 'lodash';
+import {connect} from 'react-redux';
 import ReactLoading from 'react-loading';
-import {ROLE_ACTION, ROLE_GROUP} from "../constant/constant";
+import {ACTION, ROLE_ACTION, ROLE_GROUP, ROLE_GROUP_KEY} from "../constant/constant";
 import AsyncModal from "../components/Modal/AsyncModal";
 import FormNewRole from "../components/Form/FormNewRole";
+import {canDoAction} from "../utils/permission";
 
 class Role extends Component {
     constructor(props) {
@@ -194,6 +196,8 @@ class Role extends Component {
 
     renderRoleName = () => {
         const {data} = this.state;
+        const canDelete = canDoAction(this.props.data, ROLE_GROUP_KEY.PERMISSION, ACTION.DELETE);
+
         if (_.isEmpty(data)) {
             return (
                 <Empty
@@ -224,7 +228,7 @@ class Role extends Component {
                       style={{margin: 'auto 0px'}}>
                     {`${item.roleName} (${item.roleId})`}
                 </span>
-                {item.roleId !== 'ROLE_SUPER_ADMIN' ?
+                {item.roleId !== 'ROLE_SUPER_ADMIN' && canDelete ?
                     <Popconfirm
                         title={`Bạn có chắc xóa quyền ${item.roleName} (${item.roleId})`}
                         icon={<QuestionCircleOutlined/>}
@@ -249,6 +253,7 @@ class Role extends Component {
     };
 
     buildTreeData = (roleDetail) => {
+        const canUpdate = canDoAction(this.props.data, ROLE_GROUP_KEY.PERMISSION, ACTION.UPDATE);
         const result = [];
 
         _.forOwn(roleDetail, (value, key) => {
@@ -256,6 +261,7 @@ class Role extends Component {
                 title: `${ROLE_GROUP[key]}`,
                 key: `${key}`,
                 children: [],
+                disabled: !canUpdate,
                 checkable: true,
             };
 
@@ -264,6 +270,7 @@ class Role extends Component {
                     title: `${ROLE_ACTION[key][action]}`,
                     key: `${key}-${action}`,
                     isLeaf: true,
+                    disabled: !canUpdate,
                     checkable: true,
                     selectable: false,
                 };
@@ -330,26 +337,30 @@ class Role extends Component {
             );
         }
 
+        const canAdd = canDoAction(this.props.data, ROLE_GROUP_KEY.PERMISSION, ACTION.CREATE);
+        const canUpdate = canDoAction(this.props.data, ROLE_GROUP_KEY.PERMISSION, ACTION.UPDATE);
+
         return (
             <div className="content">
                 <div className="table-wrapper tabs-small">
                     <Row>
                         <Col span={3} push={21}>
-                            <div
-                                className="btn-new"
-                                style={{
-                                    float: 'right'
-                                }}
-                            >
-                                <Tooltip
-                                    placement="bottomLeft"
-                                    title={'Thêm nhóm quyền'}
+                            {canAdd ?
+                                <div
+                                    className="btn-new"
+                                    style={{
+                                        float: 'right'
+                                    }}
                                 >
-                                    <PlusSquareOutlined
-                                        onClick={() => this.toggle(false)}
-                                    />
-                                </Tooltip>
-                            </div>
+                                    <Tooltip
+                                        placement="bottomLeft"
+                                        title={'Thêm nhóm quyền'}
+                                    >
+                                        <PlusSquareOutlined
+                                            onClick={() => this.toggle(false)}
+                                        />
+                                    </Tooltip>
+                                </div> : null}
                         </Col>
                     </Row>
                     <Row style={{height: 'calc(100vh - 280px)'}}>
@@ -366,7 +377,7 @@ class Role extends Component {
                             </Card>
                         </Col>
                     </Row>
-                    {!_.isEmpty(data) && !_.isEmpty(currentRoleId) ? <>
+                    {!_.isEmpty(data) && !_.isEmpty(currentRoleId) && canUpdate ? <>
                         <h5 style={{marginTop: 30}} className="text-right">
                             <i>Nếu có thay đổi xin hãy bấm LƯU để cập nhật</i>
                         </h5>
@@ -423,4 +434,8 @@ class Role extends Component {
     }
 }
 
-export default Role;
+const mapStateToProps = (state) => ({
+    data: state.homeReducer.data
+});
+
+export default connect(mapStateToProps, null)(Role);

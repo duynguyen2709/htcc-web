@@ -100,6 +100,8 @@ class SpecialDayTable extends React.Component {
             officeId,
         } = this.state;
 
+        const {canUpdate, canDelete} = this.props.canAction;
+
         return (
             <React.Fragment>
                 <div className="table-edit">
@@ -108,6 +110,8 @@ class SpecialDayTable extends React.Component {
                             columns={buildColsConfigDay(
                                 this.handleEdit,
                                 this.handleDelete,
+                                canUpdate,
+                                canDelete,
                                 [
                                     {
                                         title: 'Ngày',
@@ -176,19 +180,20 @@ class SpecialDayTable extends React.Component {
                         />
                     </div>
                 </div>
-                <div>
-                    <AsyncModal
-                        key={curRecordEdit}
-                        reload={false}
-                        CompomentContent={FormEditSpecialDay}
-                        visible={showModal}
-                        toggle={(submit) => this.toggle(submit)}
-                        title={'Chỉnh sửa ngày làm việc'}
-                        data={curRecordEdit}
-                        mode={'edit'}
-                        prop={{officeId: officeId}}
-                    />
-                </div>
+                {canUpdate ?
+                    <div>
+                        <AsyncModal
+                            key={curRecordEdit}
+                            reload={false}
+                            CompomentContent={FormEditSpecialDay}
+                            visible={showModal}
+                            toggle={(submit) => this.toggle(submit)}
+                            title={'Chỉnh sửa ngày làm việc'}
+                            data={curRecordEdit}
+                            mode={'edit'}
+                            prop={{officeId: officeId}}
+                        />
+                    </div> : null}
             </React.Fragment>
         );
     }

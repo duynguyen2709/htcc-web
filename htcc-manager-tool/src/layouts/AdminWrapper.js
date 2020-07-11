@@ -19,7 +19,7 @@ class AdminWrapper extends React.Component {
         }
 
         if (token && user) {
-            fetchUser(user.companyId, user.username, token);
+            this.props.fetchUser(user.companyId, user.username, token);
             return true;
         }
 

@@ -22,6 +22,7 @@ const doGetDataHome = (data) => ({
         unreadNotifications: data.unreadNotifications,
         pendingCheckIn: data.pendingCheckIn,
         leavingRequestCategories: data.leavingRequestCategories,
+        roleDetail: data.roleDetail,
     },
 });
 

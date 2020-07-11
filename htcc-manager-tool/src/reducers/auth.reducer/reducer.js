@@ -33,7 +33,9 @@ const applyLoginSuccess = (state, action) => ({
     isAuthenticated: true,
     user: action.payload.user,
     error: false,
-    hasManagerRole: (action.payload.user.managerRole && action.payload.user.managerRole !== ''),
+    hasManagerRole: (action.payload.user &&
+        action.payload.user.managerRole &&
+        action.payload.user.managerRole !== ''),
 });
 
 const applyLoginFail = (state, action) => ({

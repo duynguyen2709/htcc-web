@@ -1,23 +1,21 @@
-import React, { Component } from 'react';
-import { Col, Input, Popconfirm, Row, Table, Tooltip } from 'antd';
-import {
-    ExclamationCircleTwoTone,
-    PlusSquareOutlined,
-    SettingOutlined,
-} from '@ant-design/icons';
-import { workScheduleApi } from '../api';
-import { store } from 'react-notifications-component';
-import { createNotify } from '../utils/notifier';
+import React, {Component} from 'react';
+import {Col, Input, Popconfirm, Row, Table, Tooltip} from 'antd';
+import {ExclamationCircleTwoTone, PlusSquareOutlined, SettingOutlined,} from '@ant-design/icons';
+import {workScheduleApi} from '../api';
+import {store} from 'react-notifications-component';
+import {createNotify} from '../utils/notifier';
 import * as _ from 'lodash';
-import { buildColsShift } from '../constant/colTable';
+import {buildColsShift} from '../constant/colTable';
 import SelectBox from '../components/Tool/SelectBox';
 import FormNewShiftTime from '../components/Form/FormNewShiftTime';
 import FormEditShiftTime from '../components/Form/FormEditShiftTime';
 import AsyncModal from '../components/Modal/AsyncModal';
-import { connect } from 'react-redux';
-import { Button, CardFooter } from 'reactstrap';
+import {connect} from 'react-redux';
+import {Button, CardFooter} from 'reactstrap';
+import {canDoAction} from "../utils/permission";
+import {ACTION, ROLE_GROUP_KEY} from "../constant/constant";
 
-const { Search } = Input;
+const {Search} = Input;
 
 class ShiftTime extends Component {
     constructor(props) {
@@ -41,7 +39,7 @@ class ShiftTime extends Component {
     };
 
     toggle = (submit = false) => {
-        const { dataTable, officeId } = this.state;
+        const {dataTable, officeId} = this.state;
         this.setState({
             showModal: !this.state.showModal,
             curRecordEdit: null,
@@ -136,7 +134,7 @@ class ShiftTime extends Component {
     }
 
     submitConfigLikeHeadquarter = () => {
-        const { officeId } = this.state;
+        const {officeId} = this.state;
 
         if (!officeId || officeId === '') {
             return;
@@ -191,7 +189,7 @@ class ShiftTime extends Component {
             return;
         }
 
-        const { officeId } = this.state;
+        const {officeId} = this.state;
 
         if (_.isEqual(officeId, id)) {
             return;
@@ -207,7 +205,7 @@ class ShiftTime extends Component {
     };
 
     handleDeleteShiftTime = (record) => {
-        const { officeId } = this.state;
+        const {officeId} = this.state;
 
         if (!officeId || officeId === '') {
             return;
@@ -250,8 +248,11 @@ class ShiftTime extends Component {
             isLoading,
         } = this.state;
 
-        const { data = {} } = this.props;
+        const {data = {}} = this.props;
 
+        const canAdd = canDoAction(this.props.data, ROLE_GROUP_KEY.SHIFT, ACTION.CREATE);
+        const canUpdate = canDoAction(this.props.data, ROLE_GROUP_KEY.SHIFT, ACTION.UPDATE);
+        const canDelete = canDoAction(this.props.data, ROLE_GROUP_KEY.SHIFT, ACTION.DELETE);
         return (
             <div className="content">
                 <div className="table-wrapper tabs-small">
@@ -287,68 +288,70 @@ class ShiftTime extends Component {
                                         flexDirection: 'row',
                                     }}
                                 >
-                                    <CardFooter className="text-right info">
-                                        <Popconfirm
-                                            title={
-                                                <>
-                                                    <div>
-                                                        Thiết lập này sẽ xóa cả
-                                                        lịch xếp ca tương ứng
-                                                    </div>
-                                                    <div>
-                                                        Bạn chắc chắn thực hiện
-                                                        ？
-                                                    </div>
-                                                </>
-                                            }
-                                            icon={
-                                                <ExclamationCircleTwoTone twoToneColor="#d9534f" />
-                                            }
-                                            okText="Đồng ý"
-                                            cancelText="Huỷ"
-                                            onConfirm={
-                                                this.submitConfigLikeHeadquarter
-                                            }
-                                        >
-                                            <Button
-                                                className="btn-custom"
-                                                color="primary"
-                                                type="button"
+                                    {canUpdate ?
+                                        <CardFooter className="text-right info">
+                                            <Popconfirm
+                                                title={
+                                                    <>
+                                                        <div>
+                                                            Thiết lập này sẽ xóa cả
+                                                            lịch xếp ca tương ứng
+                                                        </div>
+                                                        <div>
+                                                            Bạn chắc chắn thực hiện
+                                                            ？
+                                                        </div>
+                                                    </>
+                                                }
+                                                icon={
+                                                    <ExclamationCircleTwoTone twoToneColor="#d9534f"/>
+                                                }
+                                                okText="Đồng ý"
+                                                cancelText="Huỷ"
+                                                onConfirm={
+                                                    this.submitConfigLikeHeadquarter
+                                                }
                                             >
-                                                <SettingOutlined
-                                                    style={{
-                                                        display: 'inline',
-                                                        margin: '5px 10px 0 0',
-                                                    }}
-                                                />
-                                                <span className="btn-save-text">
+                                                <Button
+                                                    className="btn-custom"
+                                                    color="primary"
+                                                    type="button"
+                                                >
+                                                    <SettingOutlined
+                                                        style={{
+                                                            display: 'inline',
+                                                            margin: '5px 10px 0 0',
+                                                        }}
+                                                    />
+                                                    <span className="btn-save-text">
                                                     Thiết lập giống trụ sở chính
                                                 </span>
-                                            </Button>
-                                        </Popconfirm>
-                                    </CardFooter>
-                                    <div
-                                        className="btn-new"
-                                        style={{
-                                            margin: 'auto',
-                                            marginLeft: '30px',
-                                            marginRight: '20px',
-                                        }}
-                                    >
-                                        <Tooltip
-                                            placement="bottomLeft"
-                                            title={'Thêm ca'}
+                                                </Button>
+                                            </Popconfirm>
+                                        </CardFooter> : null}
+                                    {canAdd ?
+                                        <div
+                                            className="btn-new"
+                                            style={{
+                                                margin: 'auto',
+                                                marginLeft: '30px',
+                                                marginRight: '20px',
+                                            }}
                                         >
-                                            <PlusSquareOutlined
-                                                onClick={() => {
-                                                    this.setState({
-                                                        mode: 'new'
-                                                    });
-                                                    this.toggle(false)
-                                                }}
-                                            />
-                                        </Tooltip>
-                                    </div>
+                                            <Tooltip
+                                                placement="bottomLeft"
+                                                title={'Thêm ca'}
+                                            >
+                                                <PlusSquareOutlined
+                                                    onClick={() => {
+                                                        this.setState({
+                                                            mode: 'new'
+                                                        });
+                                                        this.toggle(false)
+                                                    }}
+                                                />
+                                            </Tooltip>
+                                        </div> : null}
                                 </div>
                             </Col>
                         </Row>
@@ -357,7 +360,9 @@ class ShiftTime extends Component {
                         <Table
                             columns={buildColsShift(
                                 this.handleEditShiftTime,
-                                this.handleDeleteShiftTime
+                                this.handleDeleteShiftTime,
+                                canUpdate,
+                                canDelete,
                             )}
                             dataSource={this.mapData(dataTable)}
                             scroll={{
@@ -368,27 +373,28 @@ class ShiftTime extends Component {
                             pagination={false}
                         />
                     </div>
-                    <div>
-                        <AsyncModal
-                            key={curRecordEdit}
-                            reload={false}
-                            CompomentContent={
-                                mode === 'new'
-                                    ? FormNewShiftTime
-                                    : FormEditShiftTime
-                            }
-                            visible={showModal}
-                            toggle={(submit) => this.toggle(submit)}
-                            title={
-                                mode === 'new'
-                                    ? 'Thêm ca làm việc mới'
-                                    : 'Chỉnh sửa thông tin ca'
-                            }
-                            data={curRecordEdit}
-                            mode={mode}
-                            prop={{ officeId: officeId }}
-                        />
-                    </div>
+                    {((mode === 'new' && canAdd) || (mode === 'edit' && canUpdate)) ?
+                        <div>
+                            <AsyncModal
+                                key={curRecordEdit}
+                                reload={false}
+                                CompomentContent={
+                                    mode === 'new'
+                                        ? FormNewShiftTime
+                                        : FormEditShiftTime
+                                }
+                                visible={showModal}
+                                toggle={(submit) => this.toggle(submit)}
+                                title={
+                                    mode === 'new'
+                                        ? 'Thêm ca làm việc mới'
+                                        : 'Chỉnh sửa thông tin ca'
+                                }
+                                data={curRecordEdit}
+                                mode={mode}
+                                prop={{officeId: officeId}}
+                            />
+                        </div> : null}
                 </div>
             </div>
         );
@@ -399,4 +405,4 @@ const mapStateToProps = (state) => ({
     data: state.homeReducer.data,
 });
 
-export default connect(mapStateToProps)(ShiftTime);
+export default connect(mapStateToProps, null)(ShiftTime);

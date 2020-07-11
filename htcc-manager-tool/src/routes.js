@@ -11,6 +11,8 @@ import Notification from './views/Notification/index';
 import ShiftArrangement from './views/ShiftArrangement';
 import ShiftTemplate from './views/ShiftTemplate';
 import Role from "./views/Role";
+import {canDoAction} from "./utils/permission";
+import {ACTION, ROLE_GROUP_KEY} from "./constant/constant";
 
 const routes = [
     {
@@ -20,6 +22,7 @@ const routes = [
         icon: 'tim-icons icon-chart-pie-36',
         component: Dashboard,
         layout: '/',
+        rule: (data) => canDoAction(data, ROLE_GROUP_KEY.STATISTICS, ACTION.READ)
     },
     {
         path: '/thong-tin-cty',
@@ -28,6 +31,11 @@ const routes = [
         icon: 'tim-icons icon-istanbul',
         component: CompanyInfo,
         layout: '/',
+        rule: (data) => {
+            return (canDoAction(data, ROLE_GROUP_KEY.COMPANY, ACTION.READ) ||
+                canDoAction(data, ROLE_GROUP_KEY.OFFICE, ACTION.READ) ||
+                canDoAction(data, ROLE_GROUP_KEY.DEPARTMENT, ACTION.READ))
+        },
     },
     {
         path: '/nhan-vien',
@@ -36,6 +44,7 @@ const routes = [
         icon: 'tim-icons icon-single-02',
         component: Employee,
         layout: '/',
+        rule: (data) => canDoAction(data, ROLE_GROUP_KEY.EMPLOYEE_MANAGE, ACTION.READ)
     },
     {
         path: '/diem-danh',
@@ -45,6 +54,7 @@ const routes = [
         component: Attendance,
         layout: '/',
         id: 'complaint-icon',
+        rule: (data) => canDoAction(data, ROLE_GROUP_KEY.CHECKIN, ACTION.READ)
     },
     {
         path: '/khieu-nai',
@@ -53,6 +63,7 @@ const routes = [
         icon: 'tim-icons icon-chat-33',
         component: Complaint,
         layout: '/',
+        rule: (data) => canDoAction(data, ROLE_GROUP_KEY.COMPLAINT, ACTION.READ)
     },
     {
         path: '/nghi-phep',
@@ -61,6 +72,7 @@ const routes = [
         icon: 'tim-icons icon-send',
         component: LeaveRequest,
         layout: '/',
+        rule: (data) => canDoAction(data, ROLE_GROUP_KEY.LEAVING_REQUEST, ACTION.READ)
     },
     {
         path: '/ngay-nghi',
@@ -69,6 +81,7 @@ const routes = [
         icon: 'tim-icons icon-settings',
         component: ConfigDayOff,
         layout: '/',
+        rule: (data) => canDoAction(data, ROLE_GROUP_KEY.DAY_OFF, ACTION.READ)
     },
     {
         path: '/lich-lam/ngay',
@@ -78,6 +91,12 @@ const routes = [
         component: '',
         layout: '/',
         id: 'canManageOffices',
+        rule: (data) => {
+            return (canDoAction(data, ROLE_GROUP_KEY.WORKING_DAY, ACTION.READ) ||
+                canDoAction(data, ROLE_GROUP_KEY.SHIFT, ACTION.READ) ||
+                canDoAction(data, ROLE_GROUP_KEY.SHIFT_ARRANGEMENT, ACTION.READ) ||
+                canDoAction(data, ROLE_GROUP_KEY.SHIFT_TEMPLATE, ACTION.READ))
+        },
         childs: [
             {
                 name: 'Ngày',
@@ -88,6 +107,7 @@ const routes = [
                 brand: 'Ngày Làm Việc',
                 component: WorkingDay,
                 layout: '/',
+                rule: (data) => canDoAction(data, ROLE_GROUP_KEY.WORKING_DAY, ACTION.READ)
             },
             {
                 name: 'Danh sách ca',
@@ -98,6 +118,7 @@ const routes = [
                 brand: 'Danh Sách Ca',
                 component: ShiftTime,
                 layout: '/',
+                rule: (data) => canDoAction(data, ROLE_GROUP_KEY.SHIFT, ACTION.READ)
             },
             {
                 name: 'Xếp ca',
@@ -108,6 +129,7 @@ const routes = [
                 brand: 'Xếp Ca Làm Việc',
                 component: ShiftArrangement,
                 layout: '/',
+                rule: (data) => canDoAction(data, ROLE_GROUP_KEY.SHIFT_ARRANGEMENT, ACTION.READ)
             },
             {
                 name: 'Ca mẫu',
@@ -118,6 +140,7 @@ const routes = [
                 brand: 'Ca Làm Việc Mẫu',
                 component: ShiftTemplate,
                 layout: '/',
+                rule: (data) => canDoAction(data, ROLE_GROUP_KEY.SHIFT_TEMPLATE, ACTION.READ)
             },
         ],
     },
@@ -128,6 +151,7 @@ const routes = [
         icon: 'tim-icons icon-bell-55',
         component: Notification,
         layout: '/',
+        rule: (data) => canDoAction(data, ROLE_GROUP_KEY.NOTIFICATION, ACTION.READ),
     },
     {
         path: '/phan-quyen',
@@ -136,6 +160,7 @@ const routes = [
         icon: 'tim-icons icon-settings',
         component: Role,
         layout: '/',
+        rule: (data) => canDoAction(data, ROLE_GROUP_KEY.PERMISSION, ACTION.READ)
     },
 ];
 export default routes;
