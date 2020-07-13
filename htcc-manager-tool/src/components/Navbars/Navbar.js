@@ -6,7 +6,6 @@ import {
     DropdownMenu,
     DropdownItem,
     UncontrolledDropdown,
-    Input,
     NavbarBrand,
     Navbar,
     NavLink,
@@ -17,6 +16,8 @@ import {
 import { logout } from '../../reducers/auth.reducer';
 import { connect } from 'react-redux';
 import UserProfile from '../../views/UserProfile';
+import AsyncModal from '../Modal/AsyncModal';
+import FormChangePass from '../Form/FormChangePass';
 import { ERROR_IMAGE } from '../../constant/constant';
 import Notifications from './Notifications';
 
@@ -29,6 +30,7 @@ class AdminNavbar extends React.Component {
             color: 'navbar-transparent',
             openSidebarOnlyIcon: false,
             modalProfile: false,
+            modalChangePass: false,
         };
     }
 
@@ -218,6 +220,19 @@ class AdminNavbar extends React.Component {
                                         <DropdownItem divider tag="li" />
                                         <NavLink tag="li">
                                             <DropdownItem
+                                                onClick={() =>
+                                                    this.toggle(
+                                                        'modalChangePass'
+                                                    )
+                                                }
+                                                className="nav-item"
+                                            >
+                                                Đổi mật khẩu
+                                            </DropdownItem>
+                                        </NavLink>
+                                        <DropdownItem divider tag="li" />
+                                        <NavLink tag="li">
+                                            <DropdownItem
                                                 onClick={this.logout}
                                                 className="nav-item"
                                             >
@@ -231,28 +246,26 @@ class AdminNavbar extends React.Component {
                         </Collapse>
                     </Container>
                 </Navbar>
-                <Modal
-                    modalClassName="modal-search"
-                    isOpen={this.state.modalSearch}
-                    toggle={() => this.toggle('modalSearch')}
+                {/* <Modal
+                    toggle={() => this.toggle('modalChangePass')}
+                    isOpen={this.state.modalChangePass}
                 >
-                    <div className="modal-header">
-                        <Input
-                            id="inlineFormInputGroup"
-                            placeholder="Tìm kiếm"
-                            type="text"
-                        />
-                        <button
-                            aria-label="Close"
-                            className="close"
-                            data-dismiss="modal"
-                            type="button"
-                            onClick={() => this.toggle('modalSearch')}
-                        >
-                            <i className="tim-icons icon-simple-remove" />
-                        </button>
-                    </div>
-                </Modal>
+                    <FormChangePass toggle={this.toggle} />
+                </Modal> */}
+                <div>
+                    <AsyncModal
+                        key={this.state.modalChangePass}
+                        reload={false}
+                        CompomentContent={FormChangePass}
+                        visible={this.state.modalChangePass}
+                        toggle={(submit) =>
+                            this.toggle('modalChangePass', submit)
+                        }
+                        title={'Thay đổi mật khẩu'}
+                        data={null}
+                        mode={'new'}
+                    />
+                </div>
                 <Modal
                     toggle={() => this.toggle('modalProfile')}
                     modalClassName="modal-profile"

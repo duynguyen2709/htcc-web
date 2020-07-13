@@ -5,7 +5,7 @@ import { store } from 'react-notifications-component';
 import { createNotify } from '../../utils/notifier';
 import InfiniteScroll from 'react-infinite-scroller';
 import moment from 'moment';
-import { CheckOutlined } from '@ant-design/icons';
+import { FileDoneOutlined } from '@ant-design/icons';
 import * as _ from 'lodash';
 import { updateDataHome } from '../../reducers/home.reducer';
 import { connect } from 'react-redux';
@@ -158,7 +158,7 @@ class Notifications extends React.Component {
         return (
             <div className="demo-infinite-container text-right">
                 {dataProps.unreadNotifications > 0 && (
-                    <CheckOutlined
+                    <FileDoneOutlined
                         onClick={this.updateAllnoti}
                         style={{
                             marginRight: 10,
@@ -192,11 +192,7 @@ class Notifications extends React.Component {
                                             }
                                         />
                                     }
-                                    title={
-                                        <h5 className="text-dark">
-                                            {item.title}
-                                        </h5>
-                                    }
+                                    title={item.title}
                                     description={
                                         <div>
                                             <p className="text-dark description">

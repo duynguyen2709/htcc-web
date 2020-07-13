@@ -1,95 +1,56 @@
 import React from 'react';
 import { Button, CardFooter, Col, Form, FormGroup, Row } from 'reactstrap';
 import * as _ from 'lodash';
-import { leaveRequestApi } from '../../api';
+import { checkinApi } from '../../api';
 import { store } from 'react-notifications-component';
 import { createNotify } from '../../utils/notifier';
-import {
-    CheckCircleOutlined,
-    QuestionCircleOutlined,
-    PlusSquareOutlined,
-    DeleteOutlined,
-} from '@ant-design/icons';
-import { Input, Popconfirm, Select } from 'antd';
-// import moment from 'moment';
+import { CheckCircleOutlined, QuestionCircleOutlined } from '@ant-design/icons';
+import { DatePicker, Input, Popconfirm, Select } from 'antd';
 import { connect } from 'react-redux';
-import RequestComponent from '../DetailDayOff/RequestComponent';
+import moment from 'moment';
 
 const { Option } = Select;
 const { TextArea } = Input;
 
-class FormAddLeaveRequest extends React.Component {
+class FormAddCheckinRequest extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             value: {
-                category: '',
-                clientTime: new Date().getTime(),
-                detail: [],
-                reason: '',
+                type: 1,
                 username: '',
+                reason: '',
+                officeId: '',
+                clientTime: moment(new Date()),
             },
-            dayOff: 1,
         };
     }
 
-    handleChangeType = (value) => {
+    handleChangeStatus = (value) => {
         this.setState({
             value: {
                 ...this.state.value,
-                category: value,
+                status: value,
             },
         });
     };
-
-    handleChangeUser = (val) => {
-        const { value } = this.state;
-        this.setState({
-            value: {
-                ...value,
-                username: val,
-            },
-        });
-    };
-
-    componentDidMount() {
-        const { data = {} } = this.props;
-        const { canManageEmployees = [], leavingRequestCategories = [] } = data;
-
-        this.setState({
-            canManageEmployees,
-            leavingRequestCategories,
-            value: {
-                ...this.state.value,
-                username: _.isEmpty(canManageEmployees)
-                    ? null
-                    : _.get(canManageEmployees, '[0].username', ''),
-                category: _.isEmpty(leavingRequestCategories)
-                    ? null
-                    : _.get(leavingRequestCategories, '[0]', ''),
-            },
-        });
-    }
 
     componentWillReceiveProps(nextProps, nextState) {
         if (!_.isEqual(nextProps.data, this.props.data)) {
             const { data } = nextProps;
-            const {
-                canManageEmployees = [],
-                leavingRequestCategories = [],
-            } = data;
+            const { canManageEmployees = [], canManageOffices = [] } = data;
 
             this.setState({
                 canManageEmployees,
-                leavingRequestCategories,
+                canManageOffices,
                 value: {
                     ...this.state.value,
                     username: _.isEmpty(canManageEmployees)
                         ? null
                         : _.get(canManageEmployees, '[0].username', ''),
-                    category: _.isEmpty(leavingRequestCategories)
+                    officeId: _.isEmpty(canManageOffices)
                         ? null
-                        : _.get(leavingRequestCategories, '[0]', ''),
+                        : _.get(canManageOffices, '[0]', ''),
                 },
             });
         }
@@ -109,8 +70,13 @@ class FormAddLeaveRequest extends React.Component {
     handleSubmit = (e) => {
         if (!_.isEmpty(this.state.value.reason)) {
             this.props.loading();
-            leaveRequestApi
-                .createLeavingRequest(this.state.value)
+            let { value } = this.state;
+            value = this.convertData(value);
+
+            console.log('value', value);
+
+            checkinApi
+                .createCheckinRequest(value)
                 .then((res) => {
                     if (res.returnCode === 1) {
                         this.props.onSubmit();
@@ -131,7 +97,7 @@ class FormAddLeaveRequest extends React.Component {
         } else {
             this.props.stopLoading();
             store.addNotification(
-                createNotify('warning', 'Bạn chưa nhập  lý do')
+                createNotify('warning', 'Bạn chưa nhập lý do')
             );
         }
     };
@@ -140,114 +106,103 @@ class FormAddLeaveRequest extends React.Component {
         this.setState({
             value: {
                 ...this.state.value,
-                response: null,
             },
         });
     };
 
-    increaseDayOff = () => {
-        this.setState({
-            dayOff: this.state.dayOff + 1,
-        });
-    };
-
-    decreaseDayOff = (index) => {
-        let { value } = this.state;
-        value['detail'] = _.omit(value.detail, `[${index}]`);
+    componentDidMount() {
+        const { data = {} } = this.props;
+        const { canManageEmployees = [], canManageOffices = [] } = data;
 
         this.setState({
-            dayOff: this.state.dayOff - 1,
-            value,
+            canManageEmployees,
+            canManageOffices,
+            value: {
+                ...this.state.value,
+                username: _.isEmpty(canManageEmployees)
+                    ? null
+                    : _.get(canManageEmployees, '[0].username', ''),
+                officeId: _.isEmpty(canManageOffices)
+                    ? null
+                    : _.get(canManageOffices, '[0]', ''),
+            },
         });
+    }
+
+    convertData = (data) => {
+        _.set(data, 'clientTime', data['clientTime'].unix());
+
+        return data;
     };
 
-    handleDetailDayOff = (index, day) => {
-        debugger;
-        console.log('day', day);
+    handleChangeUser = (val) => {
         const { value } = this.state;
-
-        _.set(value, `detail[${index}]`, day);
-
         this.setState({
-            value,
+            value: {
+                ...value,
+                username: val,
+            },
         });
     };
 
-    renderDetailDayOff = () => {
-        const { dayOff } = this.state;
-        const firtElem = (
-            <Row key={1}>
-                <RequestComponent
-                    returnValue={this.handleDetailDayOff}
-                    key={0}
-                    index={0}
-                />
-                <Col md={{ size: 1, offset: 1 }}>
-                    <div
-                        className="float-right btn-new-small"
-                        style={{ marginTop: 37 }}
-                    >
-                        <PlusSquareOutlined onClick={this.increaseDayOff} />
-                    </div>
-                </Col>
-            </Row>
-        );
-        const list = [firtElem];
+    handleChangeOffice = (val) => {
+        const { value } = this.state;
+        this.setState({
+            value: {
+                ...value,
+                officeId: val,
+            },
+        });
+    };
 
-        for (let index = 1; index < dayOff; index++) {
-            const otherElem = (
-                <Row key={index}>
-                    <RequestComponent
-                        returnValue={this.handleDetailDayOff}
-                        key={index}
-                        index={index}
-                    />
-                    <Col md={1}>
-                        <div
-                            className="float-right btn-new-small"
-                            style={{ marginTop: 37 }}
-                        >
-                            <DeleteOutlined
-                                style={{ color: '#EF534F' }}
-                                onClick={() => this.decreaseDayOff(index)}
-                            />
-                        </div>
-                    </Col>
-                    <Col md={1}>
-                        <div
-                            className="float-right btn-new-small"
-                            style={{ marginTop: 37 }}
-                        >
-                            <PlusSquareOutlined onClick={this.increaseDayOff} />
-                        </div>
-                    </Col>
-                </Row>
-            );
-            list.push(otherElem);
-        }
+    handleChangeType = (val) => {
+        const { value } = this.state;
+        this.setState({
+            value: {
+                ...value,
+                type: val,
+            },
+        });
+    };
 
-        return (
-            <React.Fragment>
-                <label>Chi tiết ngày nghỉ</label>
-                <hr />
-                {list}
-                <hr />
-            </React.Fragment>
-        );
+    handleChangeDate = (val) => {
+        const { value } = this.state;
+        this.setState({
+            value: {
+                ...value,
+                clientTime: val,
+            },
+        });
     };
 
     render() {
-        const {
-            value,
-            leavingRequestCategories,
-            canManageEmployees,
-        } = this.state;
-
-        console.log('value', value);
+        const { value, canManageEmployees, canManageOffices } = this.state;
 
         return (
             <Form>
                 <Row>
+                    <Col md="6">
+                        <FormGroup>
+                            <label>Chi nhánh</label>
+                            <Select
+                                style={{ width: '100%' }}
+                                className="bor-radius"
+                                value={value.officeId}
+                                onChange={(val) => this.handleChangeOffice(val)}
+                                onCancel={() => this.clear()}
+                            >
+                                {_.map(canManageOffices, (office, i) => (
+                                    <Option
+                                        className=" bor-radius"
+                                        value={office}
+                                        key={i}
+                                    >
+                                        {office}
+                                    </Option>
+                                ))}
+                            </Select>
+                        </FormGroup>
+                    </Col>
                     <Col md="6">
                         <FormGroup>
                             <label>Nhân viên</label>
@@ -272,29 +227,42 @@ class FormAddLeaveRequest extends React.Component {
                     </Col>
                     <Col md="6">
                         <FormGroup>
-                            <label>Loại phép</label>
+                            <label>Loại điểm danh</label>
                             <Select
                                 style={{ width: '100%' }}
                                 className="bor-radius"
-                                value={value.category}
+                                defaultValue={1}
                                 onChange={(val) => this.handleChangeType(val)}
                                 onCancel={() => this.clear()}
                             >
-                                {_.map(leavingRequestCategories, (cate, i) => (
-                                    <Option
-                                        className=" bor-radius"
-                                        value={cate}
-                                        key={i}
-                                    >
-                                        {cate}
-                                    </Option>
-                                ))}
+                                <Option
+                                    className=" bor-radius"
+                                    value={1}
+                                    key={1}
+                                >
+                                    Vào Ca
+                                </Option>
+                                <Option
+                                    className=" bor-radius"
+                                    value={2}
+                                    key={2}
+                                >
+                                    Tan Ca
+                                </Option>
                             </Select>
                         </FormGroup>
                     </Col>
-                </Row>
-                {this.renderDetailDayOff()}
-                <Row>
+                    <Col md="6">
+                        <FormGroup>
+                            <label>Thời gian điểm danh</label>
+                            <DatePicker
+                                className="form-control bor-radius"
+                                format={'DD/MM/YYYY HH:mm'}
+                                value={moment(value.clientTime)}
+                                onChange={(val) => this.handleChangeDate(val)}
+                            />
+                        </FormGroup>
+                    </Col>
                     <Col md="12">
                         <FormGroup>
                             <label>Lý do</label>
@@ -347,4 +315,4 @@ const mapDispatchToProps = (dispatch) => ({});
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(FormAddLeaveRequest);
+)(FormAddCheckinRequest);

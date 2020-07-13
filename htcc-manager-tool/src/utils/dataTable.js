@@ -1,10 +1,10 @@
 import React from 'react';
 import * as _ from 'lodash';
-import {columnsEmployee} from '../constant/colTable';
-import {checkValidPhoneNumber} from '../utils/validate';
-import {store} from 'react-notifications-component';
-import {createNotify} from './notifier';
-import {Tag} from 'antd';
+import { columnsEmployee } from '../constant/colTable';
+import { checkValidPhoneNumber } from '../utils/validate';
+import { store } from 'react-notifications-component';
+import { createNotify } from './notifier';
+import { Tag } from 'antd';
 
 export const addKeyPropsToTable = (prefix, arr) => {
     for (let i = 0; i < arr.length; i++) {
@@ -14,19 +14,19 @@ export const addKeyPropsToTable = (prefix, arr) => {
     return arr;
 };
 
-export const getFieldTable = columnsTable => {
-    return _.map(columnsTable, column => column.field);
+export const getFieldTable = (columnsTable) => {
+    return _.map(columnsTable, (column) => column.field);
 };
 
-export const checkValidInputDataRow = row => {
+export const checkValidInputDataRow = (row) => {
     let flag = true;
 
     if (_.isEmpty(row)) {
         return false;
     }
-    row = {...row, code: '1'};
+    row = { ...row, code: '1' };
 
-    _.forEach(getFieldTable(columnsEmployee), column => {
+    _.forEach(getFieldTable(columnsEmployee), (column) => {
         if (column === 'phoneNumber') {
             if (!checkValidPhoneNumber(row[column])) {
                 store.addNotification(
@@ -63,15 +63,15 @@ export const renderCellAttendance = (checkin, checkout) => {
     return tags;
 };
 
-export const genColTableAttendance = num => {
+export const genColTableAttendance = (num) => {
     const columns = [
         {
             title: 'Mã nhân viên',
             width: 100,
             dataIndex: 'code',
             key: 'code',
-            fixed: 'left'
-        }
+            fixed: 'left',
+        },
     ];
 
     for (let i = 1; i <= num; i++) {
@@ -80,18 +80,27 @@ export const genColTableAttendance = num => {
             dataIndex: 'attendance',
             key: `${i}`,
             width: 100,
-            render: rowData => {
+            render: (rowData) => {
                 if (rowData[i]) {
-                    return renderCellAttendance(rowData[i].checkin, rowData[i].checkout);
+                    return renderCellAttendance(
+                        rowData[i].checkin,
+                        rowData[i].checkout
+                    );
                 }
                 return (
                     <Tag key="none" color="default">
                         --:--
                     </Tag>
                 );
-            }
+            },
         });
     }
 
     return columns;
+};
+
+export const isLeapYear = (year) => {
+    year = parseInt(year);
+
+    return year % 4 === 0 && year % 100 === 0;
 };
