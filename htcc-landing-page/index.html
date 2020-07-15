@@ -114,7 +114,7 @@
   <section class="wellcome_area clearfix" id="home">
     <div class="container h-100">
       <div class="row h-100 align-items-center">
-        <div class="col-12 col-md">
+        <div class="col-12 col-md welcome-zone">
           <div class="wellcome-heading">
             <h2>HTCC</h2>
             <p langg="vn">Phần Mềm Chấm Công Trực Tuyến Hàng Đầu</p>
@@ -526,102 +526,7 @@
       </div>
 
       <div id="price-bundle" class="row no-gutters tab-content tab-content-hidden">
-        <div class="col-12 col-md-6 col-lg-3">
-          <!-- Package Price  -->
-          <div class="single-price-plan text-center" onclick="clickBundle(event)">
-            <!-- Package Text  -->
-            <div class="package-plan">
-              <h5>Starter Plan</h5>
-              <div class="ca-price d-flex justify-content-center">
-                <span>$</span>
-                <h4>29</h4>
-              </div>
-            </div>
-            <div class="package-description">
-              <p>Up to 10 users monthly</p>
-              <p>Unlimited updates</p>
-              <p>Free host &amp; domain</p>
-              <p>24/7 Support</p>
-              <p>10 Unique Users</p>
-            </div>
-            <!-- Plan Button  -->
-            <div class="plan-button">
-              <a href="#">Select Plan</a>
-            </div>
-          </div>
-        </div>
-        <div class="col-12 col-md-6 col-lg-3">
-          <!-- Package Price  -->
-          <div class="single-price-plan text-center" onclick="clickBundle(event)">
-            <!-- Package Text  -->
-            <div class="package-plan">
-              <h5>Basic Plan</h5>
-              <div class="ca-price d-flex justify-content-center">
-                <span>$</span>
-                <h4>49</h4>
-              </div>
-            </div>
-            <div class="package-description">
-              <p>Up to 10 users monthly</p>
-              <p>Unlimited updates</p>
-              <p>Free host &amp; domain</p>
-              <p>24/7 Support</p>
-              <p>10 Unique Users</p>
-            </div>
-            <!-- Plan Button  -->
-            <div class="plan-button">
-              <a href="#">Select Plan</a>
-            </div>
-          </div>
-        </div>
-        <div class="col-12 col-md-6 col-lg-3">
-          <!-- Package Price  -->
-          <div class="single-price-plan active text-center" onclick="clickBundle(event)">
-            <!-- Package Text  -->
-            <div class="package-plan">
-              <h5>Advenced Plan</h5>
-              <div class="ca-price d-flex justify-content-center">
-                <span>$</span>
-                <h4>69</h4>
-              </div>
-            </div>
-            <div class="package-description">
-              <p>Up to 10 users monthly</p>
-              <p>Unlimited updates</p>
-              <p>Free host &amp; domain</p>
-              <p>24/7 Support</p>
-              <p>10 Unique Users</p>
-            </div>
-            <!-- Plan Button  -->
-            <div class="plan-button">
-              <a href="#">Select Plan</a>
-            </div>
-          </div>
-        </div>
-        <div class="col-12 col-md-6 col-lg-3">
-          <!-- Package Price  -->
-          <div class="single-price-plan text-center" onclick="clickBundle(event)">
-            <!-- Package Text  -->
-            <div class="package-plan">
-              <h5>Community Plan</h5>
-              <div class="ca-price d-flex justify-content-center">
-                <span>$</span>
-                <h4>99</h4>
-              </div>
-            </div>
-            <div class="package-description">
-              <p>Up to 10 users monthly</p>
-              <p>Unlimited updates</p>
-              <p>Free host &amp; domain</p>
-              <p>24/7 Support</p>
-              <p>10 Unique Users</p>
-            </div>
-            <!-- Plan Button  -->
-            <div class="plan-button">
-              <a href="#">Select Plan</a>
-            </div>
-          </div>
-        </div>
+       
       </div>
 
       <div id="price-custom" class="row tab-content tab-content-hidden">
@@ -633,8 +538,6 @@
           <div class="slideWrapper">
             <div>Tôi muốn mua cho <b><span id="AmountUser"></span></b>
               người sử dụng</div>
-            <!-- <div>Tôi muốn mua cho <b><span id="AmountUser"></span></b> <span id="AmountUserSecond"></span>
-                                người sử dụng</div> -->
             <input id="InputAmountUser" type="range" min="10" max="1000" value="50">
           </div>
           <ul id="features-list" class="features-list">
@@ -662,7 +565,7 @@
             </li>
           </ul>
 
-          <button type="button" class="btn btn-primary btn-lg btn-block">Gửi báo giá cho tôi</button>
+          <button type="button" onclick="buyFeatures()" class="btn btn-primary btn-lg btn-block" data-toggle="modal" data-target="#myModal">Gửi báo giá cho tôi</button>
 
           <div style=" text-align: left; ">
             <p style="text-decoration: underline; font-weight: bold;  font-size: small; margin-bottom: 0;">
@@ -680,6 +583,37 @@
       </div>
     </div>
   </section>
+
+  <div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+  
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="container">
+            <h2>Xác nhận đơn hàng</h2>
+              <p class="info-buyer">Gói: <span id="comboName">aaa</span></p>
+              <p class="info-buyer">Giá: <span id="totalPrice">1,000,000</span>đ</p>
+              <div class="form-group">
+                <label for="email">Email:</label>
+                <input  class="form-control" id="emailBuyer" placeholder="Nhập email" name="email">
+              </div>
+              <div class="form-group">
+                <label for="code">Mã công ty:</label>
+                <input class="form-control" id="companyCode" placeholder="Nhập mã công ty" name="code">
+              </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal" onclick="sendRequest()">Gửi</button>
+        </div>
+      </div>
+  
+    </div>
+  </div>
   <!-- ***** Pricing Plane Area End ***** -->
 
   <!-- ***** Client Feedback Area Start ***** -->
