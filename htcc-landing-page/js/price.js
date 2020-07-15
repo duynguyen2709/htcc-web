@@ -72,7 +72,7 @@ function setUpFeature(data) {
 }
 
 const getFeatures = async () => {
-  await axios.get('http://167.179.80.90:8761/api/gateway/public/features', ).then(function (response) {
+  await axios.get('https://1612145.online/api/gateway/public/features', ).then(function (response) {
       setUpFeature(response.data.data);
       setUpBundle(response.data.data);
     })
@@ -207,7 +207,7 @@ function sendRequest() {
   console.log("requestedFeatures: ", getChoosenFeaturesObject());
 
 
-  axios.post('http://167.179.80.90:8761/api/admin/public/requestfeature', {
+  axios.post('https://1612145.online/api/admin/public/requestfeature', {
     "comboId": isCombo ? choosenCombo.comboId : '',
   "companyId": $("#companyCode").val(),
   "email": $("#emailBuyer").val(),
@@ -215,11 +215,6 @@ function sendRequest() {
   "orderId": "string",
   "requestedFeatures":isCombo ? {} : getChoosenFeaturesObject()
   }).then(response => {
-    // if(response.data.returnCode != 1) {
-    //   alert(response.data.returnMessage);
-    //   return;
-    // }
-
     alert(response.data.returnMessage);
   }).catch(error => {
     console.log(error.response);
@@ -282,31 +277,5 @@ function setUpBundle(data) {
 
   }
 }
-
-// $(function () {
-//   //$("#bundle-1 p").slice(0, 4).show();
-//   for (let i = 0; i < 4; i++) {
-//     const currentEl = $(".single-price-plan").get(i);
-//     console.log("currentEl: ", currentEl);
-//     const arrPara = $(currentEl).find("p");
-//     arrPara.slice(0, 4).show();
-
-//     const btnMore = $(currentEl).find(".loadMore")
-//     btnMore.on('click', function (e) {
-//       e.preventDefault();
-//       if ($(currentEl).find("p:hidden").length === 0) {
-//         $(currentEl).find("p").slice(4, $(currentEl).find("p").length).slideUp();
-
-//         btnMore.html('Xem thêm');
-//         return;
-//       }
-//       $(currentEl).find("p:hidden").slice(0, $(currentEl).find("p:hidden").length).slideDown();
-//       if ($(currentEl).find("p:hidden").length === 0) {
-//         btnMore.html('Thu gọn');
-//       }
-//     });
-
-//   }
-// });
 
 getFeatures();
