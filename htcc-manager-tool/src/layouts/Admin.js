@@ -101,7 +101,7 @@ class Admin extends React.Component {
             } else if (
                 this.props.location.pathname.indexOf(routes[i].path) !== -1
             ) {
-                return routes[i].brand;
+                return routes[i].name;
             }
         }
         return '';

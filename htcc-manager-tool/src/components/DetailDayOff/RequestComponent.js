@@ -15,19 +15,40 @@ class RequestComponent extends React.Component {
         };
     }
 
-    handleChangeSession = (value) => {
+    handleChange = (key, value) => {
+        console.log(value.format('YYYYMM'));
+        debugger;
         this.setState({
-            ...this.state.value,
-            session: value,
+            ...this.state,
+            [key]: value,
         });
+
+        if (_.isFunction(this.props.returnValue)) {
+            this.props.returnValue(
+                this.props.index,
+                this.converData({
+                    ...this.state,
+                    [key]: value,
+                })
+            );
+        }
     };
 
-    handleChangeDate = (date) => {
-        if (!_.isEmpty(date)) {
-            this.setState({
-                date: moment(date),
-            });
+    componentDidMount() {
+        const { index = 0, returnValue } = this.props;
+
+        if (_.isFunction(returnValue)) {
+            returnValue(index, this.converData(this.state));
         }
+    }
+
+    converData = (data) => {
+        const result = _.cloneDeep(data);
+        result['date'] = data['date'].format('YYYYMM');
+
+        debugger;
+
+        return result;
     };
 
     render() {
@@ -41,8 +62,8 @@ class RequestComponent extends React.Component {
                         <DatePicker
                             className="form-control bor-radius"
                             format={'DD/MM/YYYY'}
-                            value={moment(date)}
-                            onChange={(val) => this.handleChangeDate(val)}
+                            value={date}
+                            onChange={(val) => this.handleChange('date', val)}
                         />
                     </FormGroup>
                 </Col>
@@ -53,7 +74,9 @@ class RequestComponent extends React.Component {
                             style={{ width: '100%' }}
                             className="bor-radius"
                             defaultValue={0}
-                            onChange={(val) => this.handleChangeSession(val)}
+                            onChange={(val) =>
+                                this.handleChange('session', val)
+                            }
                             onCancel={() => this.clear()}
                             value={session}
                         >

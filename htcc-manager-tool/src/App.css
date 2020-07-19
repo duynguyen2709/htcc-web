@@ -256,3 +256,41 @@
 .list-noti-bell .ant-list-item-meta {
     padding: 5px;
 }
+
+.ant-table-pagination.ant-pagination {
+    margin-top: 20px;
+}
+
+.cell-checkin {
+    width: 200px;
+    height: 80px;
+}
+
+.cell-blur {
+    opacity: 0.2;
+}
+
+.eye-detail-checkin {
+    position: absolute;
+    top: 40%;
+    left: 40%;
+}
+
+.modal-detail-checkin {
+    width: 100% !important;
+}
+
+.modal-detail-checkin .ant-modal-content {
+    width: 90vw;
+    margin: 0 auto;
+}
+
+.eye-password {
+    position: relative;
+    left: 95%;
+    top: -30px;
+}
+
+.eye-password:hover {
+    cursor: pointer;
+}
