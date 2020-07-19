@@ -39,12 +39,16 @@ function setUpFeature(data) {
           <span class="feature-select">';
     if (!el.unitPrice) {
       html += '<i class="fa fa-check-circle fa-lg default-check" aria-hidden="true"></i>'
+
+      html += '<b>' + el.featureName + '</b> \
+                                </span> \
+                                <span>Miễn phí</span>'
+    html += '</div> \
+                        </li>'
     } else {
       html += '<i class="far fa-circle fa-lg"></i>'
-    }
 
-
-    html += '<b>' + el.featureName + '</b> \
+      html += '<b>' + el.featureName + '</b> \
                                 </span> \
                                 <span>' + formatNumber(el.unitPrice)
     if (el.featureName === 'Tuyển dụng')
@@ -53,6 +57,10 @@ function setUpFeature(data) {
       html += ' đ/người/tháng</span>'
     html += '</div> \
                         </li>'
+    }
+
+
+    
 
     FeaturesListEl.innerHTML += html
   })
@@ -107,8 +115,13 @@ function updatePrice() {
 
     }
     total += price;
+
+    if(!price) {
+      html_price += 'Miễn phí</span></div></li>'
+    } else {
     html_price += formatNumber(price)
     html_price += ' đ</span></div></li>'
+  }
 
     FeaturesPriceEl.innerHTML += html_price
 
@@ -119,6 +132,9 @@ function updatePrice() {
 }
 
 function selectFeature(e, feature) {
+  if(!feature.unitPrice) {
+    return;
+  }
 
   if (e.currentTarget.innerHTML.indexOf("fa-check-circle") !== -1) {
     e.currentTarget.innerHTML = e.currentTarget.innerHTML.replace("fa fa-check-circle check", "far fa-circle")
