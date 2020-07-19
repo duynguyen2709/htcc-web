@@ -16,6 +16,7 @@ const applyGetDataHome = (state, action) => ({
         unreadNotifications: action.payload.unreadNotifications,
         pendingCheckIn: action.payload.pendingCheckIn,
         leavingRequestCategories: action.payload.leavingRequestCategories,
+        canManageDepartments: action.payload.canManageDepartments,
     },
 });
 

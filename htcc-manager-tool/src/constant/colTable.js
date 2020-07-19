@@ -9,61 +9,161 @@ import {
     ExclamationCircleTwoTone,
     QuestionCircleOutlined,
     EyeOutlined,
+    LockTwoTone,
+    UnlockTwoTone,
 } from '@ant-design/icons';
 import LightboxImages from '../components/Tool/LightboxImages';
 import * as _ from 'lodash';
 import moment from 'moment';
 import { isLeapYear } from '../utils/dataTable';
 
-export const columnsEmployee = [
-    {
-        title: 'Mã nhân viên',
-        dataIndex: 'employeeId',
-        editable: false,
-        fixed: 'left',
-        width: '150px',
-    },
+export const buildColsEmployee = (funcEdit, funcBlock, username) => [
     {
         title: 'Username',
         dataIndex: 'username',
-        editable: true,
+        width: '120px',
+        fixed: 'left',
+    },
+    {
+        title: 'Ảnh đại diện',
+        dataIndex: 'images',
+        width: '150px',
+        render: (o, record) => {
+            return (
+                <React.Fragment>
+                    <LightboxImages imageSource={[record.avatar]} />
+                </React.Fragment>
+            );
+        },
+    },
+    {
+        title: 'Họ và tên',
+        dataIndex: 'fullName',
         width: '200px',
     },
     {
         title: 'Ngày sinh',
         dataIndex: 'birthDate',
-        editable: true,
+        width: '150px',
+        render: (o, record) => {
+            return moment(record.birthDate, 'YYYY-MM-DD').format('DD/MM/YYYY');
+        },
+    },
+    {
+        title: 'Giới tính',
+        dataIndex: 'gender',
+        width: '100px',
+        render: (o, record) => {
+            switch (record.gender) {
+                case 1:
+                    return 'Nam';
+                case 0:
+                    return 'Nữ';
+                default:
+                    return 'Khác';
+            }
+        },
+    },
+    {
+        title: 'Chức vụ',
+        dataIndex: 'title',
         width: '200px',
+    },
+    {
+        title: 'Cấp bậc',
+        dataIndex: 'level',
+        width: '100px',
     },
     {
         title: 'Email',
         dataIndex: 'email',
-        editable: true,
-        width: '350px',
+        width: '250px',
     },
     {
         title: 'CMND',
         dataIndex: 'identityCardNo',
-        editable: true,
         width: '150px',
+    },
+    {
+        title: 'Công ty',
+        dataIndex: 'companyId',
+        width: '100px',
     },
     {
         title: 'Chi nhánh',
         dataIndex: 'officeId',
-        editable: true,
-        width: '150px',
+        width: '100px',
     },
     {
         title: 'Phòng ban',
         dataIndex: 'department',
-        editable: true,
         width: '150px',
     },
     {
         title: 'address',
         dataIndex: 'address',
-        editable: true,
         width: '250px',
+    },
+    {
+        title: 'Hành động',
+        width: '110px',
+        fixed: 'right',
+        render: (o, record) => {
+            return (
+                <React.Fragment>
+                    <Tooltip placement="left" title={'Chỉnh sửa'}>
+                        <EditOutlined
+                            style={{
+                                color: '#52c41a',
+                                fontSize: '25px',
+                                float: 'left',
+                            }}
+                            onClick={() => funcEdit(record)}
+                        />
+                    </Tooltip>
+                    {record.username === username ? null : (
+                        <Popconfirm
+                            title={`Bạn chắc chắn muốn ${
+                                record.status === 1 ? 'khoá' : 'mở khoá'
+                            } ?`}
+                            icon={
+                                <ExclamationCircleTwoTone twoToneColor="#d9534f" />
+                            }
+                            okText="Đồng ý"
+                            cancelText="Huỷ"
+                            onConfirm={() => funcBlock(record.status)}
+                        >
+                            <Tooltip
+                                placement="left"
+                                title={
+                                    record.status === 1
+                                        ? 'Chọn để khoá'
+                                        : 'chọn để mở khoá'
+                                }
+                            >
+                                {record.status === 1 ? (
+                                    <UnlockTwoTone
+                                        twoToneColor="#1C90FF"
+                                        style={{
+                                            fontSize: '25px',
+                                            float: 'right',
+                                        }}
+                                    />
+                                ) : (
+                                    <LockTwoTone
+                                        twoToneColor="#ff7875"
+                                        style={{
+                                            fontSize: '25px',
+                                            float: 'right',
+                                        }}
+                                    />
+                                )}
+                            </Tooltip>
+                        </Popconfirm>
+                    )}
+                </React.Fragment>
+            );
+        },
     },
 ];
 
