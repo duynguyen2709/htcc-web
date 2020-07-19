@@ -13,6 +13,7 @@ import ShiftTemplate from './views/ShiftTemplate';
 import Role from "./views/Role";
 import {canDoAction} from "./utils/permission";
 import {ACTION, ROLE_GROUP_KEY} from "./constant/constant";
+import EmployeePermission from "./views/EmployeePermission";
 
 const routes = [
     {
@@ -162,5 +163,15 @@ const routes = [
         layout: '/',
         rule: (data) => canDoAction(data, ROLE_GROUP_KEY.PERMISSION, ACTION.READ)
     },
+    {
+        path: '/quyen-nhan-vien',
+        key: '/quyen-nhan-vien',
+        name: 'Quyền',
+        icon: 'tim-icons icon-settings',
+        component: EmployeePermission,
+        layout: '/',
+        rule: (data) => canDoAction(data, ROLE_GROUP_KEY.PERMISSION, ACTION.READ)
+    },
+
 ];
 export default routes;

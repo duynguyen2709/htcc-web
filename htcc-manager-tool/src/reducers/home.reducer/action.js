@@ -23,6 +23,7 @@ const doGetDataHome = (data) => ({
         pendingCheckIn: data.pendingCheckIn,
         leavingRequestCategories: data.leavingRequestCategories,
         roleDetail: data.roleDetail,
+        canAssignRoles: data.canAssignRoles,
     },
 });
 

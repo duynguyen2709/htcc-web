@@ -354,3 +354,40 @@
         font-size: 26px;
     }
 }
+.permission-self {
+    margin-top: 30px;
+}
+
+.permission-subordinate-list {
+    margin-top: 30px;
+}
+
+.permission-office-list {
+    height: 270px;
+    overflow: auto;
+}
+
+.permission-department-list {
+    margin-top: 20px;
+    height: 270px;
+    overflow: auto;
+}
+
+.permission-container {
+    height: calc(100vh - 130px);
+    overflow: auto;
+}
+
+.card-employee-permission {
+    width: 100%;
+    height: calc(100vh - 140px);
+    overflow: auto;
+}
+
+.card-employee-permission-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: calc(100vh - 250px);
+    overflow: auto;
+}

@@ -29,6 +29,7 @@ const applyGetDataHome = (state, action) => ({
         pendingCheckIn: action.payload.pendingCheckIn,
         leavingRequestCategories: action.payload.leavingRequestCategories,
         roleDetail: action.payload.roleDetail,
+        canAssignRoles: action.payload.canAssignRoles,
     },
 });
 
