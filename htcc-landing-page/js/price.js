@@ -177,7 +177,8 @@ function clickBundle(event) {
 }
 
 function getListFeatureBundle(comboDetail) {
-  let html = `<p>Dành cho ` + comboDetail.EMPLOYEE_MANAGE + ` người </p>`;
+  let html = `<p class="highlight-feature">Dành cho ` + comboDetail.EMPLOYEE_MANAGE + ` người </p>
+              <p class="highlight-feature">Bao gồm các chức năng</p>`;
 
   const listKey = Object.keys(comboDetail);
   const len = listKey.length;
@@ -251,6 +252,11 @@ function setUpBundle(data) {
             <!-- Package Text  -->
             <div class="package-plan">
               <h5>` + el.comboName + `</h5>
+              <div class="ca-price d-flex justify-content-center sale-off-panel">
+                <h4 class="sale-off-price">` + formatNumber(el.totalPrice*(el.discountPercentage + 100) / 100) + `</h4>
+                <span>đ</span>
+                <p>- ` + el.discountPercentage + `%</p>
+              </div>
               <div class="ca-price d-flex justify-content-center">
                 <h4>` + formatNumber(el.totalPrice) + `</h4>
                 <span>đ</span>
@@ -274,13 +280,13 @@ function setUpBundle(data) {
     const currentEl = $(".single-price-plan").get(i);
     console.log("currentEl: ", currentEl);
     const arrPara = $(currentEl).find("p");
-    arrPara.slice(0, 4).show();
+    arrPara.slice(0, 5).show();
 
     const btnMore = $(currentEl).find(".loadMore")
     btnMore.on('click', function (e) {
       e.preventDefault();
       if ($(currentEl).find("p:hidden").length === 0) {
-        $(currentEl).find("p").slice(4, $(currentEl).find("p").length).slideUp();
+        $(currentEl).find("p").slice(5, $(currentEl).find("p").length).slideUp();
 
         btnMore.html('Xem thêm');
         return;

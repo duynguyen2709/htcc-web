@@ -34,3 +34,63 @@
   font-weight: 600;
   /* padding: 20px 0px; */
 }
+
+.sale-off-panel {
+  padding: 10px;
+}
+
+.sale-off-panel span{
+  color: #e3e4e6 !important;
+}
+
+.package-plan {
+  position: relative;
+  overflow: hidden;
+}
+
+.sale-off-panel p {
+  font-weight: bold;
+  font-size: 22px;
+  position: absolute;
+  top: 0px;
+  right: -59px;
+  color: #fff;
+  background-color: red;
+  padding: 13px;
+  padding-bottom: 0px;
+  border-radius: 20px;
+  transform: rotate(40deg);
+  width: 170px;
+}
+
+.sale-off-price {
+  font-size: 28px !important;
+  text-decoration-line: line-through;
+
+  color: #e3e4e6 !important;
+}
+
+.package-plan::after {
+  content: "";
+  position: absolute;
+
+
+}
+
+.highlight-feature {
+  font-weight: bold;
+}
+
+.member-slider {
+  display: flex;
+  justify-content: space-around;
+}
+
+#price-bundle {
+  display: flex;
+  justify-content: space-around;
+}
+
+/* .single-price-plan.active .package-plan .ca-price>h4 {
+  color:#fb397d !important;
+} */
