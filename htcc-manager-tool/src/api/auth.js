@@ -68,8 +68,30 @@ const fetchUser = (companyId, username, token) => {
     });
 };
 
+const forgotPassword = (companyId, username) => {
+    return new Promise((resolve, reject) => {
+        axios({
+            method: 'post',
+            url: `${API_URL_GATEWAY}/api/gateway/public/resetpassword`,
+            data: {
+                clientId: CLIENTID,
+                companyId,
+                username
+            }
+        })
+            .then(res => {
+                resolve(res.data);
+            })
+            .catch(err => {
+                console.error(err);
+                reject('Hệ thống có lỗi. Vui lòng thử lại sau.');
+            });
+    });
+};
+
 export default {
     login,
     fetchUser,
-    logout
+    logout,
+    forgotPassword,
 };
