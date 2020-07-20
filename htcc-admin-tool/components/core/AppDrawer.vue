@@ -122,6 +122,23 @@
               <v-list-item-title v-text="'Quản lý tính năng'" class="pr-1"></v-list-item-title>
             </v-list-item-content>
           </v-list-item>
+
+          <v-list-item
+            style="margin-top: 6px !important;"
+            class="icon-wrapper"
+            :active-class="color"
+            to="/orders"
+          >
+            <v-list-item-action class="icon-menu" style="margin-left: 0px;">
+              <v-icon>mdi-inbox-multiple</v-icon>
+            </v-list-item-action>
+            <v-badge color="red" :content="amountOrder" v-if="amountOrder !== 0">
+              <v-list-item-content>
+                <v-list-item-title v-text="'Đơn hàng'" class="pr-1"></v-list-item-title>
+              </v-list-item-content>
+            </v-badge>
+          </v-list-item>
+
         </v-list>
       </v-layout>
     </v-img>
@@ -135,7 +152,7 @@ import { mapActions, mapGetters } from "vuex";
 export default {
   data() {
     return {
-      PendingNotification: 0,
+      PendingOrder: 0,
       logo: "/logo.png",
       links: [
         {
@@ -167,7 +184,8 @@ export default {
       image: "app/getImage",
       color: "app/getColor",
       drawer: "app/getDrawer",
-      amountComplaint: "complaint/getAmount"
+      amountComplaint: "complaint/getAmount",
+      amountOrder: "order/getAmount"
     }),
 
     inputValue: {
@@ -180,7 +198,7 @@ export default {
     }
   },
   mounted() {
-    this.getNotification();
+    this.getOrder();
     this.onResponsiveInverted();
     window.addEventListener("resize", this.onResponsiveInverted);
   },
@@ -190,22 +208,22 @@ export default {
   methods: {
     ...mapActions({
       setDrawer: "app/setDrawer",
-      setAmountComplaint: "complaint/setAmount"
+      setAmountComplaint: "complaint/setAmount",
+      setAmountOrder: "order/setAmount"
     }),
 
     onResponsiveInverted() {
       this.responsive = window.innerWidth < 991;
     },
-    async getNotification() {
+    async getOrder() {
       let $this = this;
       await $this.$axios
         .get("/api/admin/home")
         .then(function(response) {
           if (response.data.returnCode == 1) {
-            // console.log("this admins: " +  JSON.stringify(response.data.data))
             $this.setAmountComplaint(response.data.data.pendingComplaint);
+            $this.setAmountOrder(response.data.data.pendingOrder);
 
-            //console.log("PendingNotification: " + response.data.data.pendingComplaint)
           } else {
             console.log("this error message: " + response.data.returnMessage);
           }
