@@ -28,6 +28,7 @@ export const ROLE_GROUP = {
     SHIFT_ARRANGEMENT: 'Xếp ca làm việc',
     SALARY: 'Bảng lương',
     PERMISSION: 'Phân quyền',
+    EMPLOYEE_PERMISSION: 'Quyền nhân viên',
 };
 
 export const ROLE_GROUP_KEY = {
@@ -47,6 +48,7 @@ export const ROLE_GROUP_KEY = {
     SHIFT_ARRANGEMENT: 'SHIFT_ARRANGEMENT',
     SALARY: 'SALARY',
     PERMISSION: 'PERMISSION',
+    EMPLOYEE_PERMISSION: 'EMPLOYEE_PERMISSION',
 };
 
 export const ACTION = {
@@ -137,5 +139,9 @@ export const ROLE_ACTION = {
         CREATE: 'Thêm phân quyền mới',
         UPDATE: 'Cập nhật thông tin phân quyền',
         DELETE: 'Xóa phân quyền',
+    },
+    EMPLOYEE_PERMISSION: {
+        READ: 'Xem thông tin quyền nhân viên',
+        UPDATE: 'Cập nhật thông tin quyền nhân viên',
     },
 };
