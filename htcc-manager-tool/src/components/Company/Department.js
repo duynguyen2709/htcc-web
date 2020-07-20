@@ -7,8 +7,11 @@ import {PlusSquareOutlined} from '@ant-design/icons';
 import {buildColsDepartment} from '../../constant/colTable';
 import {Input, Table, Tooltip} from 'antd';
 import AsyncModal from '../Modal/AsyncModal';
+import {connect} from 'react-redux';
 import FormNewDepartment from '../Form/FormNewDepartment';
 import FormEditDepartment from '../Form/FormEditDepartment';
+import {canDoAction} from "../../utils/permission";
+import {ACTION, ROLE_GROUP_KEY} from "../../constant/constant";
 
 const {Search} = Input;
 
@@ -147,6 +150,11 @@ class Department extends React.Component {
             loading,
             headManagerList,
         } = this.state;
+
+        const canAdd = canDoAction(this.props.data, ROLE_GROUP_KEY.DEPARTMENT, ACTION.CREATE);
+        const canUpdate = canDoAction(this.props.data, ROLE_GROUP_KEY.DEPARTMENT, ACTION.UPDATE);
+        const canDelete = canDoAction(this.props.data, ROLE_GROUP_KEY.DEPARTMENT, ACTION.DELETE);
+
         return (
             <React.Fragment>
                 <div className="header-table clearfix">
@@ -158,25 +166,28 @@ class Department extends React.Component {
                             onChange={this.onSearch}
                         />
                     </div>
-                    <div className="float-right btn-new">
-                        <Tooltip placement="left" title={'Thêm phòng ban'}>
-                            <PlusSquareOutlined
-                                onClick={() => {
-                                    this.setState({
-                                        mode: 'new'
-                                    });
-                                    this.toggle(false)
-                                }}
-                            />
-                        </Tooltip>
-                    </div>
+                    {canAdd ?
+                        <div className="float-right btn-new">
+                            <Tooltip placement="left" title={'Thêm phòng ban'}>
+                                <PlusSquareOutlined
+                                    onClick={() => {
+                                        this.setState({
+                                            mode: 'new'
+                                        });
+                                        this.toggle(false)
+                                    }}
+                                />
+                            </Tooltip>
+                        </div> : null}
                 </div>
                 <div className="table-edit">
                     <div className="table-small table-branch">
                         <Table
                             columns={buildColsDepartment(
                                 this.handleEdit,
-                                this.handleDelete
+                                this.handleDelete,
+                                canUpdate,
+                                canDelete
                             )}
                             dataSource={this.mapData(data)}
                             scroll={{y: 'calc(100vh - 355px)'}}
@@ -189,32 +200,37 @@ class Department extends React.Component {
                         />
                     </div>
                 </div>
-                <div>
-                    <AsyncModal
-                        key={curRecordEdit}
-                        reload={false}
-                        CompomentContent={
-                            mode === 'new'
-                                ? FormNewDepartment
-                                : FormEditDepartment
-                        }
-                        visible={showModal}
-                        toggle={(submit) => this.toggle(submit)}
-                        title={
-                            mode === 'new'
-                                ? 'Thêm phòng ban mới'
-                                : 'Chỉnh sửa phòng ban'
-                        }
-                        data={{
-                            ...curRecordEdit,
-                            headManagerList: headManagerList,
-                        }}
-                        mode={mode}
-                    />
-                </div>
+                {((mode === 'new' && canAdd) || (mode === 'edit' && canUpdate)) ?
+                    <div>
+                        <AsyncModal
+                            key={curRecordEdit}
+                            reload={false}
+                            CompomentContent={
+                                mode === 'new'
+                                    ? FormNewDepartment
+                                    : FormEditDepartment
+                            }
+                            visible={showModal}
+                            toggle={(submit) => this.toggle(submit)}
+                            title={
+                                mode === 'new'
+                                    ? 'Thêm phòng ban mới'
+                                    : 'Chỉnh sửa phòng ban'
+                            }
+                            data={{
+                                ...curRecordEdit,
+                                headManagerList: headManagerList,
+                            }}
+                            mode={mode}
+                        />
+                    </div> : null}
             </React.Fragment>
         );
     }
 }
 
-export default Department;
+const mapStateToProps = (state) => ({
+    data: state.homeReducer.data
+});
+
+export default connect(mapStateToProps, null)(Department);

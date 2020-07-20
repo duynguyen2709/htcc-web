@@ -137,6 +137,7 @@ class ShiftByDateArrangement extends Component {
                 />
             );
         }
+        const {canAdd} = this.props.canAction;
 
         return _.map(data, (item) => (
             <TabPane
@@ -148,7 +149,7 @@ class ShiftByDateArrangement extends Component {
             >
                 <Tabs
                     type={'card'}
-                    tabBarExtraContent={this.renderAddShiftButton()}
+                    tabBarExtraContent={canAdd ? this.renderAddShiftButton() : null}
                     onChange={(shiftId) => this.onChangeShift(shiftId)}
                 >
                     {this.renderListShiftDetail(item.shiftDetailList)}
@@ -258,6 +259,8 @@ class ShiftByDateArrangement extends Component {
                 }
                 : null;
 
+        const {canDelete} = this.props.canAction;
+
         return (
             <>
                 <Row
@@ -283,7 +286,7 @@ class ShiftByDateArrangement extends Component {
                                         extra={
                                             this.employeeMap.has(
                                                 user.username
-                                            ) && !this.isBeforeToday(date)
+                                            ) && !this.isBeforeToday(date) && canDelete
                                                 ? this.renderButtonDelete(
                                                 item.arrangeId,
                                                 user.fullName
@@ -505,6 +508,7 @@ class ShiftByDateArrangement extends Component {
         const {showModal} = this.state;
 
         const addShiftData = this.buildAddShiftData();
+        const {canAdd} = this.props.canAction;
 
         return (
             <>
@@ -515,17 +519,18 @@ class ShiftByDateArrangement extends Component {
                 >
                     {this.renderListOffice(data)}
                 </Tabs>
-                <AsyncModal
-                    key={addShiftData}
-                    reload={false}
-                    CompomentContent={FormAddShiftByDate}
-                    visible={showModal}
-                    toggle={this.toggle}
-                    title={'Xếp ca làm việc'}
-                    data={addShiftData}
-                    mode={'new'}
-                    prop={{employeeList: employeeList}}
-                />
+                {canAdd ?
+                    <AsyncModal
+                        key={addShiftData}
+                        reload={false}
+                        CompomentContent={FormAddShiftByDate}
+                        visible={showModal}
+                        toggle={this.toggle}
+                        title={'Xếp ca làm việc'}
+                        data={addShiftData}
+                        mode={'new'}
+                        prop={{employeeList: employeeList}}
+                    /> : null}
             </>
         );
     }

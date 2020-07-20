@@ -34,7 +34,7 @@ class Login extends React.Component {
         }
 
         if (token && user) {
-            fetchUser(user.companyId, user.username, token);
+            this.props.fetchUser(user.companyId, user.username, token);
             return true;
         }
 
@@ -95,8 +95,6 @@ class Login extends React.Component {
                             </Button>
                         </>
                         : null}
-                    }
-
                 </div>
             </div>
         );

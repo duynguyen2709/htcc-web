@@ -8,6 +8,9 @@ import {checkValidEmail, checkValidPhoneNumber} from '../../utils/validate';
 import {CheckCircleOutlined, EditOutlined, QuestionCircleOutlined} from '@ant-design/icons';
 import {companyApi} from '../../api';
 import ReactLoading from "react-loading";
+import {connect} from 'react-redux';
+import {canDoAction} from "../../utils/permission";
+import {ACTION, ROLE_GROUP_KEY} from "../../constant/constant";
 
 class CompayInfo extends React.Component {
     constructor(props) {
@@ -163,6 +166,7 @@ class CompayInfo extends React.Component {
 
     render() {
         const {value, messageInvalid, readOnly, isLoading} = this.state;
+        const canUpdate = canDoAction(this.props.data, ROLE_GROUP_KEY.COMPANY, ACTION.UPDATE);
         if (isLoading) {
             return <ReactLoading type={"spinningBubbles"}
                                  color={"#4caf50"}
@@ -263,12 +267,17 @@ class CompayInfo extends React.Component {
                         </FormGroup>
                     </Col>
                 </Row>
-                <CardFooter className="text-right info">
-                    {this.renderButton()}
-                </CardFooter>
+                {canUpdate ?
+                    <CardFooter className="text-right info">
+                        {this.renderButton()}
+                    </CardFooter> : null}
             </Form>
         );
     }
 }
 
-export default CompayInfo;
+const mapStateToProps = (state) => ({
+    data: state.homeReducer.data
+});
+
+export default connect(mapStateToProps, null)(CompayInfo);

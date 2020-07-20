@@ -34,14 +34,10 @@ export const fetchUser = (companyId, username, token) => (dispatch) =>
     });
 
 export const logout = () => async (dispatch) =>
-    new Promise(async (resolve, reject) => {
-        const res = await authApi.logout();
-        if (res.returnCode === 1) {
-            localStorage.removeItem(TOKEN);
-            localStorage.removeItem(USER);
-            dispatch(doLogout());
-            dispatch(doClearData());
-        } else {
-            reject(dispatch(doLoginFail(res.returnMessage)));
-        }
+    new Promise((resolve, reject) => {
+        authApi.logout();
+        localStorage.removeItem(TOKEN);
+        localStorage.removeItem(USER);
+        dispatch(doLogout());
+        dispatch(doClearData());
     });

@@ -1,33 +1,19 @@
-import React, { Component } from 'react';
-import {
-    Avatar,
-    Button,
-    Col,
-    Collapse,
-    Empty,
-    Popconfirm,
-    Row,
-    Tabs,
-    Tooltip,
-} from 'antd';
-import {
-    DeleteOutlined,
-    PlusSquareOutlined,
-    QuestionCircleOutlined,
-} from '@ant-design/icons';
+import React, {Component} from 'react';
+import {Avatar, Button, Col, Collapse, Empty, Popconfirm, Row, Tabs, Tooltip,} from 'antd';
+import {DeleteOutlined, PlusSquareOutlined, QuestionCircleOutlined,} from '@ant-design/icons';
 // import { Button as ReactStrapButton, CardFooter } from 'reactstrap';
-import { shiftArrangement } from '../../api';
+import {shiftArrangement} from '../../api';
 import * as _ from 'lodash';
 import moment from 'moment';
 import EmployeeInfoCard from './EmployeeInfoCard';
-import { store } from 'react-notifications-component';
-import { createNotify } from '../../utils/notifier';
+import {store} from 'react-notifications-component';
+import {createNotify} from '../../utils/notifier';
 import ReactLoading from 'react-loading';
 import AsyncModal from '../Modal/AsyncModal';
 import FormAddFixedShiftArrangement from '../Form/ShiftArrangement/FormAddFixedShiftArrangement';
 
-const { TabPane } = Tabs;
-const { Panel } = Collapse;
+const {TabPane} = Tabs;
+const {Panel} = Collapse;
 
 class FixedShiftArrangement extends Component {
     constructor(props) {
@@ -71,7 +57,7 @@ class FixedShiftArrangement extends Component {
             return;
         }
 
-        let { lastClickArr, officeShiftMap, currentOfficeId } = this.state;
+        let {lastClickArr, officeShiftMap, currentOfficeId} = this.state;
         currentOfficeId = data[0].officeId;
         officeShiftMap.set(currentOfficeId, data[0].shiftDetailList[0].shiftId);
         lastClickArr.push({
@@ -110,7 +96,7 @@ class FixedShiftArrangement extends Component {
     };
 
     convertEmployeeListToMap = () => {
-        const { employeeList } = this.state;
+        const {employeeList} = this.state;
 
         const employeeMap = new Map();
         for (let employee of employeeList) {
@@ -124,27 +110,28 @@ class FixedShiftArrangement extends Component {
         if (_.isEmpty(data)) {
             return (
                 <Empty
-                    style={{ marginTop: '50px' }}
+                    style={{marginTop: '50px'}}
                     description={
-                        <span style={{ color: 'rgba(0, 0, 0, 0.65)' }}>
+                        <span style={{color: 'rgba(0, 0, 0, 0.65)'}}>
                             Chưa cài đặt danh sách chi nhánh
                         </span>
                     }
                 />
             );
         }
+        const {canAdd} = this.props.canAction;
 
         return _.map(data, (item) => (
             <TabPane
                 className={'shift-office'}
-                style={{ overflow: 'auto' }}
+                style={{overflow: 'auto'}}
                 tab={<span>{item.officeId}</span>}
                 key={item.officeId}
                 size={'small'}
             >
                 <Tabs
                     type={'card'}
-                    tabBarExtraContent={this.renderAddShiftButton()}
+                    tabBarExtraContent={canAdd ? this.renderAddShiftButton() : null}
                     onChange={(shiftId) => this.onChangeShift(shiftId)}
                 >
                     {this.renderListShiftDetail(item.shiftDetailList)}
@@ -157,7 +144,7 @@ class FixedShiftArrangement extends Component {
         return (
             <div className="btn-new-small">
                 <Tooltip placement="left" title={'Xếp ca'}>
-                    <PlusSquareOutlined onClick={this.openModal} />
+                    <PlusSquareOutlined onClick={this.openModal}/>
                 </Tooltip>
             </div>
         );
@@ -167,9 +154,9 @@ class FixedShiftArrangement extends Component {
         if (_.isEmpty(shiftDetailList)) {
             return (
                 <Empty
-                    style={{ marginTop: '50px' }}
+                    style={{marginTop: '50px'}}
                     description={
-                        <span style={{ color: 'rgba(0, 0, 0, 0.65)' }}>
+                        <span style={{color: 'rgba(0, 0, 0, 0.65)'}}>
                             Chưa cài đặt ca làm việc
                         </span>
                     }
@@ -180,7 +167,7 @@ class FixedShiftArrangement extends Component {
         return _.map(shiftDetailList, (item) => (
             <TabPane
                 className={'shift-detail'}
-                style={{ overflow: 'auto' }}
+                style={{overflow: 'auto'}}
                 tab={`${item.shiftName} (${item.shiftTime})`}
                 key={item.shiftId}
                 size={'small'}
@@ -201,7 +188,7 @@ class FixedShiftArrangement extends Component {
                     {_.map(detailList, (item) => (
                         <TabPane
                             className={'shift-date-detail'}
-                            style={{ overflow: 'auto' }}
+                            style={{overflow: 'auto'}}
                             tab={_.upperFirst(
                                 moment(item.date, 'YYYYMMDD').format('dddd')
                             )}
@@ -232,9 +219,9 @@ class FixedShiftArrangement extends Component {
         if (_.isEmpty(employeeList)) {
             return (
                 <Empty
-                    style={{ marginTop: '50px' }}
+                    style={{marginTop: '50px'}}
                     description={
-                        <span style={{ color: 'rgba(0, 0, 0, 0.65)' }}>
+                        <span style={{color: 'rgba(0, 0, 0, 0.65)'}}>
                             Không có ca làm việc hôm nay
                         </span>
                     }
@@ -245,9 +232,11 @@ class FixedShiftArrangement extends Component {
         const overFlowHeightStyle =
             employeeList.length > 8
                 ? {
-                      height: 'calc(100vh - 350px)',
-                  }
+                    height: 'calc(100vh - 350px)',
+                }
                 : null;
+
+        const {canDelete} = this.props.canAction;
 
         return (
             <>
@@ -272,16 +261,16 @@ class FixedShiftArrangement extends Component {
                                         key={`panel_${user.username}_${index}`}
                                         showArrow={false}
                                         extra={
-                                            this.employeeMap.has(user.username)
+                                            this.employeeMap.has(user.username) && canDelete
                                                 ? this.renderButtonDelete(
-                                                      item.arrangeId,
-                                                      user.fullName
-                                                  )
+                                                item.arrangeId,
+                                                user.fullName
+                                                )
                                                 : null
                                         }
                                         header={
                                             <>
-                                                <Avatar src={user.avatar} />
+                                                <Avatar src={user.avatar}/>
                                                 <span
                                                     style={{
                                                         color:
@@ -294,7 +283,7 @@ class FixedShiftArrangement extends Component {
                                             </>
                                         }
                                     >
-                                        <EmployeeInfoCard info={user} />
+                                        <EmployeeInfoCard info={user}/>
                                     </Panel>
                                 </Collapse>
                             </Col>
@@ -311,7 +300,7 @@ class FixedShiftArrangement extends Component {
             <>
                 <Popconfirm
                     title={message}
-                    icon={<QuestionCircleOutlined />}
+                    icon={<QuestionCircleOutlined/>}
                     okText="Đồng ý"
                     cancelText="Huỷ"
                     onConfirm={(event) => {
@@ -325,7 +314,7 @@ class FixedShiftArrangement extends Component {
                         onClick={(event) => {
                             event.stopPropagation();
                         }}
-                        icon={<DeleteOutlined />}
+                        icon={<DeleteOutlined/>}
                         size={'small'}
                     />
                 </Popconfirm>
@@ -363,9 +352,9 @@ class FixedShiftArrangement extends Component {
     };
 
     onChangeOffice = (officeId) => {
-        const { officeShiftMap } = this.state;
+        const {officeShiftMap} = this.state;
         if (!officeShiftMap.has(officeId)) {
-            const { data } = this.props;
+            const {data} = this.props;
             let shiftId = '';
 
             for (let obj of data) {
@@ -389,8 +378,8 @@ class FixedShiftArrangement extends Component {
     };
 
     onChangeShift = (shiftId) => {
-        const { currentOfficeId, officeShiftMap } = this.state;
-        let { lastClickArr } = this.state;
+        const {currentOfficeId, officeShiftMap} = this.state;
+        let {lastClickArr} = this.state;
         let obj = null;
         let index = -1;
 
@@ -404,7 +393,7 @@ class FixedShiftArrangement extends Component {
                 _.isEqual(currentOfficeId, element.officeId) &&
                 _.isEqual(shiftId, element.shiftId)
             ) {
-                obj = { ...element };
+                obj = {...element};
                 break;
             }
         }
@@ -427,7 +416,7 @@ class FixedShiftArrangement extends Component {
     };
 
     onChangeWeekDay = (weekDay) => {
-        const { lastClickArr } = this.state;
+        const {lastClickArr} = this.state;
         if (_.isEmpty(lastClickArr)) {
             const officeId = this.state.currentOfficeId;
             const shiftId = this.state.officeShiftMap.get(officeId);
@@ -436,8 +425,7 @@ class FixedShiftArrangement extends Component {
                 shiftId,
                 weekDay
             })
-        }
-        else {
+        } else {
             const lastClick = lastClickArr[lastClickArr.length - 1];
             lastClick.weekDay = weekDay;
             lastClickArr.pop();
@@ -450,7 +438,7 @@ class FixedShiftArrangement extends Component {
     };
 
     buildAddShiftData = () => {
-        const { currentOfficeId, officeShiftMap, lastClickArr } = this.state;
+        const {currentOfficeId, officeShiftMap, lastClickArr} = this.state;
         const shiftId = officeShiftMap.get(currentOfficeId);
         let weekDay = 2;
 
@@ -483,10 +471,11 @@ class FixedShiftArrangement extends Component {
     };
 
     render() {
-        const { data, employeeList } = this.props;
-        const { showModal } = this.state;
+        const {data, employeeList} = this.props;
+        const {showModal} = this.state;
 
         const addShiftData = this.buildAddShiftData();
+        const {canAdd} = this.props.canAction;
 
         return (
             <>
@@ -497,17 +486,18 @@ class FixedShiftArrangement extends Component {
                 >
                     {this.renderListOffice(data)}
                 </Tabs>
-                <AsyncModal
-                    key={addShiftData}
-                    reload={false}
-                    CompomentContent={FormAddFixedShiftArrangement}
-                    visible={showModal}
-                    toggle={this.toggle}
-                    title={'Xếp ca làm việc'}
-                    data={addShiftData}
-                    mode={'new'}
-                    prop={{ employeeList: employeeList }}
-                />
+                {canAdd ?
+                    <AsyncModal
+                        key={addShiftData}
+                        reload={false}
+                        CompomentContent={FormAddFixedShiftArrangement}
+                        visible={showModal}
+                        toggle={this.toggle}
+                        title={'Xếp ca làm việc'}
+                        data={addShiftData}
+                        mode={'new'}
+                        prop={{employeeList: employeeList}}
+                    /> : null}
             </>
         );
     }

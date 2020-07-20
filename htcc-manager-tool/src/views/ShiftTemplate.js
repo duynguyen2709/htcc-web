@@ -1,23 +1,21 @@
-import React, { Component } from 'react';
-import { Card, Col, Empty, Input, Popconfirm, Row, Tooltip, Tree } from 'antd';
-import {
-    DeleteTwoTone,
-    PlusSquareOutlined,
-    QuestionCircleOutlined,
-} from '@ant-design/icons';
-import { shiftTemplate, workScheduleApi } from '../api';
-import { store } from 'react-notifications-component';
-import { createNotify } from '../utils/notifier';
+import React, {Component} from 'react';
+import {Card, Col, Empty, Input, Popconfirm, Row, Tooltip, Tree} from 'antd';
+import {DeleteTwoTone, PlusSquareOutlined, QuestionCircleOutlined,} from '@ant-design/icons';
+import {connect} from 'react-redux';
+import {shiftTemplate, workScheduleApi} from '../api';
+import {store} from 'react-notifications-component';
+import {createNotify} from '../utils/notifier';
 import * as _ from 'lodash';
 import ReactLoading from 'react-loading';
-import { WEEK_DAYS } from '../constant/constant';
+import {ACTION, ROLE_GROUP_KEY, WEEK_DAYS} from '../constant/constant';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import AsyncModal from '../components/Modal/AsyncModal';
 import FormNewShiftTemplate from '../components/Form/FormNewShiftTemplate';
+import {canDoAction} from "../utils/permission";
 
-const { Search } = Input;
+const {Search} = Input;
 
 class ShiftTemplate extends Component {
     constructor(props) {
@@ -185,7 +183,7 @@ class ShiftTemplate extends Component {
             if (value.length === 0) {
                 const leafNode = {
                     title: (
-                        <span style={{ color: '#d9534f' }}>
+                        <span style={{color: '#d9534f'}}>
                             Không có ca làm việc
                         </span>
                     ),
@@ -200,7 +198,7 @@ class ShiftTemplate extends Component {
 
             _.forEach(value, (shift, index) => {
                 const title = (
-                    <ul style={{ paddingLeft: 0, listStyle: 'none' }}>
+                    <ul style={{paddingLeft: 0, listStyle: 'none'}}>
                         <li className="text-dark" key={index + shift.officeId}>
                             - Chi nhánh: {shift.officeId}
                         </li>
@@ -235,7 +233,7 @@ class ShiftTemplate extends Component {
             <>
                 <Popconfirm
                     title={message}
-                    icon={<QuestionCircleOutlined />}
+                    icon={<QuestionCircleOutlined/>}
                     okText="Đồng ý"
                     cancelText="Huỷ"
                     onConfirm={(event) => {
@@ -261,7 +259,7 @@ class ShiftTemplate extends Component {
     };
 
     render() {
-        const { data, showModal, isLoading } = this.state;
+        const {data, showModal, isLoading} = this.state;
 
         if (isLoading) {
             return (
@@ -287,6 +285,9 @@ class ShiftTemplate extends Component {
             slidesToScroll: 1,
         };
 
+        const canAdd = canDoAction(this.props.data, ROLE_GROUP_KEY.SHIFT_TEMPLATE, ACTION.CREATE);
+        const canDelete = canDoAction(this.props.data, ROLE_GROUP_KEY.SHIFT_TEMPLATE, ACTION.DELETE);
+
         return (
             <div className="content shift-template">
                 <div className="table-wrappers tabs-small">
@@ -311,32 +312,33 @@ class ShiftTemplate extends Component {
                                     />
                                 </div>
                             </Col>
-                            <Col>
-                                <div
-                                    className="btn-new"
-                                    style={{
-                                        margin: 'auto',
-                                        marginLeft: '30px',
-                                        marginRight: '60px',
-                                    }}
-                                >
-                                    <Tooltip
-                                        placement="bottomLeft"
-                                        title={'Thêm ca'}
+                            {canAdd ?
+                                <Col>
+                                    <div
+                                        className="btn-new"
+                                        style={{
+                                            margin: 'auto',
+                                            marginLeft: '30px',
+                                            marginRight: '60px',
+                                        }}
                                     >
-                                        <PlusSquareOutlined
-                                            onClick={() => this.toggle(false)}
-                                        />
-                                    </Tooltip>
-                                </div>
-                            </Col>
+                                        <Tooltip
+                                            placement="bottomLeft"
+                                            title={'Thêm ca'}
+                                        >
+                                            <PlusSquareOutlined
+                                                onClick={() => this.toggle(false)}
+                                            />
+                                        </Tooltip>
+                                    </div>
+                                </Col> : null}
                         </Row>
                     </div>
                     {_.isEmpty(data) ? (
                         <Empty
-                            style={{ marginTop: '50px' }}
+                            style={{marginTop: '50px'}}
                             description={
-                                <span style={{ color: 'rgba(0, 0, 0, 0.65)' }}>
+                                <span style={{color: 'rgba(0, 0, 0, 0.65)'}}>
                                     Không có ca mẫu
                                 </span>
                             }
@@ -374,9 +376,9 @@ class ShiftTemplate extends Component {
                                             }}
                                             hoverable
                                             key={item.templateId}
-                                            extra={this.renderButtonDelete(
+                                            extra={canDelete ? this.renderButtonDelete(
                                                 item.templateId
-                                            )}
+                                            ) : null}
                                         >
                                             <Tree
                                                 blockNode
@@ -392,21 +394,26 @@ class ShiftTemplate extends Component {
                         </div>
                     )}
                 </div>
-                <AsyncModal
-                    width={'50%'}
-                    key={'shift-template-modal'}
-                    reload={false}
-                    CompomentContent={FormNewShiftTemplate}
-                    visible={showModal}
-                    toggle={(submit) => this.toggle(submit)}
-                    title={'Thêm ca mẫu mới'}
-                    data={{
-                        officeShiftTimeMap: this.state.officeShiftTimeMap,
-                    }}
-                />
+                {canAdd ?
+                    <AsyncModal
+                        width={'50%'}
+                        key={'shift-template-modal'}
+                        reload={false}
+                        CompomentContent={FormNewShiftTemplate}
+                        visible={showModal}
+                        toggle={(submit) => this.toggle(submit)}
+                        title={'Thêm ca mẫu mới'}
+                        data={{
+                            officeShiftTimeMap: this.state.officeShiftTimeMap,
+                        }}
+                    /> : null}
             </div>
         );
     }
 }
 
-export default ShiftTemplate;
+const mapStateToProps = (state) => ({
+    data: state.homeReducer.data,
+});
+
+export default connect(mapStateToProps, null)(ShiftTemplate);

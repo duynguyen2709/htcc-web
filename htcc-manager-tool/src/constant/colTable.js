@@ -180,7 +180,7 @@ export const columnsHistoryResponse = [
     },
 ];
 
-export const buildColsComplaint = (funcEdit, cols = []) => {
+export const buildColsComplaint = (funcEdit, canUpdate, cols = []) => {
     return [
         {
             title: 'Mã khiếu nại',
@@ -278,7 +278,7 @@ export const buildColsComplaint = (funcEdit, cols = []) => {
                                 <Tag className="float-left" color="warning">
                                     Chưa xử lý
                                 </Tag>
-                                <EditOutlined
+                                {canUpdate ? <EditOutlined
                                     style={{
                                         color: '#52c41a',
                                         fontSize: '25px',
@@ -286,7 +286,7 @@ export const buildColsComplaint = (funcEdit, cols = []) => {
                                     }}
                                     className="float-right"
                                     onClick={() => funcEdit(record)}
-                                />
+                                /> : null}
                             </span>
                         );
                     case 1:
@@ -299,7 +299,7 @@ export const buildColsComplaint = (funcEdit, cols = []) => {
     ];
 };
 
-export const buildColsLeaveRequest = (funcEdit, cols = []) => {
+export const buildColsLeaveRequest = (funcEdit, canUpdate, cols = []) => {
     return [
         {
             title: 'Mã đơn',
@@ -402,7 +402,7 @@ export const buildColsLeaveRequest = (funcEdit, cols = []) => {
                                 <Tag className="float-left" color="warning">
                                     Chưa xử lý
                                 </Tag>
-                                <EditOutlined
+                                {canUpdate ? <EditOutlined
                                     style={{
                                         color: '#52c41a',
                                         fontSize: '25px',
@@ -410,7 +410,7 @@ export const buildColsLeaveRequest = (funcEdit, cols = []) => {
                                     }}
                                     className="float-right"
                                     onClick={() => funcEdit(record)}
-                                />
+                                /> : null}
                             </span>
                         );
                     case 1:
@@ -455,7 +455,7 @@ const renderListContent = (list = []) => {
     return <ul style={{ padding: 15 }}>{listContent}</ul>;
 };
 
-export const buildColsBranch = (funcEdit, funcDelete, cols = []) => [
+export const buildColsBranch = (funcEdit, funcDelete, canUpdate, canDelete, cols = []) => [
     {
         title: 'Mã chi nhánh',
         dataIndex: 'officeId',
@@ -529,42 +529,44 @@ export const buildColsBranch = (funcEdit, funcDelete, cols = []) => [
         render: (o, record) => {
             return (
                 <React.Fragment>
-                    <Tooltip placement="left" title={'Chỉnh sửa'}>
-                        <EditOutlined
-                            style={{
-                                color: '#52c41a',
-                                fontSize: '25px',
-                                float: 'left',
-                            }}
-                            onClick={() => funcEdit(record)}
-                        />
-                    </Tooltip>
-                    <Popconfirm
-                        title="Bạn chắc chắn muốn xoá？"
-                        icon={
-                            <ExclamationCircleTwoTone twoToneColor="#d9534f" />
-                        }
-                        okText="Đồng ý"
-                        cancelText="Huỷ"
-                        onConfirm={() => funcDelete(record)}
-                    >
-                        <Tooltip placement="left" title={'Xoá'}>
-                            <DeleteTwoTone
-                                twoToneColor="#ff7875"
+                    {canUpdate ?
+                        <Tooltip placement="left" title={'Chỉnh sửa'}>
+                            <EditOutlined
                                 style={{
+                                    color: '#52c41a',
                                     fontSize: '25px',
-                                    float: 'right',
+                                    float: 'left',
                                 }}
+                                onClick={() => funcEdit(record)}
                             />
-                        </Tooltip>
-                    </Popconfirm>
+                        </Tooltip> : null}
+                    {canDelete ?
+                        <Popconfirm
+                            title="Bạn chắc chắn muốn xoá？"
+                            icon={
+                                <ExclamationCircleTwoTone twoToneColor="#d9534f"/>
+                            }
+                            okText="Đồng ý"
+                            cancelText="Huỷ"
+                            onConfirm={() => funcDelete(record)}
+                        >
+                            <Tooltip placement="left" title={'Xoá'}>
+                                <DeleteTwoTone
+                                    twoToneColor="#ff7875"
+                                    style={{
+                                        fontSize: '25px',
+                                        float: 'right',
+                                    }}
+                                />
+                            </Tooltip>
+                        </Popconfirm> : null}
                 </React.Fragment>
             );
         },
     },
 ];
 
-export const buildColsCategoryDayOff = (funcEdit, funcDelete, cols = []) => [
+export const buildColsCategoryDayOff = (funcEdit, funcDelete, canUpdate, cols = []) => [
     {
         title: 'Danh mục',
         dataIndex: 'category',
@@ -602,44 +604,44 @@ export const buildColsCategoryDayOff = (funcEdit, funcDelete, cols = []) => [
         width: '70px',
         fixed: 'right',
         render: (o, record) => {
-            return (
-                <React.Fragment>
-                    <Tooltip placement="left" title={'Chỉnh sửa'}>
-                        <EditOutlined
-                            style={{
-                                color: '#52c41a',
-                                fontSize: '25px',
-                                float: 'left',
-                            }}
-                            onClick={() => funcEdit(record)}
-                        />
-                    </Tooltip>
-                    <Popconfirm
-                        title="Bạn chắc chắn muốn xoá？"
-                        icon={
-                            <ExclamationCircleTwoTone twoToneColor="#d9534f" />
-                        }
-                        okText="Đồng ý"
-                        cancelText="Huỷ"
-                        onConfirm={() => funcDelete(record)}
-                    >
-                        <Tooltip placement="left" title={'Xoá'}>
-                            <DeleteTwoTone
-                                twoToneColor="#ff7875"
+            return (canUpdate ?
+                    <React.Fragment>
+                        <Tooltip placement="left" title={'Chỉnh sửa'}>
+                            <EditOutlined
                                 style={{
+                                    color: '#52c41a',
                                     fontSize: '25px',
-                                    float: 'right',
+                                    float: 'left',
                                 }}
+                                onClick={() => funcEdit(record)}
                             />
                         </Tooltip>
-                    </Popconfirm>
-                </React.Fragment>
+                        <Popconfirm
+                            title="Bạn chắc chắn muốn xoá？"
+                            icon={
+                                <ExclamationCircleTwoTone twoToneColor="#d9534f"/>
+                            }
+                            okText="Đồng ý"
+                            cancelText="Huỷ"
+                            onConfirm={() => funcDelete(record)}
+                        >
+                            <Tooltip placement="left" title={'Xoá'}>
+                                <DeleteTwoTone
+                                    twoToneColor="#ff7875"
+                                    style={{
+                                        fontSize: '25px',
+                                        float: 'right',
+                                    }}
+                                />
+                            </Tooltip>
+                        </Popconfirm>
+                    </React.Fragment> : null
             );
         },
     },
 ];
 
-export const buildColsDayOffLevel = (funcEdit, funcDelete, cols = []) => [
+export const buildColsDayOffLevel = (funcEdit, funcDelete, canUpdate, cols = []) => [
     {
         title: 'Cấp bậc',
         dataIndex: 'level',
@@ -659,44 +661,44 @@ export const buildColsDayOffLevel = (funcEdit, funcDelete, cols = []) => [
         width: '70px',
         fixed: 'right',
         render: (o, record) => {
-            return (
-                <React.Fragment>
-                    <Tooltip placement="left" title={'Chỉnh sửa'}>
-                        <EditOutlined
-                            style={{
-                                color: '#52c41a',
-                                fontSize: '25px',
-                                float: 'left',
-                            }}
-                            onClick={() => funcEdit(record)}
-                        />
-                    </Tooltip>
-                    <Popconfirm
-                        title="Bạn chắc chắn muốn xoá？"
-                        icon={
-                            <ExclamationCircleTwoTone twoToneColor="#d9534f" />
-                        }
-                        okText="Đồng ý"
-                        cancelText="Huỷ"
-                        onConfirm={() => funcDelete(record)}
-                    >
-                        <Tooltip placement="left" title={'Xoá'}>
-                            <DeleteTwoTone
-                                twoToneColor="#ff7875"
+            return (canUpdate ?
+                    <React.Fragment>
+                        <Tooltip placement="left" title={'Chỉnh sửa'}>
+                            <EditOutlined
                                 style={{
+                                    color: '#52c41a',
                                     fontSize: '25px',
-                                    float: 'right',
+                                    float: 'left',
                                 }}
+                                onClick={() => funcEdit(record)}
                             />
                         </Tooltip>
-                    </Popconfirm>
-                </React.Fragment>
+                        <Popconfirm
+                            title="Bạn chắc chắn muốn xoá？"
+                            icon={
+                                <ExclamationCircleTwoTone twoToneColor="#d9534f"/>
+                            }
+                            okText="Đồng ý"
+                            cancelText="Huỷ"
+                            onConfirm={() => funcDelete(record)}
+                        >
+                            <Tooltip placement="left" title={'Xoá'}>
+                                <DeleteTwoTone
+                                    twoToneColor="#ff7875"
+                                    style={{
+                                        fontSize: '25px',
+                                        float: 'right',
+                                    }}
+                                />
+                            </Tooltip>
+                        </Popconfirm>
+                    </React.Fragment> : null
             );
         },
     },
 ];
 
-export const buildColsDepartment = (funcEdit, funcDelete, cols = []) => [
+export const buildColsDepartment = (funcEdit, funcDelete, canUpdate, canDelete, cols = []) => [
     {
         title: 'Mã phòng ban',
         dataIndex: 'department',
@@ -721,38 +723,40 @@ export const buildColsDepartment = (funcEdit, funcDelete, cols = []) => [
         render: (o, record) => {
             return (
                 <React.Fragment>
-                    <EditOutlined
-                        style={{
-                            color: '#52c41a',
-                            fontSize: '25px',
-                            float: 'left',
-                        }}
-                        onClick={() => funcEdit(record)}
-                    />
-                    <Popconfirm
-                        title="Bạn chắc chắn muốn xoá？"
-                        icon={
-                            <ExclamationCircleTwoTone twoToneColor="#d9534f" />
-                        }
-                        okText="Đồng ý"
-                        cancelText="Huỷ"
-                        onConfirm={() => funcDelete(record)}
-                    >
-                        <DeleteTwoTone
-                            twoToneColor="#ff7875"
+                    {canUpdate ?
+                        <EditOutlined
                             style={{
+                                color: '#52c41a',
                                 fontSize: '25px',
-                                float: 'right',
+                                float: 'left',
                             }}
-                        />
-                    </Popconfirm>
+                            onClick={() => funcEdit(record)}
+                        /> : null}
+                    {canDelete ?
+                        <Popconfirm
+                            title="Bạn chắc chắn muốn xoá？"
+                            icon={
+                                <ExclamationCircleTwoTone twoToneColor="#d9534f"/>
+                            }
+                            okText="Đồng ý"
+                            cancelText="Huỷ"
+                            onConfirm={() => funcDelete(record)}
+                        >
+                            <DeleteTwoTone
+                                twoToneColor="#ff7875"
+                                style={{
+                                    fontSize: '25px',
+                                    float: 'right',
+                                }}
+                            />
+                        </Popconfirm> : null}
                 </React.Fragment>
             );
         },
     },
 ];
 
-export const buildColsShift = (funcEdit, funcDelete, cols = []) => [
+export const buildColsShift = (funcEdit, funcDelete, canUpdate, canDelete, cols = []) => [
     {
         title: 'Mã ca',
         dataIndex: 'shiftId',
@@ -856,50 +860,52 @@ export const buildColsShift = (funcEdit, funcDelete, cols = []) => [
         render: (o, record) => {
             return (
                 <>
-                    <Tooltip placement="left" title={'Chỉnh sửa'}>
-                        <EditOutlined
-                            style={{
-                                color: '#52c41a',
-                                fontSize: '25px',
-                                float: 'left',
-                            }}
-                            onClick={() => funcEdit(record)}
-                        />
-                    </Tooltip>
-                    <Popconfirm
-                        title={
-                            <>
-                                <div>
-                                    Xóa ca làm việc sẽ xóa cả lịch xếp ca tương
-                                    ứng
-                                </div>
-                                <div>Bạn chắc chắn muốn xoá ？</div>
-                            </>
-                        }
-                        icon={
-                            <ExclamationCircleTwoTone twoToneColor="#d9534f" />
-                        }
-                        okText="Đồng ý"
-                        cancelText="Huỷ"
-                        onConfirm={() => funcDelete(record)}
-                    >
-                        <Tooltip placement="left" title={'Xoá'}>
-                            <DeleteTwoTone
-                                twoToneColor="#ff7875"
+                    {canUpdate ?
+                        <Tooltip placement="left" title={'Chỉnh sửa'}>
+                            <EditOutlined
                                 style={{
+                                    color: '#52c41a',
                                     fontSize: '25px',
-                                    float: 'right',
+                                    float: 'left',
                                 }}
+                                onClick={() => funcEdit(record)}
                             />
-                        </Tooltip>
-                    </Popconfirm>
+                        </Tooltip> : null}
+                    {canDelete ?
+                        <Popconfirm
+                            title={
+                                <>
+                                    <div>
+                                        Xóa ca làm việc sẽ xóa cả lịch xếp ca tương
+                                        ứng
+                                    </div>
+                                    <div>Bạn chắc chắn muốn xoá ？</div>
+                                </>
+                            }
+                            icon={
+                                <ExclamationCircleTwoTone twoToneColor="#d9534f"/>
+                            }
+                            okText="Đồng ý"
+                            cancelText="Huỷ"
+                            onConfirm={() => funcDelete(record)}
+                        >
+                            <Tooltip placement="left" title={'Xoá'}>
+                                <DeleteTwoTone
+                                    twoToneColor="#ff7875"
+                                    style={{
+                                        fontSize: '25px',
+                                        float: 'right',
+                                    }}
+                                />
+                            </Tooltip>
+                        </Popconfirm> : null}
                 </>
             );
         },
     },
 ];
 
-export const buildColsConfigDay = (funcEdit, funcDelete, cols = []) => [
+export const buildColsConfigDay = (funcEdit, funcDelete, canUpdate, canDelete, cols = []) => [
     ...cols,
     {
         title: 'Đi làm',
@@ -922,35 +928,37 @@ export const buildColsConfigDay = (funcEdit, funcDelete, cols = []) => [
         render: (o, record) => {
             return (
                 <>
-                    <Tooltip placement="left" title={'Chỉnh sửa'}>
-                        <EditOutlined
-                            style={{
-                                color: '#52c41a',
-                                fontSize: '25px',
-                                float: 'left',
-                            }}
-                            onClick={() => funcEdit(record)}
-                        />
-                    </Tooltip>
-                    <Popconfirm
-                        title="Bạn chắc chắn muốn xoá？"
-                        icon={
-                            <ExclamationCircleTwoTone twoToneColor="#d9534f" />
-                        }
-                        okText="Đồng ý"
-                        cancelText="Huỷ"
-                        onConfirm={() => funcDelete(record)}
-                    >
-                        <Tooltip placement="left" title={'Xoá'}>
-                            <DeleteTwoTone
-                                twoToneColor="#ff7875"
+                    {canUpdate ?
+                        <Tooltip placement="left" title={'Chỉnh sửa'}>
+                            <EditOutlined
                                 style={{
+                                    color: '#52c41a',
                                     fontSize: '25px',
-                                    float: 'right',
+                                    float: 'left',
                                 }}
+                                onClick={() => funcEdit(record)}
                             />
-                        </Tooltip>
-                    </Popconfirm>
+                        </Tooltip> : null}
+                    {canDelete ?
+                        <Popconfirm
+                            title="Bạn chắc chắn muốn xoá？"
+                            icon={
+                                <ExclamationCircleTwoTone twoToneColor="#d9534f"/>
+                            }
+                            okText="Đồng ý"
+                            cancelText="Huỷ"
+                            onConfirm={() => funcDelete(record)}
+                        >
+                            <Tooltip placement="left" title={'Xoá'}>
+                                <DeleteTwoTone
+                                    twoToneColor="#ff7875"
+                                    style={{
+                                        fontSize: '25px',
+                                        float: 'right',
+                                    }}
+                                />
+                            </Tooltip>
+                        </Popconfirm> : null}
                 </>
             );
         },
