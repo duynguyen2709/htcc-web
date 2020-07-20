@@ -25,6 +25,9 @@ class Sidebar extends React.Component {
     }
 
     componentDidMount() {
+        if (_.isEmpty(this.props.data) && !this.props.isLoadingHome) {
+            this.props.getDataHome();
+        }
         if (navigator.platform.indexOf('Win') > -1) {
             ps = new PerfectScrollbar(this.refs.sidebar, {
                 suppressScrollX: true,
@@ -44,9 +47,11 @@ class Sidebar extends React.Component {
     };
 
     renderNotification = (name) => {
-        const {pendingLeavingRequest, pendingComplaint} = this.props.data || {
+        const {pendingLeavingRequest, pendingComplaint, pendingCheckIn} = this
+            .props.data || {
             pendingLeavingRequest: 0,
             pendingComplaint: 0,
+            pendingCheckIn: 0,
         };
 
         switch (name) {
@@ -54,6 +59,8 @@ class Sidebar extends React.Component {
                 return <NumberNotify value={pendingComplaint}/>;
             case 'Nghỉ Phép':
                 return <NumberNotify value={pendingLeavingRequest}/>;
+            case 'Điểm Danh':
+                return <NumberNotify value={pendingCheckIn}/>;
             default:
                 return null;
         }
@@ -64,10 +71,14 @@ class Sidebar extends React.Component {
         const list = {
             canManageOffices: canManageOffices,
         };
+        let canView = true;
+        if (prop.rule) {
+            canView = prop.rule(this.props.data);
+        }
 
         if (!_.isEmpty(prop.childs)) {
             if (!_.isEmpty(list[prop.id])) {
-                return (
+                return (canView ?
                     <li
                         className={
                             this.activeRoute(prop.path) +
@@ -82,37 +93,38 @@ class Sidebar extends React.Component {
                             prop={prop}
                             activeRoute={this.activeRoute}
                         />
-                    </li>
+                    </li> : null
                 );
             }
 
             return null;
         }
 
-        return (
-            <li
-                className={
-                    this.activeRoute(prop.path) +
-                    (prop.pro ? ' active-pro' : '')
-                }
-                key={`${key}-${prop.path}`}
-            >
-                <NavLink
-                    to={prop.path}
-                    className="nav-link"
-                    activeClassName="active"
-                    onClick={this.props.toggleSidebar}
+        return (canView ?
+                <li
+                    className={
+                        this.activeRoute(prop.path) +
+                        (prop.pro ? ' active-pro' : '')
+                    }
+                    key={`${key}-${prop.path}`}
                 >
-                    <i className={prop.icon} id={prop.id}/>
-                    <p className="menu-item">{prop.name}</p>
-                    {this.renderNotification(prop.name)}
-                </NavLink>
-            </li>
+                    <NavLink
+                        to={prop.path}
+                        className="nav-link"
+                        activeClassName="active"
+                        onClick={this.props.toggleSidebar}
+                    >
+                        <i className={prop.icon} id={prop.id}/>
+                        <p className="menu-item">{prop.name}</p>
+                        {this.renderNotification(prop.name)}
+                    </NavLink>
+                </li> : null
         );
     };
 
     render() {
-        const {bgColor, routes, logo, data, getDataHome} = this.props;
+        const {bgColor, routes, logo} = this.props;
+
         const logoImg = (
             <a href="/" className="simple-text logo-mini">
                 <div className="logo-img">
@@ -123,10 +135,6 @@ class Sidebar extends React.Component {
         const logoText = (
             <div className="simple-text logo-normal">HTCC - Manager</div>
         );
-
-        if (_.isEmpty(data)) {
-            getDataHome();
-        }
 
         return (
             <div id="sidebar" className="sidebar" data={bgColor}>
@@ -167,6 +175,7 @@ Sidebar.propTypes = {
 
 const mapStateToProps = (state) => ({
     data: state.homeReducer.data,
+    isLoadingHome: state.homeReducer.isLoadingHome,
 });
 
 const mapDispatchToProps = (dispatch) => ({

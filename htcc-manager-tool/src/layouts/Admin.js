@@ -55,20 +55,23 @@ class Admin extends React.Component {
             this.refs.mainPanel.scrollTop = 0;
         }
 
-        const sidebarClasses = document.getElementById('sidebar').classList;
-        if (sidebarClasses.value.includes('sidebar-minimized')) {
-            const listContents = document.getElementsByClassName('content');
+        const sidebar = document.getElementById('sidebar');
+        if (sidebar) {
+            const sidebarClasses = document.getElementById('sidebar').classList;
+            if (sidebarClasses.value.includes('sidebar-minimized')) {
+                const listContents = document.getElementsByClassName('content');
 
-            _.forEach(listContents, (item) => {
-                item.classList.add('content-expand');
-            });
+                _.forEach(listContents, (item) => {
+                    item.classList.add('content-expand');
+                });
+            }
         }
     }
 
     // this function opens and closes the sidebar on small devices
     toggleSidebar = () => {
         document.documentElement.classList.toggle('nav-open');
-        this.setState({sidebarOpened: !this.state.sidebarOpened});
+        this.setState({ sidebarOpened: !this.state.sidebarOpened });
     };
 
     getRoutes = (listRoutes) => {
@@ -91,7 +94,7 @@ class Admin extends React.Component {
     };
 
     handleBgClick = (color) => {
-        this.setState({backgroundColor: color});
+        this.setState({ backgroundColor: color });
     };
 
     getBrandText = (path, routes = []) => {
@@ -101,7 +104,7 @@ class Admin extends React.Component {
             } else if (
                 this.props.location.pathname.indexOf(routes[i].path) !== -1
             ) {
-                return routes[i].brand;
+                return routes[i].name;
             }
         }
         return '';
@@ -158,7 +161,6 @@ class Admin extends React.Component {
                         <Switch>
                             <AuthRequiredRoute>
                                 {this.getRoutes(routes)}
-                                {/* <Redirect from="/" to="/thong-ke" />{' '} */}
                             </AuthRequiredRoute>
                         </Switch>
                     </div>
@@ -167,5 +169,4 @@ class Admin extends React.Component {
         );
     }
 }
-
 export default Admin;

@@ -1,201 +1,294 @@
 import React from 'react';
 import TableAttendance from '../components/Table/Attendance';
-import {genColTableAttendance} from '../utils/dataTable';
 import moment from 'moment';
 import CalendarTool from '../components/Tool/CalendarTool';
-import {Input} from 'antd';
+import { Table, Tabs, Badge, Modal } from 'antd';
 import * as _ from 'lodash';
+import { HistoryOutlined, FileProtectOutlined } from '@ant-design/icons';
+import ApprovalAttendance from './ApprovalAttendance';
+import {
+    buildColsHistoryCheckin,
+    MONTHS,
+    buildColsDetailHistoryCheckin,
+} from '../constant/colTable';
+import { addKeyPropsToTable, isLeapYear } from '../utils/dataTable';
+import { checkinApi } from '../api';
+import { store } from 'react-notifications-component';
+import { createNotify } from '../utils/notifier';
+import { Button } from 'reactstrap';
 
-const {Search} = Input;
+const { TabPane } = Tabs;
 
 class Attendance extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            data: [],
+            dataResolved: null,
+            dataNotResolve: null,
             columns: [],
-            month: moment().month() + 1
+            month: moment('202006', 'YYYYMM'),
+            currTab: 'approval',
+            dataHistorCheckin: [],
+            showDetail: false,
+            dataDetail: [],
         };
 
-        this.data = [];
+        this.dataResolved = [];
+        this.dataNotResolve = [];
     }
 
     componentDidMount() {
-        const columns = genColTableAttendance(30);
-        const data = [
-            {
-                key: 1,
-                code: 'antt',
-                attendance: {
-                    1: {
-                        checkin: moment(new Date(0, 0, 0, 8, 12, 29, 0)).format('HH:mm'),
-                        checkout: moment(new Date(0, 0, 0, 18, 12, 29, 0)).format('HH:mm')
-                    },
-                    3: {
-                        checkin: moment(new Date(0, 0, 0, 9, 15, 29, 0)).format('HH:mm'),
-                        checkout: moment(new Date(0, 0, 0, 18, 12, 29, 0)).format('HH:mm')
-                    },
-                    7: {
-                        checkin: moment(new Date(0, 0, 0, 8, 55, 29, 0)).format('HH:mm'),
-                        checkout: moment(new Date(0, 0, 0, 18, 12, 29, 0)).format('HH:mm')
-                    }
-                }
-            },
-            {
-                key: 2,
-                code: 'hieunt',
-                attendance: {
-                    4: {
-                        checkin: moment(new Date(0, 0, 0, 9, 0, 29, 0)).format('HH:mm'),
-                        checkout: moment(new Date(0, 0, 0, 18, 12, 29, 0)).format('HH:mm')
-                    },
-                    5: {
-                        checkin: moment(new Date(0, 0, 0, 9, 22, 29, 0)).format('HH:mm'),
-                        checkout: moment(new Date(0, 0, 0, 18, 11, 29, 0)).format('HH:mm')
-                    },
-                    6: {
-                        checkin: moment(new Date(0, 0, 0, 9, 30, 29, 0)).format('HH:mm'),
-                        checkout: moment(new Date(0, 0, 0, 18, 18, 29, 0)).format('HH:mm')
-                    }
-                }
-            },
-            {
-                key: 3,
-                code: 'antt22',
-                attendance: {
-                    1: {
-                        checkin: moment(new Date(0, 0, 0, 9, 12, 29, 0)).format('HH:mm'),
-                        checkout: moment(new Date(0, 0, 0, 18, 12, 29, 0)).format('HH:mm')
-                    },
-                    2: {
-                        checkin: moment(new Date(0, 0, 0, 8, 50, 29, 0)).format('HH:mm'),
-                        checkout: moment(new Date(0, 0, 0, 18, 8, 29, 0)).format('HH:mm')
-                    },
-                    3: {
-                        checkin: moment(new Date(0, 0, 0, 9, 12, 29, 0)).format('HH:mm'),
-                        checkout: moment(new Date(0, 0, 0, 18, 12, 29, 0)).format('HH:mm')
-                    }
-                }
-            },
-            {
-                key: 4,
-                code: 'hieunt22',
-                attendance: {
-                    4: {
-                        checkin: moment(new Date(0, 0, 0, 8, 57, 29, 0)).format('HH:mm'),
-                        checkout: moment(new Date(0, 0, 0, 18, 12, 29, 0)).format('HH:mm')
-                    },
-                    18: {
-                        checkin: moment(new Date(0, 0, 0, 8, 12, 29, 0)).format('HH:mm'),
-                        checkout: moment(new Date(0, 0, 0, 18, 12, 29, 0)).format('HH:mm')
-                    },
-                    19: {
-                        checkin: moment(new Date(0, 0, 0, 8, 20, 29, 0)).format('HH:mm'),
-                        checkout: moment(new Date(0, 0, 0, 18, 12, 29, 0)).format('HH:mm')
-                    }
-                }
-            },
-            {
-                key: 5,
-                code: 'antt12',
-                attendance: {
-                    7: {
-                        checkin: moment(new Date(0, 0, 0, 18, 12, 29, 0)).format('HH:mm'),
-                        checkout: moment(new Date(0, 0, 0, 18, 12, 29, 0)).format('HH:mm')
-                    },
-                    8: {
-                        checkin: moment(new Date(0, 0, 0, 18, 12, 29, 0)).format('HH:mm'),
-                        checkout: moment(new Date(0, 0, 0, 18, 12, 29, 0)).format('HH:mm')
-                    },
-                    18: {
-                        checkin: moment(new Date(0, 0, 0, 18, 12, 29, 0)).format('HH:mm'),
-                        checkout: moment(new Date(0, 0, 0, 18, 12, 29, 0)).format('HH:mm')
-                    }
-                }
-            },
-            {
-                key: 6,
-                code: 'hieunt',
-                attendance: {
-                    1: {
-                        checkin: moment(new Date(0, 0, 0, 18, 12, 29, 0)).format('HH:mm'),
-                        checkout: moment(new Date(0, 0, 0, 18, 12, 29, 0)).format('HH:mm')
-                    },
-                    2: {
-                        checkin: moment(new Date(0, 0, 0, 18, 12, 29, 0)).format('HH:mm'),
-                        checkout: moment(new Date(0, 0, 0, 18, 12, 29, 0)).format('HH:mm')
-                    },
-                    3: {
-                        checkin: moment(new Date(0, 0, 0, 18, 12, 29, 0)).format('HH:mm'),
-                        checkout: moment(new Date(0, 0, 0, 18, 12, 29, 0)).format('HH:mm')
-                    }
-                }
-            },
-            {
-                key: 7,
-                code: 'hieunt1',
-                attendance: {
-                    1: {
-                        checkin: moment(new Date(0, 0, 0, 18, 12, 29, 0)).format('HH:mm'),
-                        checkout: moment(new Date(0, 0, 0, 18, 12, 29, 0)).format('HH:mm')
-                    },
-                    5: {
-                        checkin: moment(new Date(0, 0, 0, 18, 12, 29, 0)).format('HH:mm'),
-                        checkout: moment(new Date(0, 0, 0, 18, 12, 29, 0)).format('HH:mm')
-                    },
-                    8: {
-                        checkin: moment(new Date(0, 0, 0, 18, 12, 29, 0)).format('HH:mm'),
-                        checkout: moment(new Date(0, 0, 0, 18, 12, 29, 0)).format('HH:mm')
-                    }
-                }
-            }
-        ];
+        const { month } = this.state;
 
-        this.data = _.cloneDeep(data);
-
-        this.setState({
-            data,
-            columns
-        });
+        this.getListApprovedCheckin(month.format('202006'));
+        this.getListPendingCheckin(month.format('202006'));
     }
 
-    onSearch = e => {
-        let {data} = this.state;
-        data = _.filter(this.data, ele => ele.code.includes(e.target.value));
+    getListApprovedCheckin = (yyyyMM) => {
+        checkinApi
+            .getListApprovedCheckin(yyyyMM)
+            .then((res) => {
+                if (res.returnCode === 1) {
+                    this.setState({
+                        dataHistorCheckin: this.parseDataHistoryCheckin(
+                            res.data.detailMap
+                        ),
+                    });
+                } else {
+                    store.addNotification(
+                        createNotify('danger', res.returnMessage)
+                    );
+                }
+            })
+            .catch((err) => {
+                store.addNotification(
+                    createNotify('danger', JSON.stringify(err))
+                );
+            });
+    };
+
+    parseDataHistoryCheckin = (data) => {
+        const result = [];
+        const months = MONTHS;
+        const month = this.state.month.month();
+
+        if (isLeapYear(this.state.month.year())) {
+            months[2] = 29;
+        }
+
+        _.forEach(_.keys(data), (elem) => {
+            const item = {
+                username: elem,
+            };
+
+            for (let i = 1; i <= months[month]; i++) {
+                let day = i;
+
+                if (_.floor(i / 10) === 0) {
+                    day = `0${i}`;
+                }
+
+                const key = `${this.state.month.format('YYYYMM')}${day}`;
+                item[day] = data[elem][key];
+            }
+
+            result.push(item);
+        });
+
+        return result;
+    };
+
+    getListPendingCheckin = (yyyyMM) => {
+        checkinApi
+            .getListPendingCheckin(yyyyMM)
+            .then((res) => {
+                if (res.returnCode === 1) {
+                    let dataResolved = _.filter(
+                        res.data,
+                        (item) => item.status !== 2
+                    );
+
+                    let dataNotResolve = _.filter(
+                        res.data,
+                        (item) => item.status === 2
+                    );
+
+                    dataResolved = addKeyPropsToTable('', dataResolved);
+                    dataNotResolve = addKeyPropsToTable('', dataNotResolve);
+
+                    this.setState({
+                        dataNotResolve,
+                        dataResolved,
+                        isLoading: false,
+                    });
+
+                    this.dataNotResolve = dataNotResolve;
+                    this.dataResolved = dataResolved;
+                } else {
+                    store.addNotification(
+                        createNotify('danger', res.returnMessage)
+                    );
+                }
+            })
+            .catch((err) => {
+                store.addNotification(
+                    createNotify('danger', JSON.stringify(err))
+                );
+            });
+    };
+
+    updateData = (month) => {
         this.setState({
-            data
+            month,
+            dataNotResolve: null,
+            dataResolved: null,
+        });
+        this.getListPendingCheckin(month.format('yyyyMM'));
+    };
+
+    onChangeTab = (key) => {
+        this.setState({
+            currTab: key,
         });
     };
 
-    updateData = month => {
-        //update data
+    funcHandleOnHover = (key, id) => {
+        const actionEye = key === 'on' ? 'remove' : 'add';
+        const elemEye = document.getElementById(id);
 
+        if (elemEye) {
+            elemEye.classList[actionEye]('hide');
+            const actionContent = key === 'out' ? 'remove' : 'add';
+
+            document
+                .getElementById(`content-${id}`)
+                .classList[actionContent]('cell-blur');
+        }
+    };
+
+    funcShowDetail = (data, id) => {
+        console.log('data', data);
         this.setState({
-            month
+            showDetail: true,
+            dataDetail: data,
+        });
+        this.funcHandleOnHover('out', id);
+    };
+
+    handleCancel = () => {
+        this.setState({
+            showDetail: false,
+            dataDetail: [],
         });
     };
 
     render() {
-        const {data, columns} = this.state;
+        const {
+            dataNotResolve,
+            dataResolved,
+            month,
+            dataHistorCheckin,
+        } = this.state;
+
         return (
             <div className="content">
                 <div className="table-wrapper">
-                    <div className="header-table clearfix">
-                        <div className="float-left">
-                            <Search
-                                className="form-control bor-radius"
-                                placeholder="Tìm mã nhân viên"
-                                style={{width: 300}}
-                                onChange={this.onSearch}
-                            />
-                        </div>
-                        <div className="tool-calendar float-right">
-                            <CalendarTool update={this.updateData}/>
-                        </div>
-                    </div>
-                    <div className="table-edit">
-                        <TableAttendance data={data} columns={columns}/>
-                    </div>
+                    <Tabs
+                        onTabClick={(key) => this.onChangeTab(key)}
+                        defaultActiveKey={this.state.currTab}
+                        tabBarExtraContent={
+                            <div className="header-table clearfix">
+                                <div className="tool-calendar float-right">
+                                    <CalendarTool update={this.updateData} />
+                                </div>
+                                <Badge
+                                    style={{ marginRight: 20 }}
+                                    status="success"
+                                    text="Vào ca"
+                                />
+                                <Badge
+                                    style={{ marginRight: 20 }}
+                                    status="blue"
+                                    text="Tan ca"
+                                />
+                                <Badge
+                                    style={{ marginRight: 50 }}
+                                    status="red"
+                                    text="Vào ca trễ"
+                                />
+                            </div>
+                        }
+                    >
+                        <TabPane
+                            style={{ overflow: 'auto' }}
+                            tab={
+                                <span>
+                                    <FileProtectOutlined />
+                                    Đơn phê duyệt
+                                </span>
+                            }
+                            key="approval"
+                        >
+                            <div className="table-edit">
+                                <div className="table-small table-complaint">
+                                    <ApprovalAttendance
+                                        dataNotResolve={dataNotResolve}
+                                        dataResolved={dataResolved}
+                                    />
+                                </div>
+                            </div>
+                        </TabPane>
+                        <TabPane
+                            style={{ overflow: 'auto' }}
+                            tab={
+                                <span>
+                                    <HistoryOutlined />
+                                    Lịch sử điểm danh
+                                </span>
+                            }
+                            key="history"
+                        >
+                            <div className="table-edit">
+                                <div className="table-small table-complaint">
+                                    <TableAttendance
+                                        data={dataHistorCheckin}
+                                        columns={buildColsHistoryCheckin(
+                                            month,
+                                            this.funcHandleOnHover,
+                                            this.funcShowDetail
+                                        )}
+                                    />
+                                </div>
+                            </div>
+                            <div>
+                                <Modal
+                                    className="modal-detail-checkin "
+                                    title="Chi tiết lịch sử chấm công"
+                                    visible={this.state.showDetail}
+                                    onCancel={this.handleCancel}
+                                    footer={[
+                                        <Button
+                                            className="btn-custom"
+                                            color="primary"
+                                            type="button"
+                                            onClick={this.handleCancel}
+                                        >
+                                            Đóng
+                                        </Button>,
+                                    ]}
+                                >
+                                    <Table
+                                        columns={buildColsDetailHistoryCheckin()}
+                                        dataSource={this.state.dataDetail}
+                                        pagination={false}
+                                        scroll={{
+                                            y: 'calc(100vh - 450px)',
+                                        }}
+                                    />
+                                </Modal>
+                            </div>
+                        </TabPane>
+                    </Tabs>
                 </div>
             </div>
         );

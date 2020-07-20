@@ -1,15 +1,29 @@
 import React from 'react';
-import {Button, CardFooter, Col, Form, FormFeedback, FormGroup, Input, Row,} from 'reactstrap';
+import {
+    Button,
+    CardFooter,
+    Col,
+    Form,
+    FormFeedback,
+    FormGroup,
+    Input,
+    Row,
+} from 'reactstrap';
 import * as _ from 'lodash';
-import {store} from 'react-notifications-component';
-import {createNotify} from '../../utils/notifier';
-import {CheckCircleOutlined, MinusCircleOutlined, PlusSquareOutlined, QuestionCircleOutlined} from '@ant-design/icons';
-import {Card, Collapse, Empty, Popconfirm, Select, Tooltip} from 'antd';
-import {shiftTemplate} from '../../api';
-import {WEEK_DAYS} from "../../constant/constant";
+import { store } from 'react-notifications-component';
+import { createNotify } from '../../utils/notifier';
+import {
+    CheckCircleOutlined,
+    MinusCircleOutlined,
+    PlusSquareOutlined,
+    QuestionCircleOutlined,
+} from '@ant-design/icons';
+import { Card, Collapse, Empty, Popconfirm, Select, Tooltip } from 'antd';
+import { shiftTemplate } from '../../api';
+import { WEEK_DAYS } from '../../constant/constant';
 
-const {Panel} = Collapse;
-const {Option} = Select;
+const { Panel } = Collapse;
+const { Option } = Select;
 
 const RESET_TOUCH = {
     templateName: false,
@@ -29,7 +43,7 @@ class FormNewShiftTemplate extends React.Component {
                     5: [],
                     6: [],
                     7: [],
-                }
+                },
             },
             messageInvalid: {
                 templateName: 'Vui lòng nhập tên ca',
@@ -37,20 +51,20 @@ class FormNewShiftTemplate extends React.Component {
             touch: {
                 ...RESET_TOUCH,
             },
-            isLoading: false
+            isLoading: false,
         };
     }
 
     handleOnChange = (e) => {
-        const {value: valueInput, name} = e.target;
-        let {value, touch} = this.state;
+        const { value: valueInput, name } = e.target;
+        let { value, touch } = this.state;
 
         value[name] = valueInput;
         touch[name] = true;
 
         this.setState({
-            value: {...value},
-            touch: {...touch},
+            value: { ...value },
+            touch: { ...touch },
         });
     };
 
@@ -66,15 +80,15 @@ class FormNewShiftTemplate extends React.Component {
                     5: [],
                     6: [],
                     7: [],
-                }
+                },
             },
-            touch: {...RESET_TOUCH},
+            touch: { ...RESET_TOUCH },
         });
     };
 
     convertDataList = () => {
-        const {value} = this.state;
-        const {shiftDetailMap} = value;
+        const { value } = this.state;
+        const { shiftDetailMap } = value;
         const result = [];
 
         for (let entry in shiftDetailMap) {
@@ -83,7 +97,7 @@ class FormNewShiftTemplate extends React.Component {
                 const obj = {
                     weekDay: entry,
                     shiftId: detail.shiftId,
-                    officeId: detail.officeId
+                    officeId: detail.officeId,
                 };
 
                 result.push(obj);
@@ -93,9 +107,8 @@ class FormNewShiftTemplate extends React.Component {
         return result;
     };
 
-
     handleSubmit = (e) => {
-        const {value} = this.state;
+        const { value } = this.state;
         if (_.isEmpty(value.templateName)) {
             store.addNotification(
                 createNotify('warning', 'Tên ca không được rỗng')
@@ -113,12 +126,12 @@ class FormNewShiftTemplate extends React.Component {
 
         const data = {
             templateName: value.templateName,
-            shiftTimeList: dataList
+            shiftTimeList: dataList,
         };
 
         this.props.loading();
         this.setState({
-            isLoading: true
+            isLoading: true,
         });
 
         shiftTemplate
@@ -132,7 +145,7 @@ class FormNewShiftTemplate extends React.Component {
                     this.props.stopLoading();
 
                     this.setState({
-                        isLoading: false
+                        isLoading: false,
                     });
                     store.addNotification(
                         createNotify('danger', res.returnMessage)
@@ -143,36 +156,36 @@ class FormNewShiftTemplate extends React.Component {
                 this.props.stopLoading();
 
                 this.setState({
-                    isLoading: false
+                    isLoading: false,
                 });
 
                 console.error(err);
                 store.addNotification(
-                    createNotify('danger', 'Hệ thống có lỗi. Vui lòng thử lại sau.')
+                    createNotify(
+                        'danger',
+                        'Hệ thống có lỗi. Vui lòng thử lại sau.'
+                    )
                 );
-            })
+            });
     };
 
     renderButtonAddShift = (weekDay, firstOfficeId) => {
-        return <Tooltip
-            placement="bottomLeft"
-            title={'Thêm ca'}
-        >
-            <PlusSquareOutlined onClick={
-                (event) => {
-                    event.stopPropagation();
-                    this.addShiftDetailRow(weekDay, firstOfficeId);
-                }
-
-            }
-            />
-        </Tooltip>
+        return (
+            <Tooltip placement="bottomLeft" title={'Thêm ca'}>
+                <PlusSquareOutlined
+                    onClick={(event) => {
+                        event.stopPropagation();
+                        this.addShiftDetailRow(weekDay, firstOfficeId);
+                    }}
+                />
+            </Tooltip>
+        );
     };
 
     addShiftDetailRow = (weekDay, firstOfficeId) => {
-        const {value} = this.state;
-        const {shiftDetailMap} = value;
-        const {officeShiftTimeMap} = this.props.data;
+        const { value } = this.state;
+        const { shiftDetailMap } = value;
+        const { officeShiftTimeMap } = this.props.data;
         const key = new Date().getTime();
         let shiftId = '';
 
@@ -190,15 +203,15 @@ class FormNewShiftTemplate extends React.Component {
         this.setState({
             value: {
                 ...value,
-                shiftDetailMap: shiftDetailMap
-            }
+                shiftDetailMap: shiftDetailMap,
+            },
         });
     };
 
     getListShiftByOffice = (weekDay, rowKey) => {
-        const {value} = this.state;
-        const {officeShiftTimeMap} = this.props.data;
-        const {shiftDetailMap} = value;
+        const { value } = this.state;
+        const { officeShiftTimeMap } = this.props.data;
+        const { shiftDetailMap } = value;
         const list = shiftDetailMap[weekDay];
         for (let shift of list) {
             if (_.isEqual(shift.key, rowKey)) {
@@ -210,22 +223,25 @@ class FormNewShiftTemplate extends React.Component {
     };
 
     deleteRow = (weekDay, rowKey) => {
-        const {value} = this.state;
-        const {shiftDetailMap} = value;
-        shiftDetailMap[weekDay] = _.filter(shiftDetailMap[weekDay], (ele) => !_.isEqual(ele.key, rowKey));
+        const { value } = this.state;
+        const { shiftDetailMap } = value;
+        shiftDetailMap[weekDay] = _.filter(
+            shiftDetailMap[weekDay],
+            (ele) => !_.isEqual(ele.key, rowKey)
+        );
 
         this.setState({
             value: {
                 ...value,
-                shiftDetailMap: shiftDetailMap
-            }
+                shiftDetailMap: shiftDetailMap,
+            },
         });
     };
 
     onChangeOffice = (weekDay, rowKey, officeId) => {
-        const {value} = this.state;
-        const {shiftDetailMap} = value;
-        const {officeShiftTimeMap} = this.props.data;
+        const { value } = this.state;
+        const { shiftDetailMap } = value;
+        const { officeShiftTimeMap } = this.props.data;
 
         const list = shiftDetailMap[weekDay];
         for (let shift of list) {
@@ -243,14 +259,14 @@ class FormNewShiftTemplate extends React.Component {
         this.setState({
             value: {
                 ...value,
-                shiftDetailMap: shiftDetailMap
-            }
+                shiftDetailMap: shiftDetailMap,
+            },
         });
     };
 
     onChangeShift = (weekDay, rowKey, shiftId) => {
-        const {value} = this.state;
-        const {shiftDetailMap} = value;
+        const { value } = this.state;
+        const { shiftDetailMap } = value;
 
         const list = shiftDetailMap[weekDay];
         for (let shift of list) {
@@ -262,14 +278,14 @@ class FormNewShiftTemplate extends React.Component {
         this.setState({
             value: {
                 ...value,
-                shiftDetailMap: shiftDetailMap
-            }
+                shiftDetailMap: shiftDetailMap,
+            },
         });
     };
 
     getShiftValue = (weekDay, rowKey) => {
-        const {value} = this.state;
-        const {shiftDetailMap} = value;
+        const { value } = this.state;
+        const { shiftDetailMap } = value;
         const list = shiftDetailMap[weekDay];
         for (let shift of list) {
             if (_.isEqual(shift.key, rowKey)) {
@@ -279,16 +295,19 @@ class FormNewShiftTemplate extends React.Component {
     };
 
     render() {
-        const {value, messageInvalid, touch} = this.state;
-        const {officeShiftTimeMap} = this.props.data;
+        const { value, messageInvalid, touch } = this.state;
+        const { officeShiftTimeMap } = this.props.data;
         if (_.isEmpty(officeShiftTimeMap)) {
-            return <Empty
-                style={{marginTop: '20px'}}
-                description={
-                    <span style={{color: 'rgba(0, 0, 0, 0.65)'}}>
-                        Không có dữ liệu
-                    </span>
-                }/>
+            return (
+                <Empty
+                    style={{ marginTop: '20px' }}
+                    description={
+                        <span style={{ color: 'rgba(0, 0, 0, 0.65)' }}>
+                            Không có dữ liệu
+                        </span>
+                    }
+                />
+            );
         }
 
         let firstOfficeId = '';
@@ -311,7 +330,8 @@ class FormNewShiftTemplate extends React.Component {
                                 value={value.templateName}
                                 onChange={this.handleOnChange}
                                 invalid={
-                                    touch.templateName && _.isEmpty(value.templateName)
+                                    touch.templateName &&
+                                    _.isEmpty(value.templateName)
                                 }
                             />
                             <FormFeedback invalid={'true'}>
@@ -323,74 +343,198 @@ class FormNewShiftTemplate extends React.Component {
                 <Row>
                     <Col md="12">
                         <FormGroup>
-                            <Card title={"Chi tiết ca"}
-                                  className={"card-add-shift-template"}
+                            <Card
+                                title={'Chi tiết ca'}
+                                className={'card-add-shift-template'}
                             >
                                 {_.map(value.shiftDetailMap, (val, key) => {
-                                    return <Collapse
-                                        key={key}
-                                        defaultActiveKey={`panel__${key}`}
-                                        style={{marginTop: 8}}
-                                    >
-                                        <Panel key={`panel__${key}`}
-                                               extra={this.renderButtonAddShift(key, firstOfficeId)}
-                                               header={WEEK_DAYS[key]}>
-                                            {_.map(value.shiftDetailMap[key], (item, index) => {
-                                                const rowKey = item.key;
+                                    return (
+                                        <Collapse
+                                            key={key}
+                                            defaultActiveKey={`panel__${key}`}
+                                            style={{ marginTop: 8 }}
+                                        >
+                                            <Panel
+                                                key={`panel__${key}`}
+                                                extra={this.renderButtonAddShift(
+                                                    key,
+                                                    firstOfficeId
+                                                )}
+                                                header={WEEK_DAYS[key]}
+                                            >
+                                                {_.map(
+                                                    value.shiftDetailMap[key],
+                                                    (item, index) => {
+                                                        const rowKey = item.key;
 
-                                                return <Row key={`${key}_${index}`}>
-                                                    <Col md={2} style={{marginTop: 10, marginRight: -20}}>
-                                                        <span>Chi nhánh</span>
-                                                    </Col>
-                                                    <Col md={3}>
-                                                        <Select
-                                                            allowClear={false}
-                                                            defaultValue={firstOfficeId}
-                                                            style={{width: '100%'}}
-                                                            className="bor-radius"
-                                                            onChange={(officeId) => this.onChangeOffice(key, rowKey, officeId)}
-                                                        >
-                                                            {_.map(officeShiftTimeMap, (shiftList, officeId) => {
-                                                                return <Option key={`${key}_${index}_${officeId}}`}
-                                                                               className=" bor-radius" value={officeId}>
-                                                                    {officeId}
-                                                                </Option>
-                                                            })}
-                                                        </Select>
-                                                    </Col>
-                                                    <Col md={1} style={{marginTop: 10, marginRight: -20}}>
-                                                        <span>Ca</span>
-                                                    </Col>
-                                                    <Col md={6} style={{display: 'flex'}}>
-                                                        <Col md={11}>
-                                                            <Select
-                                                                allowClear={false}
-                                                                value={this.getShiftValue(key, rowKey)}
-                                                                onChange={(shiftId) => this.onChangeShift(key, rowKey, shiftId)}
-                                                                style={{width: '100%'}}
-                                                                className="bor-radius"
+                                                        return (
+                                                            <Row
+                                                                key={`${key}_${index}`}
                                                             >
-                                                                {_.map(this.getListShiftByOffice(key, rowKey), (shift, subIndex) => {
-                                                                    return <Option
-                                                                        key={`${key}_${index}_${shift.shiftId}}`}
-                                                                        className=" bor-radius"
-                                                                        value={shift.shiftId}>
-                                                                        {shift.shiftName} ({shift.shiftId})
-                                                                        _ {shift.startTime}-{shift.endTime}
-                                                                    </Option>
-                                                                })}
-                                                            </Select>
-                                                        </Col>
-                                                        <Col md={1}>
-                                                            <MinusCircleOutlined style={{margin: 10}}
-                                                                                 onClick={() => this.deleteRow(key, rowKey)}
-                                                            />
-                                                        </Col>
-                                                    </Col>
-                                                </Row>
-                                            })}
-                                        </Panel>
-                                    </Collapse>
+                                                                <Col
+                                                                    md={2}
+                                                                    style={{
+                                                                        marginTop: 10,
+                                                                        marginRight: -20,
+                                                                    }}
+                                                                >
+                                                                    <span>
+                                                                        Chi
+                                                                        nhánh
+                                                                    </span>
+                                                                </Col>
+                                                                <Col md={3}>
+                                                                    <Select
+                                                                        allowClear={
+                                                                            false
+                                                                        }
+                                                                        defaultValue={
+                                                                            firstOfficeId
+                                                                        }
+                                                                        style={{
+                                                                            width:
+                                                                                '100%',
+                                                                        }}
+                                                                        className="bor-radius"
+                                                                        onChange={(
+                                                                            officeId
+                                                                        ) =>
+                                                                            this.onChangeOffice(
+                                                                                key,
+                                                                                rowKey,
+                                                                                officeId
+                                                                            )
+                                                                        }
+                                                                    >
+                                                                        {_.map(
+                                                                            officeShiftTimeMap,
+                                                                            (
+                                                                                shiftList,
+                                                                                officeId
+                                                                            ) => {
+                                                                                return (
+                                                                                    <Option
+                                                                                        key={`${key}_${index}_${officeId}}`}
+                                                                                        className=" bor-radius"
+                                                                                        value={
+                                                                                            officeId
+                                                                                        }
+                                                                                    >
+                                                                                        {
+                                                                                            officeId
+                                                                                        }
+                                                                                    </Option>
+                                                                                );
+                                                                            }
+                                                                        )}
+                                                                    </Select>
+                                                                </Col>
+                                                                <Col
+                                                                    md={1}
+                                                                    style={{
+                                                                        marginTop: 10,
+                                                                        marginRight: -20,
+                                                                    }}
+                                                                >
+                                                                    <span>
+                                                                        Ca
+                                                                    </span>
+                                                                </Col>
+                                                                <Col
+                                                                    md={6}
+                                                                    style={{
+                                                                        display:
+                                                                            'flex',
+                                                                    }}
+                                                                >
+                                                                    <Col
+                                                                        md={11}
+                                                                    >
+                                                                        <Select
+                                                                            allowClear={
+                                                                                false
+                                                                            }
+                                                                            value={this.getShiftValue(
+                                                                                key,
+                                                                                rowKey
+                                                                            )}
+                                                                            onChange={(
+                                                                                shiftId
+                                                                            ) =>
+                                                                                this.onChangeShift(
+                                                                                    key,
+                                                                                    rowKey,
+                                                                                    shiftId
+                                                                                )
+                                                                            }
+                                                                            style={{
+                                                                                width:
+                                                                                    '100%',
+                                                                            }}
+                                                                            className="bor-radius"
+                                                                        >
+                                                                            {_.map(
+                                                                                this.getListShiftByOffice(
+                                                                                    key,
+                                                                                    rowKey
+                                                                                ),
+                                                                                (
+                                                                                    shift,
+                                                                                    subIndex
+                                                                                ) => {
+                                                                                    return (
+                                                                                        <Option
+                                                                                            key={`${key}_${index}_${shift.shiftId}}`}
+                                                                                            className=" bor-radius"
+                                                                                            value={
+                                                                                                shift.shiftId
+                                                                                            }
+                                                                                        >
+                                                                                            {
+                                                                                                shift.shiftName
+                                                                                            }{' '}
+                                                                                            (
+                                                                                            {
+                                                                                                shift.shiftId
+                                                                                            }
+
+                                                                                            )
+                                                                                            _{' '}
+                                                                                            {
+                                                                                                shift.startTime
+                                                                                            }
+
+                                                                                            -
+                                                                                            {
+                                                                                                shift.endTime
+                                                                                            }
+                                                                                        </Option>
+                                                                                    );
+                                                                                }
+                                                                            )}
+                                                                        </Select>
+                                                                    </Col>
+                                                                    <Col md={1}>
+                                                                        <MinusCircleOutlined
+                                                                            style={{
+                                                                                margin: 10,
+                                                                            }}
+                                                                            onClick={() =>
+                                                                                this.deleteRow(
+                                                                                    key,
+                                                                                    rowKey
+                                                                                )
+                                                                            }
+                                                                        />
+                                                                    </Col>
+                                                                </Col>
+                                                            </Row>
+                                                        );
+                                                    }
+                                                )}
+                                            </Panel>
+                                        </Collapse>
+                                    );
                                 })}
                             </Card>
                         </FormGroup>
@@ -399,7 +543,7 @@ class FormNewShiftTemplate extends React.Component {
                 <CardFooter className="text-right info">
                     <Popconfirm
                         title="Bạn chắc chắn thêm mới？"
-                        icon={<QuestionCircleOutlined/>}
+                        icon={<QuestionCircleOutlined />}
                         okText="Đồng ý"
                         cancelText="Huỷ"
                         onConfirm={() => this.handleSubmit()}

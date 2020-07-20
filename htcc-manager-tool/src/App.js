@@ -1,12 +1,12 @@
 import React from 'react';
-import { createHashHistory } from 'history';
-import { Router, Route, Switch } from 'react-router-dom';
-import AdminLayout from './layouts/Admin';
+import {createHashHistory} from 'history';
+import {Route, Router, Switch} from 'react-router-dom';
+import AdminWrapper from './layouts/AdminWrapper';
 import Login from './views/Login';
 
 const hist = createHashHistory();
 
-const App = () => {
+const App = (props) => {
     return (
         <Router history={hist}>
             <Switch>
@@ -18,7 +18,7 @@ const App = () => {
                 />
                 <Route
                     path="/"
-                    render={(props) => <AdminLayout {...props} />}
+                    render={(props) => <AdminWrapper {...props} />}
                     key="other"
                 />
             </Switch>

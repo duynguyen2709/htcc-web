@@ -47,8 +47,12 @@
 
 .ant-modal-body {
     min-height: 150px;
-    max-height: 610px;
+    max-height: 600px;
     overflow: auto;
+}
+
+.ant-modal {
+    padding-bottom: 0;
 }
 
 .ant-select-single .ant-select-selector {
@@ -125,18 +129,18 @@
 }
 
 .ant-picker-cell-selected:hover
-.ant-picker-calendar-date
-.ant-picker-calendar-date-value,
+    .ant-picker-calendar-date
+    .ant-picker-calendar-date-value,
 .ant-picker-calendar-full
-.ant-picker-panel
-.ant-picker-cell-selected
-.ant-picker-calendar-date-today
-.ant-picker-calendar-date-value,
+    .ant-picker-panel
+    .ant-picker-cell-selected
+    .ant-picker-calendar-date-today
+    .ant-picker-calendar-date-value,
 .ant-picker-calendar-full
-.ant-picker-panel
-.ant-picker-cell-selected:hover
-.ant-picker-calendar-date-today
-.ant-picker-calendar-date-value {
+    .ant-picker-panel
+    .ant-picker-cell-selected:hover
+    .ant-picker-calendar-date-today
+    .ant-picker-calendar-date-value {
     color: #237804;
 }
 
@@ -192,12 +196,18 @@
 }
 
 .slick-slider {
-    padding: 0 30px !important;
+    padding: 0 10px !important;
 }
 
-.slick-prev:before, .slick-next:before {
+.slick-prev:before,
+.slick-next:before {
     font-size: 30px !important;
-    color: black !important;
+    color: #4a9c51 !important;
+}
+
+.slick-list {
+    height: calc(100vh - 190px);
+    /* overflow-y: auto !important; */
 }
 
 .card-shift-template {
@@ -207,7 +217,8 @@
     border-radius: 15px;
     margin: 5px;
     width: 95% !important;
-    box-shadow: 0 19px 38px rgba(0,0,0,0.20), 0 15px 12px rgba(0,0,0,0.15);
+    box-shadow: 0 15px 30px rgba(25, 125, 22, 0.15),
+        0 15px 12px rgba(25, 125, 22, 0.1);
 }
 
 .card-add-shift-template {
@@ -216,4 +227,204 @@
     -moz-border-radius: 10px;
     border-radius: 10px;
     margin-top: 10px;
+}
+
+.slick-list h4 {
+    color: black;
+}
+
+.list-noti-bell .ant-list-item {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    min-width: 300px;
+    max-width: 550px;
+}
+
+.list-noti-bell .not-read {
+    background-color: rgba(0, 255, 89, 0.08);
+}
+
+.list-noti-bell .has-read {
+    background-color: white;
+}
+
+.list-noti-bell .description {
+    margin-bottom: 0;
+    font-size: 13px;
+}
+
+.list-noti-bell .ant-list-item-meta {
+    padding: 5px;
+}
+
+.ant-table-pagination.ant-pagination {
+    margin-top: 20px;
+}
+
+.cell-checkin {
+    width: 200px;
+    height: 80px;
+}
+
+.cell-blur {
+    opacity: 0.2;
+}
+
+.eye-detail-checkin {
+    position: absolute;
+    top: 40%;
+    left: 40%;
+}
+
+.modal-detail-checkin {
+    width: 100% !important;
+}
+
+.modal-detail-checkin .ant-modal-content {
+    width: 90vw;
+    margin: 0 auto;
+}
+
+.eye-password {
+    position: relative;
+    left: 95%;
+    top: -30px;
+}
+
+.eye-password:hover {
+    cursor: pointer;
+}
+
+#notfound {
+    position: relative;
+    height: 100vh;
+}
+
+#notfound .notfound {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+.notfound {
+    max-width: 920px;
+    width: 100%;
+    line-height: 1.4;
+    text-align: center;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.notfound .notfound-404 {
+    position: absolute;
+    height: 100px;
+    top: 0;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
+    transform: translateX(-50%);
+    z-index: -1;
+}
+
+.notfound .notfound-404 h1 {
+    font-family: 'Maven Pro', sans-serif;
+    color: #ececec;
+    font-weight: 900;
+    font-size: 276px;
+    margin: 0px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+.notfound h2 {
+    font-family: 'Maven Pro', sans-serif;
+    font-size: 40px;
+    color: #d9534f;
+    font-weight: 900;
+    text-transform: uppercase;
+    margin: 0;
+}
+
+.notfound p {
+    font-family: 'Maven Pro', sans-serif;
+    font-size: 16px;
+    color: #000;
+    font-weight: 400;
+    /*text-transform: uppercase;*/
+    margin-top: 15px;
+}
+
+.notfound a {
+    font-family: 'Maven Pro', sans-serif;
+    font-size: 14px;
+    text-decoration: none;
+    text-transform: uppercase;
+    background: #189cf0;
+    display: inline-block;
+    padding: 16px 38px;
+    border: 2px solid transparent;
+    border-radius: 40px;
+    color: #fff;
+    font-weight: 400;
+    -webkit-transition: 0.2s all;
+    transition: 0.2s all;
+}
+
+.notfound a:hover {
+    background-color: #fff;
+    border-color: #189cf0;
+    color: #189cf0;
+}
+
+@media only screen and (max-width: 480px) {
+    .notfound .notfound-404 h1 {
+        font-size: 162px;
+    }
+    .notfound h2 {
+        font-size: 26px;
+    }
+}
+.permission-self {
+    margin-top: 30px;
+}
+
+.permission-subordinate-list {
+    margin-top: 30px;
+}
+
+.permission-office-list {
+    height: 270px;
+    overflow: auto;
+}
+
+.permission-department-list {
+    margin-top: 20px;
+    height: 270px;
+    overflow: auto;
+}
+
+.permission-container {
+    height: calc(100vh - 130px);
+    overflow: auto;
+}
+
+.card-employee-permission {
+    width: 100%;
+    height: calc(100vh - 140px);
+    overflow: auto;
+}
+
+.card-employee-permission-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: calc(100vh - 250px);
+    overflow: auto;
 }

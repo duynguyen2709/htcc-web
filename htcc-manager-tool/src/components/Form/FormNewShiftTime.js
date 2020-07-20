@@ -3,21 +3,19 @@ import {Button, CardFooter, Col, Form, FormFeedback, FormGroup, Input, Row,} fro
 import * as _ from 'lodash';
 import {store} from 'react-notifications-component';
 import {createNotify} from '../../utils/notifier';
-import {CheckCircleOutlined, QuestionCircleOutlined} from '@ant-design/icons';
+import {ArrowRightOutlined, CheckCircleOutlined, QuestionCircleOutlined} from '@ant-design/icons';
 import {Popconfirm, Select, TimePicker} from 'antd';
 import {workScheduleApi} from '../../api';
 import {checkValidNumber} from '../../utils/validate';
-
-const {RangePicker} = TimePicker;
+import moment from "moment";
 
 const INITFORM = {
     allowLateMinutes: 0,
     shiftId: '',
     shiftName: '',
     allowDiffTime: false,
-    startTime: '',
-    endTime: '',
-    timeRange: [],
+    startTime: moment(),
+    endTime: moment(),
     dayCount: 0,
 };
 
@@ -27,7 +25,6 @@ const RESET_TOUCH = {
     shiftName: false,
     allowDiffTime: false,
     dayCount: false,
-    timeRange: false,
     startTime: false,
     endTime: false,
 };
@@ -43,24 +40,25 @@ class FormNewShiftTime extends React.Component {
                 shiftId: 'Vui lòng nhập mã ca',
                 shiftName: 'Vui lòng nhập tên ca',
                 dayCount: 'Vui lòng nhập số ngày công',
-                timeRange: 'Vui lòng nhập thời gian bắt đầu và kết thúc ca',
+                startTime: 'Vui lòng nhập thời gian bắt đầu',
+                endTime: 'Vui lòng nhập thời gian kết thúc',
             },
             touch: {
                 ...RESET_TOUCH,
             },
-            timeRange: [null, null],
         };
     }
 
     checkValidDataInput = () => {
-        const {value, timeRange} = this.state;
+        const {value} = this.state;
 
         return (
             !_.isEmpty(value.shiftId) &&
             !_.isEmpty(value.shiftName) &&
+            !_.isEmpty(value.startTime) &&
+            !_.isEmpty(value.endTime) &&
             checkValidNumber(value.dayCount) &&
-            checkValidNumber(value.allowLateMinutes) &&
-            this.checkTimeRange(timeRange)
+            checkValidNumber(value.allowLateMinutes)
         );
     };
 
@@ -90,18 +88,20 @@ class FormNewShiftTime extends React.Component {
         this.setState({
             value: {...INITFORM},
             touch: {...RESET_TOUCH},
-            timeRange: [null, null],
         });
     };
 
     handleSubmit = (e) => {
         if (this.checkValidDataInput()) {
-            const {value} = this.state;
-            value['officeId'] = this.props.officeId;
+            const data = {...this.state.value};
+
+            data['officeId'] = this.props.officeId;
+            data.startTime = data.startTime.format("HH:mm");
+            data.endTime = data.endTime.format("HH:mm");
 
             this.props.loading();
             workScheduleApi
-                .createShiftTime(value)
+                .createShiftTime(data)
                 .then((res) => {
                     if (res.returnCode === 1) {
                         this.clear();
@@ -127,7 +127,6 @@ class FormNewShiftTime extends React.Component {
                     shiftName: true,
                     allowDiffTime: true,
                     dayCount: true,
-                    timeRange: true,
                     startTime: true,
                     endTime: true,
                 },
@@ -138,31 +137,26 @@ class FormNewShiftTime extends React.Component {
         }
     };
 
-    onChangeTime = (value) => {
+    onChangeStartTime = (value) => {
         this.setState({
             value: {
                 ...this.state.value,
-                startTime: _.isEmpty(value) ? null : value[0].format('HH:mm'),
-                endTime: _.isEmpty(value) ? null : value[1].format('HH:mm'),
+                startTime: value,
             },
-            timeRange: value,
-            touch: {
-                ...this.state.touch,
-                timeRange: true,
-            },
-        });
+        })
     };
 
-    checkTimeRange = (timeRange = []) => {
-        return (
-            !_.isEmpty(timeRange) &&
-            !_.isEmpty(timeRange[0]) &&
-            !_.isEmpty(timeRange[1])
-        );
+    onChangeEndTime = (value) => {
+        this.setState({
+            value: {
+                ...this.state.value,
+                endTime: value,
+            },
+        })
     };
 
     render() {
-        const {value, messageInvalid, touch, timeRange} = this.state;
+        const {value, messageInvalid, touch} = this.state;
 
         return (
             <Form>
@@ -208,26 +202,55 @@ class FormNewShiftTime extends React.Component {
                     <Col md="12">
                         <FormGroup>
                             <label>Thời gian bắt đầu và kết thúc ca</label>
-                            <RangePicker
-                                value={timeRange}
-                                allowClear={false}
-                                onChange={this.onChangeTime}
-                                format="HH:mm"
-                                placeholder={['Bắt đầu', 'Kết thúc']}
-                                className="form-control bor-radius"
-                                minuteStep={5}
-                            />
-                            {touch.timeRange &&
-                            !this.checkTimeRange(timeRange) && (
-                                <div
-                                    style={{
-                                        color: '#EF5350',
-                                        fontSize: 11,
-                                    }}
-                                >
-                                    {messageInvalid.timeRange}
-                                </div>
-                            )}
+                            <Row>
+                                <Col md="5">
+                                    <TimePicker
+                                        value={value.startTime}
+                                        allowClear={false}
+                                        onChange={this.onChangeStartTime}
+                                        format="HH:mm"
+                                        placeholder={"Giờ bắt đầu"}
+                                        className="form-control bor-radius"
+                                        minuteStep={5}
+                                    />
+                                    {touch.startTime &&
+                                    _.isEmpty(value.startTime) && (
+                                        <div
+                                            style={{
+                                                color: '#EF5350',
+                                                fontSize: 11,
+                                            }}
+                                        >
+                                            {messageInvalid.startTime}
+                                        </div>
+                                    )}
+                                </Col>
+                                <Col md="1" style={{margin: 'auto'}}>
+                                    <ArrowRightOutlined/>
+                                </Col>
+                                <Col md="5">
+                                    <TimePicker
+                                        value={value.endTime}
+                                        allowClear={false}
+                                        onChange={this.onChangeEndTime}
+                                        format="HH:mm"
+                                        placeholder={"Giờ kết thúc"}
+                                        className="form-control bor-radius"
+                                        minuteStep={5}
+                                    />
+                                    {touch.endTime &&
+                                    _.isEmpty(value.endTime) && (
+                                        <div
+                                            style={{
+                                                color: '#EF5350',
+                                                fontSize: 11,
+                                            }}
+                                        >
+                                            {messageInvalid.endTime}
+                                        </div>
+                                    )}
+                                </Col>
+                            </Row>
                         </FormGroup>
                     </Col>
                 </Row>

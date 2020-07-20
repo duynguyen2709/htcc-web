@@ -6,3 +6,5 @@ export const PATTERN_PHONE_NUMBER = /^[0-9][0-9|-]{9,}$/;
 export const PATTERN_PASSWORD = /^(?=.*[0-9])(?=.*[!@#$%^&*_])[a-zA-Z0-9!@#$%^&*_]{7,}$/;
 
 export const PATTERN_INT_FLOAT = /(\d+(\.\d+)?)/;
+
+export const PATTERN_CMND = /^(\d{9}|\d{14})$/;

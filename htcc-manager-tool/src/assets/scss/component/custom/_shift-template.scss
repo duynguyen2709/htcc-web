@@ -1,0 +1,12 @@
+.shift-template {
+    .wrap-slider {
+        padding: 15px 35px;
+        overflow: auto;
+        height: calc(100vh - 150px);
+        .ant-card-body {
+            padding: 5px;
+            overflow: auto;
+            height: calc(100vh - 325px);
+        }
+    }
+}

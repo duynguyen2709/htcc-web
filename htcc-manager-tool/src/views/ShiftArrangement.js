@@ -4,6 +4,7 @@ import {CalendarOutlined, CarryOutOutlined, MenuUnfoldOutlined} from '@ant-desig
 import {Button as ReactStrapButton, CardFooter} from "reactstrap";
 import moment from 'moment';
 import * as _ from 'lodash';
+import {connect} from 'react-redux';
 import {shiftArrangement, shiftTemplate} from '../api';
 import {store} from "react-notifications-component";
 import {createNotify} from "../utils/notifier";
@@ -12,6 +13,8 @@ import ReactLoading from "react-loading";
 import FixedShiftArrangement from "../components/ShiftArrangement/FixedShiftArrangement";
 import ShiftDetailModal from "../components/Modal/ShiftDetailModal";
 import CopyShiftModal from "../components/Modal/CopyShiftModal";
+import {canDoAction} from "../utils/permission";
+import {ACTION, ROLE_GROUP_KEY} from "../constant/constant";
 
 const {TabPane} = Tabs;
 
@@ -341,15 +344,18 @@ class ShiftArrangement extends Component {
 
         const modalTitle = this.getModalTitle(canManageEmployees, currentUsernameFilter);
 
+        const canAdd = canDoAction(this.props.data, ROLE_GROUP_KEY.SHIFT_ARRANGEMENT, ACTION.CREATE);
+        const canDelete = canDoAction(this.props.data, ROLE_GROUP_KEY.SHIFT_ARRANGEMENT, ACTION.DELETE);
         return (
             <div className="content">
                 <div className="table-wrapper tabs-big">
-                    <CopyShiftModal employeeList={canManageEmployees}
-                                    templateList={shiftTemplateList}
-                                    toggle={(reload) => this.toggleModalCopyShift(reload)}
-                                    visible={modalCopyShiftVisible}
-                                    title={'Sao chép ca'}
-                    />
+                    {canAdd ?
+                        <CopyShiftModal employeeList={canManageEmployees}
+                                        templateList={shiftTemplateList}
+                                        toggle={(reload) => this.toggleModalCopyShift(reload)}
+                                        visible={modalCopyShiftVisible}
+                                        title={'Sao chép ca'}
+                        /> : null}
 
                     {employeeShiftDetailMap[currentUsernameFilter] != null ?
                         <ShiftDetailModal data={employeeShiftDetailMap[currentUsernameFilter]}
@@ -413,9 +419,10 @@ class ShiftArrangement extends Component {
                                             Xem chi tiết
                                         </Button>
                                     </Col>
-                                    <Col span={4} push={4}>
-                                        {this.renderCopyShiftButton()}
-                                    </Col>
+                                    {canAdd ?
+                                        <Col span={4} push={4}>
+                                            {this.renderCopyShiftButton()}
+                                        </Col> : null}
                                 </Row>
                             </div>
                             <Row style={{
@@ -433,6 +440,10 @@ class ShiftArrangement extends Component {
                                                                    reload={this.getShiftArrangement}
                                                                    addShiftArrangement={this.addShiftArrangement}
                                                                    removeShiftArrangement={this.removeShiftArrangement}
+                                                                   canAction={{
+                                                                       canAdd,
+                                                                       canDelete
+                                                                   }}
                                             />
                                         </TabPane>
                                         <TabPane
@@ -445,6 +456,10 @@ class ShiftArrangement extends Component {
                                                                     reload={this.getShiftArrangement}
                                                                     addShiftArrangement={this.addShiftArrangement}
                                                                     removeShiftArrangement={this.removeShiftArrangement}
+                                                                    canAction={{
+                                                                        canAdd,
+                                                                        canDelete
+                                                                    }}
                                             />
                                         </TabPane>
                                     </Tabs>
@@ -457,4 +472,8 @@ class ShiftArrangement extends Component {
     }
 }
 
-export default ShiftArrangement;
+const mapStateToProps = (state) => ({
+    data: state.homeReducer.data,
+});
+
+export default connect(mapStateToProps, null)(ShiftArrangement);
