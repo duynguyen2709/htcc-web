@@ -445,12 +445,6 @@
         }
       },
 
-      MaxLengthContent(item) {
-        return item.content.length > item.response.length ?
-          item.content.length :
-          item.response.length;
-      },
-
       async clickDatePicker() {
         this.MonthPicker = false;
         this.$refs.dialog.save(this.month);
