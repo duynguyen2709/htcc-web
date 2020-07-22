@@ -155,17 +155,17 @@
              <v-card>
               <v-card-title class="green white--text">Duyệt đơn hàng</v-card-title>
 
-              <v-card-text class="mt-2 card-text">Bạn có chắc muốn duyệt đơn khiếu nại này?</v-card-text>
+              <v-card-text class="mt-2 card-text">Duyệt trạng thái đơn hàng thành</v-card-text>
 
               <v-card-actions>
                 <v-row
             align="center"
             justify="end"
           >
-                  <v-btn color="green darken-1" text @click="editStatus" :loading="loadingConfirmEditDialog">Đồng ý
+                  <v-btn color="green darken-1" text @click="prevEditStatus(1)">Thành công
                   </v-btn>
 
-                  <v-btn color="red darken-1" text @click="()=>{ConfirmDialog = false;}">Hủy</v-btn>
+                  <v-btn color="red darken-1" text @click="prevEditStatus(0)">Hủy</v-btn>
                 </v-row>
               </v-card-actions>
             </v-card>
@@ -173,20 +173,17 @@
 
           <v-dialog v-model="ConfirmDialog" max-width="290">
             <v-card>
-              <v-card-title class="green white--text">Cập nhập khiếu nại</v-card-title>
+              <v-card-title class="green white--text">Xác nhận duyệt</v-card-title>
 
-              <v-card-text class="mt-2">Bạn có chắc muốn cập nhập đơn khiếu nại này?</v-card-text>
+              <v-card-text class="mt-2 card-text">Bạn có chắc chắn?</v-card-text>
 
               <v-card-actions>
-                <v-row
-            align="center"
-            justify="end"
-          >
+               
                   <v-btn color="green darken-1" text @click="editStatus" :loading="loadingConfirmEditDialog">Đồng ý
                   </v-btn>
 
                   <v-btn color="red darken-1" text @click="()=>{ConfirmDialog = false;}">Hủy</v-btn>
-                </v-row>
+               
               </v-card-actions>
             </v-card>
           </v-dialog>
@@ -202,9 +199,6 @@
                     <v-list-item-content>
                       <v-list-item-title class="item-feature">
                         {{item}}
-                        <!-- <template v-if="item.include('Quản lý nhân viên')">
-                  : {{ChoosenItem.comboDetail.EMPLOYEE_MANAGE}} người
-                </template> -->
                       </v-list-item-title>
                     </v-list-item-content>
                   </v-list-item>
@@ -468,26 +462,26 @@
         this.ChoosenItem = item;
         this.EditDialog = true;
       },
+      prevEditStatus(status) {
+        this.ChoosenItem.orderStatus = status;
+        this.ConfirmDialog = true;
+      },
       async editStatus() {
         let $this = this;
 
         this.loadingConfirmEditDialog = true;
         await this.$axios
-          .put("/api/admin/Order/status", {
-            OrderId: this.ChoosenItem.OrderId,
-            response: this.ChoosenItem.response,
-            status: this.ChoosenItem.status,
-            yyyyMM: this.month.replace("-", "")
+          .put("/api/admin/orders/status", {
+            ...this.ChoosenItem
           })
           .then(res => {
             if (res.data.returnCode != 1) {
               $this.TriggerNotiError(res.data.returnMessage);
             } else {
               $this.TriggerNoti(res.data.returnMessage);
-              let currentMonth = new Date().toISOString().substr(0, 7);
-              if (this.month == currentMonth) {
+              
                 $this.setAmountOrder(this.amountOrder - 1);
-              }
+              
             }
 
             $this.loadingConfirmEditDialog = false;
