@@ -1,40 +1,19 @@
 import React from 'react';
-import {Button, CardFooter, Col, Form, FormGroup, Row,} from 'reactstrap';
+import {Button, CardFooter, Col, Form, FormGroup, Row} from 'reactstrap';
 import * as _ from 'lodash';
 import {store} from 'react-notifications-component';
 import {createNotify} from '../../utils/notifier';
 import {CheckCircleOutlined, QuestionCircleOutlined} from '@ant-design/icons';
-import {Empty, Popconfirm, Select} from 'antd';
-import {companyApi} from '../../api';
+import {Checkbox, Col as AntCol, Empty, Popconfirm, Row as AntRow, Select} from 'antd';
+import {permissionApi} from '../../api';
 
 const {Option} = Select;
-
-const INITFORM = {
-    lineManager: '',
-    subManagers: [],
-    canManageOffices: [],
-    canManageDepartments: [],
-};
-
-const RESET_TOUCH = {
-    lineManager: false,
-    subManagers: false,
-    subordinates: false,
-    canManageOffices: false,
-    canManageDepartments: false,
-};
 
 class FormEditEmployeePermission extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             value: null,
-            touch: {
-                lineManager: false,
-                subManagers: false,
-                canManageOffices: false,
-                canManageDepartments: false,
-            },
         };
     }
 
@@ -54,35 +33,15 @@ class FormEditEmployeePermission extends React.Component {
         });
     }
 
-    handleOnChange = (e) => {
-        const {value: valueInput, name} = e.target;
-        let {value, touch} = this.state;
-
-        value[name] = valueInput;
-        touch[name] = true;
-        this.setState({
-            value: {...value},
-            touch: {...touch},
-        });
-    };
-
-    clear = () => {
-        this.setState({
-            value: {...INITFORM},
-            touch: {...RESET_TOUCH},
-        });
-    };
-
     handleSubmit = (e) => {
         const {value} = this.state;
 
         this.props.loading();
-        companyApi
-            .updateInfoBranch(value)
+        permissionApi
+            .updateEmployeePermission(value, value.username)
             .then((res) => {
                 if (res.returnCode === 1) {
                     this.props.onSubmit(true);
-                    this.clear();
                 } else {
                     this.props.stopLoading();
                     store.addNotification(createNotify('danger', res.returnMessage));
@@ -104,6 +63,15 @@ class FormEditEmployeePermission extends React.Component {
         });
     };
 
+    handleChangeManagerRole = (value) => {
+        this.setState({
+            value: {
+                ...this.state.value,
+                managerRole: value,
+            },
+        });
+    };
+
     renderLineManagerOptions = () => {
         const {canManageEmployees} = this.props.data;
         return _.map(canManageEmployees, (employee, index) => (
@@ -113,8 +81,48 @@ class FormEditEmployeePermission extends React.Component {
         ))
     };
 
+    renderManagerRoleOptions = () => {
+        const {canAssignRoles} = this.props.data;
+        return _.map(canAssignRoles, (role, index) => (
+            <Option className=" bor-radius"
+                    value={role.roleId}
+                    key={`Role_${role.roleId}`}>
+                {role.roleName} ({role.roleId})
+            </Option>
+        ))
+    };
+
+    onChangeCanManageOffices = (values) => {
+        this.setState({
+            value: {
+                ...this.state.value,
+                canManageOffices: values,
+            }
+        })
+    };
+
+    onChangeCanManageDepartments = (values) => {
+        this.setState({
+            value: {
+                ...this.state.value,
+                canManageDepartments: values,
+            }
+        })
+    };
+
+    onChangeSubManagers = (values) => {
+        this.setState({
+            value: {
+                ...this.state.value,
+                subManagers: values,
+            }
+        })
+    };
+
     render() {
-        const {value, touch, messageInvalid} = this.state;
+        const {value} = this.state;
+        const {canManageOffices, canManageDepartments, canManageEmployees} = this.props.data;
+
         if (!value) {
             return (
                 <Empty
@@ -137,6 +145,7 @@ class FormEditEmployeePermission extends React.Component {
                             <label>Cấp trên trực tiếp</label>
                             <Select
                                 style={{width: '100%'}}
+                                allowClear={true}
                                 className="bor-radius"
                                 onChange={(val) => this.handleChangeLineManager(val)}
                                 value={value.lineManager}
@@ -147,61 +156,70 @@ class FormEditEmployeePermission extends React.Component {
                     </Col>
                 </Row>
                 <Row>
+                    <Col md="12">
+                        <FormGroup>
+                            <label>Quản lý phụ</label>
+                            <Checkbox.Group style={{width: '100%'}}
+                                            value={value.subManagers}
+                                            onChange={(values) => this.onChangeSubManagers(values)}>
+                                <AntRow>
+                                    {_.map(canManageEmployees, (employee, index) => (
+                                        <AntCol span={8} key={employee.username}>
+                                            <Checkbox value={employee.username}>
+                                                {employee.fullName} ({employee.username})
+                                            </Checkbox>
+                                        </AntCol>
+
+                                    ))}
+                                </AntRow>
+                            </Checkbox.Group>
+                        </FormGroup>
+                    </Col>
+                </Row>
+                <Row style={{marginTop: 20}}>
+                    <Col md="12">
+                        <FormGroup>
+                            <label>Nhóm quyền quản lý</label>
+                            <Select
+                                style={{width: '100%'}}
+                                allowClear={true}
+                                className="bor-radius"
+                                onChange={(val) => this.handleChangeManagerRole(val)}
+                                value={value.managerRole}
+                            >
+                                {this.renderManagerRoleOptions()}
+                            </Select>
+                        </FormGroup>
+                    </Col>
+                </Row>
+                <Row style={{marginTop: 20}}>
                     <Col md="6">
                         <FormGroup>
                             <label>Chi nhánh quản lý</label>
+                            <Checkbox.Group options={canManageOffices}
+                                            style={{width: '100%'}}
+                                            value={value.canManageOffices}
+                                            onChange={(values) => this.onChangeCanManageOffices(values)}
+                            />
                         </FormGroup>
                     </Col>
                     <Col md="6">
                         <FormGroup>
                             <label>Phòng ban quản lý</label>
+                            <Checkbox.Group options={canManageDepartments}
+                                            value={value.canManageDepartments}
+                                            onChange={(values) => this.onChangeCanManageDepartments(values)}
+                            />
                         </FormGroup>
                     </Col>
                 </Row>
-                {/*<Row>*/}
-                {/*    <Col md="12">*/}
-                {/*        <FormGroup>*/}
-                {/*            <label>Wifi</label>*/}
-                {/*            <Select*/}
-                {/*                style={{width: '100%'}}*/}
-                {/*                className="bor-radius"*/}
-                {/*                defaultValue={false}*/}
-                {/*                onChange={(val) => this.handleChangeforceUseWifi(val)}*/}
-                {/*                onCancel={() => this.clear()}*/}
-                {/*                value={value.forceUseWifi}*/}
-                {/*            >*/}
-                {/*                <Option className=" bor-radius" value={true}>*/}
-                {/*                    Bắt buộc sử dụng wifi khi điểm danh*/}
-                {/*                </Option>*/}
-                {/*                <Option className=" bor-radius" value={false}>*/}
-                {/*                    Không bắt buộc sử dụng wifi khi điểm danh*/}
-                {/*                </Option>*/}
-                {/*            </Select>*/}
-                {/*        </FormGroup>*/}
-                {/*    </Col>*/}
-                {/*</Row>*/}
-                {/*<Row>*/}
-                {/*    <Col md="12">*/}
-                {/*        <FormGroup>*/}
-                {/*            <label>Địa chỉ IP subnet cho phép điểm danh</label>*/}
-                {/*            <Input*/}
-                {/*                placeholder="Nhập địa chỉ IP"*/}
-                {/*                type="text"*/}
-                {/*                className="bor-gray text-dark"*/}
-                {/*                onChange={this.handleOnChange}*/}
-                {/*                name="allowWifiIP"*/}
-                {/*                value={value.allowWifiIP}*/}
-                {/*            />*/}
-                {/*        </FormGroup>*/}
-                {/*    </Col>*/}
-                {/*</Row>*/}
                 <CardFooter className="text-right info">
                     <Popconfirm
                         title="Bạn chắc chắn thay đổi？"
                         icon={<QuestionCircleOutlined/>}
                         okText="Đồng ý"
                         cancelText="Huỷ"
-                        onConfirm={() => this.handleSubmit()}
+                        onConfirm={this.handleSubmit}
                     >
                         <Button className="btn-custom" color="primary" type="button">
                             <CheckCircleOutlined

@@ -1,16 +1,18 @@
 import React, {Component} from 'react';
-import {Card, Col, Empty, List, Row} from 'antd';
+import {Button as AntButton, Card, Col, Empty, List, Row} from 'antd';
 import {connect} from 'react-redux';
 import {permissionApi} from "../api";
 import {store} from 'react-notifications-component';
 import {createNotify} from "../utils/notifier";
 import ReactLoading from "react-loading";
-import {EditOutlined} from '@ant-design/icons';
+import {EditOutlined, CaretLeftOutlined} from '@ant-design/icons';
 import {Button, CardFooter} from 'reactstrap';
 import EmployeePermissionCard from "../components/Permission/EmployeePermissionCard";
 import * as _ from "lodash";
 import AsyncModal from "../components/Modal/AsyncModal";
 import FormEditEmployeePermission from "../components/Form/FormEditEmployeePermission";
+import {canDoAction} from "../utils/permission";
+import {ACTION, ROLE_GROUP_KEY} from "../constant/constant";
 
 class EmployeePermission extends Component {
     constructor(props) {
@@ -39,17 +41,22 @@ class EmployeePermission extends Component {
     }
 
     getConfig = () => {
+        if (!this.props.username || this.props.username === '') {
+            this.setState({
+                data: null
+            });
+            return;
+        }
+
         this.setState({
             isLoading: true,
             data: null
         });
 
         permissionApi
-            .getEmployeePermission('duytv')
-            // .getEmployeePermission(this.props.username)
+        .getEmployeePermission(this.props.username)
             .then((res) => {
                 if (res.returnCode === 1) {
-                    console.log(res.data);
                     this.setState({
                         data: res.data
                     });
@@ -144,7 +151,9 @@ class EmployeePermission extends Component {
             );
         }
 
-        if (data === null) {
+        const canViewPermission = canDoAction(this.props.data, ROLE_GROUP_KEY.EMPLOYEE_PERMISSION, ACTION.READ);
+
+        if (data === null || !canViewPermission) {
             return (
                 <Empty
                     className={'center-div'}
@@ -158,10 +167,20 @@ class EmployeePermission extends Component {
             );
         }
 
-        const {dataView, dataEdit} = data;
+        const {dataView} = data;
         return (
             <div className="content">
                 <div className="table-wrapper tabs-big">
+                    <Row justify={'space-between'}>
+                        <AntButton type="primary" style={{margin: 10}}
+                                   icon={<CaretLeftOutlined />}
+                                   onClick={this.props.handleClickBack}>
+                            Quay lại
+                        </AntButton>
+                        <CardFooter className="text-right info" style={{margin: 10}}>
+                            {this.renderButton()}
+                        </CardFooter>
+                    </Row>
                     <Row className={"permission-container"}>
                         <Col span={16}>
                             <Row className={"permission-user-list"}>
@@ -229,9 +248,6 @@ class EmployeePermission extends Component {
                                     )}
                                 />
                             </Row>
-                            <CardFooter className="text-right info" style={{marginTop: 20, marginRight: 20}}>
-                                {this.renderButton()}
-                            </CardFooter>
 
                             {data !== null && !isLoading ?
                                 <div>
@@ -240,6 +256,7 @@ class EmployeePermission extends Component {
                                         reload={false}
                                         CompomentContent={FormEditEmployeePermission}
                                         visible={this.state.showModal}
+                                        width={'50%'}
                                         toggle={(submit) => this.toggle(submit)}
                                         title={'Cập nhật quyền quản lý của nhân viên'}
                                         data={{
@@ -247,6 +264,7 @@ class EmployeePermission extends Component {
                                             canManageEmployees: this.props.data.canManageEmployees,
                                             canManageOffices: this.props.data.canManageOffices,
                                             canManageDepartments: this.props.data.canManageDepartments,
+                                            canAssignRoles: this.props.data.canAssignRoles,
                                         }}
                                         mode={'edit'}
                                     />

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Popconfirm, Popover, Tag, Tooltip} from 'antd';
+import {Popconfirm, Popover, Row, Tag, Tooltip} from 'antd';
 import {
     BarsOutlined,
     CheckCircleTwoTone,
@@ -11,13 +11,15 @@ import {
     LockTwoTone,
     QuestionCircleOutlined,
     UnlockTwoTone,
+    SettingOutlined
 } from '@ant-design/icons';
 import LightboxImages from '../components/Tool/LightboxImages';
 import * as _ from 'lodash';
 import moment from 'moment';
 import {isLeapYear} from '../utils/dataTable';
 
-export const buildColsEmployee = (funcEdit, funcBlock, username, canUpdate, canDelete) => [
+export const buildColsEmployee = (funcEdit, funcBlock, funcPermission, username,
+                                  canUpdate, canDelete, canViewPermission) => [
     {
         title: 'Tên đăng nhập',
         dataIndex: 'username',
@@ -101,11 +103,11 @@ export const buildColsEmployee = (funcEdit, funcBlock, username, canUpdate, canD
     },
     {
         title: 'Hành động',
-        width: '110px',
+        width: '150px',
         fixed: 'right',
         render: (o, record) => {
             return (
-                <React.Fragment>
+                <Row>
                     {canUpdate ?
                         <Tooltip placement="left" title={'Chỉnh sửa'}>
                             <EditOutlined
@@ -113,6 +115,7 @@ export const buildColsEmployee = (funcEdit, funcBlock, username, canUpdate, canD
                                     color: '#52c41a',
                                     fontSize: '25px',
                                     float: 'left',
+                                    margin: '0 8px',
                                 }}
                                 onClick={() => funcEdit(record)}
                             />
@@ -137,12 +140,13 @@ export const buildColsEmployee = (funcEdit, funcBlock, username, canUpdate, canD
                                         : 'chọn để mở khoá'
                                 }
                             >
-                                {record.status === 1 ? (
+                                {record.status === 0 ? (
                                     <UnlockTwoTone
                                         twoToneColor="#1C90FF"
                                         style={{
                                             fontSize: '25px',
                                             float: 'right',
+                                            margin: '0 8px',
                                         }}
                                     />
                                 ) : (
@@ -151,13 +155,26 @@ export const buildColsEmployee = (funcEdit, funcBlock, username, canUpdate, canD
                                         style={{
                                             fontSize: '25px',
                                             float: 'right',
+                                            margin: '0 8px'
                                         }}
                                     />
                                 )}
                             </Tooltip>
                         </Popconfirm>
                     )}
-                </React.Fragment>
+                    {canViewPermission ?
+                        <Tooltip placement="left" title={'Quyền hạn'}>
+                            <SettingOutlined
+                                style={{
+                                    color: '#1C90FF',
+                                    fontSize: '25px',
+                                    float: 'left',
+                                    margin: '0 8px'
+                                }}
+                                onClick={() => funcPermission(record.username)}
+                            />
+                        </Tooltip> : null}
+                </Row>
             );
         },
     },
