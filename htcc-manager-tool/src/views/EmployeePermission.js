@@ -1,15 +1,16 @@
 import React, {Component} from 'react';
-import {Card, Col, Empty, List, Popconfirm, Row} from 'antd';
+import {Card, Col, Empty, List, Row} from 'antd';
 import {connect} from 'react-redux';
 import {permissionApi} from "../api";
 import {store} from 'react-notifications-component';
 import {createNotify} from "../utils/notifier";
 import ReactLoading from "react-loading";
-import {CheckCircleOutlined, EditOutlined, QuestionCircleOutlined} from '@ant-design/icons';
+import {EditOutlined} from '@ant-design/icons';
 import {Button, CardFooter} from 'reactstrap';
 import EmployeePermissionCard from "../components/Permission/EmployeePermissionCard";
-import {USER} from "../constant/localStorageKey";
 import * as _ from "lodash";
+import AsyncModal from "../components/Modal/AsyncModal";
+import FormEditEmployeePermission from "../components/Form/FormEditEmployeePermission";
 
 class EmployeePermission extends Component {
     constructor(props) {
@@ -19,16 +20,30 @@ class EmployeePermission extends Component {
             data: null,
             currentUsername: '',
             isLoading: false,
-            readOnly: true
+            showModal: false,
         }
     }
+
+    toggle = (submit = false) => {
+        this.setState({
+            showModal: !this.state.showModal,
+        });
+
+        if (submit) {
+            this.getConfig();
+        }
+    };
 
     componentDidMount() {
         this.getConfig();
     }
 
     getConfig = () => {
-        this.setState({isLoading: true});
+        this.setState({
+            isLoading: true,
+            data: null
+        });
+
         permissionApi
             .getEmployeePermission('duytv')
             // .getEmployeePermission(this.props.username)
@@ -55,45 +70,18 @@ class EmployeePermission extends Component {
     };
 
     renderButton = () => {
-        const {readOnly} = this.state;
-
-        if (readOnly) {
-            return (
-                <Button
-                    id="save"
-                    // onClick={this.handleOnEdit}
-                    className="btn-custom"
-                    color="primary"
-                    type="button"
-                >
-                    <EditOutlined style={{display: 'inline', margin: '5px 10px 0 0'}}/>{' '}
-                    {'  '}
-                    <span className="btn-save-text"> Chỉnh sửa</span>
-                </Button>
-            );
-        }
-
         return (
-            <Popconfirm
-                title="Bạn chắc chắn thay đổi？"
-                icon={<QuestionCircleOutlined/>}
-                okText="Đồng ý"
-                cancelText="Huỷ"
-                // onConfirm={() => this.handleSubmit()}
+            <Button
+                id="save"
+                onClick={() => this.toggle(false)}
+                className="btn-custom"
+                color="primary"
+                type="button"
             >
-                <Button
-                    id="save"
-                    className="btn-custom"
-                    color="primary"
-                    type="button"
-                >
-                    <CheckCircleOutlined
-                        style={{display: 'inline', margin: '5px 10px 0 0'}}
-                    />{' '}
-                    {'  '}
-                    <span className="btn-save-text"> LƯU</span>
-                </Button>
-            </Popconfirm>
+                <EditOutlined style={{display: 'inline', margin: '5px 10px 0 0'}}/>{' '}
+                {'  '}
+                <span className="btn-save-text"> Chỉnh sửa</span>
+            </Button>
         );
     };
 
@@ -171,7 +159,6 @@ class EmployeePermission extends Component {
         }
 
         const {dataView, dataEdit} = data;
-
         return (
             <div className="content">
                 <div className="table-wrapper tabs-big">
@@ -245,6 +232,25 @@ class EmployeePermission extends Component {
                             <CardFooter className="text-right info" style={{marginTop: 20, marginRight: 20}}>
                                 {this.renderButton()}
                             </CardFooter>
+
+                            {data !== null && !isLoading ?
+                                <div>
+                                    <AsyncModal
+                                        key={data}
+                                        reload={false}
+                                        CompomentContent={FormEditEmployeePermission}
+                                        visible={this.state.showModal}
+                                        toggle={(submit) => this.toggle(submit)}
+                                        title={'Cập nhật quyền quản lý của nhân viên'}
+                                        data={{
+                                            ...data,
+                                            canManageEmployees: this.props.data.canManageEmployees,
+                                            canManageOffices: this.props.data.canManageOffices,
+                                            canManageDepartments: this.props.data.canManageDepartments,
+                                        }}
+                                        mode={'edit'}
+                                    />
+                                </div> : null}
                         </Col>
                     </Row>
                 </div>
