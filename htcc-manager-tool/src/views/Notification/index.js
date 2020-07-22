@@ -10,7 +10,6 @@ class Notification extends Component {
         super(props);
 
         this.state = {
-            updateMap: false,
             currentTab: 'listNoti',
         };
     }

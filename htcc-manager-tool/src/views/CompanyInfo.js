@@ -5,6 +5,9 @@ import Info from '../components/Company/Info';
 import Map from '../components/Company/Map';
 import Branch from '../components/Company/Branch';
 import Department from "../components/Company/Department";
+import {connect} from 'react-redux';
+import {canDoAction} from "../utils/permission";
+import {ACTION, ROLE_GROUP_KEY} from "../constant/constant";
 
 const {TabPane} = Tabs;
 
@@ -24,58 +27,65 @@ class CompanyInfo extends Component {
     };
 
     render() {
+        const canViewCompany = canDoAction(this.props.data, ROLE_GROUP_KEY.COMPANY, ACTION.READ);
+        const canViewOffice = canDoAction(this.props.data, ROLE_GROUP_KEY.OFFICE, ACTION.READ);
+        const canViewDepartment = canDoAction(this.props.data, ROLE_GROUP_KEY.DEPARTMENT, ACTION.READ);
         return (
             <div className="content">
                 <div className="table-wrapper tabs-big">
                     <Tabs defaultActiveKey="info" onChange={(key) => this.changeTab(key)}>
-                        <TabPane
-                            style={{overflow: 'auto'}}
-                            tab={
-                                <span>
+                        {canViewCompany ?
+                            <TabPane
+                                style={{overflow: 'auto'}}
+                                tab={
+                                    <span>
                                   <ProfileOutlined/>
                                   Thông tin Công ty
                                 </span>
-                            }
-                            key="info"
-                        >
-                            <Info/>
-                        </TabPane>
-                        <TabPane
-                            style={{overflow: 'auto'}}
-                            tab={
-                                <span>
+                                }
+                                key="info"
+                            >
+                                <Info/>
+                            </TabPane> : null}
+                        {canViewOffice ?
+                            <TabPane
+                                style={{overflow: 'auto'}}
+                                tab={
+                                    <span>
                                   <BranchesOutlined/>
                                   Chi Nhánh
                                 </span>
-                            }
-                            key="branch"
-                        >
-                            <Branch/>
-                        </TabPane>
-                        <TabPane
-                            style={{overflow: 'auto'}}
-                            tab={
-                                <span>
+                                }
+                                key="branch"
+                            >
+                                <Branch/>
+                            </TabPane> : null}
+                        {canViewDepartment ?
+                            <TabPane
+                                style={{overflow: 'auto'}}
+                                tab={
+                                    <span>
                                     <ApartmentOutlined/>
                                   Phòng ban
                                 </span>
-                            }
-                            key="department"
-                        >
-                            <Department/>
-                        </TabPane>
-                        <TabPane
-                            style={{overflow: 'auto'}}
-                            tab={
-                                <span>
+                                }
+                                key="department"
+                            >
+                                <Department/>
+                            </TabPane> : null}
+                        {canViewOffice ?
+                            <TabPane
+                                style={{overflow: 'auto'}}
+                                tab={
+                                    <span>
                                   <EnvironmentOutlined/>
                                   Vị trí
                                 </span>
-                            }
-                            key="map"
-                        >
-                            <Map updateMap={this.state.updateMap}/>
-                        </TabPane>
+                                }
+                                key="map"
+                            >
+                                <Map updateMap={this.state.updateMap}/>
+                            </TabPane> : null}
                     </Tabs>
                 </div>
             </div>
@@ -83,4 +93,8 @@ class CompanyInfo extends Component {
     }
 }
 
-export default CompanyInfo;
+const mapStateToProps = (state) => ({
+    data: state.homeReducer.data
+});
+
+export default connect(mapStateToProps, null)(CompanyInfo);

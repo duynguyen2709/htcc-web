@@ -19,6 +19,8 @@ import * as _ from 'lodash';
 import {Button, CardFooter} from 'reactstrap';
 import FormNewWorkingDay from '../Form/FormNewWorkingDay';
 import AsyncModal from '../Modal/AsyncModal';
+import {canDoAction} from "../../utils/permission";
+import {ACTION, ROLE_GROUP_KEY} from "../../constant/constant";
 
 const {TabPane} = Tabs;
 
@@ -174,6 +176,10 @@ class Config extends Component {
             showModal,
         } = this.state;
 
+        const canAdd = canDoAction(this.props.data, ROLE_GROUP_KEY.WORKING_DAY, ACTION.CREATE);
+        const canUpdate = canDoAction(this.props.data, ROLE_GROUP_KEY.WORKING_DAY, ACTION.UPDATE);
+        const canDelete = canDoAction(this.props.data, ROLE_GROUP_KEY.WORKING_DAY, ACTION.DELETE);
+
         return (
             <div className="content">
                 <div className="tabs-big">
@@ -196,6 +202,7 @@ class Config extends Component {
                             </Select>
                         </Col>
                         <Col sm={16} className="text-right mr-2">
+                            {canUpdate ?
                             <CardFooter className="text-right info no-mar">
                                 <Popconfirm
                                     title="Bạn chắc chắn về thiết lập này ？"
@@ -224,8 +231,9 @@ class Config extends Component {
                                         </span>
                                     </Button>
                                 </Popconfirm>
-                            </CardFooter>
+                            </CardFooter> : null}
                         </Col>
+                        {canAdd ?
                         <div sm={3} className="float-right btn-new-big">
                             <Tooltip
                                 placement="top"
@@ -235,7 +243,7 @@ class Config extends Component {
                                     onClick={() => this.toggle(false)}
                                 />
                             </Tooltip>
-                        </div>
+                        </div> : null}
                     </Row>
 
                     <Tabs defaultActiveKey="normal" type="card">
@@ -254,6 +262,11 @@ class Config extends Component {
                                 officeId={currentOffices}
                                 data={normalDays}
                                 reloadData={this.reloadData}
+                                canAction={{
+                                    canAdd,
+                                    canUpdate,
+                                    canDelete
+                                }}
                             />
                         </TabPane>
                         <TabPane
@@ -271,10 +284,16 @@ class Config extends Component {
                                 officeId={currentOffices}
                                 data={specialDays}
                                 reloadData={this.reloadData}
+                                canAction={{
+                                    canAdd,
+                                    canUpdate,
+                                    canDelete
+                                }}
                             />
                         </TabPane>
                     </Tabs>
                 </div>
+                {canAdd ?
                 <div>
                     <AsyncModal
                         key={showModal}
@@ -287,7 +306,7 @@ class Config extends Component {
                         mode={'new'}
                         prop={{officeId: currentOffices}}
                     />
-                </div>
+                </div> : null}
             </div>
         );
     }
@@ -297,4 +316,4 @@ const mapStateToProps = (state) => ({
     data: state.homeReducer.data,
 });
 
-export default connect(mapStateToProps)(Config);
+export default connect(mapStateToProps, null)(Config);

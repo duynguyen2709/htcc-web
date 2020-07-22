@@ -1,19 +1,23 @@
-import React, { Component } from 'react';
-import { Input, Table, Tabs } from 'antd';
-import { CheckSquareOutlined, WarningOutlined } from '@ant-design/icons';
-import { leaveRequestApi } from '../api';
-import { store } from 'react-notifications-component';
-import { createNotify } from '../utils/notifier';
+import React, {Component} from 'react';
+import {Input, Table, Tabs, Tooltip} from 'antd';
+import {connect} from 'react-redux';
+import {CheckSquareOutlined, PlusSquareOutlined, WarningOutlined,} from '@ant-design/icons';
+import {leaveRequestApi} from '../api';
+import {store} from 'react-notifications-component';
+import {createNotify} from '../utils/notifier';
 import * as _ from 'lodash';
-import { buildColsLeaveRequest } from '../constant/colTable';
+import {buildColsLeaveRequest} from '../constant/colTable';
 import moment from 'moment';
 import CalendarTool from '../components/Tool/CalendarTool';
 import FormEditStatusLeaveRequest from '../components/Form/FormEditStatusLeaveRequest';
+import FormAddLeaveRequest from '../components/Form/FormAddLeaveRequest';
 import AsyncModal from '../components/Modal/AsyncModal';
-import { addKeyPropsToTable } from '../utils/dataTable';
+import {addKeyPropsToTable} from '../utils/dataTable';
+import {canDoAction} from "../utils/permission";
+import {ACTION, ROLE_GROUP_KEY} from "../constant/constant";
 
-const { Search } = Input;
-const { TabPane } = Tabs;
+const {Search} = Input;
+const {TabPane} = Tabs;
 
 class LeaveRequest extends Component {
     constructor(props) {
@@ -21,11 +25,12 @@ class LeaveRequest extends Component {
         this.state = {
             dataResolved: null,
             dataNotResolve: null,
-            showFormEdit: false,
             curRecordEdit: null,
             currDate: moment(new Date()).format('YYYYMM'),
             isLoading: true,
             currTab: 'NotResolve',
+            showModal: false,
+            mode: 'new',
         };
         this.dataResolved = [];
         this.dataNotResolve = [];
@@ -33,7 +38,7 @@ class LeaveRequest extends Component {
 
     toggle = (isLoading = false) => {
         this.setState({
-            showFormEdit: !this.state.showFormEdit,
+            showModal: !this.state.showModal,
             isLoading,
             curRecordEdit: null,
         });
@@ -47,8 +52,9 @@ class LeaveRequest extends Component {
 
     handleEditStatus = (record) => {
         this.setState({
-            showFormEdit: true,
+            showModal: true,
             curRecordEdit: record,
+            mode: 'edit',
         });
     };
 
@@ -110,10 +116,12 @@ class LeaveRequest extends Component {
     };
 
     onSearch = (e) => {
-        const { currTab } = this.state;
+        const {currTab} = this.state;
 
         const data = _.filter(this[`data${currTab}`], (ele) =>
-            JSON.stringify(ele).toLowerCase().includes(e.target.value.toLowerCase())
+            JSON.stringify(ele)
+                .toLowerCase()
+                .includes(e.target.value.toLowerCase())
         );
 
         this.setState({
@@ -132,10 +140,14 @@ class LeaveRequest extends Component {
         const {
             dataResolved,
             dataNotResolve,
-            showFormEdit,
+            showModal,
             curRecordEdit,
             currDate,
+            mode,
         } = this.state;
+
+        const canAdd = canDoAction(this.props.data, ROLE_GROUP_KEY.LEAVING_REQUEST, ACTION.CREATE);
+        const canUpdate = canDoAction(this.props.data, ROLE_GROUP_KEY.LEAVING_REQUEST, ACTION.UPDATE);
 
         return (
             <div className="content">
@@ -145,13 +157,29 @@ class LeaveRequest extends Component {
                             <Search
                                 className="form-control bor-radius"
                                 placeholder="Tìm kiếm nhanh"
-                                style={{ width: 300 }}
+                                style={{width: 300}}
                                 onChange={this.onSearch}
                             />
                         </div>
-                        <div className="tool-calendar float-left" style={{marginLeft: '20px'}}>
-                            <CalendarTool update={this.updateData} />
+                        <div
+                            className="tool-calendar float-left"
+                            style={{marginLeft: '20px'}}
+                        >
+                            <CalendarTool update={this.updateData}/>
                         </div>
+                        {canAdd ?
+                            <div className="float-right btn-new">
+                                <Tooltip
+                                    placement="left"
+                                    title={'Thêm đơn nghỉ phép'}
+                                >
+                                    <PlusSquareOutlined
+                                        onClick={() => {
+                                            this.toggle(false);
+                                        }}
+                                    />
+                                </Tooltip>
+                            </div> : null}
                     </div>
                     <Tabs
                         onTabClick={(key) => this.onChangeTab(key)}
@@ -161,7 +189,7 @@ class LeaveRequest extends Component {
                             style={{overflow: 'auto'}}
                             tab={
                                 <span>
-                                    <WarningOutlined />
+                                    <WarningOutlined/>
                                     Chưa xử lý
                                 </span>
                             }
@@ -171,7 +199,8 @@ class LeaveRequest extends Component {
                                 <div className="table-small table-complaint">
                                     <Table
                                         columns={buildColsLeaveRequest(
-                                            this.handleEditStatus
+                                            this.handleEditStatus,
+                                            canUpdate
                                         )}
                                         dataSource={dataNotResolve}
                                         scroll={{
@@ -191,7 +220,7 @@ class LeaveRequest extends Component {
                             style={{overflow: 'auto'}}
                             tab={
                                 <span>
-                                    <CheckSquareOutlined />
+                                    <CheckSquareOutlined/>
                                     Đã xử lý
                                 </span>
                             }
@@ -230,10 +259,10 @@ class LeaveRequest extends Component {
                             </div>
                         </TabPane>
                     </Tabs>
-                    <div>
+                    {/* <div>
                         <AsyncModal
                             CompomentContent={FormEditStatusLeaveRequest}
-                            visible={showFormEdit}
+                            visible={showModal}
                             toggle={this.toggle}
                             title={'Xử lý đơn nghỉ phép'}
                             data={curRecordEdit}
@@ -241,11 +270,37 @@ class LeaveRequest extends Component {
                             currDate={currDate}
                             key={curRecordEdit}
                         />
-                    </div>
+                    </div> */}
+                    {((mode === 'new' && canAdd) || (mode === 'edit' && canUpdate)) ?
+                        <div>
+                            <AsyncModal
+                                key={curRecordEdit}
+                                reload={false}
+                                CompomentContent={
+                                    mode === 'new'
+                                        ? FormAddLeaveRequest
+                                        : FormEditStatusLeaveRequest
+                                }
+                                visible={showModal}
+                                toggle={(submit) => this.toggle(submit)}
+                                title={
+                                    mode === 'new'
+                                        ? 'Tạo đơn nghỉ phép'
+                                        : 'Xử lý đơn nghỉ phép'
+                                }
+                                data={curRecordEdit}
+                                mode={mode}
+                                currDate={currDate}
+                            />
+                        </div> : null}
                 </div>
             </div>
         );
     }
 }
 
-export default LeaveRequest;
+const mapStateToProps = (state) => ({
+    data: state.homeReducer.data
+});
+
+export default connect(mapStateToProps, null)(LeaveRequest);

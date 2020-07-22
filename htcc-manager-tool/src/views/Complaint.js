@@ -3,6 +3,7 @@ import {Input, Table, Tabs} from 'antd';
 import {CheckSquareOutlined, WarningOutlined} from '@ant-design/icons';
 import {complaintApi} from '../api';
 import {store} from 'react-notifications-component';
+import {connect} from 'react-redux';
 import {createNotify} from '../utils/notifier';
 import * as _ from 'lodash';
 import {buildColsComplaint} from '../constant/colTable';
@@ -11,6 +12,8 @@ import CalendarTool from '../components/Tool/CalendarTool';
 import FormEditStatusComplaint from '../components/Form/FormEditStatusComplaint';
 import AsyncModal from '../components/Modal/AsyncModal';
 import {addKeyPropsToTable} from '../utils/dataTable';
+import {canDoAction} from "../utils/permission";
+import {ACTION, ROLE_GROUP_KEY} from "../constant/constant";
 
 const {Search} = Input;
 const {TabPane} = Tabs;
@@ -146,6 +149,8 @@ class Complaint extends Component {
             onlyView,
         } = this.state;
 
+        const canUpdate = canDoAction(this.props.data, ROLE_GROUP_KEY.COMPLAINT, ACTION.UPDATE);
+
         return (
             <div className="content">
                 <div className="table-wrapper tabs-small">
@@ -180,7 +185,8 @@ class Complaint extends Component {
                                 <div className="table-small table-complaint">
                                     <Table
                                         columns={buildColsComplaint(
-                                            this.handleEditStatus
+                                            this.handleEditStatus,
+                                            canUpdate
                                         )}
                                         dataSource={dataNotResolve}
                                         scroll={{
@@ -227,23 +233,28 @@ class Complaint extends Component {
                             </div>
                         </TabPane>
                     </Tabs>
-                    <div>
-                        <AsyncModal
-                            CompomentContent={FormEditStatusComplaint}
-                            visible={showFormEdit}
-                            toggle={this.toggle}
-                            title={'Thông tin khiếu nại'}
-                            data={curRecordEdit}
-                            mode={'edit'}
-                            currDate={currDate}
-                            key={curRecordEdit}
-                            onlyView={onlyView}
-                        />
-                    </div>
+                    {canUpdate ?
+                        <div>
+                            <AsyncModal
+                                CompomentContent={FormEditStatusComplaint}
+                                visible={showFormEdit}
+                                toggle={this.toggle}
+                                title={'Thông tin khiếu nại'}
+                                data={curRecordEdit}
+                                mode={'edit'}
+                                currDate={currDate}
+                                key={curRecordEdit}
+                                onlyView={onlyView}
+                            />
+                        </div> : null}
                 </div>
             </div>
         );
     }
 }
 
-export default Complaint;
+const mapStateToProps = (state) => ({
+    data: state.homeReducer.data
+});
+
+export default connect(mapStateToProps, null)(Complaint);

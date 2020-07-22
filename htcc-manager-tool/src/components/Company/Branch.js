@@ -9,6 +9,9 @@ import {Input, Table, Tooltip} from 'antd';
 import AsyncModal from '../Modal/AsyncModal';
 import FormEditBranch from '../Form/FormEditBranch';
 import FormNewBranch from '../Form/FormNewBranch';
+import {connect} from 'react-redux';
+import {canDoAction} from "../../utils/permission";
+import {ACTION, ROLE_GROUP_KEY} from "../../constant/constant";
 
 const {Search} = Input;
 
@@ -128,6 +131,9 @@ class Branch extends React.Component {
 
     render() {
         const {data, showModal, curRecordEdit, mode, loading} = this.state;
+        const canAdd = canDoAction(this.props.data, ROLE_GROUP_KEY.OFFICE, ACTION.CREATE);
+        const canUpdate = canDoAction(this.props.data, ROLE_GROUP_KEY.OFFICE, ACTION.UPDATE);
+        const canDelete = canDoAction(this.props.data, ROLE_GROUP_KEY.OFFICE, ACTION.DELETE);
         return (
             <React.Fragment>
                 <div className="header-table clearfix">
@@ -139,20 +145,28 @@ class Branch extends React.Component {
                             onChange={this.onSearch}
                         />
                     </div>
-                    <div className="float-right btn-new">
-                        <Tooltip placement="left" title={'Thêm chi nhánh'}>
-                            <PlusSquareOutlined
-                                onClick={() => this.toggle(false)}
-                            />
-                        </Tooltip>
-                    </div>
+                    {canAdd ?
+                        <div className="float-right btn-new">
+                            <Tooltip placement="left" title={'Thêm chi nhánh'}>
+                                <PlusSquareOutlined
+                                    onClick={() => {
+                                        this.setState({
+                                            mode: 'new'
+                                        });
+                                        this.toggle(false)
+                                    }}
+                                />
+                            </Tooltip>
+                        </div> : null}
                 </div>
                 <div className="table-edit">
                     <div className="table-small table-branch">
                         <Table
                             columns={buildColsBranch(
                                 this.handleEdit,
-                                this.handleDelete
+                                this.handleDelete,
+                                canUpdate,
+                                canDelete
                             )}
                             dataSource={this.mapData(data)}
                             scroll={{x: 1300, y: 'calc(100vh - 355px)'}}
@@ -165,29 +179,34 @@ class Branch extends React.Component {
                         />
                     </div>
                 </div>
-                <div>
-                    <AsyncModal
-                        key={curRecordEdit}
-                        reload={false}
-                        CompomentContent={
-                            this.state.mode === 'new'
-                                ? FormNewBranch
-                                : FormEditBranch
-                        }
-                        visible={showModal}
-                        toggle={(submit) => this.toggle(submit)}
-                        title={
-                            mode === 'new'
-                                ? 'Thêm chi nhánh mới'
-                                : 'Chỉnh sửa chi nhánh'
-                        }
-                        data={curRecordEdit}
-                        mode={mode}
-                    />
-                </div>
+                {((mode === 'new' && canAdd) || (mode === 'edit' && canUpdate)) ?
+                    <div>
+                        <AsyncModal
+                            key={curRecordEdit}
+                            reload={false}
+                            CompomentContent={
+                                mode === 'new'
+                                    ? FormNewBranch
+                                    : FormEditBranch
+                            }
+                            visible={showModal}
+                            toggle={(submit) => this.toggle(submit)}
+                            title={
+                                mode === 'new'
+                                    ? 'Thêm chi nhánh mới'
+                                    : 'Chỉnh sửa chi nhánh'
+                            }
+                            data={curRecordEdit}
+                            mode={mode}
+                        />
+                    </div> : null}
             </React.Fragment>
         );
     }
 }
 
-export default Branch;
+const mapStateToProps = (state) => ({
+    data: state.homeReducer.data
+});
+
+export default connect(mapStateToProps, null)(Branch);

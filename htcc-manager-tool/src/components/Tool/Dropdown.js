@@ -29,7 +29,7 @@ class Dropdown extends React.Component {
 
     render() {
         const {show} = this.state;
-        const {items, prop} = this.props;
+        const {items, prop, data} = this.props;
 
         return (
             <React.Fragment>
@@ -47,26 +47,25 @@ class Dropdown extends React.Component {
                     onClick={this.toggle}
                 />
                 {_.map(items, (ele, i) => {
-                    return (
-                        <span
-                            key={`sub-${ele.id}-${i}-${window.location.hash}`}
-                        >
-                            <NavLink
-                                key={`sub-${ele.id}-${i}-${window.location.hash}`}
-                                to={ele.path}
-                                className={`${ele.class} ${show ? '' : 'hide'}`}
-                                activeClassName="active"
-                                onClick={this.props.toggleSidebar}
-                            >
-                                <i className={ele.icon} id={ele.id}/>
-                                <span
-                                    className="menu-item"
-                                    //   style={{fontSize: '0.87rem'}}
+                    let canView = true;
+                    if (ele.rule) {
+                        canView = ele.rule(data);
+                    }
+                    return (canView ?
+                            <span key={`sub-${ele.id}-${i}-${window.location.hash}`}>
+                                <NavLink
+                                    key={`sub-${ele.id}-${i}-${window.location.hash}`}
+                                    to={ele.path}
+                                    className={`${ele.class} ${show ? '' : 'hide'}`}
+                                    activeClassName="active"
+                                    onClick={this.props.toggleSidebar}
                                 >
-                                    {ele.name}
-                                </span>
-                            </NavLink>
-                        </span>
+                                    <i className={ele.icon} id={ele.id}/>
+                                    <span className="menu-item">
+                                        {ele.name}
+                                    </span>
+                                </NavLink>
+                            </span> : null
                     );
                 })}
             </React.Fragment>
@@ -76,7 +75,7 @@ class Dropdown extends React.Component {
 
 const mapStateToProps = (state) => ({
     user: state.authReducer.user,
+    data: state.homeReducer.data,
 });
 
-const mapDispatchToProps = (dispatch) => ({});
-export default connect(mapStateToProps, mapDispatchToProps)(Dropdown);
+export default connect(mapStateToProps, null)(Dropdown);

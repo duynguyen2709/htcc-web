@@ -1,16 +1,16 @@
 import React, {Component} from 'react';
-import {Avatar, Button, Col, Collapse, Empty, Popconfirm, Row, Tabs} from 'antd';
-import {DeleteOutlined, PlusOutlined, QuestionCircleOutlined} from '@ant-design/icons';
-import {Button as ReactStrapButton, CardFooter} from "reactstrap";
+import {Avatar, Button, Col, Collapse, Empty, Popconfirm, Row, Tabs, Tooltip,} from 'antd';
+import {DeleteOutlined, PlusSquareOutlined, QuestionCircleOutlined,} from '@ant-design/icons';
+// import { Button as ReactStrapButton, CardFooter } from 'reactstrap';
 import {shiftArrangement} from '../../api';
 import * as _ from 'lodash';
 import moment from 'moment';
-import EmployeeInfoCard from "./EmployeeInfoCard";
-import {store} from "react-notifications-component";
-import {createNotify} from "../../utils/notifier";
-import ReactLoading from "react-loading";
-import AsyncModal from "../Modal/AsyncModal";
-import FormAddFixedShiftArrangement from "../Form/ShiftArrangement/FormAddFixedShiftArrangement";
+import EmployeeInfoCard from './EmployeeInfoCard';
+import {store} from 'react-notifications-component';
+import {createNotify} from '../../utils/notifier';
+import ReactLoading from 'react-loading';
+import AsyncModal from '../Modal/AsyncModal';
+import FormAddFixedShiftArrangement from '../Form/ShiftArrangement/FormAddFixedShiftArrangement';
 
 const {TabPane} = Tabs;
 const {Panel} = Collapse;
@@ -25,15 +25,18 @@ class FixedShiftArrangement extends Component {
 
             lastClickArr: [],
             officeShiftMap: new Map(),
-            currentOfficeId: ''
+            currentOfficeId: '',
         };
     }
 
     componentWillReceiveProps(nextProps, nextContext) {
         if (!_.isEqual(this.props.employeeList, nextProps.employeeList)) {
-            this.setState({
-                employeeList: nextProps.employeeList
-            }, () => this.convertEmployeeListToMap())
+            this.setState(
+                {
+                    employeeList: nextProps.employeeList,
+                },
+                () => this.convertEmployeeListToMap()
+            );
         }
 
         const data = nextProps.data;
@@ -50,7 +53,7 @@ class FixedShiftArrangement extends Component {
     }
 
     initData = (data) => {
-        if (_.isEmpty(data)) {
+        if (_.isEmpty(data) || _.isEmpty(data[0].shiftDetailList)) {
             return;
         }
 
@@ -60,19 +63,19 @@ class FixedShiftArrangement extends Component {
         lastClickArr.push({
             officeId: currentOfficeId,
             shiftId: officeShiftMap.get(currentOfficeId),
-            weekDay: data[0].shiftDetailList[0].detailList[0].weekDay
+            weekDay: data[0].shiftDetailList[0].detailList[0].weekDay,
         });
 
         this.setState({
             lastClickArr: lastClickArr,
             officeShiftMap: officeShiftMap,
-            currentOfficeId: currentOfficeId
-        })
+            currentOfficeId: currentOfficeId,
+        });
     };
 
     toggle = (submit = false, data) => {
         this.setState({
-            showModal: !this.state.showModal
+            showModal: !this.state.showModal,
         });
 
         if (submit) {
@@ -83,13 +86,13 @@ class FixedShiftArrangement extends Component {
     openModal = () => {
         this.setState({
             showModal: true,
-        })
+        });
     };
 
     toggleLoading = () => {
         this.setState({
-            isLoading: !this.state.isLoading
-        })
+            isLoading: !this.state.isLoading,
+        });
     };
 
     convertEmployeeListToMap = () => {
@@ -104,158 +107,219 @@ class FixedShiftArrangement extends Component {
     };
 
     renderListOffice = (data) => {
-        return (_.map(data, (item) => (
+        if (_.isEmpty(data)) {
+            return (
+                <Empty
+                    style={{marginTop: '50px'}}
+                    description={
+                        <span style={{color: 'rgba(0, 0, 0, 0.65)'}}>
+                            Chưa cài đặt danh sách chi nhánh
+                        </span>
+                    }
+                />
+            );
+        }
+        const {canAdd} = this.props.canAction;
+
+        return _.map(data, (item) => (
             <TabPane
-                className={"shift-office"}
+                className={'shift-office'}
                 style={{overflow: 'auto'}}
-                tab={
-                    <span>{item.officeId}</span>
-                }
+                tab={<span>{item.officeId}</span>}
                 key={item.officeId}
-                size={"small"}
+                size={'small'}
             >
-                <Tabs type={"card"}
-                      tabBarExtraContent={this.renderAddShiftButton()}
-                      onChange={(shiftId) => this.onChangeShift(shiftId)}
+                <Tabs
+                    type={'card'}
+                    tabBarExtraContent={canAdd ? this.renderAddShiftButton() : null}
+                    onChange={(shiftId) => this.onChangeShift(shiftId)}
                 >
                     {this.renderListShiftDetail(item.shiftDetailList)}
                 </Tabs>
             </TabPane>
-        )));
+        ));
     };
 
     renderAddShiftButton = () => {
-        return (<>
-            <CardFooter className="text-right info" style={{marginRight: '20px'}}>
-                <ReactStrapButton
-                    className="btn-custom"
-                    color="primary"
-                    type="button"
-                    onClick={this.openModal}
-                >
-                    <PlusOutlined style={{display: 'inline', margin: '5px 10px 0 0',}}/>
-                    <span className="btn-save-text"> Xếp ca </span>
-                </ReactStrapButton>
-            </CardFooter>
-        </>)
+        return (
+            <div className="btn-new-small">
+                <Tooltip placement="left" title={'Xếp ca'}>
+                    <PlusSquareOutlined onClick={this.openModal}/>
+                </Tooltip>
+            </div>
+        );
     };
 
     renderListShiftDetail = (shiftDetailList) => {
-        return (_.map(shiftDetailList, (item) => (
+        if (_.isEmpty(shiftDetailList)) {
+            return (
+                <Empty
+                    style={{marginTop: '50px'}}
+                    description={
+                        <span style={{color: 'rgba(0, 0, 0, 0.65)'}}>
+                            Chưa cài đặt ca làm việc
+                        </span>
+                    }
+                />
+            );
+        }
+
+        return _.map(shiftDetailList, (item) => (
             <TabPane
-                className={"shift-detail"}
+                className={'shift-detail'}
                 style={{overflow: 'auto'}}
                 tab={`${item.shiftName} (${item.shiftTime})`}
                 key={item.shiftId}
-                size={"small"}
+                size={'small'}
             >
                 {this.renderDetailList(item.detailList)}
             </TabPane>
-        )));
+        ));
     };
 
     renderDetailList = (detailList) => {
-        return (<>
-            <Tabs tabPosition={"left"}
-                  className={"shift-list-date-detail"}
-                  onChange={(weekDay) => this.onChangeWeekDay(weekDay)}
-            >
-                {_.map(detailList, (item) => (
-                    <TabPane
-                        className={"shift-date-detail"}
-                        style={{overflow: 'auto'}}
-                        tab={_.upperFirst(moment(item.date, "YYYYMMDD").format('dddd'))}
-                        key={item.weekDay}
-                        size={"small"}
-                    >
-                        {this.renderEmployeeList(item.employeeList)}
-                    </TabPane>
-                ))}
-            </Tabs>
-        </>);
+        return (
+            <>
+                <Tabs
+                    tabPosition={'left'}
+                    className={'shift-list-date-detail'}
+                    onChange={(weekDay) => this.onChangeWeekDay(weekDay)}
+                >
+                    {_.map(detailList, (item) => (
+                        <TabPane
+                            className={'shift-date-detail'}
+                            style={{overflow: 'auto'}}
+                            tab={_.upperFirst(
+                                moment(item.date, 'YYYYMMDD').format('dddd')
+                            )}
+                            key={item.weekDay}
+                            size={'small'}
+                        >
+                            {this.renderEmployeeList(item.employeeList)}
+                        </TabPane>
+                    ))}
+                </Tabs>
+            </>
+        );
     };
 
     renderEmployeeList = (employeeList) => {
         if (this.state.isLoading) {
-            return <ReactLoading
-                type={'spinningBubbles'}
-                color={'#4caf50'}
-                className={"center-div"}
-                height={'10%'}
-                width={'10%'}/>
+            return (
+                <ReactLoading
+                    type={'spinningBubbles'}
+                    color={'#4caf50'}
+                    className={'center-div'}
+                    height={'10%'}
+                    width={'10%'}
+                />
+            );
         }
 
         if (_.isEmpty(employeeList)) {
-            return <Empty
-                style={{marginTop: '50px'}}
-                description={
-                    <span style={{color: 'rgba(0, 0, 0, 0.65)'}}>
-                        Không có ca làm việc hôm nay
-                    </span>
-                }/>
+            return (
+                <Empty
+                    style={{marginTop: '50px'}}
+                    description={
+                        <span style={{color: 'rgba(0, 0, 0, 0.65)'}}>
+                            Không có ca làm việc hôm nay
+                        </span>
+                    }
+                />
+            );
         }
 
-        const overFlowHeightStyle = employeeList.length > 8 ? {
-            height: 'calc(100vh - 350px)'
-        } : null;
+        const overFlowHeightStyle =
+            employeeList.length > 8
+                ? {
+                    height: 'calc(100vh - 350px)',
+                }
+                : null;
 
-        return (<>
-            <Row className={"shift-list-employee"}
-                 style={overFlowHeightStyle}
-            >
-                {_.map(employeeList, (item, index) => {
+        const {canDelete} = this.props.canAction;
+
+        return (
+            <>
+                <Row
+                    className={'shift-list-employee'}
+                    style={overFlowHeightStyle}
+                >
+                    {_.map(employeeList, (item, index) => {
                         const user = this.employeeMap.get(item.username);
                         return (
-                            <Col span={6}
-                                 key={`col_${user.username}_${index}`}
-                                 className={"shift-employee-card"}
+                            <Col
+                                span={6}
+                                key={`col_${user.username}_${index}`}
+                                className={'shift-employee-card'}
                             >
-                                <Collapse defaultActiveKey={this.getPanelDefaultActiveKeys(employeeList)}>
-                                    <Panel key={`panel_${user.username}_${index}`}
-                                           showArrow={false}
-                                           extra={this.employeeMap.has(user.username) ?
-                                               this.renderButtonDelete(item.arrangeId, user.fullName) : null}
-                                           header={
-                                               <>
-                                                   <Avatar src={user.avatar}/>
-                                                   <span style={{color: 'rgba(0, 0, 0, 0.75)', marginLeft: '5px'}}>
-                                            {user.fullName}
-                                        </span>
-                                               </>
-                                           }>
+                                <Collapse
+                                    defaultActiveKey={this.getPanelDefaultActiveKeys(
+                                        employeeList
+                                    )}
+                                >
+                                    <Panel
+                                        key={`panel_${user.username}_${index}`}
+                                        showArrow={false}
+                                        extra={
+                                            this.employeeMap.has(user.username) && canDelete
+                                                ? this.renderButtonDelete(
+                                                item.arrangeId,
+                                                user.fullName
+                                                )
+                                                : null
+                                        }
+                                        header={
+                                            <>
+                                                <Avatar src={user.avatar}/>
+                                                <span
+                                                    style={{
+                                                        color:
+                                                            'rgba(0, 0, 0, 0.75)',
+                                                        marginLeft: '5px',
+                                                    }}
+                                                >
+                                                    {user.fullName}
+                                                </span>
+                                            </>
+                                        }
+                                    >
                                         <EmployeeInfoCard info={user}/>
                                     </Panel>
                                 </Collapse>
                             </Col>
                         );
-                    }
-                )}
-            </Row>
-        </>);
+                    })}
+                </Row>
+            </>
+        );
     };
 
     renderButtonDelete = (arrangeId, fullName) => {
         const message = `Bạn có chắc xóa nhân viên ${fullName} khỏi ca ?`;
-        return (<>
-            <Popconfirm
-                title={message}
-                icon={<QuestionCircleOutlined/>}
-                okText="Đồng ý"
-                cancelText="Huỷ"
-                onConfirm={(event) => {
-                    event.stopPropagation();
-                    this.deleteShiftArrangement(arrangeId);
-                }}
-            >
-                <Button type="primary" danger
+        return (
+            <>
+                <Popconfirm
+                    title={message}
+                    icon={<QuestionCircleOutlined/>}
+                    okText="Đồng ý"
+                    cancelText="Huỷ"
+                    onConfirm={(event) => {
+                        event.stopPropagation();
+                        this.deleteShiftArrangement(arrangeId);
+                    }}
+                >
+                    <Button
+                        type="primary"
+                        danger
                         onClick={(event) => {
                             event.stopPropagation();
                         }}
                         icon={<DeleteOutlined/>}
-                        size={"small"}
-                />
-            </Popconfirm>
-        </>)
+                        size={'small'}
+                    />
+                </Popconfirm>
+            </>
+        );
     };
 
     deleteShiftArrangement = (arrangeId) => {
@@ -267,7 +331,6 @@ class FixedShiftArrangement extends Component {
             .deleteShiftArrangement(type, arrangeId)
             .then((res) => {
                 if (res.returnCode === 1) {
-
                     store.addNotification(
                         createNotify('default', res.returnMessage)
                     );
@@ -293,19 +356,25 @@ class FixedShiftArrangement extends Component {
         if (!officeShiftMap.has(officeId)) {
             const {data} = this.props;
             let shiftId = '';
-            if (!_.isEmpty(data[0].shiftDetailList)) {
-                shiftId = data[0].shiftDetailList[0].shiftId;
+
+            for (let obj of data) {
+                if (_.isEqual(obj.officeId, officeId)) {
+                    if (!_.isEmpty(obj.shiftDetailList)) {
+                        shiftId = obj.shiftDetailList[0].shiftId;
+                    }
+                    break;
+                }
             }
 
             officeShiftMap.set(officeId, shiftId);
             this.setState({
-                officeShiftMap: officeShiftMap
-            })
+                officeShiftMap: officeShiftMap,
+            });
         }
 
         this.setState({
-            currentOfficeId: officeId
-        })
+            currentOfficeId: officeId,
+        });
     };
 
     onChangeShift = (shiftId) => {
@@ -320,7 +389,10 @@ class FixedShiftArrangement extends Component {
             }
 
             const element = lastClickArr[index];
-            if (_.isEqual(currentOfficeId, element.officeId) && _.isEqual(shiftId, element.shiftId)) {
+            if (
+                _.isEqual(currentOfficeId, element.officeId) &&
+                _.isEqual(shiftId, element.shiftId)
+            ) {
                 obj = {...element};
                 break;
             }
@@ -330,8 +402,8 @@ class FixedShiftArrangement extends Component {
             obj = {
                 officeId: currentOfficeId,
                 shiftId: shiftId,
-                weekDay: 2
-            }
+                weekDay: 2,
+            };
         }
 
         lastClickArr.push(obj);
@@ -340,20 +412,29 @@ class FixedShiftArrangement extends Component {
         this.setState({
             lastClickArr: lastClickArr,
             officeShiftMap: officeShiftMap,
-        })
+        });
     };
 
     onChangeWeekDay = (weekDay) => {
         const {lastClickArr} = this.state;
-
-        const lastClick = lastClickArr[lastClickArr.length - 1];
-        lastClick.weekDay = weekDay;
-        lastClickArr.pop();
-        lastClickArr.push(lastClick);
+        if (_.isEmpty(lastClickArr)) {
+            const officeId = this.state.currentOfficeId;
+            const shiftId = this.state.officeShiftMap.get(officeId);
+            lastClickArr.push({
+                officeId,
+                shiftId,
+                weekDay
+            })
+        } else {
+            const lastClick = lastClickArr[lastClickArr.length - 1];
+            lastClick.weekDay = weekDay;
+            lastClickArr.pop();
+            lastClickArr.push(lastClick);
+        }
 
         this.setState({
-            lastClickArr: lastClickArr
-        })
+            lastClickArr: lastClickArr,
+        });
     };
 
     buildAddShiftData = () => {
@@ -361,9 +442,12 @@ class FixedShiftArrangement extends Component {
         const shiftId = officeShiftMap.get(currentOfficeId);
         let weekDay = 2;
 
-        if (!_.isEmpty(shiftId)) {
+        if (!_.isEmpty(shiftId) && !_.isEmpty(lastClickArr)) {
             for (let index = lastClickArr.length - 1; index >= 0; index--) {
-                if (_.isEqual(currentOfficeId, lastClickArr[index].officeId) && _.isEqual(shiftId, lastClickArr[index].shiftId)) {
+                if (
+                    _.isEqual(currentOfficeId, lastClickArr[index].officeId) &&
+                    _.isEqual(shiftId, lastClickArr[index].shiftId)
+                ) {
                     weekDay = lastClickArr[index].weekDay;
                     break;
                 }
@@ -375,7 +459,7 @@ class FixedShiftArrangement extends Component {
             shiftId: shiftId,
             weekDay: weekDay,
             type: 1,
-        }
+        };
     };
 
     getPanelDefaultActiveKeys = (employeeList) => {
@@ -391,26 +475,29 @@ class FixedShiftArrangement extends Component {
         const {showModal} = this.state;
 
         const addShiftData = this.buildAddShiftData();
+        const {canAdd} = this.props.canAction;
 
         return (
             <>
-                <Tabs type={"card"}
-                      className={"shift-office-list"}
-                      onChange={(officeId) => this.onChangeOffice(officeId)}
+                <Tabs
+                    type={'card'}
+                    className={'shift-office-list'}
+                    onChange={(officeId) => this.onChangeOffice(officeId)}
                 >
                     {this.renderListOffice(data)}
                 </Tabs>
-                <AsyncModal
-                    key={addShiftData}
-                    reload={false}
-                    CompomentContent={FormAddFixedShiftArrangement}
-                    visible={showModal}
-                    toggle={this.toggle}
-                    title={'Xếp ca làm việc'}
-                    data={addShiftData}
-                    mode={'new'}
-                    prop={{employeeList: employeeList}}
-                />
+                {canAdd ?
+                    <AsyncModal
+                        key={addShiftData}
+                        reload={false}
+                        CompomentContent={FormAddFixedShiftArrangement}
+                        visible={showModal}
+                        toggle={this.toggle}
+                        title={'Xếp ca làm việc'}
+                        data={addShiftData}
+                        mode={'new'}
+                        prop={{employeeList: employeeList}}
+                    /> : null}
             </>
         );
     }
