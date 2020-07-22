@@ -4,8 +4,6 @@
       <v-container py-0>
         <v-layout wrap>
           <v-avatar v-if="thisUser.avatar" slot="offset" class="mx-auto d-block" size="130">
-            <!-- <img :src="thisUser.avatar" /> -->
-
             <v-img :src="thisUser.avatar" lazy-src="/vuetifylogo.png">
               <template v-slot:placeholder>
                 <v-row class="fill-height ma-0" align="center" justify="center">
@@ -21,7 +19,6 @@
               </template>
 
               <material-card color="primary" elevation="12" title="Đổi ảnh đại diện">
-                <!-- <v-card> -->
                 <v-form ref="form" @submit.prevent>
                   <v-card-text>
                     <v-avatar slot="offset" class="mx-auto d-block" size="130">
