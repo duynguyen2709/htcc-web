@@ -191,7 +191,10 @@ function getListFeatureBundle(comboDetail) {
   for(let i = 1; i < len; i++) {
     console.log("key: ", listKey[i]);
     console.log("featureList: ", featureList);
-    html += `<p>` + featureList.find(el => el.featureId == [listKey[i]]).featureName + `</p>`;
+
+    if(comboDetail[listKey[i]]) {
+      html += `<p>` + featureList.find(el => el.featureId == [listKey[i]]).featureName + `</p>`;
+    }
   }
 
   return html;
