@@ -1121,7 +1121,7 @@ hr {
 }
 
 .tab-content-hidden {
-    display: none;
+    display: none !important;
 }
 
 /* .tab-content-active {

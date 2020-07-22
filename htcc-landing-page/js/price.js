@@ -131,18 +131,23 @@ function updatePrice() {
   PerMonth.innerHTML = formatNumber(Math.round((total) / 12));
 }
 
-function selectFeature(e, feature) {
+function selectFeature(e, featureName) {
+  console.log("select price");
+
+  const feature = featureList.find(el => el.featureName === featureName);
+
   if(!feature.unitPrice) {
+    console.log("return: ", feature.unitPrice);
     return;
   }
 
   if (e.currentTarget.innerHTML.indexOf("fa-check-circle") !== -1) {
     e.currentTarget.innerHTML = e.currentTarget.innerHTML.replace("fa fa-check-circle check", "far fa-circle")
-    const indexRemoveFeature = featureChoosenList.findIndex(el => el.featureName === feature);
+    const indexRemoveFeature = featureChoosenList.findIndex(el => el.featureName === featureName);
     featureChoosenList.splice(indexRemoveFeature, 1);
   } else {
     e.currentTarget.innerHTML = e.currentTarget.innerHTML.replace("far fa-circle", "fa fa-check-circle check")
-    featureChoosenList.push(featureList.find(el => el.featureName === feature))
+    featureChoosenList.push(featureList.find(el => el.featureName === featureName))
   }
 
   updatePrice();
