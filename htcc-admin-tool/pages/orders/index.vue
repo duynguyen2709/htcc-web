@@ -69,7 +69,12 @@
                             </td>
                             <td class="text-right">{{ $convertVND(item.totalPrice) }}</td>
                             <td class="text-right">{{ $convertVND(item.paidPrice) }}</td>
-
+                             <td class="justify-center align-center">
+                            <v-icon
+                              class="mr-2 justify-center align-center"
+                              @click="editItem(item)"
+                            >mdi-pencil</v-icon>
+                          </td>
                           </tr>
                         </tbody>
                       </template>
@@ -147,40 +152,23 @@
           </v-tabs-items>
 
           <v-dialog width="530" v-model="EditDialog">
-            <material-card color="success" elevation="12" title="Cập nhập khiếu nại">
-              <v-form ref="form">
-                <v-card-text v-if="ChoosenItem !== null">
-                  <v-row>
-                    <v-col cols="6">
-                      <v-text-field v-model="ChoosenItem.category" label="Danh mục" :readonly="true" />
-                    </v-col>
-                    <v-col cols="6">
-                      <v-text-field v-model="ChoosenItem.OrderId" label="Mã khiếu nại" :readonly="true" />
-                    </v-col>
-                  </v-row>
+             <v-card>
+              <v-card-title class="green white--text">Duyệt đơn hàng</v-card-title>
 
-                  <v-row>
-                    <v-col cols="6">
-                      <v-text-field v-model="ChoosenItem.content" label="Nội dung" :readonly="true" />
-                    </v-col>
-                    <v-col cols="6">
-                      <v-text-field v-model="ChoosenItem.date" label="Ngày" :readonly="true" />
-                    </v-col>
-                  </v-row>
-                  <v-textarea rows="3" v-model="ChoosenItem.response" label="Ghi chú"></v-textarea>
+              <v-card-text class="mt-2 card-text">Bạn có chắc muốn duyệt đơn khiếu nại này?</v-card-text>
 
-                  <v-radio-group v-model="ChoosenItem.status">
-                    <v-radio label="Từ chối" value="0"></v-radio>
-                    <v-radio label="Xử lý" value="1"></v-radio>
-                  </v-radio-group>
-                </v-card-text>
-                <v-card-actions>
-                  <v-btn color="green darken-1" text @click="ConfirmDialog = true">Đồng ý</v-btn>
+              <v-card-actions>
+                <v-row
+            align="center"
+            justify="end"
+          >
+                  <v-btn color="green darken-1" text @click="editStatus" :loading="loadingConfirmEditDialog">Đồng ý
+                  </v-btn>
 
-                  <v-btn color="red darken-1" text @click="EditDialog = false">Hủy</v-btn>
-                </v-card-actions>
-              </v-form>
-            </material-card>
+                  <v-btn color="red darken-1" text @click="()=>{ConfirmDialog = false;}">Hủy</v-btn>
+                </v-row>
+              </v-card-actions>
+            </v-card>
           </v-dialog>
 
           <v-dialog v-model="ConfirmDialog" max-width="290">
@@ -190,10 +178,15 @@
               <v-card-text class="mt-2">Bạn có chắc muốn cập nhập đơn khiếu nại này?</v-card-text>
 
               <v-card-actions>
-                <v-btn color="green darken-1" text @click="editStatus" :loading="loadingConfirmEditDialog">Đồng ý
-                </v-btn>
+                <v-row
+            align="center"
+            justify="end"
+          >
+                  <v-btn color="green darken-1" text @click="editStatus" :loading="loadingConfirmEditDialog">Đồng ý
+                  </v-btn>
 
-                <v-btn color="red darken-1" text @click="()=>{ConfirmDialog = false;}">Hủy</v-btn>
+                  <v-btn color="red darken-1" text @click="()=>{ConfirmDialog = false;}">Hủy</v-btn>
+                </v-row>
               </v-card-actions>
             </v-card>
           </v-dialog>
@@ -473,8 +466,6 @@
 
       editItem(item) {
         this.ChoosenItem = item;
-        this.ChoosenItem.response = "";
-        this.ChoosenItem.status = "1";
         this.EditDialog = true;
       },
       async editStatus() {
@@ -613,6 +604,14 @@
 
   .v-messages {
     min-height: 0px !important;
+  }
+
+  .card-text {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 0 auto;
+    width: fit-content;
+    padding: 30px 0px !important;
   }
 
 </style>

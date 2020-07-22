@@ -37,3 +37,7 @@
     text-align: center;
     /* height: ; */
   }
+
+  .v-card__actions {
+      justify-content: flex-end !important;
+  }
