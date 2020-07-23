@@ -10,7 +10,10 @@ import { buildColsApprovalAttendance } from '../constant/colTable';
 import moment from 'moment';
 import FormEditStatusCheckinRequest from '../components/Form/FormEditStatusCheckinRequest';
 import FormAddCheckinRequest from '../components/Form/FormAddCheckinRequest';
+import {connect} from 'react-redux';
 import AsyncModal from '../components/Modal/AsyncModal';
+import {canDoAction} from "../utils/permission";
+import {ACTION, ROLE_GROUP_KEY} from "../constant/constant";
 
 const { TabPane } = Tabs;
 
@@ -97,13 +100,16 @@ class ApprovalAttendance extends Component {
             mode,
         } = this.state;
 
+        const canAdd = canDoAction(this.props.data, ROLE_GROUP_KEY.CHECKIN, ACTION.CREATE);
+        const canUpdate = canDoAction(this.props.data, ROLE_GROUP_KEY.CHECKIN, ACTION.UPDATE);
+
         return (
             <div>
                 <Tabs
                     onTabClick={(key) => this.onChangeTab(key)}
                     defaultActiveKey={this.state.currTab}
                     type="card"
-                    tabBarExtraContent={
+                    tabBarExtraContent={canAdd ?
                         <div className="float-right btn-new">
                             <Tooltip
                                 placement="left"
@@ -118,7 +124,7 @@ class ApprovalAttendance extends Component {
                                     }}
                                 />
                             </Tooltip>
-                        </div>
+                        </div> : null
                     }
                 >
                     <TabPane
@@ -135,7 +141,8 @@ class ApprovalAttendance extends Component {
                             <div className="table-small table-complaint">
                                 <Table
                                     columns={buildColsApprovalAttendance(
-                                        this.handleEditStatus
+                                        this.handleEditStatus,
+                                        canUpdate
                                     )}
                                     dataSource={dataNotResolve}
                                     scroll={{
@@ -166,6 +173,7 @@ class ApprovalAttendance extends Component {
                                 <Table
                                     columns={buildColsApprovalAttendance(
                                         this.handleEditStatus,
+                                        canUpdate,
                                         [
                                             {
                                                 title: 'Người duyệt',
@@ -194,6 +202,7 @@ class ApprovalAttendance extends Component {
                         </div>
                     </TabPane>
                 </Tabs>
+                {((mode === 'new' && canAdd) || (mode === 'edit' && canUpdate)) ?
                 <div>
                     <AsyncModal
                         key={curRecordEdit}
@@ -214,10 +223,14 @@ class ApprovalAttendance extends Component {
                         mode={mode}
                         currDate={currDate}
                     />
-                </div>
+                </div> : null}
             </div>
         );
     }
 }
 
-export default ApprovalAttendance;
+const mapStateToProps = (state) => ({
+    data: state.homeReducer.data
+});
+
+export default connect(mapStateToProps, null)(ApprovalAttendance);

@@ -171,8 +171,9 @@ class Role extends Component {
                 }
             })
             .catch((err) => {
+                console.error(err);
                 store.addNotification(
-                    createNotify('danger', JSON.stringify(err))
+                    createNotify('danger', 'Hệ thống có lỗi. Vui lòng thử lại sau.')
                 );
             })
             .finally(() => {

@@ -68,7 +68,7 @@ class FormAddNewEmployee extends React.Component {
                 address: 'Địa chỉ không được rỗng',
                 phoneNumber: 'Số điện thoại không hợp lệ',
                 identityCardNo: 'CMND không hợp lệ',
-                username: 'Username không được rỗng',
+                username: 'Tên đăng nhập không được rỗng',
                 title: 'Chức vụ không được rỗng',
                 fullName: 'Họ tên không được rỗng',
             },
@@ -212,10 +212,10 @@ class FormAddNewEmployee extends React.Component {
                 <Row>
                     <Col md="12">
                         <FormGroup>
-                            <label htmlFor="email">Họ và tên</label>
+                            <label htmlFor="fullName">Họ và tên</label>
                             <Input
                                 className="bor-gray text-dark"
-                                placeholder="Nhập username"
+                                placeholder="Nhập họ tên"
                                 type="text"
                                 onChange={this.handleOnChange}
                                 name="fullName"
@@ -362,10 +362,10 @@ class FormAddNewEmployee extends React.Component {
                     </Col>
                     <Col md="6">
                         <FormGroup>
-                            <label htmlFor="email">Username</label>
+                            <label htmlFor="email">Tên đăng nhập </label>
                             <Input
                                 className="bor-gray text-dark"
-                                placeholder="Nhập username"
+                                placeholder="Nhập Tên đăng nhập "
                                 type="text"
                                 onChange={this.handleOnChange}
                                 name="username"
@@ -383,7 +383,7 @@ class FormAddNewEmployee extends React.Component {
                         <FormGroup>
                             <label>Chức vụ</label>
                             <Input
-                                placeholder="Nhập số chức vụ"
+                                placeholder="Nhập chức danh"
                                 type="text"
                                 className="bor-gray text-dark"
                                 onChange={this.handleOnChange}
@@ -398,7 +398,7 @@ class FormAddNewEmployee extends React.Component {
                     </Col>
                     <Col md="6">
                         <FormGroup>
-                            <label>Cập bậc</label>
+                            <label>Cấp bậc</label>
                             <Input
                                 placeholder="Nhập cấp bậc"
                                 type="text"
@@ -408,7 +408,7 @@ class FormAddNewEmployee extends React.Component {
                                 value={value.level}
                                 invalid={
                                     touch.level &&
-                                    !_.checkValidNumber(value.level)
+                                    !checkValidNumber(value.level)
                                 }
                             />
                             <FormFeedback invalid={'true'}>

@@ -1,19 +1,23 @@
 import React from 'react';
 import * as _ from 'lodash';
-import { userApi } from '../api';
-import { store } from 'react-notifications-component';
-import { createNotify } from '../utils/notifier';
-import { PlusSquareOutlined } from '@ant-design/icons';
-import { buildColsEmployee } from '../constant/colTable';
-import { Input, Table, Tooltip } from 'antd';
+import {userApi} from '../api';
+import {store} from 'react-notifications-component';
+import {createNotify} from '../utils/notifier';
+import {PlusSquareOutlined} from '@ant-design/icons';
+import {buildColsEmployee} from '../constant/colTable';
+import {Input, Table, Tooltip} from 'antd';
 import AsyncModal from '../components/Modal/AsyncModal';
 import FormEditEmployee from '../components/Form/FormEditEmployee';
 import FormAddNewEmployee from '../components/Form/FormAddNewEmployee';
-import { USER } from '../constant/localStorageKey';
+import {USER} from '../constant/localStorageKey';
+import {canDoAction} from "../utils/permission";
+import {connect} from 'react-redux';
+import {ACTION, ROLE_GROUP_KEY} from "../constant/constant";
+import EmployeePermission from "./EmployeePermission";
 
-const { Search } = Input;
+const {Search} = Input;
 
-class Branch extends React.Component {
+class Employee extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -21,6 +25,7 @@ class Branch extends React.Component {
             showModal: false,
             mode: 'new',
             curRecordEdit: null,
+            curUsername: '',
             isSubmit: false,
             loading: false,
         };
@@ -58,10 +63,18 @@ class Branch extends React.Component {
                 }
             })
             .catch((err) => {
+                console.error(err);
                 store.addNotification(
-                    createNotify('danger', JSON.stringify(err))
+                    createNotify('danger', 'Hệ thống có lỗi. Vui lòng thử lại sau.')
                 );
             });
+    };
+
+    handleShowPermission = (username) => {
+        this.setState({
+            curUsername: username,
+            mode: 'permission',
+        });
     };
 
     handleEdit = (record) => {
@@ -69,6 +82,13 @@ class Branch extends React.Component {
             showModal: true,
             curRecordEdit: record,
             mode: 'edit',
+        });
+    };
+
+    handleClickBack = () => {
+        this.setState({
+            curUsername: '',
+            mode: 'new',
         });
     };
 
@@ -98,14 +118,15 @@ class Branch extends React.Component {
                 }
             })
             .catch((err) => {
+                console.error(err);
                 store.addNotification(
-                    createNotify('danger', JSON.stringify(err))
+                    createNotify('danger', 'Hệ thống có lỗi. Vui lòng thử lại sau.')
                 );
             });
     };
 
     toggle = (submit = false) => {
-        const { data } = this.state;
+        const {data} = this.state;
         this.setState({
             showModal: !this.state.showModal,
             curRecordEdit: null,
@@ -134,8 +155,19 @@ class Branch extends React.Component {
     };
 
     render() {
-        const { data, showModal, curRecordEdit, mode, loading } = this.state;
+        const {data, showModal, curRecordEdit, curUsername, mode, loading} = this.state;
         const user = JSON.parse(localStorage.getItem(USER));
+        const canAdd = canDoAction(this.props.data, ROLE_GROUP_KEY.EMPLOYEE_MANAGE, ACTION.CREATE);
+        const canUpdate = canDoAction(this.props.data, ROLE_GROUP_KEY.EMPLOYEE_MANAGE, ACTION.UPDATE);
+        const canDelete = canDoAction(this.props.data, ROLE_GROUP_KEY.EMPLOYEE_MANAGE, ACTION.DELETE);
+        const canViewPermission = canDoAction(this.props.data, ROLE_GROUP_KEY.EMPLOYEE_PERMISSION, ACTION.READ);
+
+        if (mode === 'permission') {
+            return <EmployeePermission username={curUsername}
+                                       handleClickBack={this.handleClickBack}
+            />
+        }
+
         return (
             <div className="content">
                 <div className="table-wrapper tabs-big">
@@ -144,22 +176,23 @@ class Branch extends React.Component {
                             <Search
                                 className="form-control bor-radius"
                                 placeholder="Tìm kiếm nhanh"
-                                style={{ width: 300 }}
+                                style={{width: 300}}
                                 onChange={this.onSearch}
                             />
                         </div>
-                        <div className="float-right btn-new">
-                            <Tooltip placement="left" title={'Thêm nhân viên'}>
-                                <PlusSquareOutlined
-                                    onClick={() => {
-                                        this.setState({
-                                            mode: 'new',
-                                        });
-                                        this.toggle(false);
-                                    }}
-                                />
-                            </Tooltip>
-                        </div>
+                        {canAdd ?
+                            <div className="float-right btn-new">
+                                <Tooltip placement="left" title={'Thêm nhân viên'}>
+                                    <PlusSquareOutlined
+                                        onClick={() => {
+                                            this.setState({
+                                                mode: 'new',
+                                            });
+                                            this.toggle(false);
+                                        }}
+                                    />
+                                </Tooltip>
+                            </div> : null}
                     </div>
                     <div className="table-edit">
                         <div className="table-small">
@@ -167,10 +200,14 @@ class Branch extends React.Component {
                                 columns={buildColsEmployee(
                                     this.handleEdit,
                                     this.handleUpdateStatus,
-                                    user.username
+                                    this.handleShowPermission,
+                                    user.username,
+                                    canUpdate,
+                                    canDelete,
+                                    canViewPermission,
                                 )}
                                 dataSource={this.mapData(data)}
-                                scroll={{ x: 1300, y: 'calc(100vh - 300px)' }}
+                                scroll={{x: 1300, y: 'calc(100vh - 300px)'}}
                                 loading={loading || data === null}
                                 pagination={{
                                     hideOnSinglePage: true,
@@ -180,7 +217,7 @@ class Branch extends React.Component {
                             />
                         </div>
                     </div>
-                    <div>
+                    {((mode === 'new' && canAdd) || (mode === 'edit' && canUpdate)) ?
                         <AsyncModal
                             key={curRecordEdit}
                             reload={false}
@@ -198,12 +235,15 @@ class Branch extends React.Component {
                             }
                             data={curRecordEdit}
                             mode={mode}
-                        />
-                    </div>
+                        /> : null}
                 </div>
             </div>
         );
     }
 }
 
-export default Branch;
+const mapStateToProps = (state) => ({
+    data: state.homeReducer.data
+});
+
+export default connect(mapStateToProps, null)(Employee);
