@@ -120,6 +120,7 @@ class FixedShiftArrangement extends Component {
             );
         }
         const {canAdd} = this.props.canAction;
+        const {employeeList} = this.props;
 
         return _.map(data, (item) => (
             <TabPane
@@ -131,7 +132,8 @@ class FixedShiftArrangement extends Component {
             >
                 <Tabs
                     type={'card'}
-                    tabBarExtraContent={canAdd ? this.renderAddShiftButton() : null}
+                    tabBarExtraContent={canAdd  && !_.isEmpty(employeeList) ?
+                        this.renderAddShiftButton() : null}
                     onChange={(shiftId) => this.onChangeShift(shiftId)}
                 >
                     {this.renderListShiftDetail(item.shiftDetailList)}
@@ -486,7 +488,7 @@ class FixedShiftArrangement extends Component {
                 >
                     {this.renderListOffice(data)}
                 </Tabs>
-                {canAdd ?
+                {canAdd && !_.isEmpty(employeeList) ?
                     <AsyncModal
                         key={addShiftData}
                         reload={false}
