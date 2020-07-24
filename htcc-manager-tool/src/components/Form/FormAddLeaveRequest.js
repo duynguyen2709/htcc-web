@@ -131,7 +131,7 @@ class FormAddLeaveRequest extends React.Component {
         } else {
             this.props.stopLoading();
             store.addNotification(
-                createNotify('warning', 'Bạn chưa nhập  lý do')
+                createNotify('warning', 'Bạn chưa nhập lý do')
             );
         }
     };
@@ -139,9 +139,13 @@ class FormAddLeaveRequest extends React.Component {
     clear = () => {
         this.setState({
             value: {
-                ...this.state.value,
-                response: null,
+                category: '',
+                clientTime: new Date().getTime(),
+                detail: [],
+                reason: '',
+                username: '',
             },
+            dayOff: 1,
         });
     };
 
@@ -153,7 +157,7 @@ class FormAddLeaveRequest extends React.Component {
 
     decreaseDayOff = (index) => {
         let { value } = this.state;
-        value['detail'] = _.omit(value.detail, `[${index}]`);
+        _.remove(value.detail, (item, i) => i === index);
 
         this.setState({
             dayOff: this.state.dayOff - 1,
