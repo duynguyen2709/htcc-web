@@ -14,7 +14,7 @@ import {USER} from "../../constant/localStorageKey";
 import AsyncModal from "../../components/Modal/AsyncModal";
 import FormSendNotification from "../../components/Form/FormSendNotification";
 import {Button, CardFooter} from "reactstrap";
-import {canDoAction} from "../../utils/permission";
+import {canDoAction, hasNoTargetToSendNoti} from "../../utils/permission";
 import {ACTION, ROLE_GROUP_KEY} from "../../constant/constant";
 
 const {Search} = Input;
@@ -283,6 +283,7 @@ class Notifications extends React.Component {
         const user = JSON.parse(localStorage.getItem(USER));
 
         const canAdd = canDoAction(this.props.data, ROLE_GROUP_KEY.NOTIFICATION, ACTION.CREATE);
+        const hasNoTarget = hasNoTargetToSendNoti(this.props.data);
 
         return (
             <>
@@ -324,7 +325,7 @@ class Notifications extends React.Component {
                             update={this.updateDate}
                         />
                     </div>
-                    {canAdd ?
+                    {canAdd && !hasNoTarget ?
                         <div className="float-right">
                             <CardFooter className="text-right info" style={{marginRight: '20px'}}>
                                 <Button
@@ -440,7 +441,7 @@ class Notifications extends React.Component {
                         />
                     </div>
                 )}
-                {canAdd ?
+                {canAdd && !hasNoTarget ?
                     <AsyncModal
                         key={'notification'}
                         reload={false}

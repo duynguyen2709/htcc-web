@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { API_URL_EMPLOYEE } from '../constant/url';
+import {API_URL_EMPLOYEE, CLIENTID} from '../constant/url';
 import { TOKEN, USER } from '../constant/localStorageKey';
 
 const getList = (month) => {
@@ -52,7 +52,8 @@ const createLeavingRequest = (data) => {
     const token = localStorage.getItem(TOKEN);
     const user = JSON.parse(localStorage.getItem(USER));
 
-    data['companyId'] = user.companyId;
+    data.companyId = user.companyId;
+    data.clientId = CLIENTID;
 
     return new Promise((resolve, reject) => {
         axios

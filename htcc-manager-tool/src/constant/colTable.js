@@ -109,6 +109,20 @@ export const buildColsEmployee = (
         width: '250px',
     },
     {
+        title: 'Trạng thái tài khoản',
+        dataIndex: 'status',
+        width: '170px',
+        render: (text, record) => {
+            if (record.status === 1) {
+                return <Tag color="success">Hoạt động</Tag>;
+            }
+            if (record.status === 0) {
+                return <Tag color="error">Khóa</Tag>;
+            }
+            return '';
+        }
+    },
+    {
         title: 'Hành động',
         width: '150px',
         fixed: 'right',

@@ -1,27 +1,23 @@
-import React, { Component } from 'react';
-import { Input, Table, Tabs, Tooltip } from 'antd';
-import { connect } from 'react-redux';
-import {
-    CheckSquareOutlined,
-    PlusSquareOutlined,
-    WarningOutlined,
-} from '@ant-design/icons';
-import { leaveRequestApi } from '../api';
-import { store } from 'react-notifications-component';
-import { createNotify } from '../utils/notifier';
+import React, {Component} from 'react';
+import {Input, Table, Tabs, Tooltip} from 'antd';
+import {connect} from 'react-redux';
+import {CheckSquareOutlined, PlusSquareOutlined, WarningOutlined,} from '@ant-design/icons';
+import {leaveRequestApi} from '../api';
+import {store} from 'react-notifications-component';
+import {createNotify} from '../utils/notifier';
 import * as _ from 'lodash';
-import { buildColsLeaveRequest } from '../constant/colTable';
+import {buildColsLeaveRequest} from '../constant/colTable';
 import moment from 'moment';
 import CalendarTool from '../components/Tool/CalendarTool';
 import FormEditStatusLeaveRequest from '../components/Form/FormEditStatusLeaveRequest';
 import FormAddLeaveRequest from '../components/Form/FormAddLeaveRequest';
 import AsyncModal from '../components/Modal/AsyncModal';
-import { addKeyPropsToTable } from '../utils/dataTable';
-import { canDoAction } from '../utils/permission';
-import { ACTION, ROLE_GROUP_KEY } from '../constant/constant';
+import {addKeyPropsToTable} from '../utils/dataTable';
+import {canDoAction} from '../utils/permission';
+import {ACTION, ROLE_GROUP_KEY} from '../constant/constant';
 
-const { Search } = Input;
-const { TabPane } = Tabs;
+const {Search} = Input;
+const {TabPane} = Tabs;
 
 class LeaveRequest extends Component {
     constructor(props) {
@@ -46,6 +42,14 @@ class LeaveRequest extends Component {
             isLoading,
             curRecordEdit: null,
         });
+
+        if (isLoading) {
+            this.setState({
+                dataResolved: null,
+                dataNotResolve: null,
+            });
+            this.getListLeavingRequest(this.state.currDate);
+        }
     };
 
     onChangeTab = (key) => {
@@ -71,17 +75,17 @@ class LeaveRequest extends Component {
                     currDate: value.format('YYYYMM'),
                 },
                 () => {
-                    this.getListComplaint(value.format('YYYYMM'));
+                    this.getListLeavingRequest(value.format('YYYYMM'));
                 }
             );
         }
     };
 
     componentDidMount() {
-        this.getListComplaint(this.state.currDate);
+        this.getListLeavingRequest(this.state.currDate);
     }
 
-    getListComplaint = (month) => {
+    getListLeavingRequest = (month) => {
         leaveRequestApi
             .getList(month)
             .then((res) => {
@@ -113,14 +117,18 @@ class LeaveRequest extends Component {
                 }
             })
             .catch((err) => {
+                console.error(err);
                 store.addNotification(
-                    createNotify('danger', JSON.stringify(err))
+                    createNotify(
+                        'danger',
+                        'Hệ thống có lỗi. Vui lòng thử lại sau.'
+                    )
                 );
             });
     };
 
     onSearch = (e) => {
-        const { currTab } = this.state;
+        const {currTab} = this.state;
 
         const data = _.filter(this[`data${currTab}`], (ele) =>
             JSON.stringify(ele)
@@ -170,15 +178,15 @@ class LeaveRequest extends Component {
                             <Search
                                 className="form-control bor-radius"
                                 placeholder="Tìm kiếm nhanh"
-                                style={{ width: 300 }}
+                                style={{width: 300}}
                                 onChange={this.onSearch}
                             />
                         </div>
                         <div
                             className="tool-calendar float-left"
-                            style={{ marginLeft: '20px' }}
+                            style={{marginLeft: '20px'}}
                         >
-                            <CalendarTool update={this.updateData} />
+                            <CalendarTool update={this.updateData}/>
                         </div>
                         {canAdd ? (
                             <div className="float-right btn-new">
@@ -200,10 +208,10 @@ class LeaveRequest extends Component {
                         defaultActiveKey={this.state.currTab}
                     >
                         <TabPane
-                            style={{ overflow: 'auto' }}
+                            style={{overflow: 'auto'}}
                             tab={
                                 <span>
-                                    <WarningOutlined />
+                                    <WarningOutlined/>
                                     Chưa xử lý
                                 </span>
                             }
@@ -233,10 +241,10 @@ class LeaveRequest extends Component {
                             </div>
                         </TabPane>
                         <TabPane
-                            style={{ overflow: 'auto' }}
+                            style={{overflow: 'auto'}}
                             tab={
                                 <span>
-                                    <CheckSquareOutlined />
+                                    <CheckSquareOutlined/>
                                     Đã xử lý
                                 </span>
                             }
@@ -277,18 +285,6 @@ class LeaveRequest extends Component {
                             </div>
                         </TabPane>
                     </Tabs>
-                    {/* <div>
-                        <AsyncModal
-                            CompomentContent={FormEditStatusLeaveRequest}
-                            visible={showModal}
-                            toggle={this.toggle}
-                            title={'Xử lý đơn nghỉ phép'}
-                            data={curRecordEdit}
-                            mode={'edit'}
-                            currDate={currDate}
-                            key={curRecordEdit}
-                        />
-                    </div> */}
                     {(mode === 'new' && canAdd) ||
                     (mode === 'edit' && canUpdate) ? (
                         <div>

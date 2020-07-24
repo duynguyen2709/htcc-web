@@ -133,8 +133,7 @@ class FormAddCheckinRequest extends React.Component {
             result['clientTime'].format('MM/DD/YYYY HH:mm'),
             'DD/MM/YYYY HH:mm'
         );
-        _.set(result, 'clientTime', data['clientTime'].unix());
-
+        _.set(result, 'clientTime', data['clientTime'].valueOf());
         return result;
     };
 
@@ -261,6 +260,7 @@ class FormAddCheckinRequest extends React.Component {
                             <DatePicker
                                 className="form-control bor-radius"
                                 format={'DD/MM/YYYY HH:mm'}
+                                showTime={true}
                                 value={moment(value.clientTime)}
                                 onChange={(val) => this.handleChangeDate(val)}
                             />

@@ -13,7 +13,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import AsyncModal from '../components/Modal/AsyncModal';
 import FormNewShiftTemplate from '../components/Form/FormNewShiftTemplate';
-import {canDoAction} from "../utils/permission";
+import {canDoAction, isEmployeeUnderManaged} from "../utils/permission";
 
 const {Search} = Input;
 
@@ -287,7 +287,6 @@ class ShiftTemplate extends Component {
 
         const canAdd = canDoAction(this.props.data, ROLE_GROUP_KEY.SHIFT_TEMPLATE, ACTION.CREATE);
         const canDelete = canDoAction(this.props.data, ROLE_GROUP_KEY.SHIFT_TEMPLATE, ACTION.DELETE);
-
         return (
             <div className="content shift-template">
                 <div className="table-wrappers tabs-small">
@@ -350,6 +349,8 @@ class ShiftTemplate extends Component {
                                     const treeData = this.buildTreeData(
                                         item.shiftTimeMap
                                     );
+
+                                    const canManageEmployee = isEmployeeUnderManaged(this.props.data, item.actor);
                                     return (
                                         <Card
                                             title={
@@ -376,7 +377,7 @@ class ShiftTemplate extends Component {
                                             }}
                                             hoverable
                                             key={item.templateId}
-                                            extra={canDelete ? this.renderButtonDelete(
+                                            extra={canDelete && canManageEmployee ? this.renderButtonDelete(
                                                 item.templateId
                                             ) : null}
                                         >

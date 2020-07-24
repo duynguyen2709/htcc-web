@@ -39,11 +39,15 @@ class Attendance extends React.Component {
     }
 
     componentDidMount() {
+        this.getData();
+    }
+
+    getData = () => {
         const { month } = this.state;
 
         this.getListApprovedCheckin(month.format('YYYYMM'));
         this.getListPendingCheckin(month.format('YYYYMM'));
-    }
+    };
 
     getListApprovedCheckin = (yyyyMM) => {
         checkinApi
@@ -247,6 +251,7 @@ class Attendance extends React.Component {
                                     <ApprovalAttendance
                                         dataNotResolve={dataNotResolve}
                                         dataResolved={dataResolved}
+                                        refreshFunc={this.getData}
                                     />
                                 </div>
                             </div>

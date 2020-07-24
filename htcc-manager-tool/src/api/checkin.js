@@ -78,12 +78,11 @@ const createCheckinRequest = (data) => {
 
 const updateStatusCheckinRequest = (data) => {
     const token = localStorage.getItem(TOKEN);
-    const user = JSON.parse(localStorage.getItem(USER));
 
     return new Promise((resolve, reject) => {
         axios({
             method: 'put',
-            url: `${API_URL_EMPLOYEE}/departments/${user.companyId}/${data.department}`,
+            url: `${API_URL_EMPLOYEE}/checkin/status`,
             data: data,
             headers: {
                 Authorization: `Bearer ${token}`,
