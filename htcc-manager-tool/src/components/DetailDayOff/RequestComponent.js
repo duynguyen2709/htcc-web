@@ -16,8 +16,6 @@ class RequestComponent extends React.Component {
     }
 
     handleChange = (key, value) => {
-        console.log(value.format('YYYYMM'));
-        debugger;
         this.setState({
             ...this.state,
             [key]: value,
@@ -44,16 +42,13 @@ class RequestComponent extends React.Component {
 
     converData = (data) => {
         const result = _.cloneDeep(data);
-        result['date'] = data['date'].format('YYYYMM');
-
-        debugger;
+        result['date'] = data['date'].format('YYYYMMDD');
 
         return result;
     };
 
     render() {
         const { date, session } = this.state;
-        console.log('state', this.state);
         return (
             <React.Fragment>
                 <Col md="5">

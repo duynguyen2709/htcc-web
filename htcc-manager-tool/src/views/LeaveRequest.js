@@ -1,23 +1,27 @@
-import React, {Component} from 'react';
-import {Input, Table, Tabs, Tooltip} from 'antd';
-import {connect} from 'react-redux';
-import {CheckSquareOutlined, PlusSquareOutlined, WarningOutlined,} from '@ant-design/icons';
-import {leaveRequestApi} from '../api';
-import {store} from 'react-notifications-component';
-import {createNotify} from '../utils/notifier';
+import React, { Component } from 'react';
+import { Input, Table, Tabs, Tooltip } from 'antd';
+import { connect } from 'react-redux';
+import {
+    CheckSquareOutlined,
+    PlusSquareOutlined,
+    WarningOutlined,
+} from '@ant-design/icons';
+import { leaveRequestApi } from '../api';
+import { store } from 'react-notifications-component';
+import { createNotify } from '../utils/notifier';
 import * as _ from 'lodash';
-import {buildColsLeaveRequest} from '../constant/colTable';
+import { buildColsLeaveRequest } from '../constant/colTable';
 import moment from 'moment';
 import CalendarTool from '../components/Tool/CalendarTool';
 import FormEditStatusLeaveRequest from '../components/Form/FormEditStatusLeaveRequest';
 import FormAddLeaveRequest from '../components/Form/FormAddLeaveRequest';
 import AsyncModal from '../components/Modal/AsyncModal';
-import {addKeyPropsToTable} from '../utils/dataTable';
-import {canDoAction} from "../utils/permission";
-import {ACTION, ROLE_GROUP_KEY} from "../constant/constant";
+import { addKeyPropsToTable } from '../utils/dataTable';
+import { canDoAction } from '../utils/permission';
+import { ACTION, ROLE_GROUP_KEY } from '../constant/constant';
 
-const {Search} = Input;
-const {TabPane} = Tabs;
+const { Search } = Input;
+const { TabPane } = Tabs;
 
 class LeaveRequest extends Component {
     constructor(props) {
@@ -116,7 +120,7 @@ class LeaveRequest extends Component {
     };
 
     onSearch = (e) => {
-        const {currTab} = this.state;
+        const { currTab } = this.state;
 
         const data = _.filter(this[`data${currTab}`], (ele) =>
             JSON.stringify(ele)
@@ -144,10 +148,19 @@ class LeaveRequest extends Component {
             curRecordEdit,
             currDate,
             mode,
+            isLoading,
         } = this.state;
 
-        const canAdd = canDoAction(this.props.data, ROLE_GROUP_KEY.LEAVING_REQUEST, ACTION.CREATE);
-        const canUpdate = canDoAction(this.props.data, ROLE_GROUP_KEY.LEAVING_REQUEST, ACTION.UPDATE);
+        const canAdd = canDoAction(
+            this.props.data,
+            ROLE_GROUP_KEY.LEAVING_REQUEST,
+            ACTION.CREATE
+        );
+        const canUpdate = canDoAction(
+            this.props.data,
+            ROLE_GROUP_KEY.LEAVING_REQUEST,
+            ACTION.UPDATE
+        );
 
         return (
             <div className="content">
@@ -157,17 +170,17 @@ class LeaveRequest extends Component {
                             <Search
                                 className="form-control bor-radius"
                                 placeholder="Tìm kiếm nhanh"
-                                style={{width: 300}}
+                                style={{ width: 300 }}
                                 onChange={this.onSearch}
                             />
                         </div>
                         <div
                             className="tool-calendar float-left"
-                            style={{marginLeft: '20px'}}
+                            style={{ marginLeft: '20px' }}
                         >
-                            <CalendarTool update={this.updateData}/>
+                            <CalendarTool update={this.updateData} />
                         </div>
-                        {canAdd ?
+                        {canAdd ? (
                             <div className="float-right btn-new">
                                 <Tooltip
                                     placement="left"
@@ -179,17 +192,18 @@ class LeaveRequest extends Component {
                                         }}
                                     />
                                 </Tooltip>
-                            </div> : null}
+                            </div>
+                        ) : null}
                     </div>
                     <Tabs
                         onTabClick={(key) => this.onChangeTab(key)}
                         defaultActiveKey={this.state.currTab}
                     >
                         <TabPane
-                            style={{overflow: 'auto'}}
+                            style={{ overflow: 'auto' }}
                             tab={
                                 <span>
-                                    <WarningOutlined/>
+                                    <WarningOutlined />
                                     Chưa xử lý
                                 </span>
                             }
@@ -207,7 +221,9 @@ class LeaveRequest extends Component {
                                             x: 1300,
                                             y: 'calc(100vh - 355px)',
                                         }}
-                                        loading={dataResolved === null}
+                                        loading={
+                                            isLoading || dataResolved === null
+                                        }
                                         pagination={{
                                             hideOnSinglePage: true,
                                             pageSize: 6,
@@ -217,10 +233,10 @@ class LeaveRequest extends Component {
                             </div>
                         </TabPane>
                         <TabPane
-                            style={{overflow: 'auto'}}
+                            style={{ overflow: 'auto' }}
                             tab={
                                 <span>
-                                    <CheckSquareOutlined/>
+                                    <CheckSquareOutlined />
                                     Đã xử lý
                                 </span>
                             }
@@ -249,7 +265,9 @@ class LeaveRequest extends Component {
                                             x: 1300,
                                             y: 'calc(100vh - 355px)',
                                         }}
-                                        loading={dataResolved === null}
+                                        loading={
+                                            isLoading || dataResolved === null
+                                        }
                                         pagination={{
                                             hideOnSinglePage: true,
                                             pageSize: 6,
@@ -271,7 +289,8 @@ class LeaveRequest extends Component {
                             key={curRecordEdit}
                         />
                     </div> */}
-                    {((mode === 'new' && canAdd) || (mode === 'edit' && canUpdate)) ?
+                    {(mode === 'new' && canAdd) ||
+                    (mode === 'edit' && canUpdate) ? (
                         <div>
                             <AsyncModal
                                 key={curRecordEdit}
@@ -292,7 +311,8 @@ class LeaveRequest extends Component {
                                 mode={mode}
                                 currDate={currDate}
                             />
-                        </div> : null}
+                        </div>
+                    ) : null}
                 </div>
             </div>
         );
@@ -300,7 +320,7 @@ class LeaveRequest extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    data: state.homeReducer.data
+    data: state.homeReducer.data,
 });
 
 export default connect(mapStateToProps, null)(LeaveRequest);

@@ -7,7 +7,7 @@ import { createNotify } from '../../utils/notifier';
 import { CheckCircleOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import { DatePicker, Input, Popconfirm, Select } from 'antd';
 import { connect } from 'react-redux';
-import moment, { months } from 'moment';
+import moment from 'moment';
 
 const { Option } = Select;
 const { TextArea } = Input;
