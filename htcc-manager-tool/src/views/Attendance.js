@@ -2,41 +2,35 @@ import React from 'react';
 import TableAttendance from '../components/Table/Attendance';
 import moment from 'moment';
 import CalendarTool from '../components/Tool/CalendarTool';
-import { Badge, Modal, Table, Tabs, Tooltip } from 'antd';
+import {Badge, Modal, Table, Tabs, Tooltip} from 'antd';
 import * as _ from 'lodash';
-import {
-    FileProtectOutlined,
-    HistoryOutlined,
-    FileTextTwoTone,
-} from '@ant-design/icons';
+import {FileProtectOutlined, FileTextTwoTone, HistoryOutlined,} from '@ant-design/icons';
 import ApprovalAttendance from './ApprovalAttendance';
-import {
-    buildColsDetailHistoryCheckin,
-    buildColsHistoryCheckin,
-    MONTHS,
-} from '../constant/colTable';
-import { addKeyPropsToTable, isLeapYear } from '../utils/dataTable';
-import { checkinApi } from '../api';
-import { store } from 'react-notifications-component';
-import { createNotify } from '../utils/notifier';
-import { Button } from 'reactstrap';
-import { connect } from 'react-redux';
-import { CSVLink } from 'react-csv';
+import {buildColsDetailHistoryCheckin, buildColsHistoryCheckin, MONTHS,} from '../constant/colTable';
+import {addKeyPropsToTable, isLeapYear} from '../utils/dataTable';
+import {checkinApi} from '../api';
+import {store} from 'react-notifications-component';
+import {createNotify} from '../utils/notifier';
+import {Button} from 'reactstrap';
+import {connect} from 'react-redux';
+import {CSVLink} from 'react-csv';
+import {CHECKIN_SUBTYPE} from "../constant/constant";
 
-const { TabPane } = Tabs;
+const {TabPane} = Tabs;
 
 const HEADER = [
-    { label: 'Tên đăng nhập', key: 'username' },
-    { label: 'Ngày điểm danh', key: 'checkInDate' },
-    { label: 'Thời gian', key: 'checkInTime' },
-    { label: 'Loại điểm danh', key: 'type' },
-    { label: 'Tên ca', key: 'shiftName' },
-    { label: 'Thời gian ca', key: 'shiftTime' },
-    { label: 'Chi nhánh', key: 'officeId' },
-    { label: 'Đúng giờ hay không', key: 'isOnTime' },
-    { label: 'Lý do', key: 'reason' },
-    { label: 'Người duyệt', key: 'approver' },
-    { label: 'Trạng thái duyệt', key: 'status' },
+    {label: 'Tên đăng nhập', key: 'username'},
+    {label: 'Ngày điểm danh', key: 'checkInDate'},
+    {label: 'Thời gian', key: 'checkInTime'},
+    {label: 'Loại điểm danh', key: 'type'},
+    {label: 'Hình thức điểm danh', key: 'subType'},
+    {label: 'Tên ca', key: 'shiftName'},
+    {label: 'Thời gian ca', key: 'shiftTime'},
+    {label: 'Chi nhánh', key: 'officeId'},
+    {label: 'Đúng giờ hay không', key: 'isOnTime'},
+    {label: 'Lý do', key: 'reason'},
+    {label: 'Người duyệt', key: 'approver'},
+    {label: 'Trạng thái duyệt', key: 'status'},
 ];
 
 class Attendance extends React.Component {
@@ -63,7 +57,7 @@ class Attendance extends React.Component {
     }
 
     getData = () => {
-        const { month } = this.state;
+        const {month} = this.state;
 
         this.getListApprovedCheckin(month.format('YYYYMM'));
         this.getListPendingCheckin(month.format('YYYYMM'));
@@ -124,7 +118,6 @@ class Attendance extends React.Component {
             result.push(item);
         });
 
-        console.log('result', result);
         return result;
     };
 
@@ -135,6 +128,9 @@ class Attendance extends React.Component {
         } else {
             data['type'] = 'Tan ca';
         }
+
+        //subType
+        data['subType'] = CHECKIN_SUBTYPE[data['subType']];
 
         //isOntime
         if (data['isOnTime']) {
@@ -151,9 +147,6 @@ class Attendance extends React.Component {
         } else {
             data['status'] = 'Từ chối';
         }
-
-        //checkInDate
-        data['checkInDate'] = "'" + data['checkInDate'];
 
         return data;
     };
@@ -247,7 +240,10 @@ class Attendance extends React.Component {
     };
 
     funcShowDetail = (data, id) => {
-        console.log('data', data);
+        _.map(data, (item, index) => (
+            item.uid = `${item.username}_${index}`
+        ));
+
         this.setState({
             showDetail: true,
             dataDetail: data,
@@ -263,7 +259,7 @@ class Attendance extends React.Component {
     };
 
     buildData = (detailList) => {
-        const { data } = this.props;
+        const {data} = this.props;
         if (!data || _.isEmpty(data)) {
             return detailList;
         }
@@ -310,23 +306,28 @@ class Attendance extends React.Component {
                                                 headers={HEADER}
                                                 filename={`checkin-${month.format(
                                                     'MM-YYYY'
-                                                )}`}
+                                                )}.csv`}
                                             >
-                                                <FileTextTwoTone />
+                                                <FileTextTwoTone/>
                                             </CSVLink>
                                         </Tooltip>
                                     </div>
                                 )}
                                 <div className="tool-calendar float-right">
-                                    <CalendarTool update={this.updateData} />
+                                    <CalendarTool update={this.updateData}/>
                                 </div>
                                 <Badge
-                                    style={{ marginRight: 20 }}
+                                    style={{marginRight: 20}}
                                     status="success"
-                                    text="Điểm danh đúng giờ"
+                                    text="Vào ca đúng giờ"
                                 />
                                 <Badge
-                                    style={{ marginRight: 50 }}
+                                    style={{marginRight: 20}}
+                                    status="processing"
+                                    text="Tan ca đúng giờ"
+                                />
+                                <Badge
+                                    style={{marginRight: 50}}
                                     status="red"
                                     text="Điểm danh trễ"
                                 />
@@ -334,10 +335,10 @@ class Attendance extends React.Component {
                         }
                     >
                         <TabPane
-                            style={{ overflow: 'auto' }}
+                            style={{overflow: 'auto'}}
                             tab={
                                 <span>
-                                    <FileProtectOutlined />
+                                    <FileProtectOutlined/>
                                     Đơn phê duyệt
                                 </span>
                             }
@@ -354,10 +355,10 @@ class Attendance extends React.Component {
                             </div>
                         </TabPane>
                         <TabPane
-                            style={{ overflow: 'auto' }}
+                            style={{overflow: 'auto'}}
                             tab={
                                 <span>
-                                    <HistoryOutlined />
+                                    <HistoryOutlined/>
                                     Lịch sử điểm danh
                                 </span>
                             }
@@ -392,13 +393,13 @@ class Attendance extends React.Component {
                                         </Button>,
                                     ]}
                                 >
-                                    <Table
-                                        columns={buildColsDetailHistoryCheckin()}
-                                        dataSource={this.state.dataDetail}
-                                        pagination={false}
-                                        scroll={{
-                                            y: 'calc(100vh - 450px)',
-                                        }}
+                                    <Table rowKey={"uid"}
+                                           columns={buildColsDetailHistoryCheckin()}
+                                           dataSource={this.state.dataDetail}
+                                           pagination={false}
+                                           scroll={{
+                                               y: 'calc(100vh - 450px)',
+                                           }}
                                     />
                                 </Modal>
                             </div>

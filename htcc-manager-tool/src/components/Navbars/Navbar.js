@@ -166,8 +166,8 @@ class AdminNavbar extends React.Component {
                                     >
                                         {data.unreadNotifications > 0 && (
                                             <div className="notification d-none d-lg-block d-xl-block">
-                                                {data.unreadNotifications > 9
-                                                    ? '9+'
+                                                {data.unreadNotifications > 10
+                                                    ? '10+'
                                                     : data.unreadNotifications}
                                             </div>
                                         )}

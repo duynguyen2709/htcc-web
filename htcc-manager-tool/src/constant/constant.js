@@ -145,3 +145,11 @@ export const ROLE_ACTION = {
         UPDATE: 'Cập nhật thông tin quyền nhân viên',
     },
 };
+
+export const CHECKIN_SUBTYPE = {
+    1: 'Điểm danh bằng vị trí',
+    2: 'Điểm danh bằng mẫu đơn',
+    3: 'Điểm danh bằng QR Code',
+    4: 'Điểm danh bằng mẫu đơn',
+    5: 'Quản lý điểm danh thay',
+};
