@@ -1,20 +1,20 @@
 import React from 'react';
 import * as _ from 'lodash';
-import {userApi} from '../api';
-import {store} from 'react-notifications-component';
-import {createNotify} from '../utils/notifier';
-import {PlusSquareOutlined} from '@ant-design/icons';
-import {buildColsEmployee} from '../constant/colTable';
-import {Input, Table, Tooltip} from 'antd';
+import { userApi } from '../api';
+import { store } from 'react-notifications-component';
+import { createNotify } from '../utils/notifier';
+import { PlusSquareOutlined } from '@ant-design/icons';
+import { buildColsEmployee } from '../constant/colTable';
+import { Input, Table, Tooltip } from 'antd';
 import AsyncModal from '../components/Modal/AsyncModal';
 import FormEditEmployee from '../components/Form/FormEditEmployee';
 import FormAddNewEmployee from '../components/Form/FormAddNewEmployee';
-import {USER} from '../constant/localStorageKey';
-import {canDoAction} from "../utils/permission";
-import {connect} from 'react-redux';
-import {ACTION, ROLE_GROUP_KEY} from "../constant/constant";
+import { USER } from '../constant/localStorageKey';
+import { canDoAction } from '../utils/permission';
+import { connect } from 'react-redux';
+import { ACTION, ROLE_GROUP_KEY } from '../constant/constant';
 
-const {Search} = Input;
+const { Search } = Input;
 
 class Employee extends React.Component {
     constructor(props) {
@@ -63,7 +63,10 @@ class Employee extends React.Component {
             .catch((err) => {
                 console.error(err);
                 store.addNotification(
-                    createNotify('danger', 'Hệ thống có lỗi. Vui lòng thử lại sau.')
+                    createNotify(
+                        'danger',
+                        'Hệ thống có lỗi. Vui lòng thử lại sau.'
+                    )
                 );
             });
     };
@@ -76,7 +79,7 @@ class Employee extends React.Component {
         });
     };
 
-    handleUpdateStatus = (oldStatus) => {
+    handleUpdateStatus = (username, oldStatus) => {
         this.setState({
             loading: true,
         });
@@ -84,9 +87,12 @@ class Employee extends React.Component {
         const newStatus = oldStatus === 1 ? 0 : 1;
 
         userApi
-            .updateStatusAccount(newStatus)
+            .updateStatusAccount(username, newStatus)
             .then((res) => {
                 if (res.returnCode === 1) {
+                    this.setState({
+                        loading: false,
+                    });
                     store.addNotification(
                         createNotify(
                             'default',
@@ -96,6 +102,9 @@ class Employee extends React.Component {
 
                     this.getData();
                 } else {
+                    this.setState({
+                        loading: false,
+                    });
                     store.addNotification(
                         createNotify('danger', res.returnMessage)
                     );
@@ -103,14 +112,20 @@ class Employee extends React.Component {
             })
             .catch((err) => {
                 console.error(err);
+                this.setState({
+                    loading: false,
+                });
                 store.addNotification(
-                    createNotify('danger', 'Hệ thống có lỗi. Vui lòng thử lại sau.')
+                    createNotify(
+                        'danger',
+                        'Hệ thống có lỗi. Vui lòng thử lại sau.'
+                    )
                 );
             });
     };
 
     toggle = (submit = false) => {
-        const {data} = this.state;
+        const { data } = this.state;
         this.setState({
             showModal: !this.state.showModal,
             curRecordEdit: null,
@@ -139,11 +154,23 @@ class Employee extends React.Component {
     };
 
     render() {
-        const {data, showModal, curRecordEdit, mode, loading} = this.state;
+        const { data, showModal, curRecordEdit, mode, loading } = this.state;
         const user = JSON.parse(localStorage.getItem(USER));
-        const canAdd = canDoAction(this.props.data, ROLE_GROUP_KEY.EMPLOYEE_MANAGE, ACTION.CREATE);
-        const canUpdate = canDoAction(this.props.data, ROLE_GROUP_KEY.EMPLOYEE_MANAGE, ACTION.UPDATE);
-        const canDelete = canDoAction(this.props.data, ROLE_GROUP_KEY.EMPLOYEE_MANAGE, ACTION.DELETE);
+        const canAdd = canDoAction(
+            this.props.data,
+            ROLE_GROUP_KEY.EMPLOYEE_MANAGE,
+            ACTION.CREATE
+        );
+        const canUpdate = canDoAction(
+            this.props.data,
+            ROLE_GROUP_KEY.EMPLOYEE_MANAGE,
+            ACTION.UPDATE
+        );
+        const canDelete = canDoAction(
+            this.props.data,
+            ROLE_GROUP_KEY.EMPLOYEE_MANAGE,
+            ACTION.DELETE
+        );
 
         return (
             <div className="content">
@@ -153,13 +180,16 @@ class Employee extends React.Component {
                             <Search
                                 className="form-control bor-radius"
                                 placeholder="Tìm kiếm nhanh"
-                                style={{width: 300}}
+                                style={{ width: 300 }}
                                 onChange={this.onSearch}
                             />
                         </div>
-                        {canAdd ?
+                        {canAdd ? (
                             <div className="float-right btn-new">
-                                <Tooltip placement="left" title={'Thêm nhân viên'}>
+                                <Tooltip
+                                    placement="left"
+                                    title={'Thêm nhân viên'}
+                                >
                                     <PlusSquareOutlined
                                         onClick={() => {
                                             this.setState({
@@ -169,7 +199,8 @@ class Employee extends React.Component {
                                         }}
                                     />
                                 </Tooltip>
-                            </div> : null}
+                            </div>
+                        ) : null}
                     </div>
                     <div className="table-edit">
                         <div className="table-small">
@@ -182,7 +213,7 @@ class Employee extends React.Component {
                                     canDelete
                                 )}
                                 dataSource={this.mapData(data)}
-                                scroll={{x: 1300, y: 'calc(100vh - 300px)'}}
+                                scroll={{ x: 1300, y: 'calc(100vh - 300px)' }}
                                 loading={loading || data === null}
                                 pagination={{
                                     hideOnSinglePage: true,
@@ -192,7 +223,8 @@ class Employee extends React.Component {
                             />
                         </div>
                     </div>
-                    {((mode === 'new' && canAdd) || (mode === 'edit' && canUpdate)) ?
+                    {(mode === 'new' && canAdd) ||
+                    (mode === 'edit' && canUpdate) ? (
                         <div>
                             <AsyncModal
                                 key={curRecordEdit}
@@ -212,7 +244,8 @@ class Employee extends React.Component {
                                 data={curRecordEdit}
                                 mode={mode}
                             />
-                        </div> : null}
+                        </div>
+                    ) : null}
                 </div>
             </div>
         );
@@ -220,7 +253,7 @@ class Employee extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-    data: state.homeReducer.data
+    data: state.homeReducer.data,
 });
 
 export default connect(mapStateToProps, null)(Employee);

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Popconfirm, Popover, Tag, Tooltip} from 'antd';
+import { Popconfirm, Popover, Tag, Tooltip } from 'antd';
 import {
     BarsOutlined,
     CheckCircleTwoTone,
@@ -15,9 +15,15 @@ import {
 import LightboxImages from '../components/Tool/LightboxImages';
 import * as _ from 'lodash';
 import moment from 'moment';
-import {isLeapYear} from '../utils/dataTable';
+import { isLeapYear } from '../utils/dataTable';
 
-export const buildColsEmployee = (funcEdit, funcBlock, username, canUpdate, canDelete) => [
+export const buildColsEmployee = (
+    funcEdit,
+    funcBlock,
+    username,
+    canUpdate,
+    canDelete
+) => [
     {
         title: 'Tên đăng nhập',
         dataIndex: 'username',
@@ -31,7 +37,7 @@ export const buildColsEmployee = (funcEdit, funcBlock, username, canUpdate, canD
         render: (o, record) => {
             return (
                 <React.Fragment>
-                    <LightboxImages imageSource={[record.avatar]}/>
+                    <LightboxImages imageSource={[record.avatar]} />
                 </React.Fragment>
             );
         },
@@ -106,7 +112,7 @@ export const buildColsEmployee = (funcEdit, funcBlock, username, canUpdate, canD
         render: (o, record) => {
             return (
                 <React.Fragment>
-                    {canUpdate ?
+                    {canUpdate ? (
                         <Tooltip placement="left" title={'Chỉnh sửa'}>
                             <EditOutlined
                                 style={{
@@ -116,18 +122,21 @@ export const buildColsEmployee = (funcEdit, funcBlock, username, canUpdate, canD
                                 }}
                                 onClick={() => funcEdit(record)}
                             />
-                        </Tooltip> : null}
+                        </Tooltip>
+                    ) : null}
                     {record.username === username || !canDelete ? null : (
                         <Popconfirm
                             title={`Bạn chắc chắn muốn ${
                                 record.status === 1 ? 'khoá' : 'mở khoá'
-                                } ?`}
+                            } ?`}
                             icon={
-                                <ExclamationCircleTwoTone twoToneColor="#d9534f"/>
+                                <ExclamationCircleTwoTone twoToneColor="#d9534f" />
                             }
                             okText="Đồng ý"
                             cancelText="Huỷ"
-                            onConfirm={() => funcBlock(record.status)}
+                            onConfirm={() =>
+                                funcBlock(record.username, record.status)
+                            }
                         >
                             <Tooltip
                                 placement="left"
@@ -223,7 +232,7 @@ export const buildColsComplaint = (funcEdit, canUpdate, cols = []) => {
                         title={`Danh sách nội dung đã khiếu nại`}
                         trigger="hover"
                     >
-                        <BarsOutlined style={{color: '#40a9ff'}}/>
+                        <BarsOutlined style={{ color: '#40a9ff' }} />
                     </Popover>
                 );
             },
@@ -235,7 +244,7 @@ export const buildColsComplaint = (funcEdit, canUpdate, cols = []) => {
             render: (o, record) => {
                 return (
                     <React.Fragment>
-                        <LightboxImages imageSource={record.images}/>
+                        <LightboxImages imageSource={record.images} />
                     </React.Fragment>
                 );
             },
@@ -250,7 +259,7 @@ export const buildColsComplaint = (funcEdit, canUpdate, cols = []) => {
                     return (
                         <Tooltip placement="top" title={'Xem chi tiết'}>
                             <BarsOutlined
-                                style={{color: '#40a9ff'}}
+                                style={{ color: '#40a9ff' }}
                                 onClick={() => funcEdit(record, true)}
                             />
                         </Tooltip>
@@ -274,15 +283,17 @@ export const buildColsComplaint = (funcEdit, canUpdate, cols = []) => {
                                 <Tag className="float-left" color="warning">
                                     Chưa xử lý
                                 </Tag>
-                                {canUpdate ? <EditOutlined
-                                    style={{
-                                        color: '#52c41a',
-                                        fontSize: '25px',
-                                        float: 'left',
-                                    }}
-                                    className="float-right"
-                                    onClick={() => funcEdit(record)}
-                                /> : null}
+                                {canUpdate ? (
+                                    <EditOutlined
+                                        style={{
+                                            color: '#52c41a',
+                                            fontSize: '25px',
+                                            float: 'left',
+                                        }}
+                                        className="float-right"
+                                        onClick={() => funcEdit(record)}
+                                    />
+                                ) : null}
                             </span>
                         );
                     case 1:
@@ -355,14 +366,14 @@ export const buildColsLeaveRequest = (funcEdit, canUpdate, cols = []) => {
                 if (record.useDayOff) {
                     return (
                         <Tooltip placement="top" title={'Dùng phép'}>
-                            <CheckCircleTwoTone twoToneColor="#52c41a"/>
+                            <CheckCircleTwoTone twoToneColor="#52c41a" />
                         </Tooltip>
                     );
                 }
 
                 return (
                     <Tooltip placement="top" title={'Không dùng phép'}>
-                        <CloseCircleTwoTone twoToneColor="#ff7875"/>
+                        <CloseCircleTwoTone twoToneColor="#ff7875" />
                     </Tooltip>
                 );
             },
@@ -378,7 +389,7 @@ export const buildColsLeaveRequest = (funcEdit, canUpdate, cols = []) => {
                         title={`Chi tiết ngày nghỉ`}
                         trigger="hover"
                     >
-                        <BarsOutlined style={{color: '#40a9ff'}}/>
+                        <BarsOutlined style={{ color: '#40a9ff' }} />
                     </Popover>
                 );
             },
@@ -398,15 +409,17 @@ export const buildColsLeaveRequest = (funcEdit, canUpdate, cols = []) => {
                                 <Tag className="float-left" color="warning">
                                     Chưa xử lý
                                 </Tag>
-                                {canUpdate ? <EditOutlined
-                                    style={{
-                                        color: '#52c41a',
-                                        fontSize: '25px',
-                                        float: 'left',
-                                    }}
-                                    className="float-right"
-                                    onClick={() => funcEdit(record)}
-                                /> : null}
+                                {canUpdate ? (
+                                    <EditOutlined
+                                        style={{
+                                            color: '#52c41a',
+                                            fontSize: '25px',
+                                            float: 'left',
+                                        }}
+                                        className="float-right"
+                                        onClick={() => funcEdit(record)}
+                                    />
+                                ) : null}
                             </span>
                         );
                     case 1:
@@ -434,24 +447,30 @@ const renderListDetail = (list = []) => {
         );
     });
 
-    return <ul style={{padding: 15}}>{listDetail}</ul>;
+    return <ul style={{ padding: 15 }}>{listDetail}</ul>;
 };
 
 const renderListContent = (list = []) => {
     const listContent = _.map(list, (item, index) => {
         return (
             <li
-                style={{maxWidth: 200}}
+                style={{ maxWidth: 200 }}
                 className="text-dark"
                 key={index}
             >{`${item}`}</li>
         );
     });
 
-    return <ul style={{padding: 15}}>{listContent}</ul>;
+    return <ul style={{ padding: 15 }}>{listContent}</ul>;
 };
 
-export const buildColsBranch = (funcEdit, funcDelete, canUpdate, canDelete, cols = []) => [
+export const buildColsBranch = (
+    funcEdit,
+    funcDelete,
+    canUpdate,
+    canDelete,
+    cols = []
+) => [
     {
         title: 'Mã chi nhánh',
         dataIndex: 'officeId',
@@ -479,10 +498,10 @@ export const buildColsBranch = (funcEdit, funcDelete, canUpdate, canDelete, cols
         width: '150px',
         render: (o, record) => {
             if (record.isHeadquarter) {
-                return <CheckCircleTwoTone twoToneColor="#52c41a"/>;
+                return <CheckCircleTwoTone twoToneColor="#52c41a" />;
             }
 
-            return <CloseCircleTwoTone twoToneColor="#ff7875"/>;
+            return <CloseCircleTwoTone twoToneColor="#ff7875" />;
         },
     },
     {
@@ -507,10 +526,10 @@ export const buildColsBranch = (funcEdit, funcDelete, canUpdate, canDelete, cols
         width: '100px',
         render: (o, record) => {
             if (record.forceUseWifi) {
-                return <CheckCircleTwoTone twoToneColor="#52c41a"/>;
+                return <CheckCircleTwoTone twoToneColor="#52c41a" />;
             }
 
-            return <CloseCircleTwoTone twoToneColor="#ff7875"/>;
+            return <CloseCircleTwoTone twoToneColor="#ff7875" />;
         },
     },
     {
@@ -525,83 +544,7 @@ export const buildColsBranch = (funcEdit, funcDelete, canUpdate, canDelete, cols
         render: (o, record) => {
             return (
                 <React.Fragment>
-                    {canUpdate ?
-                        <Tooltip placement="left" title={'Chỉnh sửa'}>
-                            <EditOutlined
-                                style={{
-                                    color: '#52c41a',
-                                    fontSize: '25px',
-                                    float: 'left',
-                                }}
-                                onClick={() => funcEdit(record)}
-                            />
-                        </Tooltip> : null}
-                    {canDelete ?
-                        <Popconfirm
-                            title="Bạn chắc chắn muốn xoá？"
-                            icon={
-                                <ExclamationCircleTwoTone twoToneColor="#d9534f"/>
-                            }
-                            okText="Đồng ý"
-                            cancelText="Huỷ"
-                            onConfirm={() => funcDelete(record)}
-                        >
-                            <Tooltip placement="left" title={'Xoá'}>
-                                <DeleteTwoTone
-                                    twoToneColor="#ff7875"
-                                    style={{
-                                        fontSize: '25px',
-                                        float: 'right',
-                                    }}
-                                />
-                            </Tooltip>
-                        </Popconfirm> : null}
-                </React.Fragment>
-            );
-        },
-    },
-];
-
-export const buildColsCategoryDayOff = (funcEdit, funcDelete, canUpdate, cols = []) => [
-    {
-        title: 'Danh mục',
-        dataIndex: 'category',
-        width: '130px',
-        fixed: 'left',
-        defaultSortOrder: 'descend',
-        sorter: (a, b) => a.category.localeCompare(b.category),
-    },
-    {
-        title: 'Hưởng lương',
-        dataIndex: 'hasSalary',
-        width: '70px',
-        render: (o, record) => {
-            if (record.hasSalary) {
-                return <CheckCircleTwoTone twoToneColor="#52c41a"/>;
-            }
-
-            return <CloseCircleTwoTone twoToneColor="#ff7875"/>;
-        },
-    },
-    {
-        title: 'Trừ ngày phép',
-        dataIndex: 'useDayOff',
-        width: '70px',
-        render: (o, record) => {
-            if (record.useDayOff) {
-                return <CheckCircleTwoTone twoToneColor="#52c41a"/>;
-            }
-
-            return <CloseCircleTwoTone twoToneColor="#ff7875"/>;
-        },
-    },
-    {
-        title: 'Hành động',
-        width: '70px',
-        fixed: 'right',
-        render: (o, record) => {
-            return (canUpdate ?
-                    <React.Fragment>
+                    {canUpdate ? (
                         <Tooltip placement="left" title={'Chỉnh sửa'}>
                             <EditOutlined
                                 style={{
@@ -612,10 +555,12 @@ export const buildColsCategoryDayOff = (funcEdit, funcDelete, canUpdate, cols = 
                                 onClick={() => funcEdit(record)}
                             />
                         </Tooltip>
+                    ) : null}
+                    {canDelete ? (
                         <Popconfirm
                             title="Bạn chắc chắn muốn xoá？"
                             icon={
-                                <ExclamationCircleTwoTone twoToneColor="#d9534f"/>
+                                <ExclamationCircleTwoTone twoToneColor="#d9534f" />
                             }
                             okText="Đồng ý"
                             cancelText="Huỷ"
@@ -631,13 +576,99 @@ export const buildColsCategoryDayOff = (funcEdit, funcDelete, canUpdate, cols = 
                                 />
                             </Tooltip>
                         </Popconfirm>
-                    </React.Fragment> : null
+                    ) : null}
+                </React.Fragment>
             );
         },
     },
 ];
 
-export const buildColsDayOffLevel = (funcEdit, funcDelete, canUpdate, cols = []) => [
+export const buildColsCategoryDayOff = (
+    funcEdit,
+    funcDelete,
+    canUpdate,
+    cols = []
+) => [
+    {
+        title: 'Danh mục',
+        dataIndex: 'category',
+        width: '130px',
+        fixed: 'left',
+        defaultSortOrder: 'descend',
+        sorter: (a, b) => a.category.localeCompare(b.category),
+    },
+    {
+        title: 'Hưởng lương',
+        dataIndex: 'hasSalary',
+        width: '70px',
+        render: (o, record) => {
+            if (record.hasSalary) {
+                return <CheckCircleTwoTone twoToneColor="#52c41a" />;
+            }
+
+            return <CloseCircleTwoTone twoToneColor="#ff7875" />;
+        },
+    },
+    {
+        title: 'Trừ ngày phép',
+        dataIndex: 'useDayOff',
+        width: '70px',
+        render: (o, record) => {
+            if (record.useDayOff) {
+                return <CheckCircleTwoTone twoToneColor="#52c41a" />;
+            }
+
+            return <CloseCircleTwoTone twoToneColor="#ff7875" />;
+        },
+    },
+    {
+        title: 'Hành động',
+        width: '70px',
+        fixed: 'right',
+        render: (o, record) => {
+            return canUpdate ? (
+                <React.Fragment>
+                    <Tooltip placement="left" title={'Chỉnh sửa'}>
+                        <EditOutlined
+                            style={{
+                                color: '#52c41a',
+                                fontSize: '25px',
+                                float: 'left',
+                            }}
+                            onClick={() => funcEdit(record)}
+                        />
+                    </Tooltip>
+                    <Popconfirm
+                        title="Bạn chắc chắn muốn xoá？"
+                        icon={
+                            <ExclamationCircleTwoTone twoToneColor="#d9534f" />
+                        }
+                        okText="Đồng ý"
+                        cancelText="Huỷ"
+                        onConfirm={() => funcDelete(record)}
+                    >
+                        <Tooltip placement="left" title={'Xoá'}>
+                            <DeleteTwoTone
+                                twoToneColor="#ff7875"
+                                style={{
+                                    fontSize: '25px',
+                                    float: 'right',
+                                }}
+                            />
+                        </Tooltip>
+                    </Popconfirm>
+                </React.Fragment>
+            ) : null;
+        },
+    },
+];
+
+export const buildColsDayOffLevel = (
+    funcEdit,
+    funcDelete,
+    canUpdate,
+    cols = []
+) => [
     {
         title: 'Cấp bậc',
         dataIndex: 'level',
@@ -657,44 +688,50 @@ export const buildColsDayOffLevel = (funcEdit, funcDelete, canUpdate, cols = [])
         width: '70px',
         fixed: 'right',
         render: (o, record) => {
-            return (canUpdate ?
-                    <React.Fragment>
-                        <Tooltip placement="left" title={'Chỉnh sửa'}>
-                            <EditOutlined
+            return canUpdate ? (
+                <React.Fragment>
+                    <Tooltip placement="left" title={'Chỉnh sửa'}>
+                        <EditOutlined
+                            style={{
+                                color: '#52c41a',
+                                fontSize: '25px',
+                                float: 'left',
+                            }}
+                            onClick={() => funcEdit(record)}
+                        />
+                    </Tooltip>
+                    <Popconfirm
+                        title="Bạn chắc chắn muốn xoá？"
+                        icon={
+                            <ExclamationCircleTwoTone twoToneColor="#d9534f" />
+                        }
+                        okText="Đồng ý"
+                        cancelText="Huỷ"
+                        onConfirm={() => funcDelete(record)}
+                    >
+                        <Tooltip placement="left" title={'Xoá'}>
+                            <DeleteTwoTone
+                                twoToneColor="#ff7875"
                                 style={{
-                                    color: '#52c41a',
                                     fontSize: '25px',
-                                    float: 'left',
+                                    float: 'right',
                                 }}
-                                onClick={() => funcEdit(record)}
                             />
                         </Tooltip>
-                        <Popconfirm
-                            title="Bạn chắc chắn muốn xoá？"
-                            icon={
-                                <ExclamationCircleTwoTone twoToneColor="#d9534f"/>
-                            }
-                            okText="Đồng ý"
-                            cancelText="Huỷ"
-                            onConfirm={() => funcDelete(record)}
-                        >
-                            <Tooltip placement="left" title={'Xoá'}>
-                                <DeleteTwoTone
-                                    twoToneColor="#ff7875"
-                                    style={{
-                                        fontSize: '25px',
-                                        float: 'right',
-                                    }}
-                                />
-                            </Tooltip>
-                        </Popconfirm>
-                    </React.Fragment> : null
-            );
+                    </Popconfirm>
+                </React.Fragment>
+            ) : null;
         },
     },
 ];
 
-export const buildColsDepartment = (funcEdit, funcDelete, canUpdate, canDelete, cols = []) => [
+export const buildColsDepartment = (
+    funcEdit,
+    funcDelete,
+    canUpdate,
+    canDelete,
+    cols = []
+) => [
     {
         title: 'Mã phòng ban',
         dataIndex: 'department',
@@ -719,7 +756,7 @@ export const buildColsDepartment = (funcEdit, funcDelete, canUpdate, canDelete, 
         render: (o, record) => {
             return (
                 <React.Fragment>
-                    {canUpdate ?
+                    {canUpdate ? (
                         <EditOutlined
                             style={{
                                 color: '#52c41a',
@@ -727,12 +764,13 @@ export const buildColsDepartment = (funcEdit, funcDelete, canUpdate, canDelete, 
                                 float: 'left',
                             }}
                             onClick={() => funcEdit(record)}
-                        /> : null}
-                    {canDelete ?
+                        />
+                    ) : null}
+                    {canDelete ? (
                         <Popconfirm
                             title="Bạn chắc chắn muốn xoá？"
                             icon={
-                                <ExclamationCircleTwoTone twoToneColor="#d9534f"/>
+                                <ExclamationCircleTwoTone twoToneColor="#d9534f" />
                             }
                             okText="Đồng ý"
                             cancelText="Huỷ"
@@ -745,14 +783,21 @@ export const buildColsDepartment = (funcEdit, funcDelete, canUpdate, canDelete, 
                                     float: 'right',
                                 }}
                             />
-                        </Popconfirm> : null}
+                        </Popconfirm>
+                    ) : null}
                 </React.Fragment>
             );
         },
     },
 ];
 
-export const buildColsShift = (funcEdit, funcDelete, canUpdate, canDelete, cols = []) => [
+export const buildColsShift = (
+    funcEdit,
+    funcDelete,
+    canUpdate,
+    canDelete,
+    cols = []
+) => [
     {
         title: 'Mã ca',
         dataIndex: 'shiftId',
@@ -782,14 +827,14 @@ export const buildColsShift = (funcEdit, funcDelete, canUpdate, canDelete, cols 
     {
         title: () => {
             return (
-                <div style={{display: 'flex', flexDirection: 'row'}}>
+                <div style={{ display: 'flex', flexDirection: 'row' }}>
                     <span>Số ngày công</span>
                     <Tooltip
                         placement="top"
                         title={'Hệ số tính công của ca làm'}
                     >
                         <QuestionCircleOutlined
-                            style={{margin: 'auto', marginLeft: '5px'}}
+                            style={{ margin: 'auto', marginLeft: '5px' }}
                         />
                     </Tooltip>
                 </div>
@@ -802,7 +847,7 @@ export const buildColsShift = (funcEdit, funcDelete, canUpdate, canDelete, cols 
     {
         title: () => {
             return (
-                <div style={{display: 'flex', flexDirection: 'row'}}>
+                <div style={{ display: 'flex', flexDirection: 'row' }}>
                     <span>Thời gian cho phép điểm danh trễ</span>
                     <Tooltip
                         placement="top"
@@ -810,7 +855,7 @@ export const buildColsShift = (funcEdit, funcDelete, canUpdate, canDelete, cols 
                             'Nhân viên có thể diểm danh trễ / sớm bao nhiêu phút so với giờ bắt đầu / kết thúc ca'
                         }
                     >
-                        <QuestionCircleOutlined style={{margin: 'auto'}}/>
+                        <QuestionCircleOutlined style={{ margin: 'auto' }} />
                     </Tooltip>
                 </div>
             );
@@ -822,7 +867,7 @@ export const buildColsShift = (funcEdit, funcDelete, canUpdate, canDelete, cols 
     {
         title: () => {
             return (
-                <div style={{display: 'flex', flexDirection: 'row'}}>
+                <div style={{ display: 'flex', flexDirection: 'row' }}>
                     <span>Điểm danh không ràng buộc</span>
                     <Tooltip
                         placement="top"
@@ -831,7 +876,7 @@ export const buildColsShift = (funcEdit, funcDelete, canUpdate, canDelete, cols 
                         }
                     >
                         <QuestionCircleOutlined
-                            style={{margin: 'auto', marginLeft: '5px'}}
+                            style={{ margin: 'auto', marginLeft: '5px' }}
                         />
                     </Tooltip>
                 </div>
@@ -841,10 +886,10 @@ export const buildColsShift = (funcEdit, funcDelete, canUpdate, canDelete, cols 
         dataIndex: 'allowDiffTime',
         render: (o, record) => {
             if (record.allowDiffTime) {
-                return <CheckCircleTwoTone twoToneColor="#52c41a"/>;
+                return <CheckCircleTwoTone twoToneColor="#52c41a" />;
             }
 
-            return <CloseCircleTwoTone twoToneColor="#ff7875"/>;
+            return <CloseCircleTwoTone twoToneColor="#ff7875" />;
         },
         sorter: (a, b) =>
             String(a.allowDiffTime).localeCompare(b.allowDiffTime),
@@ -856,7 +901,7 @@ export const buildColsShift = (funcEdit, funcDelete, canUpdate, canDelete, cols 
         render: (o, record) => {
             return (
                 <>
-                    {canUpdate ?
+                    {canUpdate ? (
                         <Tooltip placement="left" title={'Chỉnh sửa'}>
                             <EditOutlined
                                 style={{
@@ -866,20 +911,21 @@ export const buildColsShift = (funcEdit, funcDelete, canUpdate, canDelete, cols 
                                 }}
                                 onClick={() => funcEdit(record)}
                             />
-                        </Tooltip> : null}
-                    {canDelete ?
+                        </Tooltip>
+                    ) : null}
+                    {canDelete ? (
                         <Popconfirm
                             title={
                                 <>
                                     <div>
-                                        Xóa ca làm việc sẽ xóa cả lịch xếp ca tương
-                                        ứng
+                                        Xóa ca làm việc sẽ xóa cả lịch xếp ca
+                                        tương ứng
                                     </div>
                                     <div>Bạn chắc chắn muốn xoá ？</div>
                                 </>
                             }
                             icon={
-                                <ExclamationCircleTwoTone twoToneColor="#d9534f"/>
+                                <ExclamationCircleTwoTone twoToneColor="#d9534f" />
                             }
                             okText="Đồng ý"
                             cancelText="Huỷ"
@@ -894,14 +940,21 @@ export const buildColsShift = (funcEdit, funcDelete, canUpdate, canDelete, cols 
                                     }}
                                 />
                             </Tooltip>
-                        </Popconfirm> : null}
+                        </Popconfirm>
+                    ) : null}
                 </>
             );
         },
     },
 ];
 
-export const buildColsConfigDay = (funcEdit, funcDelete, canUpdate, canDelete, cols = []) => [
+export const buildColsConfigDay = (
+    funcEdit,
+    funcDelete,
+    canUpdate,
+    canDelete,
+    cols = []
+) => [
     ...cols,
     {
         title: 'Đi làm',
@@ -909,10 +962,10 @@ export const buildColsConfigDay = (funcEdit, funcDelete, canUpdate, canDelete, c
         width: '150px',
         render: (o, record) => {
             if (record.isWorking) {
-                return <CheckCircleTwoTone twoToneColor="#52c41a"/>;
+                return <CheckCircleTwoTone twoToneColor="#52c41a" />;
             }
 
-            return <CloseCircleTwoTone twoToneColor="#ff7875"/>;
+            return <CloseCircleTwoTone twoToneColor="#ff7875" />;
         },
         sorter: (a, b) =>
             String(a.isWorking).localeCompare(String(b.isWorking)),
@@ -924,7 +977,7 @@ export const buildColsConfigDay = (funcEdit, funcDelete, canUpdate, canDelete, c
         render: (o, record) => {
             return (
                 <>
-                    {canUpdate ?
+                    {canUpdate ? (
                         <Tooltip placement="left" title={'Chỉnh sửa'}>
                             <EditOutlined
                                 style={{
@@ -934,12 +987,13 @@ export const buildColsConfigDay = (funcEdit, funcDelete, canUpdate, canDelete, c
                                 }}
                                 onClick={() => funcEdit(record)}
                             />
-                        </Tooltip> : null}
-                    {canDelete ?
+                        </Tooltip>
+                    ) : null}
+                    {canDelete ? (
                         <Popconfirm
                             title="Bạn chắc chắn muốn xoá？"
                             icon={
-                                <ExclamationCircleTwoTone twoToneColor="#d9534f"/>
+                                <ExclamationCircleTwoTone twoToneColor="#d9534f" />
                             }
                             okText="Đồng ý"
                             cancelText="Huỷ"
@@ -954,7 +1008,8 @@ export const buildColsConfigDay = (funcEdit, funcDelete, canUpdate, canDelete, c
                                     }}
                                 />
                             </Tooltip>
-                        </Popconfirm> : null}
+                        </Popconfirm>
+                    ) : null}
                 </>
             );
         },
@@ -1019,14 +1074,14 @@ export const buildColsApprovalAttendance = (funcEdit, canUpdate, cols = []) => {
                 if (record.isOnTime) {
                     return (
                         <Tooltip placement="top" title={'Đúng giờ'}>
-                            <CheckCircleTwoTone twoToneColor="#52c41a"/>
+                            <CheckCircleTwoTone twoToneColor="#52c41a" />
                         </Tooltip>
                     );
                 }
 
                 return (
                     <Tooltip placement="top" title={'Đi trễ'}>
-                        <CloseCircleTwoTone twoToneColor="#ff7875"/>
+                        <CloseCircleTwoTone twoToneColor="#ff7875" />
                     </Tooltip>
                 );
             },
@@ -1040,7 +1095,7 @@ export const buildColsApprovalAttendance = (funcEdit, canUpdate, cols = []) => {
 
                 return (
                     <React.Fragment>
-                        <LightboxImages imageSource={[record.image]}/>
+                        <LightboxImages imageSource={[record.image]} />
                     </React.Fragment>
                 );
             },
@@ -1073,7 +1128,7 @@ export const buildColsApprovalAttendance = (funcEdit, canUpdate, cols = []) => {
                                 <Tag className="float-left" color="warning">
                                     Chưa xử lý
                                 </Tag>
-                                {canUpdate ?
+                                {canUpdate ? (
                                     <EditOutlined
                                         style={{
                                             color: '#52c41a',
@@ -1082,7 +1137,8 @@ export const buildColsApprovalAttendance = (funcEdit, canUpdate, cols = []) => {
                                         }}
                                         className="float-right"
                                         onClick={() => funcEdit(record)}
-                                    /> : null}
+                                    />
+                                ) : null}
                             </span>
                         );
                     case 1:
@@ -1167,7 +1223,7 @@ export const buildColsHistoryCheckin = (
                                     onMouseOver={() =>
                                         funcHandleOnHover('on', id)
                                     }
-                                    style={{fontSize: 80}}
+                                    style={{ fontSize: 80 }}
                                     onClick={() =>
                                         funcShowDetail(record[day], id)
                                     }
@@ -1239,14 +1295,14 @@ export const buildColsDetailHistoryCheckin = () => {
                 if (record.isOnTime) {
                     return (
                         <Tooltip placement="top" title={'Đúng giờ'}>
-                            <CheckCircleTwoTone twoToneColor="#52c41a"/>
+                            <CheckCircleTwoTone twoToneColor="#52c41a" />
                         </Tooltip>
                     );
                 }
 
                 return (
                     <Tooltip placement="top" title={'Đi trễ'}>
-                        <CloseCircleTwoTone twoToneColor="#ff7875"/>
+                        <CloseCircleTwoTone twoToneColor="#ff7875" />
                     </Tooltip>
                 );
             },
@@ -1260,7 +1316,7 @@ export const buildColsDetailHistoryCheckin = () => {
 
                 return (
                     <React.Fragment>
-                        <LightboxImages imageSource={[record.image]}/>
+                        <LightboxImages imageSource={[record.image]} />
                     </React.Fragment>
                 );
             },

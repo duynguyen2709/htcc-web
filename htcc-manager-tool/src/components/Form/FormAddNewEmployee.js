@@ -22,6 +22,7 @@ import { CheckCircleOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import { DatePicker, Select, Popconfirm } from 'antd';
 import moment from 'moment';
 import { connect } from 'react-redux';
+import { userApi } from '../../api';
 
 const { Option } = Select;
 
@@ -121,6 +122,7 @@ class FormAddNewEmployee extends React.Component {
             level,
             fullName,
             title,
+            employeeId,
         } = this.state.value;
 
         this.setState({
@@ -132,6 +134,7 @@ class FormAddNewEmployee extends React.Component {
                 identityCardNo: true,
                 fullName: true,
                 title: true,
+                employeeId: true,
             },
         });
 
@@ -145,7 +148,8 @@ class FormAddNewEmployee extends React.Component {
             !_.isEmpty(department) &&
             !_.isEmpty(officeId) &&
             !_.isEmpty(title) &&
-            !_.isEmpty(fullName)
+            !_.isEmpty(fullName) &&
+            !_.isEmpty(employeeId)
         );
     };
 
@@ -176,10 +180,28 @@ class FormAddNewEmployee extends React.Component {
     handleSubmit = (e) => {
         if (this.checkValidDataInput()) {
             const { value } = this.state;
-            value['birthDate'] = value['birthDate'].format('YYYY/MMDD');
-            console.log('value', value);
+            value['birthDate'] = value['birthDate'].format('YYYY-MM-DD');
+            this.props.loading();
 
-            this.props.onSubmit();
+            userApi
+                .createEmployee(value)
+                .then((res) => {
+                    if (res.returnCode === 1) {
+                        this.props.onSubmit();
+                        this.clear();
+                    } else {
+                        this.props.stopLoading();
+                        store.addNotification(
+                            createNotify('danger', res.returnMessage)
+                        );
+                    }
+                })
+                .catch((err) => {
+                    this.props.stopLoading();
+                    store.addNotification(
+                        createNotify('danger', JSON.stringify(err))
+                    );
+                });
         } else {
             store.addNotification(
                 createNotify('warning', 'Thông tin chưa hợp lệ !')
@@ -401,7 +423,7 @@ class FormAddNewEmployee extends React.Component {
                             <label>Cấp bậc</label>
                             <Input
                                 placeholder="Nhập cấp bậc"
-                                type="text"
+                                type="number"
                                 className="bor-gray text-dark"
                                 onChange={this.handleOnChange}
                                 name="level"
