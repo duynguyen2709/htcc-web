@@ -428,3 +428,8 @@
     height: calc(100vh - 250px);
     overflow: auto;
 }
+
+.dropdown-navbar {
+    max-height: 600px;
+    overflow: auto;
+}
