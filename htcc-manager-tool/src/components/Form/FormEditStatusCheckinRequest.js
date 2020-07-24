@@ -40,7 +40,7 @@ class FormEditStatusCheckinRequest extends React.Component {
             value: {
                 ...this.state.value,
                 status: 1,
-                approver: user.username,
+                approver: `${user.fullName} (${user.username})`,
                 checkInId: data.checkInId,
             },
         });
@@ -87,7 +87,7 @@ class FormEditStatusCheckinRequest extends React.Component {
                 <Row>
                     <Col md="12">
                         <FormGroup>
-                            <label>ID</label>
+                            <label>Mã yêu cầu</label>
                             <Input
                                 className="form-control bor-radius bor-gray text-dark"
                                 type="text"

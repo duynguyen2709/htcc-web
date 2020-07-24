@@ -2,23 +2,36 @@ import React from 'react';
 import TableAttendance from '../components/Table/Attendance';
 import moment from 'moment';
 import CalendarTool from '../components/Tool/CalendarTool';
-import { Badge, Modal, Table, Tabs } from 'antd';
+import {Badge, Modal, Table, Tabs, Tooltip} from 'antd';
 import * as _ from 'lodash';
-import { FileProtectOutlined, HistoryOutlined } from '@ant-design/icons';
+import {FileProtectOutlined, FileTextTwoTone, HistoryOutlined,} from '@ant-design/icons';
 import ApprovalAttendance from './ApprovalAttendance';
-import {
-    buildColsDetailHistoryCheckin,
-    buildColsHistoryCheckin,
-    MONTHS,
-} from '../constant/colTable';
-import { addKeyPropsToTable, isLeapYear } from '../utils/dataTable';
-import { checkinApi } from '../api';
-import { store } from 'react-notifications-component';
-import { createNotify } from '../utils/notifier';
-import { Button } from 'reactstrap';
-import { connect } from 'react-redux';
+import {buildColsDetailHistoryCheckin, buildColsHistoryCheckin, MONTHS,} from '../constant/colTable';
+import {addKeyPropsToTable, isLeapYear} from '../utils/dataTable';
+import {checkinApi} from '../api';
+import {store} from 'react-notifications-component';
+import {createNotify} from '../utils/notifier';
+import {Button} from 'reactstrap';
+import {connect} from 'react-redux';
+import {CSVLink} from 'react-csv';
+import {CHECKIN_SUBTYPE} from "../constant/constant";
 
-const { TabPane } = Tabs;
+const {TabPane} = Tabs;
+
+const HEADER = [
+    {label: 'Tên đăng nhập', key: 'username'},
+    {label: 'Ngày điểm danh', key: 'checkInDate'},
+    {label: 'Thời gian', key: 'checkInTime'},
+    {label: 'Loại điểm danh', key: 'type'},
+    {label: 'Hình thức điểm danh', key: 'subType'},
+    {label: 'Tên ca', key: 'shiftName'},
+    {label: 'Thời gian ca', key: 'shiftTime'},
+    {label: 'Chi nhánh', key: 'officeId'},
+    {label: 'Đúng giờ hay không', key: 'isOnTime'},
+    {label: 'Lý do', key: 'reason'},
+    {label: 'Người duyệt', key: 'approver'},
+    {label: 'Trạng thái duyệt', key: 'status'},
+];
 
 class Attendance extends React.Component {
     constructor(props) {
@@ -32,6 +45,7 @@ class Attendance extends React.Component {
             dataHistorCheckin: [],
             showDetail: false,
             dataDetail: [],
+            csvData: [],
         };
 
         this.dataResolved = [];
@@ -43,7 +57,7 @@ class Attendance extends React.Component {
     }
 
     getData = () => {
-        const { month } = this.state;
+        const {month} = this.state;
 
         this.getListApprovedCheckin(month.format('YYYYMM'));
         this.getListPendingCheckin(month.format('YYYYMM'));
@@ -54,10 +68,14 @@ class Attendance extends React.Component {
             .getListApprovedCheckin(yyyyMM)
             .then((res) => {
                 if (res.returnCode === 1) {
+                    const data = this.parseDataHistoryCheckin(
+                        res.data.detailMap
+                    );
+                    const csvData = this.buildDataExport(data);
+
                     this.setState({
-                        dataHistorCheckin: this.parseDataHistoryCheckin(
-                            res.data.detailMap
-                        ),
+                        dataHistorCheckin: data,
+                        csvData: csvData,
                     });
                 } else {
                     store.addNotification(
@@ -101,6 +119,54 @@ class Attendance extends React.Component {
         });
 
         return result;
+    };
+
+    mapData = (data) => {
+        //type
+        if (data['type'] === 1) {
+            data['type'] = 'Vào ca';
+        } else {
+            data['type'] = 'Tan ca';
+        }
+
+        //subType
+        data['subType'] = CHECKIN_SUBTYPE[data['subType']];
+
+        //isOntime
+        if (data['isOnTime']) {
+            data['isOnTime'] = 'Đúng giờ';
+        } else {
+            data['isOnTime'] = 'Trễ giờ';
+        }
+
+        //status
+        if (data['status'] === 1) {
+            data['status'] = 'Chấp nhận';
+        } else if (data['status'] === 0) {
+            data['status'] = 'Từ chối';
+        } else {
+            data['status'] = 'Từ chối';
+        }
+
+        return data;
+    };
+
+    buildDataExport = (data) => {
+        const csvData = [];
+
+        _.forEach(data, (d) => {
+            _.forEach(d, (item) => {
+                if (typeof o !== 'string') {
+                    _.forEach(item, (o) => {
+                        if (typeof o !== 'string') {
+                            csvData.push(this.mapData(o));
+                        }
+                    });
+                }
+            });
+        });
+
+        return csvData;
     };
 
     getListPendingCheckin = (yyyyMM) => {
@@ -147,8 +213,10 @@ class Attendance extends React.Component {
             month,
             dataNotResolve: null,
             dataResolved: null,
+            dataHistorCheckin: null,
         });
         this.getListPendingCheckin(month.format('yyyyMM'));
+        this.getListApprovedCheckin(month.format('YYYYMM'));
     };
 
     onChangeTab = (key) => {
@@ -172,7 +240,10 @@ class Attendance extends React.Component {
     };
 
     funcShowDetail = (data, id) => {
-        console.log('data', data);
+        _.map(data, (item, index) => (
+            item.uid = `${item.username}_${index}`
+        ));
+
         this.setState({
             showDetail: true,
             dataDetail: data,
@@ -188,19 +259,22 @@ class Attendance extends React.Component {
     };
 
     buildData = (detailList) => {
-        const { data } = this.props;
+        const {data} = this.props;
         if (!data || _.isEmpty(data)) {
             return detailList;
         }
 
-        for (let detail of detailList) {
-            for (let employee of data.canManageEmployees) {
-                if (_.isEqual(detail.username, employee.username)) {
-                    detail.username = `${employee.fullName} (${employee.username})`;
-                    break;
+        if (detailList) {
+            for (let detail of detailList) {
+                for (let employee of data.canManageEmployees) {
+                    if (_.isEqual(detail.username, employee.username)) {
+                        detail.username = `${employee.fullName} (${employee.username})`;
+                        break;
+                    }
                 }
             }
         }
+
         return detailList;
     };
 
@@ -210,6 +284,7 @@ class Attendance extends React.Component {
             dataResolved,
             month,
             dataHistorCheckin,
+            csvData,
         } = this.state;
 
         return (
@@ -220,16 +295,39 @@ class Attendance extends React.Component {
                         defaultActiveKey={this.state.currTab}
                         tabBarExtraContent={
                             <div className="header-table clearfix">
+                                {_.size(csvData) > 1 && (
+                                    <div className="float-right btn-new ml-2">
+                                        <Tooltip
+                                            placement="bottom"
+                                            title={'Xuất file điểm danh'}
+                                        >
+                                            <CSVLink
+                                                data={csvData}
+                                                headers={HEADER}
+                                                filename={`checkin-${month.format(
+                                                    'MM-YYYY'
+                                                )}.csv`}
+                                            >
+                                                <FileTextTwoTone/>
+                                            </CSVLink>
+                                        </Tooltip>
+                                    </div>
+                                )}
                                 <div className="tool-calendar float-right">
-                                    <CalendarTool update={this.updateData} />
+                                    <CalendarTool update={this.updateData}/>
                                 </div>
                                 <Badge
-                                    style={{ marginRight: 20 }}
+                                    style={{marginRight: 20}}
                                     status="success"
-                                    text="Điểm danh đúng giờ"
+                                    text="Vào ca đúng giờ"
                                 />
                                 <Badge
-                                    style={{ marginRight: 50 }}
+                                    style={{marginRight: 20}}
+                                    status="processing"
+                                    text="Tan ca đúng giờ"
+                                />
+                                <Badge
+                                    style={{marginRight: 50}}
                                     status="red"
                                     text="Điểm danh trễ"
                                 />
@@ -237,10 +335,10 @@ class Attendance extends React.Component {
                         }
                     >
                         <TabPane
-                            style={{ overflow: 'auto' }}
+                            style={{overflow: 'auto'}}
                             tab={
                                 <span>
-                                    <FileProtectOutlined />
+                                    <FileProtectOutlined/>
                                     Đơn phê duyệt
                                 </span>
                             }
@@ -257,10 +355,10 @@ class Attendance extends React.Component {
                             </div>
                         </TabPane>
                         <TabPane
-                            style={{ overflow: 'auto' }}
+                            style={{overflow: 'auto'}}
                             tab={
                                 <span>
-                                    <HistoryOutlined />
+                                    <HistoryOutlined/>
                                     Lịch sử điểm danh
                                 </span>
                             }
@@ -295,13 +393,13 @@ class Attendance extends React.Component {
                                         </Button>,
                                     ]}
                                 >
-                                    <Table
-                                        columns={buildColsDetailHistoryCheckin()}
-                                        dataSource={this.state.dataDetail}
-                                        pagination={false}
-                                        scroll={{
-                                            y: 'calc(100vh - 450px)',
-                                        }}
+                                    <Table rowKey={"uid"}
+                                           columns={buildColsDetailHistoryCheckin()}
+                                           dataSource={this.state.dataDetail}
+                                           pagination={false}
+                                           scroll={{
+                                               y: 'calc(100vh - 450px)',
+                                           }}
                                     />
                                 </Modal>
                             </div>

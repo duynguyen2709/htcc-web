@@ -17,6 +17,7 @@ import LightboxImages from '../components/Tool/LightboxImages';
 import * as _ from 'lodash';
 import moment from 'moment';
 import { isLeapYear } from '../utils/dataTable';
+import {CHECKIN_SUBTYPE} from "./constant";
 
 export const buildColsEmployee = (
     funcEdit,
@@ -1196,7 +1197,7 @@ export const buildColsHistoryCheckin = (
     const year = date.year();
     const cols = [
         {
-            title: 'Mã nhân viên',
+            title: 'Nhân viên',
             dataIndex: 'username',
             fixed: 'left',
             width: '160px',
@@ -1227,7 +1228,12 @@ export const buildColsHistoryCheckin = (
                     let color = 'green';
                     title = d.shiftName;
 
-                    if (!d.isOnTime) color = 'red';
+                    if (d.isOnTime && d.type === 'Tan ca') {
+                        color = 'blue';
+                    }
+                    if (!d.isOnTime) {
+                        color = 'red';
+                    }
 
                     return (
                         <Tag key={i} className="float-left" color={color}>
@@ -1304,6 +1310,15 @@ export const buildColsDetailHistoryCheckin = () => {
                         return null;
                 }
             },
+        },
+        {
+            title: 'Hình thức điểm danh',
+            dataIndex: 'subType',
+            width: '220px',
+            render: (o, record) => {
+                const text = CHECKIN_SUBTYPE[record.subType];
+                return text ? text : '';
+            }
         },
         {
             title: 'Ngày',
