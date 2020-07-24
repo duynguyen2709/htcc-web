@@ -22,6 +22,7 @@ import { CheckCircleOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import { DatePicker, Select, Popconfirm } from 'antd';
 import moment from 'moment';
 import { connect } from 'react-redux';
+import { userApi } from '../../api';
 
 const { Option } = Select;
 
@@ -56,7 +57,7 @@ const TOUCH = {
     title: false,
 };
 
-class FormAddNewEmployee extends React.Component {
+class FormEditEmployee extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -71,6 +72,7 @@ class FormAddNewEmployee extends React.Component {
                 username: 'Tên đăng nhập không được rỗng',
                 title: 'Chức vụ không được rỗng',
                 fullName: 'Họ tên không được rỗng',
+                employeeId: 'Mã nhân viên không được rỗng',
             },
             touch: {
                 ...TOUCH,
@@ -79,31 +81,50 @@ class FormAddNewEmployee extends React.Component {
     }
 
     componentDidMount() {
-        const { data = {} } = this.props;
+        const { dataRoot = {}, data } = this.props;
 
         this.setState({
             value: {
                 ...INITFORM,
-                department: _.get(data.canManageDepartments, '[0]', ''),
-                officeId: _.get(data.canManageOffices, '[0]', ''),
+                ...data,
+                birthDate: data['birthDate']
+                    ? moment(data['birthDate'], 'YYYY-MM-DD')
+                    : moment(new Date()),
+                department: data.department
+                    ? data.department
+                    : _.get(dataRoot.canManageDepartments, '[0]', ''),
+                officeId: data.officeId
+                    ? data.officeId
+                    : _.get(dataRoot.canManageOffices, '[0]', ''),
             },
         });
     }
 
     componentWillReceiveProps(nextProps, nextState) {
         if (
-            !_.isEmpty(nextProps.data) &&
-            !_.isEmpty(this.props.data) &&
-            !_.isEqual(nextProps.data, this.props.data)
+            (!_.isEmpty(nextProps.data) &&
+                !_.isEmpty(this.props.data) &&
+                !_.isEqual(nextProps.data, this.props.data)) ||
+            (!_.isEmpty(nextProps.dataRoot) &&
+                !_.isEmpty(this.props.dataRoot) &&
+                !_.isEqual(nextProps.dataRoot, this.props.dataRoot))
         ) {
             const { value } = this.state;
-            const { data = {} } = nextProps;
+            const { data = {}, dataRoot } = nextProps;
 
             this.setState({
                 value: {
                     ...value,
-                    department: _.get(data.canManageDepartments, '[0]', ''),
-                    officeId: _.get(data.canManageOffices, '[0]', ''),
+                    ...data,
+                    birthDate: data['birthDate']
+                        ? moment(data['birthDate'], 'YYYY-MM-DD')
+                        : moment(new Date()),
+                    department: data.department
+                        ? data.department
+                        : _.get(dataRoot.canManageDepartments, '[0]', ''),
+                    officeId: data.officeId
+                        ? data.officeId
+                        : _.get(dataRoot.canManageOffices, '[0]', ''),
                 },
             });
         }
@@ -121,6 +142,7 @@ class FormAddNewEmployee extends React.Component {
             level,
             fullName,
             title,
+            employeeId,
         } = this.state.value;
 
         this.setState({
@@ -132,6 +154,7 @@ class FormAddNewEmployee extends React.Component {
                 identityCardNo: true,
                 fullName: true,
                 title: true,
+                employeeId: true,
             },
         });
 
@@ -145,7 +168,8 @@ class FormAddNewEmployee extends React.Component {
             !_.isEmpty(department) &&
             !_.isEmpty(officeId) &&
             !_.isEmpty(title) &&
-            !_.isEmpty(fullName)
+            !_.isEmpty(fullName) &&
+            !_.isEmpty(employeeId)
         );
     };
 
@@ -175,11 +199,31 @@ class FormAddNewEmployee extends React.Component {
 
     handleSubmit = (e) => {
         if (this.checkValidDataInput()) {
+            debugger;
             const { value } = this.state;
-            value['birthDate'] = value['birthDate'].format('YYYY/MMDD');
-            console.log('value', value);
+            const data = { ...value };
+            data['birthDate'] = value['birthDate'].format('YYYY-MM-DD');
+            this.props.loading();
 
-            this.props.onSubmit();
+            userApi
+                .updateEmployee(data)
+                .then((res) => {
+                    if (res.returnCode === 1) {
+                        this.props.onSubmit();
+                        this.clear();
+                    } else {
+                        this.props.stopLoading();
+                        store.addNotification(
+                            createNotify('danger', res.returnMessage)
+                        );
+                    }
+                })
+                .catch((err) => {
+                    this.props.stopLoading();
+                    store.addNotification(
+                        createNotify('danger', JSON.stringify(err))
+                    );
+                });
         } else {
             store.addNotification(
                 createNotify('warning', 'Thông tin chưa hợp lệ !')
@@ -205,17 +249,17 @@ class FormAddNewEmployee extends React.Component {
 
     render() {
         const { value, messageInvalid, touch } = this.state;
-        const { data = {} } = this.props;
+        const { dataRoot = {} } = this.props;
 
         return (
             <Form>
                 <Row>
                     <Col md="12">
                         <FormGroup>
-                            <label htmlFor="fullName">Họ và tên</label>
+                            <label htmlFor="email">Họ và tên</label>
                             <Input
                                 className="bor-gray text-dark"
-                                placeholder="Nhập họ tên"
+                                placeholder="Nhập username"
                                 type="text"
                                 onChange={this.handleOnChange}
                                 name="fullName"
@@ -350,6 +394,7 @@ class FormAddNewEmployee extends React.Component {
                                 onChange={this.handleOnChange}
                                 name="employeeId"
                                 value={value.employeeId}
+                                disabled
                                 invalid={
                                     touch.employeeId &&
                                     _.isEmpty(value.employeeId)
@@ -362,14 +407,15 @@ class FormAddNewEmployee extends React.Component {
                     </Col>
                     <Col md="6">
                         <FormGroup>
-                            <label htmlFor="email">Tên đăng nhập </label>
+                            <label htmlFor="email">Tên đăng nhập</label>
                             <Input
                                 className="bor-gray text-dark"
-                                placeholder="Nhập Tên đăng nhập "
+                                placeholder="Nhập Tên đăng nhập"
                                 type="text"
                                 onChange={this.handleOnChange}
                                 name="username"
                                 value={value.username}
+                                disabled
                                 invalid={
                                     touch.username && _.isEmpty(value.username)
                                 }
@@ -401,7 +447,7 @@ class FormAddNewEmployee extends React.Component {
                             <label>Cấp bậc</label>
                             <Input
                                 placeholder="Nhập cấp bậc"
-                                type="text"
+                                type="number"
                                 className="bor-gray text-dark"
                                 onChange={this.handleOnChange}
                                 name="level"
@@ -428,7 +474,7 @@ class FormAddNewEmployee extends React.Component {
                                 onCancel={() => this.clear()}
                                 value={value.officeId}
                             >
-                                {_.map(data.canManageOffices, (d, i) => {
+                                {_.map(dataRoot.canManageOffices, (d, i) => {
                                     return (
                                         <Option
                                             key={`of-${i}`}
@@ -454,17 +500,20 @@ class FormAddNewEmployee extends React.Component {
                                 onCancel={() => this.clear()}
                                 value={value.department}
                             >
-                                {_.map(data.canManageDepartments, (d, i) => {
-                                    return (
-                                        <Option
-                                            key={`de-${i}`}
-                                            className=" bor-radius"
-                                            value={d}
-                                        >
-                                            {d}
-                                        </Option>
-                                    );
-                                })}
+                                {_.map(
+                                    dataRoot.canManageDepartments,
+                                    (d, i) => {
+                                        return (
+                                            <Option
+                                                key={`de-${i}`}
+                                                className=" bor-radius"
+                                                value={d}
+                                            >
+                                                {d}
+                                            </Option>
+                                        );
+                                    }
+                                )}
                             </Select>
                         </FormGroup>
                     </Col>
@@ -500,7 +549,7 @@ class FormAddNewEmployee extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-    data: state.homeReducer.data,
+    dataRoot: state.homeReducer.data,
 });
 
-export default connect(mapStateToProps)(FormAddNewEmployee);
+export default connect(mapStateToProps)(FormEditEmployee);

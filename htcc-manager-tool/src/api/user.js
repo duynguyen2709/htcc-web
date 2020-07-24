@@ -99,9 +99,36 @@ const createEmployee = (data) => {
     });
 };
 
+const updateEmployee = (data) => {
+    const token = localStorage.getItem(TOKEN);
+    const user = JSON.parse(localStorage.getItem(USER));
+
+    data['companyId'] = user.companyId;
+
+    return new Promise((resolve, reject) => {
+        debugger;
+        axios({
+            method: 'put',
+            url: `${API_URL_EMPLOYEE}/users/${user.companyId}/${data['username']}`,
+            data,
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+            .then((res) => {
+                resolve(res.data);
+            })
+            .catch((err) => {
+                console.error(err);
+                reject('Hệ thống có lỗi. Vui lòng thử lại sau.');
+            });
+    });
+};
+
 export default {
     getAllUsers,
     updatePassword,
     updateStatusAccount,
     createEmployee,
+    updateEmployee,
 };

@@ -72,6 +72,7 @@ class FormAddNewEmployee extends React.Component {
                 username: 'Tên đăng nhập không được rỗng',
                 title: 'Chức vụ không được rỗng',
                 fullName: 'Họ tên không được rỗng',
+                employeeId: 'Mã nhân viên không được rỗng',
             },
             touch: {
                 ...TOUCH,
@@ -180,11 +181,12 @@ class FormAddNewEmployee extends React.Component {
     handleSubmit = (e) => {
         if (this.checkValidDataInput()) {
             const { value } = this.state;
-            value['birthDate'] = value['birthDate'].format('YYYY-MM-DD');
+            const data = { ...value };
+            data['birthDate'] = value['birthDate'].format('YYYY-MM-DD');
             this.props.loading();
 
             userApi
-                .createEmployee(value)
+                .createEmployee(data)
                 .then((res) => {
                     if (res.returnCode === 1) {
                         this.props.onSubmit();
@@ -228,7 +230,6 @@ class FormAddNewEmployee extends React.Component {
     render() {
         const { value, messageInvalid, touch } = this.state;
         const { data = {} } = this.props;
-
         return (
             <Form>
                 <Row>
