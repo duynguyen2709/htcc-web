@@ -305,12 +305,6 @@ class EmployeePermission extends Component {
                                     )}
                                 />
                             </Row>
-                            <CardFooter
-                                className="text-right info"
-                                style={{ marginTop: 20, marginRight: 20 }}
-                            >
-                                {this.renderButton()}
-                            </CardFooter>
 
                             {data !== null && !isLoading ? (
                                 <div>
