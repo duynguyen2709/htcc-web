@@ -13,6 +13,7 @@ import { USER } from '../constant/localStorageKey';
 import { canDoAction } from '../utils/permission';
 import { connect } from 'react-redux';
 import { ACTION, ROLE_GROUP_KEY } from '../constant/constant';
+import EmployeePermission from './EmployeePermission';
 
 const { Search } = Input;
 
@@ -24,6 +25,7 @@ class Employee extends React.Component {
             showModal: false,
             mode: 'new',
             curRecordEdit: null,
+            curUsername: '',
             isSubmit: false,
             loading: false,
         };
@@ -71,11 +73,25 @@ class Employee extends React.Component {
             });
     };
 
+    handleShowPermission = (username) => {
+        this.setState({
+            curUsername: username,
+            mode: 'permission',
+        });
+    };
+
     handleEdit = (record) => {
         this.setState({
             showModal: true,
             curRecordEdit: record,
             mode: 'edit',
+        });
+    };
+
+    handleClickBack = () => {
+        this.setState({
+            curUsername: '',
+            mode: 'new',
         });
     };
 
@@ -154,7 +170,14 @@ class Employee extends React.Component {
     };
 
     render() {
-        const { data, showModal, curRecordEdit, mode, loading } = this.state;
+        const {
+            data,
+            showModal,
+            curRecordEdit,
+            curUsername,
+            mode,
+            loading,
+        } = this.state;
         const user = JSON.parse(localStorage.getItem(USER));
         const canAdd = canDoAction(
             this.props.data,
@@ -171,6 +194,20 @@ class Employee extends React.Component {
             ROLE_GROUP_KEY.EMPLOYEE_MANAGE,
             ACTION.DELETE
         );
+        const canViewPermission = canDoAction(
+            this.props.data,
+            ROLE_GROUP_KEY.EMPLOYEE_PERMISSION,
+            ACTION.READ
+        );
+
+        if (mode === 'permission') {
+            return (
+                <EmployeePermission
+                    username={curUsername}
+                    handleClickBack={this.handleClickBack}
+                />
+            );
+        }
 
         return (
             <div className="content">
@@ -208,9 +245,11 @@ class Employee extends React.Component {
                                 columns={buildColsEmployee(
                                     this.handleEdit,
                                     this.handleUpdateStatus,
+                                    this.handleShowPermission,
                                     user.username,
                                     canUpdate,
-                                    canDelete
+                                    canDelete,
+                                    canViewPermission
                                 )}
                                 dataSource={this.mapData(data)}
                                 scroll={{ x: 1300, y: 'calc(100vh - 300px)' }}
@@ -225,26 +264,24 @@ class Employee extends React.Component {
                     </div>
                     {(mode === 'new' && canAdd) ||
                     (mode === 'edit' && canUpdate) ? (
-                        <div>
-                            <AsyncModal
-                                key={curRecordEdit}
-                                reload={false}
-                                CompomentContent={
-                                    mode === 'new'
-                                        ? FormAddNewEmployee
-                                        : FormEditEmployee
-                                }
-                                visible={showModal}
-                                toggle={(submit) => this.toggle(submit)}
-                                title={
-                                    mode === 'new'
-                                        ? 'Thêm nhân viên mới'
-                                        : 'Cập nhật thông tin nhân viên'
-                                }
-                                data={curRecordEdit}
-                                mode={mode}
-                            />
-                        </div>
+                        <AsyncModal
+                            key={curRecordEdit}
+                            reload={false}
+                            CompomentContent={
+                                mode === 'new'
+                                    ? FormAddNewEmployee
+                                    : FormEditEmployee
+                            }
+                            visible={showModal}
+                            toggle={(submit) => this.toggle(submit)}
+                            title={
+                                mode === 'new'
+                                    ? 'Thêm nhân viên mới'
+                                    : 'Cập nhật thông tin nhân viên'
+                            }
+                            data={curRecordEdit}
+                            mode={mode}
+                        />
                     ) : null}
                 </div>
             </div>
