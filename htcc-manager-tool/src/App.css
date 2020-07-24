@@ -427,3 +427,8 @@
     justify-content: space-between;
     overflow: auto;
 }
+
+.dropdown-navbar {
+    max-height: 600px;
+    overflow: auto;
+}
