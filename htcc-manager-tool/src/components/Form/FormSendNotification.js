@@ -34,7 +34,7 @@ class FormSendNotification extends React.Component {
             },
             messageInvalid: {
                 content: 'Nội dung không được rỗng',
-                title: 'Tiêu đều không được rỗng',
+                title: 'Tiêu đề không được rỗng',
             },
             isLoading: false,
             touched: {

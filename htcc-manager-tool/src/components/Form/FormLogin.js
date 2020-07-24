@@ -100,7 +100,7 @@ class FormLogin extends React.Component {
                                     Tên đăng nhập
                                 </label>
                                 <Input
-                                    placeholder="Nhập mã nhân viên"
+                                    placeholder="Nhập tên đăng nhập"
                                     type="text"
                                     onChange={this.handleOnChange}
                                     name="username"

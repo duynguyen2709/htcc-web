@@ -238,7 +238,7 @@ class FormAddNewEmployee extends React.Component {
                             <label htmlFor="email">Họ và tên</label>
                             <Input
                                 className="bor-gray text-dark"
-                                placeholder="Nhập username"
+                                placeholder="Nhập họ và tên"
                                 type="text"
                                 onChange={this.handleOnChange}
                                 name="fullName"

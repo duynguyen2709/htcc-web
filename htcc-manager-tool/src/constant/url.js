@@ -1,5 +1,7 @@
 // export const API_URL_GATEWAY = 'http://localhost:8761';
 // export const API_URL_EMPLOYEE = 'http://localhost:8761/api/employee';
+// export const API_URL_ADMIN = 'http://localhost:8761/api/admin';
+
 export const API_URL_GATEWAY = 'https://1612145.online';
 export const API_URL_EMPLOYEE = 'https://1612145.online/api/employee';
 export const API_URL_ADMIN = 'https://1612145.online/api/admin';

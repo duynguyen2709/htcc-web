@@ -199,7 +199,6 @@ class FormEditEmployee extends React.Component {
 
     handleSubmit = (e) => {
         if (this.checkValidDataInput()) {
-            debugger;
             const { value } = this.state;
             const data = { ...value };
             data['birthDate'] = value['birthDate'].format('YYYY-MM-DD');
@@ -256,10 +255,10 @@ class FormEditEmployee extends React.Component {
                 <Row>
                     <Col md="12">
                         <FormGroup>
-                            <label htmlFor="email">Họ và tên</label>
+                            <label htmlFor="fullName">Họ và tên</label>
                             <Input
                                 className="bor-gray text-dark"
-                                placeholder="Nhập username"
+                                placeholder="Nhập họ tên"
                                 type="text"
                                 onChange={this.handleOnChange}
                                 name="fullName"
