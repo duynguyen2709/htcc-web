@@ -51,7 +51,7 @@ function setUpFeature(data) {
       html += '<b>' + el.featureName + '</b> \
                                 </span> \
                                 <span>' + formatNumber(el.unitPrice)
-    if (el.featureName === 'Tuyển dụng')
+    if (el.featureId === 'EMPLOYEE_MANAGE')
       html += ' đ/tháng</span> '
     else
       html += ' đ/người/tháng</span>'
@@ -102,13 +102,15 @@ function updatePrice() {
   featureChoosenList.forEach(el => {
     let price = 0;
 
+    console.log("feature name: ", el.featureName);
+
     let html_price = '<li>\
                             <div ><span>';
 
     html_price += el.featureName + ' \
                                 </span><span>'
 
-    if (el.featureName === 'Quản lý nhân viên') {
+    if (el.featureId === 'EMPLOYEE_MANAGE') {
       price = el.unitPrice * 12
     } else {
       price = el.unitPrice * slider.value * 12
