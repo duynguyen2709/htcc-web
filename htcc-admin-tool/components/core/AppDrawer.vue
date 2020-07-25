@@ -244,7 +244,7 @@ export default {
           }
         })
         .catch(function(error) {
-          console.log("Error get list admin:");
+          console.log("Error get list complaint:");
           console.log(error);
         });
     }

@@ -474,7 +474,7 @@
             } else {
               $this.TriggerNoti(res.data.returnMessage);
               
-                $this.setAmountOrder($this.amountOrder - 1);
+                $this.setAmountOrder($this.amountOrder - 1 >= 0 ? $this.amountOrder - 1 : 0);
               
             }
 
@@ -520,8 +520,6 @@
                 }
               });
 
-              console.log("done data pending Order");
-              console.log("$this response: ", response.data.data);
               $this.isLoadingDataDone = true;
             } else {
               console.log(
@@ -533,6 +531,22 @@
             console.log("Error get list Order:");
             console.log(error);
           });
+
+        await $this.$axios
+        .get("/api/admin/home")
+        .then(function(response) {
+          if (response.data.returnCode == 1) {
+            console.log("pending order:",response.data.data.pendingOrder );
+            $this.setAmountOrder(response.data.data.pendingOrder);
+
+          } else {
+            console.log("this error message: " + response.data.returnMessage);
+          }
+        })
+        .catch(function(error) {
+          console.log("Error get list complaint:");
+          console.log(error);
+        });
       },
       TriggerNoti(mess) {
         this.setInfo({
