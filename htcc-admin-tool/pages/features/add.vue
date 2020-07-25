@@ -42,8 +42,8 @@
               <v-text-field label="Giảm giá (%)" class="green-input input-file" v-model="discount"
                 :rules="[rules.required, rules.percent, rules.floatNumber]" @change="calTotalPrice"/>
 
-              <v-text-field readonly label="Tổng cộng" class="green-input input-file" v-model="fTotalPrice"
-                :rules="[rules.required]" />
+              <!-- <v-text-field readonly label="Tổng cộng" class="green-input input-file" v-model="fTotalPrice"
+                :rules="[rules.required]" /> -->
 
             </div>
           </div>
@@ -170,7 +170,6 @@
           
         },
         floatNumber: value => {
-            // const pattern = /?\d+(\.\d+)?$/;
              const pattern = /\d+(\.\d+)?$/;
            return (
             pattern.test(value) ||
