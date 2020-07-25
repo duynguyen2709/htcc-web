@@ -13,7 +13,6 @@ import ShiftTemplate from './views/ShiftTemplate';
 import Role from "./views/Role";
 import {canDoAction} from "./utils/permission";
 import {ACTION, ROLE_GROUP_KEY} from "./constant/constant";
-import EmployeePermission from "./views/EmployeePermission";
 
 const routes = [
     {
@@ -87,7 +86,7 @@ const routes = [
     {
         path: '/lich-lam/ngay',
         key: '/lich-lam',
-        name: 'Lịch Làm',
+        name: 'Lịch Làm Việc',
         icon: 'tim-icons icon-calendar-60',
         component: '',
         layout: '/',
@@ -105,7 +104,7 @@ const routes = [
                 class: 'sub-menu canManageOffices',
                 path: '/lich-lam/ngay',
                 key: '/lich-lam/ngay',
-                name: 'Ngày Làm Việc',
+                name: 'Ngày Nghỉ Lễ',
                 component: WorkingDay,
                 layout: '/',
                 rule: (data) => canDoAction(data, ROLE_GROUP_KEY.WORKING_DAY, ACTION.READ)
@@ -160,15 +159,6 @@ const routes = [
         name: 'Phân quyền',
         icon: 'tim-icons icon-settings',
         component: Role,
-        layout: '/',
-        rule: (data) => canDoAction(data, ROLE_GROUP_KEY.PERMISSION, ACTION.READ)
-    },
-    {
-        path: '/quyen-nhan-vien',
-        key: '/quyen-nhan-vien',
-        name: 'Quyền',
-        icon: 'tim-icons icon-settings',
-        component: EmployeePermission,
         layout: '/',
         rule: (data) => canDoAction(data, ROLE_GROUP_KEY.PERMISSION, ACTION.READ)
     },

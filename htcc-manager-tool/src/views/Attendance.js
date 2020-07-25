@@ -2,22 +2,19 @@ import React from 'react';
 import TableAttendance from '../components/Table/Attendance';
 import moment from 'moment';
 import CalendarTool from '../components/Tool/CalendarTool';
-import { Table, Tabs, Badge, Modal } from 'antd';
+import {Badge, Modal, Table, Tabs} from 'antd';
 import * as _ from 'lodash';
-import { HistoryOutlined, FileProtectOutlined } from '@ant-design/icons';
+import {FileProtectOutlined, HistoryOutlined} from '@ant-design/icons';
 import ApprovalAttendance from './ApprovalAttendance';
-import {
-    buildColsHistoryCheckin,
-    MONTHS,
-    buildColsDetailHistoryCheckin,
-} from '../constant/colTable';
-import { addKeyPropsToTable, isLeapYear } from '../utils/dataTable';
-import { checkinApi } from '../api';
-import { store } from 'react-notifications-component';
-import { createNotify } from '../utils/notifier';
-import { Button } from 'reactstrap';
+import {buildColsDetailHistoryCheckin, buildColsHistoryCheckin, MONTHS,} from '../constant/colTable';
+import {addKeyPropsToTable, isLeapYear} from '../utils/dataTable';
+import {checkinApi} from '../api';
+import {store} from 'react-notifications-component';
+import {createNotify} from '../utils/notifier';
+import {Button} from 'reactstrap';
+import {connect} from 'react-redux';
 
-const { TabPane } = Tabs;
+const {TabPane} = Tabs;
 
 class Attendance extends React.Component {
     constructor(props) {
@@ -38,7 +35,7 @@ class Attendance extends React.Component {
     }
 
     componentDidMount() {
-        const { month } = this.state;
+        const {month} = this.state;
 
         this.getListApprovedCheckin(month.format('202006'));
         this.getListPendingCheckin(month.format('202006'));
@@ -182,6 +179,23 @@ class Attendance extends React.Component {
         });
     };
 
+    buildData = (detailList) => {
+        const {data} = this.props;
+        if (!data || _.isEmpty(data)) {
+            return detailList;
+        }
+
+        for (let detail of detailList) {
+            for (let employee of data.canManageEmployees) {
+                if (_.isEqual(detail.username, employee.username)) {
+                    detail.username = `${employee.fullName} (${employee.username})`;
+                    break;
+                }
+            }
+        }
+        return detailList;
+    };
+
     render() {
         const {
             dataNotResolve,
@@ -199,31 +213,26 @@ class Attendance extends React.Component {
                         tabBarExtraContent={
                             <div className="header-table clearfix">
                                 <div className="tool-calendar float-right">
-                                    <CalendarTool update={this.updateData} />
+                                    <CalendarTool update={this.updateData}/>
                                 </div>
                                 <Badge
-                                    style={{ marginRight: 20 }}
+                                    style={{marginRight: 20}}
                                     status="success"
-                                    text="Vào ca"
+                                    text="Điểm danh đúng giờ"
                                 />
                                 <Badge
-                                    style={{ marginRight: 20 }}
-                                    status="blue"
-                                    text="Tan ca"
-                                />
-                                <Badge
-                                    style={{ marginRight: 50 }}
+                                    style={{marginRight: 50}}
                                     status="red"
-                                    text="Vào ca trễ"
+                                    text="Điểm danh trễ"
                                 />
                             </div>
                         }
                     >
                         <TabPane
-                            style={{ overflow: 'auto' }}
+                            style={{overflow: 'auto'}}
                             tab={
                                 <span>
-                                    <FileProtectOutlined />
+                                    <FileProtectOutlined/>
                                     Đơn phê duyệt
                                 </span>
                             }
@@ -239,10 +248,10 @@ class Attendance extends React.Component {
                             </div>
                         </TabPane>
                         <TabPane
-                            style={{ overflow: 'auto' }}
+                            style={{overflow: 'auto'}}
                             tab={
                                 <span>
-                                    <HistoryOutlined />
+                                    <HistoryOutlined/>
                                     Lịch sử điểm danh
                                 </span>
                             }
@@ -251,7 +260,7 @@ class Attendance extends React.Component {
                             <div className="table-edit">
                                 <div className="table-small table-complaint">
                                     <TableAttendance
-                                        data={dataHistorCheckin}
+                                        data={this.buildData(dataHistorCheckin)}
                                         columns={buildColsHistoryCheckin(
                                             month,
                                             this.funcHandleOnHover,
@@ -295,4 +304,9 @@ class Attendance extends React.Component {
     }
 }
 
-export default Attendance;
+
+const mapStateToProps = (state) => ({
+    data: state.homeReducer.data
+});
+
+export default connect(mapStateToProps, null)(Attendance);
