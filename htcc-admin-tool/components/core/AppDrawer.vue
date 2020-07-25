@@ -145,6 +145,15 @@
               </v-list-item-content>
           </v-list-item>
 
+          <v-list-item class="icon-wrapper" :active-class="color" to="/analytic">
+            <v-list-item-action class="icon-menu">
+              <v-icon>mdi-google-analytics</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title v-text="'Thống kê'" class="pr-1"></v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+
         </v-list>
       </v-layout>
     </v-img>

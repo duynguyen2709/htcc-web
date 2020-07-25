@@ -415,13 +415,13 @@
     }),
     computed: {
       ...mapGetters({
-        amountOrder: "Order/getAmount"
+        amountOrder: "order/getAmount"
       })
     },
     methods: {
       ...mapActions({
         setInfo: "notification/setInfo",
-        setAmountOrder: "Order/setAmount"
+        setAmountOrder: "order/setAmount"
       }),
 
       showFeatureList(item) {
@@ -474,7 +474,7 @@
             } else {
               $this.TriggerNoti(res.data.returnMessage);
               
-                $this.setAmountOrder(this.amountOrder - 1);
+                $this.setAmountOrder($this.amountOrder - 1);
               
             }
 

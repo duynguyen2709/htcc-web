@@ -178,10 +178,10 @@
                 </v-card-title>
 
                 <div>
-                  <template v-if=" PendingItems.length === 0">
+                  <template v-if=" ConfirmedItems.length === 0">
                     <div class="no-data">
                       <v-icon size="90">mdi-bell-off</v-icon>
-                      <p>Không có khiếu nại chưa giải quyết của tháng này</p>
+                      <p>Không có khiếu nại đã giải quyết của tháng này</p>
                     </div>
                   </template>
 

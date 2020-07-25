@@ -13,64 +13,10 @@
     <v-spacer />
     <v-toolbar-items class="d-toolbar">
       <v-flex align-center layout py-2>
-        <!-- <v-text-fieldtoolbar-items
-          v-if="responsiveInput"
-          class="mr-4 mt-2 purple-input"
-          label="Search..."
-          hide-details
-          color="purple"
-        /> -->
-        <!-- <v-menu bottom left content-class="dropdown-menu" offset-y transition="slide-y-transition">
-          
-          <v-card>
-            <v-list dense>
-              <v-list-item
-                v-for="notification in notifications"
-                :key="notification"
-                @click="onClick"
-              >
-                <v-list-item-title v-text="notification" />
-              </v-list-item>
-            </v-list>
-          </v-card>
-        </v-menu> -->
-        <!-- <nuxt-link
-          v-ripple
-          class="toolbar-items"
-          to="/user-profile"
-          title="User profile"
-        >
-          <v-icon color="tertiary">mdi-account</v-icon>
-        </nuxt-link>-->
-
-        <!-- <v-icon color="tertiary" @click="dialog = true">mdi-account</v-icon> -->
-
-        <!-- <v-icon color="tertiary" @click="onClickUserProfile">mdi-account</v-icon> -->
-
         <div class="avatar-wrapper" @click="onClickUserProfile">
           <img :src="$auth.user.avatar"/>
           {{$auth.user.username}}
         </div>
-
-        <!-- <v-dialog width="530" v-model="dialog">
-          <material-card class="v-card-profile pt-2">
-            <v-avatar slot="offset" class="mx-auto d-block" size="130">
-              <img
-                src="https://demos.creative-tim.com/vue-material-dashboard/img/marc.aba54d65.jpg"
-              />
-            </v-avatar>
-            <v-card-text class="text-xs-center">
-              <h6 class="category text-gray font-weight-thin mb-3">{{ user.function }}</h6>
-              <h4 class="card-title font-weight-light">{{ $auth.user.username }}</h4>
-              <p class="card-description font-weight-light">{{ user.description }}</p>
-              <blockquote class="blockquote">{{ user.citation }}</blockquote>
-              <v-card text>
-                <v-btn color="success" rounded class="font-weight-light">Edit profile</v-btn>
-                <v-btn color="success" rounded class="font-weight-light">Change password</v-btn>
-              </v-card>
-            </v-card-text>
-          </material-card>
-        </v-dialog> -->
       </v-flex>
       <nuxt-link
         v-ripple
@@ -95,15 +41,6 @@ export default {
     materialCard
   },
   data: () => ({
-    // user: Object.assign({}, this.$auth.user),
-    
-    notifications: [
-      "Mike, John responded to your email",
-      "You have 5 new tasks",
-      "You're now a friend with Andrew",
-      "Another Notification",
-      "Another One"
-    ],
     title: "",
     responsive: true,
     responsiveInput: true,
@@ -135,7 +72,11 @@ export default {
         ["companies", "Danh sách công ty"],
         ["companyusers-id", "Danh sách quản trị viên công ty"],
         ["admins", "Danh sách quản trị viên"],
-        ["admins-add", "Thêm quản trị viên"]
+        ["icons", "icon"],
+        ["noti", "Thông báo"],
+        ["features", "Tính năng"],
+        ["orders", "Đơn hàng"],
+        ["analytic", "Thống kê"]
       ]);
 
       if (titleMap.has(RouteName)) {
