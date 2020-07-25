@@ -108,7 +108,7 @@ function updatePrice() {
     html_price += el.featureName + ' \
                                 </span><span>'
 
-    if (el.featureName === 'Tuyển dụng') {
+    if (el.featureName === 'Quản lý nhân viên') {
       price = el.unitPrice * 12
     } else {
       price = el.unitPrice * slider.value * 12
@@ -132,8 +132,6 @@ function updatePrice() {
 }
 
 function selectFeature(e, featureName) {
-  console.log("select price");
-
   const feature = featureList.find(el => el.featureName === featureName);
 
   if(!feature.unitPrice) {
@@ -225,13 +223,6 @@ function getChoosenFeaturesObject() {
 }
 
 function sendRequest() {
-  console.log("isCombo: ", isCombo);
-  console.log("comboId: ", choosenCombo.comboId);
-  console.log("companyId: ",$("#companyCode").val());
-  console.log("email: ",  $("#emailBuyer").val());
-  console.log("requestedFeatures: ", getChoosenFeaturesObject());
-
-
   axios.post('https://1612145.online/api/admin/public/requestfeature', {
     "comboId": isCombo ? choosenCombo.comboId : '',
   "companyId": $("#companyCode").val(),
