@@ -94,6 +94,9 @@
                 <v-list-item-title v-text="'Khiếu nại'" class="pr-1"></v-list-item-title>
               </v-list-item-content>
             </v-badge>
+            <v-list-item-content v-else>
+                <v-list-item-title v-text="'Khiếu nại'" class="pr-1"></v-list-item-title>
+              </v-list-item-content>
           </v-list-item>
 
           <v-list-item class="icon-wrapper" :active-class="color" to="/icons">
@@ -137,6 +140,9 @@
                 <v-list-item-title v-text="'Đơn hàng'" class="pr-1"></v-list-item-title>
               </v-list-item-content>
             </v-badge>
+            <v-list-item-content v-else>
+                <v-list-item-title v-text="'Đơn hàng'" class="pr-1"></v-list-item-title>
+              </v-list-item-content>
           </v-list-item>
 
         </v-list>
