@@ -1,5 +1,5 @@
 import React from 'react';
-import { Popconfirm, Popover, Row, Tag, Tooltip } from 'antd';
+import {Popconfirm, Popover, Row, Tag, Tooltip} from 'antd';
 import {
     BarsOutlined,
     CheckCircleTwoTone,
@@ -9,24 +9,27 @@ import {
     ExclamationCircleTwoTone,
     EyeOutlined,
     LockTwoTone,
+    ProfileOutlined,
     QuestionCircleOutlined,
-    UnlockTwoTone,
     SettingOutlined,
+    UnlockTwoTone
 } from '@ant-design/icons';
 import LightboxImages from '../components/Tool/LightboxImages';
 import * as _ from 'lodash';
 import moment from 'moment';
-import { isLeapYear } from '../utils/dataTable';
+import {isLeapYear} from '../utils/dataTable';
 import {CHECKIN_SUBTYPE} from "./constant";
 
 export const buildColsEmployee = (
     funcEdit,
     funcBlock,
     funcPermission,
+    funcSalary,
     username,
     canUpdate,
     canDelete,
-    canViewPermission
+    canViewPermission,
+    canViewSalary,
 ) => [
     {
         title: 'Tên đăng nhập',
@@ -125,7 +128,7 @@ export const buildColsEmployee = (
     },
     {
         title: 'Hành động',
-        width: '150px',
+        width: '180px',
         fixed: 'right',
         render: (o, record) => {
             return (
@@ -197,6 +200,19 @@ export const buildColsEmployee = (
                                     margin: '0 8px',
                                 }}
                                 onClick={() => funcPermission(record.username)}
+                            />
+                        </Tooltip>
+                    ) : null}
+                    {canViewSalary ? (
+                        <Tooltip placement="left" title={'Công thức tính lương'}>
+                            <ProfileOutlined
+                                style={{
+                                    color: '#b18d24',
+                                    fontSize: '25px',
+                                    float: 'left',
+                                    margin: '0 8px',
+                                }}
+                                onClick={() => funcSalary(record.username)}
                             />
                         </Tooltip>
                     ) : null}

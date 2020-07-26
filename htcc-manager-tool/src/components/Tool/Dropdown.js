@@ -59,6 +59,7 @@ class Dropdown extends React.Component {
                                     className={`${ele.class} ${show ? '' : 'hide'}`}
                                     activeClassName="active"
                                     onClick={this.props.toggleSidebar}
+                                    replace
                                 >
                                     <i className={ele.icon} id={ele.id}/>
                                     <span className="menu-item">

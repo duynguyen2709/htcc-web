@@ -162,6 +162,5 @@ const routes = [
         layout: '/',
         rule: (data) => canDoAction(data, ROLE_GROUP_KEY.PERMISSION, ACTION.READ)
     },
-
 ];
 export default routes;

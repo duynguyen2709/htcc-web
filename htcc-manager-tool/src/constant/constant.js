@@ -130,8 +130,8 @@ export const ROLE_ACTION = {
     },
     SALARY: {
         READ: 'Xem thông tin bảng lương',
-        CREATE: 'Thêm bảng lương mới',
-        UPDATE: 'Cập nhật thông tin bảng lương',
+        CREATE: 'Tính lương cho nhân viên',
+        UPDATE: 'Cập nhật công thức tính lương',
         DELETE: 'Xóa bảng lương',
     },
     PERMISSION: {

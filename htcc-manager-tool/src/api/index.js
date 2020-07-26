@@ -13,3 +13,4 @@ export { default as checkinApi } from './checkin';
 export { default as paymentApi } from './payment';
 export { default as roleApi } from './role';
 export { default as permissionApi } from './permission';
+export { default as salaryApi } from './salary';

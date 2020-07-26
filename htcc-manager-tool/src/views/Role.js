@@ -418,8 +418,8 @@ class Role extends Component {
                         </CardFooter>
                     </> : null}
                 </div>
+                {canAdd ?
                 <AsyncModal
-                    // width={'50%'}
                     key={'role-modal'}
                     reload={false}
                     CompomentContent={FormNewRole}
@@ -429,7 +429,7 @@ class Role extends Component {
                     data={{
                         defaultRoleDetail: this.state.defaultRoleDetail,
                     }}
-                />
+                /> : null}
             </div>
         );
     }

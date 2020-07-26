@@ -1,18 +1,18 @@
-import React, { Component } from 'react';
-import { Button as AntButton, Card, Col, Empty, List, Row } from 'antd';
-import { connect } from 'react-redux';
-import { permissionApi } from '../api';
-import { store } from 'react-notifications-component';
-import { createNotify } from '../utils/notifier';
+import React, {Component} from 'react';
+import {Button as AntButton, Card, Col, Empty, List, Row} from 'antd';
+import {connect} from 'react-redux';
+import {permissionApi} from '../api';
+import {store} from 'react-notifications-component';
+import {createNotify} from '../utils/notifier';
 import ReactLoading from 'react-loading';
-import { EditOutlined, CaretLeftOutlined } from '@ant-design/icons';
-import { Button, CardFooter } from 'reactstrap';
+import {CaretLeftOutlined, EditOutlined} from '@ant-design/icons';
+import {Button, CardFooter} from 'reactstrap';
 import EmployeePermissionCard from '../components/Permission/EmployeePermissionCard';
 import * as _ from 'lodash';
 import AsyncModal from '../components/Modal/AsyncModal';
 import FormEditEmployeePermission from '../components/Form/FormEditEmployeePermission';
-import { canDoAction } from '../utils/permission';
-import { ACTION, ROLE_GROUP_KEY } from '../constant/constant';
+import {canDoAction} from '../utils/permission';
+import {ACTION, ROLE_GROUP_KEY} from '../constant/constant';
 
 class EmployeePermission extends Component {
     constructor(props) {
@@ -72,7 +72,7 @@ class EmployeePermission extends Component {
                 );
             })
             .finally(() => {
-                this.setState({ isLoading: false });
+                this.setState({isLoading: false});
             });
     };
 
@@ -86,7 +86,7 @@ class EmployeePermission extends Component {
                 type="button"
             >
                 <EditOutlined
-                    style={{ display: 'inline', margin: '5px 10px 0 0' }}
+                    style={{display: 'inline', margin: '5px 10px 0 0'}}
                 />{' '}
                 {'  '}
                 <span className="btn-save-text"> Chỉnh sửa</span>
@@ -110,10 +110,10 @@ class EmployeePermission extends Component {
                 {_.map(list, (item, index) => (
                     <Col
                         span={span}
-                        style={{ padding: 10 }}
+                        style={{padding: 10}}
                         key={item.username}
                     >
-                        <EmployeePermissionCard user={item} />
+                        <EmployeePermissionCard user={item}/>
                     </Col>
                 ))}
             </Row>
@@ -135,7 +135,7 @@ class EmployeePermission extends Component {
             <Row>
                 {_.map(list, (item, index) => (
                     <Col span={span} key={item.username}>
-                        <EmployeePermissionCard user={item} />
+                        <EmployeePermissionCard user={item}/>
                     </Col>
                 ))}
             </Row>
@@ -143,7 +143,7 @@ class EmployeePermission extends Component {
     };
 
     render() {
-        const { isLoading, data } = this.state;
+        const {isLoading, data} = this.state;
 
         if (isLoading) {
             return (
@@ -165,34 +165,42 @@ class EmployeePermission extends Component {
 
         if (data === null || !canViewPermission) {
             return (
-                <Empty
-                    className={'center-div'}
-                    style={{ marginTop: '20px' }}
-                    description={
-                        <span style={{ color: 'rgba(0, 0, 0, 0.65)' }}>
+                <div className={"center-div"}>
+                    <Empty
+                        description={
+                            <span style={{color: 'rgba(0, 0, 0, 0.65)'}}>
                             Không có dữ liệu
                         </span>
-                    }
-                />
+                        }
+                    />
+                    <AntButton
+                        type="primary"
+                        style={{marginTop: 10, left: '50%'}}
+                        icon={<CaretLeftOutlined/>}
+                        onClick={this.props.handleClickBack}
+                    >
+                        Quay lại
+                    </AntButton>
+                </div>
             );
         }
 
-        const { dataView } = data;
+        const {dataView} = data;
         return (
             <div className="content">
                 <div className="table-wrapper tabs-big">
                     <Row justify={'space-between'}>
                         <AntButton
                             type="primary"
-                            style={{ margin: 10 }}
-                            icon={<CaretLeftOutlined />}
+                            style={{margin: 10}}
+                            icon={<CaretLeftOutlined/>}
                             onClick={this.props.handleClickBack}
                         >
                             Quay lại
                         </AntButton>
                         <CardFooter
                             className="text-right info"
-                            style={{ margin: 10 }}
+                            style={{margin: 10}}
                         >
                             {this.renderButton()}
                         </CardFooter>
@@ -275,7 +283,7 @@ class EmployeePermission extends Component {
                         <Col span={7} offset={1}>
                             <Row className={'permission-office-list'}>
                                 <List
-                                    style={{ width: '100%' }}
+                                    style={{width: '100%'}}
                                     header={<div>Chi nhánh được quản lý</div>}
                                     bordered
                                     dataSource={dataView.canManageOffices}
@@ -291,7 +299,7 @@ class EmployeePermission extends Component {
                             </Row>
                             <Row className={'permission-department-list'}>
                                 <List
-                                    style={{ width: '100%' }}
+                                    style={{width: '100%'}}
                                     header={<div>Phòng ban được quản lý</div>}
                                     bordered
                                     dataSource={dataView.canManageDepartments}

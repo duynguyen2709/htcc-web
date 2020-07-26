@@ -1,19 +1,21 @@
 import React from 'react';
 import * as _ from 'lodash';
-import { userApi } from '../api';
-import { store } from 'react-notifications-component';
-import { createNotify } from '../utils/notifier';
-import { PlusSquareOutlined } from '@ant-design/icons';
-import { buildColsEmployee } from '../constant/colTable';
-import { Input, Table, Tooltip } from 'antd';
+import {userApi} from '../api';
+import {store} from 'react-notifications-component';
+import {createNotify} from '../utils/notifier';
+import {PlusSquareOutlined} from '@ant-design/icons';
+import {buildColsEmployee} from '../constant/colTable';
+import {Input, Table, Tooltip} from 'antd';
 import AsyncModal from '../components/Modal/AsyncModal';
 import FormEditEmployee from '../components/Form/FormEditEmployee';
 import FormAddNewEmployee from '../components/Form/FormAddNewEmployee';
-import { USER } from '../constant/localStorageKey';
-import { canDoAction } from '../utils/permission';
-import { connect } from 'react-redux';
-import { ACTION, ROLE_GROUP_KEY } from '../constant/constant';
+import {USER} from '../constant/localStorageKey';
+import {canDoAction} from '../utils/permission';
+import {connect} from 'react-redux';
+import {ACTION, ROLE_GROUP_KEY} from '../constant/constant';
 import EmployeePermission from './EmployeePermission';
+import EmployeeSalary from "./EmployeeSalary";
+// import EmployeeSalary from "./EmployeeSalary";
 
 const { Search } = Input;
 
@@ -77,6 +79,13 @@ class Employee extends React.Component {
         this.setState({
             curUsername: username,
             mode: 'permission',
+        });
+    };
+
+    handleShowSalary = (username) => {
+        this.setState({
+            curUsername: username,
+            mode: 'salary',
         });
     };
 
@@ -200,9 +209,24 @@ class Employee extends React.Component {
             ACTION.READ
         );
 
-        if (mode === 'permission') {
+        const canViewSalary = canDoAction(
+            this.props.data,
+            ROLE_GROUP_KEY.SALARY,
+            ACTION.READ
+        );
+
+        if (mode === 'permission' && canViewPermission) {
             return (
                 <EmployeePermission
+                    username={curUsername}
+                    handleClickBack={this.handleClickBack}
+                />
+            );
+        }
+
+        if (mode === 'salary' && canViewSalary) {
+            return (
+                <EmployeeSalary
                     username={curUsername}
                     handleClickBack={this.handleClickBack}
                 />
@@ -246,10 +270,12 @@ class Employee extends React.Component {
                                     this.handleEdit,
                                     this.handleUpdateStatus,
                                     this.handleShowPermission,
+                                    this.handleShowSalary,
                                     user.username,
                                     canUpdate,
                                     canDelete,
-                                    canViewPermission
+                                    canViewPermission,
+                                    canViewSalary
                                 )}
                                 dataSource={this.mapData(data)}
                                 scroll={{ x: 1300, y: 'calc(100vh - 300px)' }}
