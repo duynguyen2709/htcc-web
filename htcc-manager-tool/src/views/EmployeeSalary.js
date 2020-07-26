@@ -467,8 +467,6 @@ class EmployeeSalary extends Component {
             ACTION.UPDATE
         );
 
-        const {mode} = this.state;
-
         return (
             <Row justify={'space-between'}>
                 <div style={{margin: 'auto 20px'}}>
@@ -488,7 +486,7 @@ class EmployeeSalary extends Component {
                     className="text-right info"
                     style={{marginRight: 20}}
                 >
-                    {canUpdate && (mode === 'view') ?
+                    {canUpdate ?
                         <>
                             {this.renderButton()}
                         </> : null}
