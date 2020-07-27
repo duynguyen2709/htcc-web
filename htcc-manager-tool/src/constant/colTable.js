@@ -496,6 +496,21 @@ export const buildColsSalary = (funcDelete, canDelete) => {
             },
         },
         {
+            title: 'Tổng thu nhập',
+            width: '170px',
+            dataIndex: 'totalIncome',
+        },
+        {
+            title: 'Tổng khấu trừ',
+            width: '170px',
+            dataIndex: 'totalDeduction',
+        },
+        {
+            title: 'Thực lãnh',
+            width: '170px',
+            dataIndex: 'totalNetPay',
+        },
+        {
             title: 'Trạng thái',
             width: '160px',
             render: (text, record) => {

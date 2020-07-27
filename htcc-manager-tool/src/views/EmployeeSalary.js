@@ -759,18 +759,21 @@ class EmployeeSalary extends Component {
                              key={`income_${index}`}>
                             <Col md={"2"}>
                                 <Input value={item.formulaId}
+                                       disabled={mode === 'view'}
                                        onChange={(e) => this.onChangeAdditionalIncome(index, 'formulaId', e.target.value)}
                                        className={"salary-input"}
                                 />
                             </Col>
                             <Col md={"3"}>
                                 <Input value={item.description}
+                                       disabled={mode === 'view'}
                                        className={"salary-input"}
                                        onChange={(e) => this.onChangeAdditionalIncome(index, 'description', e.target.value)}
                                 />
                             </Col>
                             <Col md={"2"}>
                                 <Select value={item.type}
+                                        disabled={mode === 'view'}
                                         style={{width: '100%'}}
                                         allowClear={false}
                                         onChange={(value) => this.onChangeAdditionalIncome(index, 'type', value)}
@@ -785,9 +788,9 @@ class EmployeeSalary extends Component {
                             </Col>
                             <Col md={"2"}>
                                 <InputNumber style={{width: '100%'}}
+                                             disabled={mode === 'view'}
                                              value={item.value}
                                              min={0}
-                                    // max={(type === 2) ? 100 : Number.MAX_VALUE}
                                              onChange={(value) => this.onChangeAdditionalIncome(index, 'value', value)}
                                              formatter={value => (type === 1) ? `${value} đ` : `${value} %`}
                                              parser={value => (type === 1) ? value.replace(' đ', '') : value.replace(' %', '')}
@@ -796,6 +799,7 @@ class EmployeeSalary extends Component {
                             <Col md={"2"}>
                                 {type === 2 ?
                                     <Select value={item.idBasedOn}
+                                            disabled={mode === 'view'}
                                             style={{width: '100%'}}
                                             allowClear={false}
                                             onChange={(value) => this.onChangeAdditionalIncome(index, 'idBasedOn', value)}
@@ -828,12 +832,15 @@ class EmployeeSalary extends Component {
                             <Col md={"1"}>
                                 <div className={"flex-row"} style={{justifyContent: 'space-between'}}>
                                     <Checkbox checked={item.calcTax}
+                                              disabled={mode === 'view'}
                                               onChange={(e) => this.onChangeAdditionalIncome(index, 'calcTax', e.target.checked)}/>
-                                    <div className="btn-new-small">
-                                        <MinusCircleOutlined style={{color: '#EF534F'}}
-                                                             onClick={() => this.removeAdditionalIncome(index)}
-                                        />
-                                    </div>
+
+                                    {mode === 'view' ? null :
+                                        <div className="btn-new-small">
+                                            <MinusCircleOutlined style={{color: '#EF534F'}}
+                                                                 onClick={() => this.removeAdditionalIncome(index)}
+                                            />
+                                        </div>}
                                 </div>
                             </Col>
 
@@ -1011,18 +1018,21 @@ class EmployeeSalary extends Component {
                              key={`income_${index}`}>
                             <Col md={"2"}>
                                 <Input value={item.formulaId}
+                                       disabled={mode === 'view'}
                                        onChange={(e) => this.onChangeAdditionalPenalty(index, 'formulaId', e.target.value)}
                                        className={"salary-input"}
                                 />
                             </Col>
                             <Col md={"3"}>
                                 <Input value={item.description}
+                                       disabled={mode === 'view'}
                                        className={"salary-input"}
                                        onChange={(e) => this.onChangeAdditionalPenalty(index, 'description', e.target.value)}
                                 />
                             </Col>
                             <Col md={"2"}>
                                 <Select value={item.type}
+                                        disabled={mode === 'view'}
                                         style={{width: '100%'}}
                                         allowClear={false}
                                         onChange={(value) => this.onChangeAdditionalPenalty(index, 'type', value)}
@@ -1037,6 +1047,7 @@ class EmployeeSalary extends Component {
                             </Col>
                             <Col md={"2"}>
                                 <InputNumber style={{width: '100%'}}
+                                             disabled={mode === 'view'}
                                              value={item.value}
                                              min={0}
                                              onChange={(value) => this.onChangeAdditionalPenalty(index, 'value', value)}
@@ -1047,6 +1058,7 @@ class EmployeeSalary extends Component {
                             <Col md={"2"}>
                                 {type === 2 ?
                                     <Select value={item.idBasedOn}
+                                            disabled={mode === 'view'}
                                             style={{width: '100%'}}
                                             allowClear={false}
                                             onChange={(value) => this.onChangeAdditionalPenalty(index, 'idBasedOn', value)}
@@ -1079,12 +1091,14 @@ class EmployeeSalary extends Component {
                             <Col md={"1"}>
                                 <div className={"flex-row"} style={{justifyContent: 'space-between'}}>
                                     <Checkbox checked={item.calcTax}
+                                              disabled={mode === 'view'}
                                               onChange={(e) => this.onChangeAdditionalPenalty(index, 'calcTax', e.target.checked)}/>
-                                    <div className="btn-new-small">
-                                        <MinusCircleOutlined style={{color: '#EF534F'}}
-                                                             onClick={() => this.removeAdditionalPenalty(index)}
-                                        />
-                                    </div>
+                                    {mode === 'view' ? null :
+                                        <div className="btn-new-small">
+                                            <MinusCircleOutlined style={{color: '#EF534F'}}
+                                                                 onClick={() => this.removeAdditionalPenalty(index)}
+                                            />
+                                        </div>}
                                 </div>
                             </Col>
 

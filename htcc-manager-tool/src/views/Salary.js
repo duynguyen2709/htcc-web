@@ -111,6 +111,10 @@ class Salary extends Component {
                         data
                     });
                     this.data = data;
+
+                    store.addNotification(
+                        createNotify('default', 'Xóa bảng lương thành công')
+                    );
                 } else {
                     store.addNotification(
                         createNotify('danger', res.returnMessage)
@@ -161,6 +165,7 @@ class Salary extends Component {
             .then((res) => {
                 if (res.returnCode === 1) {
                     const data = res.data;
+                    console.log(data);
                     this.setState({
                         data
                     });
