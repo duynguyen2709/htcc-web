@@ -13,8 +13,8 @@ import FormEditStatusLeaveRequest from '../components/Form/FormEditStatusLeaveRe
 import FormAddLeaveRequest from '../components/Form/FormAddLeaveRequest';
 import AsyncModal from '../components/Modal/AsyncModal';
 import {addKeyPropsToTable} from '../utils/dataTable';
-import {canDoAction} from "../utils/permission";
-import {ACTION, ROLE_GROUP_KEY} from "../constant/constant";
+import {canDoAction} from '../utils/permission';
+import {ACTION, ROLE_GROUP_KEY} from '../constant/constant';
 
 const {Search} = Input;
 const {TabPane} = Tabs;
@@ -42,6 +42,14 @@ class LeaveRequest extends Component {
             isLoading,
             curRecordEdit: null,
         });
+
+        if (isLoading) {
+            this.setState({
+                dataResolved: null,
+                dataNotResolve: null,
+            });
+            this.getListLeavingRequest(this.state.currDate);
+        }
     };
 
     onChangeTab = (key) => {
@@ -67,17 +75,17 @@ class LeaveRequest extends Component {
                     currDate: value.format('YYYYMM'),
                 },
                 () => {
-                    this.getListComplaint(value.format('YYYYMM'));
+                    this.getListLeavingRequest(value.format('YYYYMM'));
                 }
             );
         }
     };
 
     componentDidMount() {
-        this.getListComplaint(this.state.currDate);
+        this.getListLeavingRequest(this.state.currDate);
     }
 
-    getListComplaint = (month) => {
+    getListLeavingRequest = (month) => {
         leaveRequestApi
             .getList(month)
             .then((res) => {
@@ -109,8 +117,12 @@ class LeaveRequest extends Component {
                 }
             })
             .catch((err) => {
+                console.error(err);
                 store.addNotification(
-                    createNotify('danger', JSON.stringify(err))
+                    createNotify(
+                        'danger',
+                        'Hệ thống có lỗi. Vui lòng thử lại sau.'
+                    )
                 );
             });
     };
@@ -144,10 +156,19 @@ class LeaveRequest extends Component {
             curRecordEdit,
             currDate,
             mode,
+            isLoading,
         } = this.state;
 
-        const canAdd = canDoAction(this.props.data, ROLE_GROUP_KEY.LEAVING_REQUEST, ACTION.CREATE);
-        const canUpdate = canDoAction(this.props.data, ROLE_GROUP_KEY.LEAVING_REQUEST, ACTION.UPDATE);
+        const canAdd = canDoAction(
+            this.props.data,
+            ROLE_GROUP_KEY.LEAVING_REQUEST,
+            ACTION.CREATE
+        );
+        const canUpdate = canDoAction(
+            this.props.data,
+            ROLE_GROUP_KEY.LEAVING_REQUEST,
+            ACTION.UPDATE
+        );
 
         return (
             <div className="content">
@@ -167,7 +188,7 @@ class LeaveRequest extends Component {
                         >
                             <CalendarTool update={this.updateData}/>
                         </div>
-                        {canAdd ?
+                        {canAdd ? (
                             <div className="float-right btn-new">
                                 <Tooltip
                                     placement="left"
@@ -179,7 +200,8 @@ class LeaveRequest extends Component {
                                         }}
                                     />
                                 </Tooltip>
-                            </div> : null}
+                            </div>
+                        ) : null}
                     </div>
                     <Tabs
                         onTabClick={(key) => this.onChangeTab(key)}
@@ -207,7 +229,9 @@ class LeaveRequest extends Component {
                                             x: 1300,
                                             y: 'calc(100vh - 355px)',
                                         }}
-                                        loading={dataResolved === null}
+                                        loading={
+                                            isLoading || dataResolved === null
+                                        }
                                         pagination={{
                                             hideOnSinglePage: true,
                                             pageSize: 6,
@@ -249,7 +273,9 @@ class LeaveRequest extends Component {
                                             x: 1300,
                                             y: 'calc(100vh - 355px)',
                                         }}
-                                        loading={dataResolved === null}
+                                        loading={
+                                            isLoading || dataResolved === null
+                                        }
                                         pagination={{
                                             hideOnSinglePage: true,
                                             pageSize: 6,
@@ -259,19 +285,8 @@ class LeaveRequest extends Component {
                             </div>
                         </TabPane>
                     </Tabs>
-                    {/* <div>
-                        <AsyncModal
-                            CompomentContent={FormEditStatusLeaveRequest}
-                            visible={showModal}
-                            toggle={this.toggle}
-                            title={'Xử lý đơn nghỉ phép'}
-                            data={curRecordEdit}
-                            mode={'edit'}
-                            currDate={currDate}
-                            key={curRecordEdit}
-                        />
-                    </div> */}
-                    {((mode === 'new' && canAdd) || (mode === 'edit' && canUpdate)) ?
+                    {(mode === 'new' && canAdd) ||
+                    (mode === 'edit' && canUpdate) ? (
                         <div>
                             <AsyncModal
                                 key={curRecordEdit}
@@ -292,7 +307,8 @@ class LeaveRequest extends Component {
                                 mode={mode}
                                 currDate={currDate}
                             />
-                        </div> : null}
+                        </div>
+                    ) : null}
                 </div>
             </div>
         );
@@ -300,7 +316,7 @@ class LeaveRequest extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    data: state.homeReducer.data
+    data: state.homeReducer.data,
 });
 
 export default connect(mapStateToProps, null)(LeaveRequest);

@@ -427,3 +427,22 @@
     justify-content: space-between;
     overflow: auto;
 }
+
+.dropdown-navbar {
+    max-height: 600px;
+    overflow: auto;
+}
+
+.card-salary-detail {
+    height: calc(100vh - 360px);
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.card-salary-body {
+    margin-left: 20px;
+}
+
+.salary-input {
+    color: #505050 !important;
+}

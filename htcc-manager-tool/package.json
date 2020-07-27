@@ -21,6 +21,7 @@
     "prop-types": "^15.6.2",
     "react": "16.8.6",
     "react-chartjs-2": "^2.7.4",
+    "react-csv": "^2.0.3",
     "react-dom": "^16.8.6",
     "react-google-maps": "9.4.5",
     "react-image-lightbox": "^5.1.1",

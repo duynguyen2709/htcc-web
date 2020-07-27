@@ -113,6 +113,7 @@ class Sidebar extends React.Component {
                         className="nav-link"
                         activeClassName="active"
                         onClick={this.props.toggleSidebar}
+                        replace
                     >
                         <i className={prop.icon} id={prop.id}/>
                         <p className="menu-item">{prop.name}</p>

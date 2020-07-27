@@ -71,12 +71,10 @@ class FormAddCheckinRequest extends React.Component {
         if (!_.isEmpty(this.state.value.reason)) {
             this.props.loading();
             let { value } = this.state;
-            value = this.convertData(value);
-
-            console.log('value', value);
+            const data = this.convertData(value);
 
             checkinApi
-                .createCheckinRequest(value)
+                .createCheckinRequest(data)
                 .then((res) => {
                     if (res.returnCode === 1) {
                         this.props.onSubmit();
@@ -130,9 +128,13 @@ class FormAddCheckinRequest extends React.Component {
     }
 
     convertData = (data) => {
-        _.set(data, 'clientTime', data['clientTime'].unix());
-
-        return data;
+        const result = { ...data };
+        result['clientTime'] = moment(
+            result['clientTime'].format('MM/DD/YYYY HH:mm'),
+            'DD/MM/YYYY HH:mm'
+        );
+        _.set(result, 'clientTime', data['clientTime'].valueOf());
+        return result;
     };
 
     handleChangeUser = (val) => {
@@ -258,6 +260,7 @@ class FormAddCheckinRequest extends React.Component {
                             <DatePicker
                                 className="form-control bor-radius"
                                 format={'DD/MM/YYYY HH:mm'}
+                                showTime={true}
                                 value={moment(value.clientTime)}
                                 onChange={(val) => this.handleChangeDate(val)}
                             />

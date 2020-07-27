@@ -14,6 +14,7 @@ import {connect} from 'react-redux';
 import AsyncModal from '../components/Modal/AsyncModal';
 import {canDoAction} from "../utils/permission";
 import {ACTION, ROLE_GROUP_KEY} from "../constant/constant";
+import ReactLoading from "react-loading";
 
 const { TabPane } = Tabs;
 
@@ -25,7 +26,6 @@ class ApprovalAttendance extends Component {
             dataNotResolve: props.dataNotResolved,
             curRecordEdit: null,
             currDate: moment(new Date()).format('YYYYMM'),
-            isLoading: true,
             currTab: 'NotResolve',
             showModal: false,
             mode: 'new',
@@ -34,12 +34,19 @@ class ApprovalAttendance extends Component {
         this.dataNotResolve = [];
     }
 
-    toggle = (isLoading = false) => {
+    toggle = (submit = false) => {
         this.setState({
             showModal: !this.state.showModal,
-            isLoading,
             curRecordEdit: null,
         });
+
+        if (submit) {
+            this.setState({
+                dataResolved: null,
+                dataNotResolve: null,
+            });
+            this.props.refreshFunc();
+        }
     };
 
     onChangeTab = (key) => {
@@ -99,6 +106,18 @@ class ApprovalAttendance extends Component {
             currDate,
             mode,
         } = this.state;
+
+        if (!dataResolved || !dataNotResolve) {
+            return (
+                <ReactLoading
+                    type={'spinningBubbles'}
+                    color={'#4caf50'}
+                    className={'center-div'}
+                    height={'10%'}
+                    width={'10%'}
+                />
+            );
+        }
 
         const canAdd = canDoAction(this.props.data, ROLE_GROUP_KEY.CHECKIN, ACTION.CREATE);
         const canUpdate = canDoAction(this.props.data, ROLE_GROUP_KEY.CHECKIN, ACTION.UPDATE);

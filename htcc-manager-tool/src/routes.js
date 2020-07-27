@@ -13,6 +13,7 @@ import ShiftTemplate from './views/ShiftTemplate';
 import Role from "./views/Role";
 import {canDoAction} from "./utils/permission";
 import {ACTION, ROLE_GROUP_KEY} from "./constant/constant";
+import Salary from "./views/Salary";
 
 const routes = [
     {
@@ -145,6 +146,15 @@ const routes = [
         ],
     },
     {
+        path: '/bang-luong',
+        key: '/bang-luong',
+        name: 'Bảng lương',
+        icon: 'tim-icons icon-notes',
+        component: Salary,
+        layout: '/',
+        rule: (data) => canDoAction(data, ROLE_GROUP_KEY.SALARY, ACTION.READ),
+    },
+    {
         path: '/thong-bao',
         key: '/thong-bao',
         name: 'Thông Báo',
@@ -162,6 +172,5 @@ const routes = [
         layout: '/',
         rule: (data) => canDoAction(data, ROLE_GROUP_KEY.PERMISSION, ACTION.READ)
     },
-
 ];
 export default routes;

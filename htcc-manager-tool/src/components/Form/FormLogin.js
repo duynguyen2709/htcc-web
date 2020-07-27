@@ -1,10 +1,10 @@
 import React from 'react';
-import {Button, Col, FormGroup, Input, Row} from 'reactstrap';
+import { Button, Col, FormGroup, Input, Row } from 'reactstrap';
 import * as _ from 'lodash';
-import {connect} from 'react-redux';
-import {login} from '../../reducers/auth.reducer';
-import {store} from 'react-notifications-component';
-import {createNotify} from '../../utils/notifier';
+import { connect } from 'react-redux';
+import { login } from '../../reducers/auth.reducer';
+import { store } from 'react-notifications-component';
+import { createNotify } from '../../utils/notifier';
 
 class FormLogin extends React.Component {
     constructor(props) {
@@ -13,15 +13,15 @@ class FormLogin extends React.Component {
             value: {
                 username: '',
                 companyId: '',
-                password: ''
+                password: '',
             },
             invalid: {
                 username: false,
                 companyId: false,
-                password: false
+                password: false,
             },
             loginImg: 'login-bg-1.png',
-            isLoading: false
+            isLoading: false,
         };
     }
 
@@ -29,48 +29,52 @@ class FormLogin extends React.Component {
         const number = _.random(1, 3);
 
         this.setState({
-            loginImg: `login-bg-${number}.png`
+            loginImg: `login-bg-${number}.png`,
         });
     }
 
-    handleOnChange = e => {
-        const {value: valueInput, name} = e.target;
-        const {value, invalid} = this.state;
+    handleOnChange = (e) => {
+        const { value: valueInput, name } = e.target;
+        const { value, invalid } = this.state;
 
         this.setState({
             value: {
                 ...value,
-                [name]: valueInput
+                [name]: valueInput,
             },
             invalid: {
                 ...invalid,
-                [name]: _.isEmpty(valueInput)
-            }
+                [name]: _.isEmpty(valueInput),
+            },
         });
     };
 
     handleSubmit = () => {
-        const {username, companyId, password} = this.state.value;
+        const { username, companyId, password } = this.state.value;
         this.props.toggleLoader();
 
         this.props
             .login(companyId, username, password)
-            .then(res => {
+            .then((res) => {
                 //this.props.toggleLoader();
             })
-            .catch(err => {
-                store.addNotification(createNotify('danger', err.payload.message));
+            .catch((err) => {
+                store.addNotification(
+                    createNotify('danger', err.payload.message)
+                );
                 this.props.toggleLoader();
             });
     };
 
     render() {
-        const {invalid, value, loginImg} = this.state;
+        const { invalid, value, loginImg } = this.state;
         return (
             <Row>
                 <Col className="img-login" md={6}>
-                    <img alt="login-img" src={require(`../../assets/img/${loginImg}`)}
-                         style={{width: '90%', height: '110%'}}
+                    <img
+                        alt="login-img"
+                        src={require(`../../assets/img/${loginImg}`)}
+                        style={{ width: '90%', height: '110%' }}
                     />
                 </Col>
                 <Col md={6}>
@@ -92,9 +96,11 @@ class FormLogin extends React.Component {
                         </Col>
                         <Col md="12">
                             <FormGroup>
-                                <label className="text-dark">Mã nhân viên</label>
+                                <label className="text-dark">
+                                    Tên đăng nhập
+                                </label>
                                 <Input
-                                    placeholder="Nhập mã nhân viên"
+                                    placeholder="Nhập tên đăng nhập"
                                     type="text"
                                     onChange={this.handleOnChange}
                                     name="username"
@@ -140,11 +146,11 @@ class FormLogin extends React.Component {
     }
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = (state) => ({});
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
     login: (companyId, username, password) =>
-        dispatch(login(companyId, username, password))
+        dispatch(login(companyId, username, password)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(FormLogin);

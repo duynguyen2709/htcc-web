@@ -130,8 +130,8 @@ export const ROLE_ACTION = {
     },
     SALARY: {
         READ: 'Xem thông tin bảng lương',
-        CREATE: 'Thêm bảng lương mới',
-        UPDATE: 'Cập nhật thông tin bảng lương',
+        CREATE: 'Tính lương cho nhân viên',
+        UPDATE: 'Cập nhật công thức tính lương',
         DELETE: 'Xóa bảng lương',
     },
     PERMISSION: {
@@ -144,4 +144,12 @@ export const ROLE_ACTION = {
         READ: 'Xem thông tin quyền nhân viên',
         UPDATE: 'Cập nhật thông tin quyền nhân viên',
     },
+};
+
+export const CHECKIN_SUBTYPE = {
+    1: 'Điểm danh bằng vị trí',
+    2: 'Điểm danh bằng mẫu đơn',
+    3: 'Điểm danh bằng QR Code',
+    4: 'Điểm danh bằng mẫu đơn',
+    5: 'Quản lý điểm danh thay',
 };

@@ -1,22 +1,17 @@
 import React from 'react';
-import { Button, CardFooter, Col, Form, FormGroup, Row } from 'reactstrap';
+import {Button, CardFooter, Col, Form, FormGroup, Row} from 'reactstrap';
 import * as _ from 'lodash';
-import { leaveRequestApi } from '../../api';
-import { store } from 'react-notifications-component';
-import { createNotify } from '../../utils/notifier';
-import {
-    CheckCircleOutlined,
-    QuestionCircleOutlined,
-    PlusSquareOutlined,
-    DeleteOutlined,
-} from '@ant-design/icons';
-import { Input, Popconfirm, Select } from 'antd';
+import {leaveRequestApi} from '../../api';
+import {store} from 'react-notifications-component';
+import {createNotify} from '../../utils/notifier';
+import {CheckCircleOutlined, DeleteOutlined, PlusSquareOutlined, QuestionCircleOutlined,} from '@ant-design/icons';
+import {Input, Popconfirm, Select} from 'antd';
 // import moment from 'moment';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import RequestComponent from '../DetailDayOff/RequestComponent';
 
-const { Option } = Select;
-const { TextArea } = Input;
+const {Option} = Select;
+const {TextArea} = Input;
 
 class FormAddLeaveRequest extends React.Component {
     constructor(props) {
@@ -43,7 +38,7 @@ class FormAddLeaveRequest extends React.Component {
     };
 
     handleChangeUser = (val) => {
-        const { value } = this.state;
+        const {value} = this.state;
         this.setState({
             value: {
                 ...value,
@@ -53,8 +48,8 @@ class FormAddLeaveRequest extends React.Component {
     };
 
     componentDidMount() {
-        const { data = {} } = this.props;
-        const { canManageEmployees = [], leavingRequestCategories = [] } = data;
+        const {data = {}} = this.props;
+        const {canManageEmployees = [], leavingRequestCategories = []} = data;
 
         this.setState({
             canManageEmployees,
@@ -73,7 +68,7 @@ class FormAddLeaveRequest extends React.Component {
 
     componentWillReceiveProps(nextProps, nextState) {
         if (!_.isEqual(nextProps.data, this.props.data)) {
-            const { data } = nextProps;
+            const {data} = nextProps;
             const {
                 canManageEmployees = [],
                 leavingRequestCategories = [],
@@ -96,13 +91,13 @@ class FormAddLeaveRequest extends React.Component {
     }
 
     handleOnChange = (e) => {
-        const { value: valueInput, name } = e.target;
-        let { value } = this.state;
+        const {value: valueInput, name} = e.target;
+        let {value} = this.state;
 
         value[name] = valueInput;
 
         this.setState({
-            value: { ...value },
+            value: {...value},
         });
     };
 
@@ -124,14 +119,18 @@ class FormAddLeaveRequest extends React.Component {
                 })
                 .catch((err) => {
                     this.props.stopLoading();
+                    console.error(err);
                     store.addNotification(
-                        createNotify('danger', JSON.stringify(err))
+                        createNotify(
+                            'danger',
+                            'Hệ thống có lỗi. Vui lòng thử lại sau.'
+                        )
                     );
                 });
         } else {
             this.props.stopLoading();
             store.addNotification(
-                createNotify('warning', 'Bạn chưa nhập  lý do')
+                createNotify('warning', 'Bạn chưa nhập lý do')
             );
         }
     };
@@ -139,9 +138,13 @@ class FormAddLeaveRequest extends React.Component {
     clear = () => {
         this.setState({
             value: {
-                ...this.state.value,
-                response: null,
+                category: '',
+                clientTime: new Date().getTime(),
+                detail: [],
+                reason: '',
+                username: '',
             },
+            dayOff: 1,
         });
     };
 
@@ -152,8 +155,8 @@ class FormAddLeaveRequest extends React.Component {
     };
 
     decreaseDayOff = (index) => {
-        let { value } = this.state;
-        value['detail'] = _.omit(value.detail, `[${index}]`);
+        let {value} = this.state;
+        _.remove(value.detail, (item, i) => i === index);
 
         this.setState({
             dayOff: this.state.dayOff - 1,
@@ -162,9 +165,7 @@ class FormAddLeaveRequest extends React.Component {
     };
 
     handleDetailDayOff = (index, day) => {
-        debugger;
-        console.log('day', day);
-        const { value } = this.state;
+        const {value} = this.state;
 
         _.set(value, `detail[${index}]`, day);
 
@@ -174,7 +175,7 @@ class FormAddLeaveRequest extends React.Component {
     };
 
     renderDetailDayOff = () => {
-        const { dayOff } = this.state;
+        const {dayOff} = this.state;
         const firtElem = (
             <Row key={1}>
                 <RequestComponent
@@ -182,12 +183,12 @@ class FormAddLeaveRequest extends React.Component {
                     key={0}
                     index={0}
                 />
-                <Col md={{ size: 1, offset: 1 }}>
+                <Col md={{size: 1, offset: 1}}>
                     <div
                         className="float-right btn-new-small"
-                        style={{ marginTop: 37 }}
+                        style={{marginTop: 37}}
                     >
-                        <PlusSquareOutlined onClick={this.increaseDayOff} />
+                        <PlusSquareOutlined onClick={this.increaseDayOff}/>
                     </div>
                 </Col>
             </Row>
@@ -205,10 +206,10 @@ class FormAddLeaveRequest extends React.Component {
                     <Col md={1}>
                         <div
                             className="float-right btn-new-small"
-                            style={{ marginTop: 37 }}
+                            style={{marginTop: 37}}
                         >
                             <DeleteOutlined
-                                style={{ color: '#EF534F' }}
+                                style={{color: '#EF534F'}}
                                 onClick={() => this.decreaseDayOff(index)}
                             />
                         </div>
@@ -216,9 +217,9 @@ class FormAddLeaveRequest extends React.Component {
                     <Col md={1}>
                         <div
                             className="float-right btn-new-small"
-                            style={{ marginTop: 37 }}
+                            style={{marginTop: 37}}
                         >
-                            <PlusSquareOutlined onClick={this.increaseDayOff} />
+                            <PlusSquareOutlined onClick={this.increaseDayOff}/>
                         </div>
                     </Col>
                 </Row>
@@ -229,9 +230,9 @@ class FormAddLeaveRequest extends React.Component {
         return (
             <React.Fragment>
                 <label>Chi tiết ngày nghỉ</label>
-                <hr />
+                <hr/>
                 {list}
-                <hr />
+                <hr/>
             </React.Fragment>
         );
     };
@@ -243,8 +244,6 @@ class FormAddLeaveRequest extends React.Component {
             canManageEmployees,
         } = this.state;
 
-        console.log('value', value);
-
         return (
             <Form>
                 <Row>
@@ -252,7 +251,7 @@ class FormAddLeaveRequest extends React.Component {
                         <FormGroup>
                             <label>Nhân viên</label>
                             <Select
-                                style={{ width: '100%' }}
+                                style={{width: '100%'}}
                                 className="bor-radius"
                                 value={value.username}
                                 onChange={(val) => this.handleChangeUser(val)}
@@ -274,7 +273,7 @@ class FormAddLeaveRequest extends React.Component {
                         <FormGroup>
                             <label>Loại phép</label>
                             <Select
-                                style={{ width: '100%' }}
+                                style={{width: '100%'}}
                                 className="bor-radius"
                                 value={value.category}
                                 onChange={(val) => this.handleChangeType(val)}
@@ -311,7 +310,7 @@ class FormAddLeaveRequest extends React.Component {
                 <CardFooter className="text-right info">
                     <Popconfirm
                         title="Bạn chắc chắn thay đổi？"
-                        icon={<QuestionCircleOutlined />}
+                        icon={<QuestionCircleOutlined/>}
                         okText="Đồng ý"
                         cancelText="Huỷ"
                         onConfirm={() => this.handleSubmit()}
