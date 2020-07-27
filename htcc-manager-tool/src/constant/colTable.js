@@ -44,7 +44,7 @@ export const buildColsEmployee = (
         render: (o, record) => {
             return (
                 <React.Fragment>
-                    <LightboxImages imageSource={[record.avatar]} />
+                    <LightboxImages imageSource={[record.avatar]}/>
                 </React.Fragment>
             );
         },
@@ -150,9 +150,9 @@ export const buildColsEmployee = (
                         <Popconfirm
                             title={`Bạn chắc chắn muốn ${
                                 record.status === 1 ? 'khoá' : 'mở khoá'
-                            } ?`}
+                                } ?`}
                             icon={
-                                <ExclamationCircleTwoTone twoToneColor="#d9534f" />
+                                <ExclamationCircleTwoTone twoToneColor="#d9534f"/>
                             }
                             okText="Đồng ý"
                             cancelText="Huỷ"
@@ -282,7 +282,7 @@ export const buildColsComplaint = (funcEdit, canUpdate, cols = []) => {
                         title={`Danh sách nội dung đã khiếu nại`}
                         trigger="hover"
                     >
-                        <BarsOutlined style={{ color: '#40a9ff' }} />
+                        <BarsOutlined style={{color: '#40a9ff'}}/>
                     </Popover>
                 );
             },
@@ -294,7 +294,7 @@ export const buildColsComplaint = (funcEdit, canUpdate, cols = []) => {
             render: (o, record) => {
                 return (
                     <React.Fragment>
-                        <LightboxImages imageSource={record.images} />
+                        <LightboxImages imageSource={record.images}/>
                     </React.Fragment>
                 );
             },
@@ -309,7 +309,7 @@ export const buildColsComplaint = (funcEdit, canUpdate, cols = []) => {
                     return (
                         <Tooltip placement="top" title={'Xem chi tiết'}>
                             <BarsOutlined
-                                style={{ color: '#40a9ff' }}
+                                style={{color: '#40a9ff'}}
                                 onClick={() => funcEdit(record, true)}
                             />
                         </Tooltip>
@@ -351,6 +351,217 @@ export const buildColsComplaint = (funcEdit, canUpdate, cols = []) => {
                     default:
                         return <Tag color="error">Từ chối</Tag>;
                 }
+            },
+        },
+    ];
+};
+
+export const buildColsSalary = (funcDelete, canDelete) => {
+    return [
+        {
+            title: 'Nhân viên',
+            dataIndex: 'username',
+            fixed: 'left',
+            width: '180px',
+            sorter: (a, b) => a.username.localeCompare(b.username),
+        },
+        {
+            title: 'Mã phiếu lương',
+            dataIndex: 'paySlipId',
+            width: '180px',
+        },
+        {
+            title: 'Loại bảng lương',
+            width: '160px',
+            sorter: (a, b) => a.cycleType - b.cycleType,
+            render: (text, record) => {
+                if (record.cycleType === 1) {
+                    return "Theo tháng"
+                }
+                if (record.cycleType === 2) {
+                    return "Theo tuần"
+                }
+                return "";
+            }
+        },
+        {
+            title: 'Ngày bắt đầu kì lương',
+            width: '190px',
+            render: (text, record) => {
+                if (_.isEmpty(record.lastPaymentDate)) {
+                    return "";
+                }
+                return new moment(record.lastPaymentDate, "YYYYMMDD").format("DD-MM-YYYY");
+            }
+        },
+        {
+            title: 'Ngày kết thúc kì lương',
+            width: '190px',
+            render: (text, record) => {
+                if (_.isEmpty(record.nextPaymentDate)) {
+                    return "";
+                }
+                return new moment(record.nextPaymentDate, "YYYYMMDD").format("DD-MM-YYYY");
+            }
+        },
+        {
+            title: 'Lương cơ bản',
+            width: '170px',
+            render: (o, record) => {
+                return record.baseSalary ? record.baseSalary.totalAmount : 0;
+            },
+        },
+        {
+            title: 'Thưởng',
+            width: '170px',
+            render: (o, record) => {
+                return record.extraSalary ? record.extraSalary.totalAmount : 0;
+            },
+        },
+        {
+            title: 'Tiền ăn',
+            width: '170px',
+            render: (o, record) => {
+                return record.mealMoney ? record.mealMoney.totalAmount : 0;
+            },
+        },
+        {
+            title: 'Làm thêm ngoài giờ',
+            width: '170px',
+            render: (o, record) => {
+                return record.overtimeMoney ? record.overtimeMoney.totalAmount : 0;
+            },
+        },
+        {
+            title: 'Các khoản cộng thêm',
+            width: '170px',
+            render: (o, record) => {
+                if (!record.additionalIncome || _.isEmpty(record.additionalIncome)) {
+                    return 0;
+                }
+                let total = 0;
+                for (let ele of record.additionalIncome) {
+                    total += ele.totalAmount;
+                }
+                return total;
+            },
+        },
+        {
+            title: 'Phạt đi trễ',
+            width: '170px',
+            render: (o, record) => {
+                return record.latePenalty ? record.latePenalty.totalAmount : 0;
+            },
+        },
+        {
+            title: 'Nghỉ không phép',
+            width: '170px',
+            render: (o, record) => {
+                return record.nonPermissionOff ? record.nonPermissionOff.totalAmount : 0;
+            },
+        },
+        {
+            title: 'Tiền bảo hiểm',
+            width: '170px',
+            render: (o, record) => {
+                return record.insuranceMoney ? record.insuranceMoney.totalAmount : 0;
+            },
+        },
+        {
+            title: 'Thuế TNCN',
+            width: '170px',
+            render: (o, record) => {
+                return record.taxMoney ? record.taxMoney.totalAmount : 0;
+            },
+        },
+        {
+            title: 'Các khoản khấu trừ',
+            width: '170px',
+            render: (o, record) => {
+                if (!record.additionalPenalty || _.isEmpty(record.additionalPenalty)) {
+                    return 0;
+                }
+                let total = 0;
+                for (let ele of record.additionalPenalty) {
+                    total += ele.totalAmount;
+                }
+                return total;
+            },
+        },
+        {
+            title: 'Giảm trừ phụ thuộc',
+            width: '170px',
+            render: (o, record) => {
+                return record.preTaxDependencyReduction ? record.preTaxDependencyReduction.totalAmount : 0;
+            },
+        },
+        {
+            title: 'Trạng thái',
+            width: '160px',
+            render: (text, record) => {
+                if (record.status === 1) {
+                    return <Tag color="success">Đã chốt</Tag>
+                } else if (record.status === 0) {
+                    return <Tag color="default">Chưa chốt</Tag>
+                } else {
+                    return "";
+                }
+            }
+        },
+        {
+            title: 'Ngày chốt',
+            width: '170px',
+            render: (text, record) => {
+                if (_.isEmpty(record.lockDate)) {
+                    return "";
+                }
+                return new moment(record.lockDate, "YYYYMMDD").format("DD-MM-YYYY");
+            }
+        },
+        {
+            title: 'Người chốt',
+            dataIndex: 'actor',
+            width: '180px',
+        },
+        {
+            title: 'Hành động',
+            width: '110px',
+            fixed: 'right',
+            render: (o, record) => {
+                return (
+                    <React.Fragment>
+                        <Tooltip placement="left" title={'Xem chi tiết'}>
+                            <EyeOutlined
+                                style={{
+                                    color: '#52c41a',
+                                    fontSize: '25px',
+                                    float: 'left',
+                                }}
+                            />
+                        </Tooltip>
+                        {canDelete && record.status === 0 ? (
+                            <Popconfirm
+                                title="Bạn chắc chắn muốn xoá？"
+                                icon={
+                                    <ExclamationCircleTwoTone twoToneColor="#d9534f"/>
+                                }
+                                okText="Đồng ý"
+                                cancelText="Huỷ"
+                                onConfirm={() => funcDelete(record.paySlipId)}
+                            >
+                                <Tooltip placement="left" title={'Xoá'}>
+                                    <DeleteTwoTone
+                                        twoToneColor="#ff7875"
+                                        style={{
+                                            fontSize: '25px',
+                                            float: 'right',
+                                        }}
+                                    />
+                                </Tooltip>
+                            </Popconfirm>
+                        ) : null}
+                    </React.Fragment>
+                );
             },
         },
     ];
@@ -416,14 +627,14 @@ export const buildColsLeaveRequest = (funcEdit, canUpdate, cols = []) => {
                 if (record.useDayOff) {
                     return (
                         <Tooltip placement="top" title={'Dùng phép'}>
-                            <CheckCircleTwoTone twoToneColor="#52c41a" />
+                            <CheckCircleTwoTone twoToneColor="#52c41a"/>
                         </Tooltip>
                     );
                 }
 
                 return (
                     <Tooltip placement="top" title={'Không dùng phép'}>
-                        <CloseCircleTwoTone twoToneColor="#ff7875" />
+                        <CloseCircleTwoTone twoToneColor="#ff7875"/>
                     </Tooltip>
                 );
             },
@@ -439,7 +650,7 @@ export const buildColsLeaveRequest = (funcEdit, canUpdate, cols = []) => {
                         title={`Chi tiết ngày nghỉ`}
                         trigger="hover"
                     >
-                        <BarsOutlined style={{ color: '#40a9ff' }} />
+                        <BarsOutlined style={{color: '#40a9ff'}}/>
                     </Popover>
                 );
             },
@@ -497,21 +708,21 @@ const renderListDetail = (list = []) => {
         );
     });
 
-    return <ul style={{ padding: 15 }}>{listDetail}</ul>;
+    return <ul style={{padding: 15}}>{listDetail}</ul>;
 };
 
 const renderListContent = (list = []) => {
     const listContent = _.map(list, (item, index) => {
         return (
             <li
-                style={{ maxWidth: 200 }}
+                style={{maxWidth: 200}}
                 className="text-dark"
                 key={index}
             >{`${item}`}</li>
         );
     });
 
-    return <ul style={{ padding: 15 }}>{listContent}</ul>;
+    return <ul style={{padding: 15}}>{listContent}</ul>;
 };
 
 export const buildColsBranch = (
@@ -548,10 +759,10 @@ export const buildColsBranch = (
         width: '150px',
         render: (o, record) => {
             if (record.isHeadquarter) {
-                return <CheckCircleTwoTone twoToneColor="#52c41a" />;
+                return <CheckCircleTwoTone twoToneColor="#52c41a"/>;
             }
 
-            return <CloseCircleTwoTone twoToneColor="#ff7875" />;
+            return <CloseCircleTwoTone twoToneColor="#ff7875"/>;
         },
     },
     {
@@ -576,10 +787,10 @@ export const buildColsBranch = (
         width: '100px',
         render: (o, record) => {
             if (record.forceUseWifi) {
-                return <CheckCircleTwoTone twoToneColor="#52c41a" />;
+                return <CheckCircleTwoTone twoToneColor="#52c41a"/>;
             }
 
-            return <CloseCircleTwoTone twoToneColor="#ff7875" />;
+            return <CloseCircleTwoTone twoToneColor="#ff7875"/>;
         },
     },
     {
@@ -610,7 +821,7 @@ export const buildColsBranch = (
                         <Popconfirm
                             title="Bạn chắc chắn muốn xoá？"
                             icon={
-                                <ExclamationCircleTwoTone twoToneColor="#d9534f" />
+                                <ExclamationCircleTwoTone twoToneColor="#d9534f"/>
                             }
                             okText="Đồng ý"
                             cancelText="Huỷ"
@@ -653,10 +864,10 @@ export const buildColsCategoryDayOff = (
         width: '70px',
         render: (o, record) => {
             if (record.hasSalary) {
-                return <CheckCircleTwoTone twoToneColor="#52c41a" />;
+                return <CheckCircleTwoTone twoToneColor="#52c41a"/>;
             }
 
-            return <CloseCircleTwoTone twoToneColor="#ff7875" />;
+            return <CloseCircleTwoTone twoToneColor="#ff7875"/>;
         },
     },
     {
@@ -665,10 +876,10 @@ export const buildColsCategoryDayOff = (
         width: '70px',
         render: (o, record) => {
             if (record.useDayOff) {
-                return <CheckCircleTwoTone twoToneColor="#52c41a" />;
+                return <CheckCircleTwoTone twoToneColor="#52c41a"/>;
             }
 
-            return <CloseCircleTwoTone twoToneColor="#ff7875" />;
+            return <CloseCircleTwoTone twoToneColor="#ff7875"/>;
         },
     },
     {
@@ -691,7 +902,7 @@ export const buildColsCategoryDayOff = (
                     <Popconfirm
                         title="Bạn chắc chắn muốn xoá？"
                         icon={
-                            <ExclamationCircleTwoTone twoToneColor="#d9534f" />
+                            <ExclamationCircleTwoTone twoToneColor="#d9534f"/>
                         }
                         okText="Đồng ý"
                         cancelText="Huỷ"
@@ -753,7 +964,7 @@ export const buildColsDayOffLevel = (
                     <Popconfirm
                         title="Bạn chắc chắn muốn xoá？"
                         icon={
-                            <ExclamationCircleTwoTone twoToneColor="#d9534f" />
+                            <ExclamationCircleTwoTone twoToneColor="#d9534f"/>
                         }
                         okText="Đồng ý"
                         cancelText="Huỷ"
@@ -820,7 +1031,7 @@ export const buildColsDepartment = (
                         <Popconfirm
                             title="Bạn chắc chắn muốn xoá？"
                             icon={
-                                <ExclamationCircleTwoTone twoToneColor="#d9534f" />
+                                <ExclamationCircleTwoTone twoToneColor="#d9534f"/>
                             }
                             okText="Đồng ý"
                             cancelText="Huỷ"
@@ -877,14 +1088,14 @@ export const buildColsShift = (
     {
         title: () => {
             return (
-                <div style={{ display: 'flex', flexDirection: 'row' }}>
+                <div style={{display: 'flex', flexDirection: 'row'}}>
                     <span>Số ngày công</span>
                     <Tooltip
                         placement="top"
                         title={'Hệ số tính công của ca làm'}
                     >
                         <QuestionCircleOutlined
-                            style={{ margin: 'auto', marginLeft: '5px' }}
+                            style={{margin: 'auto', marginLeft: '5px'}}
                         />
                     </Tooltip>
                 </div>
@@ -897,7 +1108,7 @@ export const buildColsShift = (
     {
         title: () => {
             return (
-                <div style={{ display: 'flex', flexDirection: 'row' }}>
+                <div style={{display: 'flex', flexDirection: 'row'}}>
                     <span>Thời gian cho phép điểm danh trễ</span>
                     <Tooltip
                         placement="top"
@@ -905,7 +1116,7 @@ export const buildColsShift = (
                             'Nhân viên có thể diểm danh trễ / sớm bao nhiêu phút so với giờ bắt đầu / kết thúc ca'
                         }
                     >
-                        <QuestionCircleOutlined style={{ margin: 'auto' }} />
+                        <QuestionCircleOutlined style={{margin: 'auto'}}/>
                     </Tooltip>
                 </div>
             );
@@ -917,7 +1128,7 @@ export const buildColsShift = (
     {
         title: () => {
             return (
-                <div style={{ display: 'flex', flexDirection: 'row' }}>
+                <div style={{display: 'flex', flexDirection: 'row'}}>
                     <span>Điểm danh không ràng buộc</span>
                     <Tooltip
                         placement="top"
@@ -926,7 +1137,7 @@ export const buildColsShift = (
                         }
                     >
                         <QuestionCircleOutlined
-                            style={{ margin: 'auto', marginLeft: '5px' }}
+                            style={{margin: 'auto', marginLeft: '5px'}}
                         />
                     </Tooltip>
                 </div>
@@ -936,10 +1147,10 @@ export const buildColsShift = (
         dataIndex: 'allowDiffTime',
         render: (o, record) => {
             if (record.allowDiffTime) {
-                return <CheckCircleTwoTone twoToneColor="#52c41a" />;
+                return <CheckCircleTwoTone twoToneColor="#52c41a"/>;
             }
 
-            return <CloseCircleTwoTone twoToneColor="#ff7875" />;
+            return <CloseCircleTwoTone twoToneColor="#ff7875"/>;
         },
         sorter: (a, b) =>
             String(a.allowDiffTime).localeCompare(b.allowDiffTime),
@@ -975,7 +1186,7 @@ export const buildColsShift = (
                                 </>
                             }
                             icon={
-                                <ExclamationCircleTwoTone twoToneColor="#d9534f" />
+                                <ExclamationCircleTwoTone twoToneColor="#d9534f"/>
                             }
                             okText="Đồng ý"
                             cancelText="Huỷ"
@@ -1012,10 +1223,10 @@ export const buildColsConfigDay = (
         width: '150px',
         render: (o, record) => {
             if (record.isWorking) {
-                return <CheckCircleTwoTone twoToneColor="#52c41a" />;
+                return <CheckCircleTwoTone twoToneColor="#52c41a"/>;
             }
 
-            return <CloseCircleTwoTone twoToneColor="#ff7875" />;
+            return <CloseCircleTwoTone twoToneColor="#ff7875"/>;
         },
         sorter: (a, b) =>
             String(a.isWorking).localeCompare(String(b.isWorking)),
@@ -1043,7 +1254,7 @@ export const buildColsConfigDay = (
                         <Popconfirm
                             title="Bạn chắc chắn muốn xoá？"
                             icon={
-                                <ExclamationCircleTwoTone twoToneColor="#d9534f" />
+                                <ExclamationCircleTwoTone twoToneColor="#d9534f"/>
                             }
                             okText="Đồng ý"
                             cancelText="Huỷ"
@@ -1124,14 +1335,14 @@ export const buildColsApprovalAttendance = (funcEdit, canUpdate, cols = []) => {
                 if (record.isOnTime) {
                     return (
                         <Tooltip placement="top" title={'Đúng giờ'}>
-                            <CheckCircleTwoTone twoToneColor="#52c41a" />
+                            <CheckCircleTwoTone twoToneColor="#52c41a"/>
                         </Tooltip>
                     );
                 }
 
                 return (
                     <Tooltip placement="top" title={'Đi trễ'}>
-                        <CloseCircleTwoTone twoToneColor="#ff7875" />
+                        <CloseCircleTwoTone twoToneColor="#ff7875"/>
                     </Tooltip>
                 );
             },
@@ -1145,7 +1356,7 @@ export const buildColsApprovalAttendance = (funcEdit, canUpdate, cols = []) => {
 
                 return (
                     <React.Fragment>
-                        <LightboxImages imageSource={[record.image]} />
+                        <LightboxImages imageSource={[record.image]}/>
                     </React.Fragment>
                 );
             },
@@ -1278,7 +1489,7 @@ export const buildColsHistoryCheckin = (
                                     onMouseOver={() =>
                                         funcHandleOnHover('on', id)
                                     }
-                                    style={{ fontSize: 80 }}
+                                    style={{fontSize: 80}}
                                     onClick={() =>
                                         funcShowDetail(record[day], id)
                                     }
@@ -1359,14 +1570,14 @@ export const buildColsDetailHistoryCheckin = () => {
                 if (record.isOnTime) {
                     return (
                         <Tooltip placement="top" title={'Đúng giờ'}>
-                            <CheckCircleTwoTone twoToneColor="#52c41a" />
+                            <CheckCircleTwoTone twoToneColor="#52c41a"/>
                         </Tooltip>
                     );
                 }
 
                 return (
                     <Tooltip placement="top" title={'Đi trễ'}>
-                        <CloseCircleTwoTone twoToneColor="#ff7875" />
+                        <CloseCircleTwoTone twoToneColor="#ff7875"/>
                     </Tooltip>
                 );
             },
@@ -1380,7 +1591,7 @@ export const buildColsDetailHistoryCheckin = () => {
 
                 return (
                     <React.Fragment>
-                        <LightboxImages imageSource={[record.image]} />
+                        <LightboxImages imageSource={[record.image]}/>
                     </React.Fragment>
                 );
             },

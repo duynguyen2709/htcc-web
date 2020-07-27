@@ -76,8 +76,89 @@ const calculateSalary = (username) => {
     });
 };
 
+const getSalaryLog = (yyyyMM) => {
+    const token = localStorage.getItem(TOKEN);
+    const user = JSON.parse(localStorage.getItem(USER));
+
+    return new Promise((resolve, reject) => {
+        axios
+            .get(
+                `${API_URL_EMPLOYEE}/salary/${user.companyId}/${yyyyMM}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                    timeout: 30000,
+                }
+            )
+            .then((res) => {
+                resolve(res.data);
+            })
+            .catch(err => {
+                console.error(err);
+                reject('Hệ thống có lỗi. Vui lòng thử lại sau.');
+            });
+    });
+};
+
+const deleteSalaryLog = (yyyyMM, paySlipId) => {
+    const token = localStorage.getItem(TOKEN);
+
+    return new Promise((resolve, reject) => {
+        axios
+            .delete(
+                `${API_URL_EMPLOYEE}/salary/${yyyyMM}/${paySlipId}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                    timeout: 30000,
+                }
+            )
+            .then((res) => {
+                resolve(res.data);
+            })
+            .catch(err => {
+                console.error(err);
+                reject('Hệ thống có lỗi. Vui lòng thử lại sau.');
+            });
+    });
+};
+
+const lockSalaryLog = (data) => {
+    const token = localStorage.getItem(TOKEN);
+    const user = JSON.parse(localStorage.getItem(USER));
+
+    data.actor = `${user.fullName} (${user.username})`;
+
+    return new Promise((resolve, reject) => {
+        axios
+            .put(
+                `${API_URL_EMPLOYEE}/salary/lock`,
+                data,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                    timeout: 30000,
+                }
+            )
+            .then((res) => {
+                resolve(res.data);
+            })
+            .catch(err => {
+                console.error(err);
+                reject('Hệ thống có lỗi. Vui lòng thử lại sau.');
+            });
+    });
+};
+
 export default {
     getSalaryFormula ,
     updateSalaryFormula,
     calculateSalary,
+
+    getSalaryLog,
+    deleteSalaryLog,
+    lockSalaryLog,
 };

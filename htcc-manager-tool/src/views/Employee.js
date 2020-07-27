@@ -58,7 +58,6 @@ class Employee extends React.Component {
                         loading: false,
                     });
 
-                    debugger;
                     store.addNotification(
                         createNotify('danger', res.returnMessage)
                     );
