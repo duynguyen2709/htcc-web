@@ -51,7 +51,7 @@ function setUpFeature(data) {
       html += '<b>' + el.featureName + '</b> \
                                 </span> \
                                 <span>' + formatNumber(el.unitPrice)
-    if (el.featureId === 'EMPLOYEE_MANAGE')
+    if (!el.calcByEachEmployee)
       html += ' đ/tháng</span> '
     else
       html += ' đ/người/tháng</span>'
@@ -60,7 +60,7 @@ function setUpFeature(data) {
     }
 
 
-    
+
 
     FeaturesListEl.innerHTML += html
   })
@@ -102,8 +102,6 @@ function updatePrice() {
   featureChoosenList.forEach(el => {
     let price = 0;
 
-    console.log("feature name: ", el.featureName);
-
     let html_price = '<li>\
                             <div ><span>';
 
@@ -137,7 +135,6 @@ function selectFeature(e, featureName) {
   const feature = featureList.find(el => el.featureName === featureName);
 
   if(!feature.unitPrice) {
-    console.log("return: ", feature.unitPrice);
     return;
   }
 
@@ -189,9 +186,6 @@ function getListFeatureBundle(comboDetail) {
   const len = listKey.length;
 
   for(let i = 1; i < len; i++) {
-    console.log("key: ", listKey[i]);
-    console.log("featureList: ", featureList);
-
     if(comboDetail[listKey[i]]) {
       html += `<p>` + featureList.find(el => el.featureId == [listKey[i]]).featureName + `</p>`;
     }
@@ -264,7 +258,7 @@ function setUpBundle(data) {
               </div>
             </div>
             <div class="package-description">`
-             + getListFeatureBundle(el.comboDetail) + 
+             + getListFeatureBundle(el.comboDetail) +
               `<a href="#" class="loadMore">Xem thêm</a>
             </div>
             <!-- Plan Button  -->
@@ -279,7 +273,6 @@ function setUpBundle(data) {
 
   for (let i = 0; i < 4; i++) {
     const currentEl = $(".single-price-plan").get(i);
-    console.log("currentEl: ", currentEl);
     const arrPara = $(currentEl).find("p");
     arrPara.slice(0, 5).show();
 
