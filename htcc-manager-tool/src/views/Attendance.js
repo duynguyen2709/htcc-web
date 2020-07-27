@@ -384,6 +384,7 @@ class Attendance extends React.Component {
                                     onCancel={this.handleCancel}
                                     footer={[
                                         <Button
+                                            key={"button-close"}
                                             className="btn-custom"
                                             color="primary"
                                             type="button"
@@ -393,7 +394,7 @@ class Attendance extends React.Component {
                                         </Button>,
                                     ]}
                                 >
-                                    <Table rowKey={"uid"}
+                                    <Table rowKey={"checkInId"}
                                            columns={buildColsDetailHistoryCheckin()}
                                            dataSource={this.state.dataDetail}
                                            pagination={false}

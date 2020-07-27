@@ -1536,31 +1536,11 @@ export const buildColsDetailHistoryCheckin = () => {
             title: 'Loại điểm danh',
             dataIndex: 'type',
             width: '150px',
-            render: (_, record) => {
-                switch (record.type) {
-                    case 1:
-                        return (
-                            <span className="clearfix">
-                                <Tag className="float-left" color="green">
-                                    Vào Ca
-                                </Tag>
-                            </span>
-                        );
-                    case 2:
-                        return <Tag color="blue">Tan ca</Tag>;
-                    default:
-                        return null;
-                }
-            },
         },
         {
             title: 'Hình thức điểm danh',
             dataIndex: 'subType',
             width: '220px',
-            render: (o, record) => {
-                const text = CHECKIN_SUBTYPE[record.subType];
-                return text ? text : '';
-            }
         },
         {
             title: 'Ngày',
