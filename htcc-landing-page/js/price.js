@@ -80,7 +80,7 @@ function setUpFeature(data) {
 }
 
 const getFeatures = async () => {
-  await axios.get('https://1612145.online/api/gateway/public/features', ).then(function (response) {
+  await axios.get('https://naduy.info/api/gateway/public/features', ).then(function (response) {
       setUpFeature(response.data.data);
       setUpBundle(response.data.data);
     })
@@ -219,7 +219,7 @@ function getChoosenFeaturesObject() {
 }
 
 function sendRequest() {
-  axios.post('https://1612145.online/api/admin/public/requestfeature', {
+  axios.post('https://naduy.info/api/admin/public/requestfeature', {
     "comboId": isCombo ? choosenCombo.comboId : '',
   "companyId": $("#companyCode").val(),
   "email": $("#emailBuyer").val(),

@@ -88,7 +88,7 @@ export default {
   },
 
   axios: {
-    baseURL: 'https://1612145.online/',
+    baseURL: 'https://naduy.info/',
     //baseURL: 'http://167.179.80.90:8761/'
   },
 
